@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <resourceExtensions />
+    <wildcardResourcePatterns>
+      <entry name="!?*.java" />
+      <entry name="!?*.form" />
+      <entry name="!?*.class" />
+      <entry name="!?*.groovy" />
+      <entry name="!?*.scala" />
+      <entry name="!?*.flex" />
+      <entry name="!?*.kt" />
+      <entry name="!?*.clj" />
+      <entry name="!?*.aj" />
+    </wildcardResourcePatterns>
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="false">
+        <processorPath useClasspath="true" />
+      </profile>
+      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="boteco-channel-irc" />
+        <module name="boteco-channel-telegram" />
+        <module name="boteco-domain" />
+        <module name="boteco-message-processor-strategy" />
+        <module name="boteco-plugin-ping" />
+        <module name="boteco-test-helper" />
+      </profile>
+      <profile default="false" name="Annotation profile for boteco-message-telegram" enabled="true">
+        <sourceOutputDir name="../../boteco-message-telegram/target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../../boteco-message-telegram/target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="boteco-message-telegram" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="boteco" target="1.8" />
+      <module name="boteco-channel-irc" target="1.8" />
+      <module name="boteco-channel-telegram" target="1.8" />
+      <module name="boteco-domain" target="1.8" />
+      <module name="boteco-fabric-profile" target="1.8" />
+      <module name="boteco-features" target="1.8" />
+      <module name="boteco-message-irc" target="1.8" />
+      <module name="boteco-message-processor-strategy" target="1.8" />
+      <module name="boteco-message-telegram" target="1.8" />
+      <module name="boteco-parent" target="1.8" />
+      <module name="boteco-plugin-ping" target="1.8" />
+      <module name="boteco-test-helper" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

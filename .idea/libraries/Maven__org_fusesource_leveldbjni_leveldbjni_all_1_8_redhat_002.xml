@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.fusesource.leveldbjni:leveldbjni-all:1.8-redhat.002">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/fusesource/leveldbjni/leveldbjni-all/1.8-redhat.002/leveldbjni-all-1.8-redhat.002.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/fusesource/leveldbjni/leveldbjni-all/1.8-redhat.002/leveldbjni-all-1.8-redhat.002-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/fusesource/leveldbjni/leveldbjni-all/1.8-redhat.002/leveldbjni-all-1.8-redhat.002-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
