@@ -51,7 +51,9 @@ Boteco consists basically on the following components:
 - *IncomeMessage*: represents a message received from a channel.
 - *MessageProcessor*: process income messages.
 
-The flow is pretty simple: a message arrives through a channel, is passed to a processor and the response is send back through the same channel.
+The flow is pretty simple: a message arrives through a channel, is passed to a processor and the response is send back through the same channel. The figure bellow illustrates the flow:
+
+image::./assets/overview.png[Overview]
 
 But how messages from different channels can be processed by the same processor? Let's find out!
 
