@@ -95,4 +95,7 @@ Boteco comes with some channel implementations. Look for the `channels` folder t
 
 === Message Processor Strategy
 
-When you write a channel, you need to pass the income content to be processed (or not). Instead of writing the code to find the Message Processor, you can use a `MessageProcessorStrategy` to do the work. Boteco comes with a OSGi bundle that uses the OSGi Registry to discover the Message Processors, allowing you to _hot-deploy_ a Message Processor.
+When you write a channel, you need to pass the income content to be processed (or not). Instead of writing the code to find the Message Processor, you can use a JMS queue to do the work. Boteco comes with a OSGi bundle that uses the OSGi Registry to discover the Message Processors, allowing you to _hot-deploy_ a Message Processor.
+
+To send an income message for processing, just send it to the `boteco.message.process` queue and the Message
+Processor Strategy will process it for you.
