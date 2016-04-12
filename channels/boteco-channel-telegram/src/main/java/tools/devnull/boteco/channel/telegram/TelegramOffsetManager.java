@@ -25,6 +25,7 @@
 package tools.devnull.boteco.channel.telegram;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 /**
  * A class that manages the offset number that should be passed to the
@@ -57,15 +58,12 @@ public class TelegramOffsetManager {
     return this.nextId.intValue();
   }
 
-  public boolean process(TelegramPooling pooling, Runnable runnable) {
+  public void process(TelegramPooling pooling, Consumer<TelegramPooling> consumer) {
     Integer updateId = pooling.getUpdateId();
-    boolean processed = false;
     if (updateId >= this.nextId.get()) {
       this.nextId.set(updateId + 1);
-      runnable.run();
-      processed = true;
+      consumer.accept(pooling);
     }
-    return processed;
   }
 
 }

@@ -24,25 +24,37 @@
 
 package tools.devnull.boteco.channel.irc;
 
-import org.apache.camel.Exchange;
+import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.camel.component.irc.IrcMessage;
 import tools.devnull.boteco.domain.Command;
 import tools.devnull.boteco.domain.CommandExtractor;
 import tools.devnull.boteco.domain.IncomeMessage;
+
+import javax.jms.Connection;
+import javax.jms.DeliveryMode;
+import javax.jms.Destination;
+import javax.jms.MessageProducer;
+import javax.jms.ObjectMessage;
+import javax.jms.Session;
 
 /**
  * An abstraction of an IRC message.
  */
 public class IrcIncomeMessage implements IncomeMessage {
 
-  private final Exchange exchange;
-  private final IrcMessage income;
+  private static final long serialVersionUID = -4838114200533219628L;
+
+  //private final IrcMessage income;
   private final CommandExtractor commandExtractor;
+  private final String message;
+  private final String user;
+  private final String target;
 
   public IrcIncomeMessage(IrcMessage income, CommandExtractor commandExtractor) {
     this.commandExtractor = commandExtractor;
-    this.exchange = income.getExchange();
-    this.income = income;
+    this.message = income.getMessage();
+    this.user = income.getUser().getNick();
+    this.target = income.getTarget();
   }
 
   @Override
@@ -52,21 +64,27 @@ public class IrcIncomeMessage implements IncomeMessage {
 
   @Override
   public String content() {
-    return income.getMessage();
+    return message;
   }
 
   @Override
   public String sender() {
-    return income.getUser().getNick();
+    return user;
   }
 
   @Override
   public String target() {
-    return income.getTarget();
+    return target;
   }
 
+  @Override
   public boolean isPrivate() {
-    return !target().startsWith("#");
+    return !isGroup();
+  }
+
+  @Override
+  public boolean isGroup() {
+    return target().startsWith("#");
   }
 
   @Override
@@ -81,15 +99,38 @@ public class IrcIncomeMessage implements IncomeMessage {
 
   @Override
   public void reply(String content) {
-    IrcMessage outcome = new IrcMessage();
-    outcome.setMessage(content);
     if (isPrivate()) {
-      outcome.setTarget(sender());
+      replySender(content);
     } else {
-      outcome.setTarget(income.getTarget());
+      send(new IrcOutcomeMessage(content, target()));
     }
-    outcome.setMessageType("PRIVMSG");
-    exchange.setOut(outcome);
+  }
+
+  @Override
+  public void replySender(String content) {
+    send(new IrcOutcomeMessage(content, sender()));
+  }
+
+  private void send(IrcOutcomeMessage outcome) {
+    try {
+      ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", "vm://localhost");
+      Connection connection = connectionFactory.createConnection();
+      connection.start();
+
+      Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+      Destination destination = session.createQueue("boteco.message.irc");
+
+      MessageProducer producer = session.createProducer(destination);
+      producer.setDeliveryMode(DeliveryMode.PERSISTENT);
+
+      ObjectMessage message = session.createObjectMessage(outcome);
+      producer.send(message);
+
+      session.close();
+      connection.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
 }

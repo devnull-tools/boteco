@@ -24,24 +24,29 @@
 
 package tools.devnull.boteco.channel.telegram;
 
-import org.apache.camel.Exchange;
-import org.apache.camel.impl.DefaultMessage;
+import org.apache.activemq.ActiveMQConnectionFactory;
 import tools.devnull.boteco.domain.Command;
 import tools.devnull.boteco.domain.CommandExtractor;
 import tools.devnull.boteco.domain.IncomeMessage;
 
+import javax.jms.Connection;
+import javax.jms.DeliveryMode;
+import javax.jms.Destination;
+import javax.jms.MessageProducer;
+import javax.jms.ObjectMessage;
+import javax.jms.Session;
+
 public class TelegramIncomeMessage implements IncomeMessage {
 
-  private final Exchange exchange;
+  private static final long serialVersionUID = -7037612529067018573L;
+
   private final CommandExtractor extractor;
   private final TelegramPooling.Message message;
 
-  public TelegramIncomeMessage(Exchange exchange, CommandExtractor extractor, TelegramPooling.Message message) {
-    this.exchange = exchange;
+  public TelegramIncomeMessage(CommandExtractor extractor, TelegramPooling.Message message) {
     this.extractor = extractor;
     this.message = message;
   }
-
 
   @Override
   public String channel() {
@@ -52,6 +57,16 @@ public class TelegramIncomeMessage implements IncomeMessage {
   public String content() {
     String text = message.getText();
     return text == null ? "" : text;
+  }
+
+  @Override
+  public boolean isPrivate() {
+    return message.getChat().getId() > 0;
+  }
+
+  @Override
+  public boolean isGroup() {
+    return message.getChat().getId() < 0;
   }
 
   @Override
@@ -76,10 +91,34 @@ public class TelegramIncomeMessage implements IncomeMessage {
 
   @Override
   public void reply(String content) {
-    TelegramOutcomeMessage outcome = new TelegramOutcomeMessage(message.getChat().getId(), content);
-    DefaultMessage message = new DefaultMessage();
-    message.setBody(outcome);
-    exchange.setOut(message);
+    replyMessage(message.getChat().getId(), content);
+  }
+
+  @Override
+  public void replySender(String content) {
+    replyMessage(message.getFrom().getId(), content);
+  }
+
+  private void replyMessage(Integer id, String content) {
+    try {
+      ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", "vm://localhost");
+      Connection connection = connectionFactory.createConnection();
+      connection.start();
+
+      Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+      Destination destination = session.createQueue("boteco.message.telegram");
+
+      MessageProducer producer = session.createProducer(destination);
+      producer.setDeliveryMode(DeliveryMode.PERSISTENT);
+
+      ObjectMessage message = session.createObjectMessage(new TelegramOutcomeMessage(id, content));
+      producer.send(message);
+
+      session.close();
+      connection.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
 }

@@ -52,9 +52,6 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <reference id="message-processor-strategy"
-             interface="tools.devnull.boteco.domain.MessageProcessorStrategy"/>
-
   <bean id="telegram-command-extractor"
         class="tools.devnull.boteco.domain.extractors.ExpressionCommandExtractor">
     <argument value="{{bot.command.expression}}"/>
@@ -65,7 +62,6 @@
   </bean>
 
   <bean id="telegram-income-processor" class="tools.devnull.boteco.channel.telegram.TelegramIncomeProcessor">
-    <argument ref="message-processor-strategy"/>
     <argument ref="telegram-command-extractor"/>
     <argument ref="offset-manager"/>
   </bean>
@@ -95,13 +91,13 @@
         <filter>
           <simple>${body.message.chat.id} in "{{bot.whitelist}}"</simple>
           <process ref="telegram-income-processor"/>
-          <to uri="amq:queue:boteco.message.telegram"/>
+          <to uri="activemq:queue:boteco.process"/>
         </filter>
       </split>
     </route>
 
     <route id="boteco.message.to.telegram">
-      <from uri="amq:queue:boteco.message.telegram"/>
+      <from uri="activemq:queue:boteco.message.telegram"/>
       <log logName="boteco-channel-telegram"
            loggingLevel="INFO"
            message="sending message to telegram"/>
@@ -112,25 +108,8 @@
   </camelContext>
 
   <!-- ********************* AMQ configuration ************************** -->
-  <bean id="amq" class="org.apache.camel.component.jms.JmsComponent">
-    <property name="configuration" ref="AMQConfig"/>
-  </bean>
-
-  <bean id="AMQConfig" class="org.apache.camel.component.jms.JmsConfiguration">
-    <property name="connectionFactory" ref="pooledCF"/>
-    <property name="transacted" value="false"/>
-    <property name="maxConcurrentConsumers" value="1"/>
-    <property name="cacheLevelName" value="CACHE_CONSUMER"/>
-  </bean>
-
-  <bean id="pooledCF" class="org.apache.activemq.pool.PooledConnectionFactory" init-method="start"
-        destroy-method="stop">
-    <property name="maxConnections" value="1"/>
-    <property name="connectionFactory" ref="AmqCF"/>
-  </bean>
-
-  <bean id="AmqCF" class="org.apache.activemq.ActiveMQConnectionFactory">
-    <property name="brokerURL" value="failover:(tcp://localhost:61616)"/>
+  <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+    <property name="brokerURL" value="tcp://localhost:61616"/>
     <property name="userName" value="admin"/>
     <property name="password" value="admin"/>
   </bean>

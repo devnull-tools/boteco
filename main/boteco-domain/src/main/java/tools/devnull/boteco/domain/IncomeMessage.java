@@ -24,10 +24,12 @@
 
 package tools.devnull.boteco.domain;
 
+import java.io.Serializable;
+
 /**
  * Interface that defines a message that arrives from a channel.
  */
-public interface IncomeMessage {
+public interface IncomeMessage extends Serializable {
 
   /**
    * Returns the channel this message belongs.
@@ -58,6 +60,20 @@ public interface IncomeMessage {
   String target();
 
   /**
+   * Returns <code>true</code> if this message was sent in private.
+   *
+   * @return <code>true</code> if this message was sent in private
+   */
+  boolean isPrivate();
+
+  /**
+   * Returns <code>true</code> if this message was sent to a group.
+   *
+   * @return <code>true</code> if this message was sent to a group
+   */
+  boolean isGroup();
+
+  /**
    * Checks if this message has a command in its content.
    *
    * @return <code>true</code> if this message.
@@ -80,6 +96,13 @@ public interface IncomeMessage {
   void reply(String content);
 
   /**
+   * Replies directly to the sender of this message.
+   *
+   * @param content the content of the message
+   */
+  void replySender(String content);
+
+  /**
    * Formats the message using the given format and arguments and then
    * uses the produced content as the {@link #reply(String) reply}.
    *
@@ -88,6 +111,17 @@ public interface IncomeMessage {
    */
   default void reply(String format, Object... args) {
     reply(String.format(format, args));
+  }
+
+  /**
+   * Formats the message using the given format and arguments and then
+   * uses the produced content as the {@link #replySender(String) reply to sender}.
+   *
+   * @param format the format of the message
+   * @param args   the arguments to format the message
+   */
+  default void replySender(String format, Object... args) {
+    replySender(String.format(format, args));
   }
 
 }

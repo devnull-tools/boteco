@@ -27,13 +27,15 @@ package tools.devnull.boteco.domain.extractors;
 import tools.devnull.boteco.domain.Command;
 import tools.devnull.boteco.domain.CommandExtractor;
 
+import java.io.Serializable;
 import java.util.regex.Pattern;
 
 /**
  * A command extractor that uses an expression to check if the message is a command.
  */
-public class ExpressionCommandExtractor implements CommandExtractor {
+public class ExpressionCommandExtractor implements CommandExtractor, Serializable {
 
+  private static final long serialVersionUID = 3153909150938096646L;
   private final Pattern pattern;
 
   public ExpressionCommandExtractor(String expression) {

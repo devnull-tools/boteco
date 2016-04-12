@@ -24,9 +24,10 @@
 
 package tools.devnull.boteco.strategy;
 
+import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
 import tools.devnull.boteco.domain.IncomeMessage;
 import tools.devnull.boteco.domain.MessageProcessor;
-import tools.devnull.boteco.domain.MessageProcessorStrategy;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ import java.util.List;
  * and the first one capable of process the {@link IncomeMessage message} will
  * be used.
  */
-public class BotecoMessageProcessorStrategy implements MessageProcessorStrategy {
+public class BotecoMessageProcessorStrategy implements Processor {
 
   private List<MessageProcessor> messageProcessors;
 
@@ -46,7 +47,8 @@ public class BotecoMessageProcessorStrategy implements MessageProcessorStrategy 
   }
 
   @Override
-  public void process(IncomeMessage message) {
+  public void process(Exchange exchange) throws Exception {
+    IncomeMessage message = exchange.getIn().getBody(IncomeMessage.class);
     messageProcessors.stream()
         .filter(processor -> processor.canProcess(message))
         .findFirst()

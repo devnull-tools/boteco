@@ -45,18 +45,16 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <reference id="messageProcessorStrategy"
-             interface="tools.devnull.boteco.domain.MessageProcessorStrategy"/>
-
   <bean id="irc-command-extractor"
         class="tools.devnull.boteco.domain.extractors.ExpressionCommandExtractor">
     <argument value="^boteco[,:]?\s+"/>
   </bean>
 
   <bean id="irc-income-processor" class="tools.devnull.boteco.channel.irc.IrcIncomeProcessor">
-    <argument ref="messageProcessorStrategy"/>
     <argument ref="irc-command-extractor"/>
   </bean>
+
+  <bean id="irc-outcome-processor" class="tools.devnull.boteco.channel.irc.IrcOutcomeProcessor"/>
 
   <camelContext id="boteco-channel-irc"
                 xmlns="http://camel.apache.org/schema/blueprint">
@@ -67,39 +65,23 @@
            loggingLevel="INFO"
            message="received message from irc"/>
       <process ref="irc-income-processor"/>
-      <to uri="amq:queue:boteco.message.irc"/>
+      <to uri="activemq:queue:boteco.process"/>
     </route>
 
     <route id="boteco.message.to.irc">
-      <from uri="amq:queue:boteco.message.irc"/>
+      <from uri="activemq:queue:boteco.message.irc"/>
       <log logName="boteco-channel-irc"
            loggingLevel="INFO"
            message="sending message to irc"/>
+      <process ref="irc-outcome-processor"/>
       <to uri="irc:{{irc.nick}}@{{irc.server}}:{{irc.port}}"/>
     </route>
 
   </camelContext>
 
   <!-- ********************* AMQ configuration ************************** -->
-  <bean id="amq" class="org.apache.camel.component.jms.JmsComponent">
-    <property name="configuration" ref="AMQConfig"/>
-  </bean>
-
-  <bean id="AMQConfig" class="org.apache.camel.component.jms.JmsConfiguration">
-    <property name="connectionFactory" ref="pooledCF"/>
-    <property name="transacted" value="false"/>
-    <property name="maxConcurrentConsumers" value="1"/>
-    <property name="cacheLevelName" value="CACHE_CONSUMER"/>
-  </bean>
-
-  <bean id="pooledCF" class="org.apache.activemq.pool.PooledConnectionFactory" init-method="start"
-        destroy-method="stop">
-    <property name="maxConnections" value="1"/>
-    <property name="connectionFactory" ref="AmqCF"/>
-  </bean>
-
-  <bean id="AmqCF" class="org.apache.activemq.ActiveMQConnectionFactory">
-    <property name="brokerURL" value="failover:(tcp://localhost:61616)"/>
+  <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+    <property name="brokerURL" value="tcp://localhost:61616"/>
     <property name="userName" value="admin"/>
     <property name="password" value="admin"/>
   </bean>

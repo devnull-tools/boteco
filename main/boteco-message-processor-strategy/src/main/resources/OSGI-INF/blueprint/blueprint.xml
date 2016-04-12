@@ -32,12 +32,25 @@
   <reference-list id="messageProcessors"
                   interface="tools.devnull.boteco.domain.MessageProcessor"/>
 
-  <!-- Plugs this strategy in the OSGi Registry so channel implementations can use it -->
-  <service id="messageProcessorStrategy"
-           interface="tools.devnull.boteco.domain.MessageProcessorStrategy">
-    <bean class="tools.devnull.boteco.strategy.BotecoMessageProcessorStrategy">
-      <argument ref="messageProcessors"/>
-    </bean>
-  </service>
+  <bean
+      class="tools.devnull.boteco.strategy.BotecoMessageProcessorStrategy"
+      id="processor">
+    <argument ref="messageProcessors"/>
+  </bean>
+
+  <camelContext id="boteco-content-processing-strategy"
+                xmlns="http://camel.apache.org/schema/blueprint">
+    <route id="boteco.message.processing">
+      <from uri="activemq:queue:boteco.process"/>
+      <process ref="processor"/>
+    </route>
+  </camelContext>
+
+  <!-- ********************* AMQ configuration ************************** -->
+  <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+    <property name="brokerURL" value="tcp://localhost:61616"/>
+    <property name="userName" value="admin"/>
+    <property name="password" value="admin"/>
+  </bean>
 
 </blueprint>

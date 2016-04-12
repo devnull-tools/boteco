@@ -22,32 +22,38 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.channel.telegram;
+package tools.devnull.boteco.channel.irc;
 
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
-import tools.devnull.boteco.domain.CommandExtractor;
+import java.io.Serializable;
 
-/**
- * A processor that deals with income messages from Telegram.
- */
-public class TelegramIncomeProcessor implements Processor {
+public class IrcOutcomeMessage implements Serializable {
 
-  private final CommandExtractor extractor;
-  private final TelegramOffsetManager offsetManager;
+  private static final long serialVersionUID = -4257597178079618678L;
 
-  public TelegramIncomeProcessor(CommandExtractor extractor,
-                                 TelegramOffsetManager offsetManager) {
-    this.extractor = extractor;
-    this.offsetManager = offsetManager;
+  private final String content;
+  private final String target;
+  private final String type;
+
+  public IrcOutcomeMessage(String content, String target, String type) {
+    this.content = content;
+    this.target = target;
+    this.type = type;
   }
 
-  @Override
-  public void process(Exchange exchange) throws Exception {
-    offsetManager.process(exchange.getIn().getBody(TelegramPooling.class), pooling -> {
-      TelegramIncomeMessage incomeMessage = new TelegramIncomeMessage(extractor, pooling.getMessage());
-      exchange.getOut().setBody(incomeMessage);
-    });
+  public IrcOutcomeMessage(String content, String target) {
+    this(content, target, "PRIVMSG");
+  }
+
+  public String getContent() {
+    return content;
+  }
+
+  public String getTarget() {
+    return target;
+  }
+
+  public String getType() {
+    return type;
   }
 
 }

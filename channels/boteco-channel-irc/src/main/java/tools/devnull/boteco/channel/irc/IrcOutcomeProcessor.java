@@ -22,21 +22,23 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.domain;
+package tools.devnull.boteco.channel.irc;
 
-/**
- * Interface that defines a strategy to process a message.
- * <p>
- * A strategy may or not call {@link MessageProcessor#canProcess(IncomeMessage)},
- * may call every processor that can process a message and so on.
- */
-public interface MessageProcessorStrategy {
+import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
+import org.apache.camel.component.irc.IrcConstants;
 
-  /**
-   * Process the given message using the strategy defined in the class.
-   *
-   * @param message the message to process.
-   */
-  void process(IncomeMessage message);
+public class IrcOutcomeProcessor implements Processor {
+
+  @Override
+  public void process(Exchange exchange) throws Exception {
+    // TODO use a body conversor (like in the telegram channel implementation)
+    IrcOutcomeMessage message = exchange.getIn().getBody(IrcOutcomeMessage.class);
+    if (message != null) {
+      exchange.getOut().setHeader(IrcConstants.IRC_TARGET, message.getTarget());
+      exchange.getOut().setHeader(IrcConstants.IRC_MESSAGE_TYPE, message.getType());
+      exchange.getOut().setBody(message.getContent());
+    }
+  }
 
 }

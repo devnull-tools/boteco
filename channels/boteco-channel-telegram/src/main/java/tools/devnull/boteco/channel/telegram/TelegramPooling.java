@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.channel.telegram;
 
+import java.io.Serializable;
+
 /**
  * A class that represents a result fetched by pooling using
  * the Telegram Bot API.
@@ -49,7 +51,9 @@ public class TelegramPooling {
     this.message = message;
   }
 
-  public static class Message {
+  public static class Message implements Serializable {
+
+    private static final long serialVersionUID = 4815039289549492941L;
 
     private Integer messageId;
     private Integer date;
@@ -98,7 +102,9 @@ public class TelegramPooling {
     }
   }
 
-  public static class User {
+  public static class User implements Serializable {
+
+    private static final long serialVersionUID = -4899947249105033703L;
 
     private Integer id;
     private String firstName;
@@ -130,7 +136,9 @@ public class TelegramPooling {
 
   }
 
-  public static class Chat {
+  public static class Chat implements Serializable {
+
+    private static final long serialVersionUID = -5710706291447946436L;
 
     private Integer id;
     private String type;
