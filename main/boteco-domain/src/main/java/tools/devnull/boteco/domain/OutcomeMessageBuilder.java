@@ -24,29 +24,12 @@
 
 package tools.devnull.boteco.domain;
 
-import java.io.Serializable;
+public interface OutcomeMessageBuilder {
 
-/**
- * Interface that defines a message that can be delivered through a channel.
- */
-public class OutcomeMessage implements Serializable {
+  OutcomeMessageBuilder content(String content);
 
-  private static final long serialVersionUID = -6192434926707152224L;
+  OutcomeMessageBuilder to(String target);
 
-  private final String content;
-  private final String target;
-
-  public OutcomeMessage(String target, String content) {
-    this.content = content;
-    this.target = target;
-  }
-
-  public String getContent() {
-    return content;
-  }
-
-  public String getTarget() {
-    return target;
-  }
+  void throught(String channel);
 
 }

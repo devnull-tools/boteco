@@ -26,27 +26,8 @@ package tools.devnull.boteco.domain;
 
 import java.io.Serializable;
 
-/**
- * Interface that defines a message that can be delivered through a channel.
- */
-public class OutcomeMessage implements Serializable {
+public interface MessageSender extends Serializable {
 
-  private static final long serialVersionUID = -6192434926707152224L;
-
-  private final String content;
-  private final String target;
-
-  public OutcomeMessage(String target, String content) {
-    this.content = content;
-    this.target = target;
-  }
-
-  public String getContent() {
-    return content;
-  }
-
-  public String getTarget() {
-    return target;
-  }
+  OutcomeMessageBuilder send(String content);
 
 }

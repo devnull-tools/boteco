@@ -24,29 +24,28 @@
 
 package tools.devnull.boteco.domain;
 
-import java.io.Serializable;
+import org.apache.activemq.ActiveMQConnectionFactory;
 
-/**
- * Interface that defines a message that can be delivered through a channel.
- */
-public class OutcomeMessage implements Serializable {
+public class BotecoMessageSender implements MessageSender {
 
-  private static final long serialVersionUID = -6192434926707152224L;
+  private static final long serialVersionUID = 8229143816118073058L;
 
-  private final String content;
-  private final String target;
+  private final String user;
+  private final String password;
+  private final String connectionUrl;
 
-  public OutcomeMessage(String target, String content) {
-    this.content = content;
-    this.target = target;
+  public BotecoMessageSender(String user, String password, String connectionUrl) {
+    this.user = user;
+    this.password = password;
+    this.connectionUrl = connectionUrl;
   }
 
-  public String getContent() {
-    return content;
-  }
-
-  public String getTarget() {
-    return target;
+  @Override
+  public OutcomeMessageBuilder send(String content) {
+    OutcomeMessageBuilder builder = new BotecoOutcomeMessageBuilder(
+        new ActiveMQConnectionFactory(user, password, connectionUrl)
+    );
+    return builder.content(content);
   }
 
 }
