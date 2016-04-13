@@ -4,7 +4,7 @@
     <file url="file://$PROJECT_DIR$/channels/boteco-channel-irc" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/channels/boteco-channel-telegram" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/main/boteco-domain" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/main/boteco-message-processor-strategy" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/main/boteco-message-processor" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/main/boteco-parent" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/plugins/boteco-plugin-ping" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />

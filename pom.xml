@@ -39,7 +39,7 @@
     <!-- main projects -->
     <module>main/boteco-parent</module>
     <module>main/boteco-domain</module>
-    <module>main/boteco-message-processor-strategy</module>
+    <module>main/boteco-message-processor</module>
     <!-- channel implementations -->
     <module>channels/boteco-channel-irc</module>
     <module>channels/boteco-channel-telegram</module>

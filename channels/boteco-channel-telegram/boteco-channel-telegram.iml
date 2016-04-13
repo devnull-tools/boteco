@@ -24,6 +24,9 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="boteco-domain" />
+    <orderEntry type="library" name="Maven: org.apache.activemq:activemq-camel:5.11.0.redhat-621084" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.activemq:activemq-pool:5.11.0.redhat-621084" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.activemq:activemq-jms-pool:5.11.0.redhat-621084" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-blueprint:2.15.1.redhat-621084" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-core-xml:2.15.1.redhat-621084" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-core-osgi:2.15.1.redhat-621084" level="project" />
@@ -113,8 +116,6 @@
     <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-j2ee-connector_1.5_spec:2.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.activemq:activemq-web:5.11.0.redhat-621084" level="project" />
     <orderEntry type="library" name="Maven: org.apache.activemq:activemq-all:5.11.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.activemq:activemq-pool:5.11.0.redhat-621084" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.activemq:activemq-jms-pool:5.11.0.redhat-621084" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-websocket:8.1.16.v20140903" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-util:8.1.17.v20150415" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-io:8.1.17.v20150415" level="project" />
