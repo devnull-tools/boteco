@@ -29,7 +29,9 @@
                                http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
   <cm:property-placeholder id="irc.properties"
-                           persistent-id="tools.devnull.boteco.channel.irc">
+                           persistent-id="tools.devnull.boteco.channel.irc"
+                           placeholder-prefix="{{"
+                           placeholder-suffix="}}">
     <cm:default-properties>
       <cm:property name="irc.nick" value="boteco"/>
       <cm:property name="irc.server" value=""/>
@@ -42,8 +44,18 @@
       <!-- The options to apply to the irc component -->
       <cm:property name="irc.options"
                    value="onNick=false&amp;onQuit=false&amp;onJoin=false&amp;onKick=false&amp;onMode=false&amp;onPart=false&amp;onTopic=false"/>
+
+      <cm:property name="sender.user" value="admin"/>
+      <cm:property name="sender.password" value="admin"/>
+      <cm:property name="sender.connectionUrl" value="vm://localhost"/>
     </cm:default-properties>
   </cm:property-placeholder>
+
+  <bean id="message-sender" class="tools.devnull.boteco.domain.BotecoMessageSender">
+    <argument value="{{sender.user}}"/>
+    <argument value="{{sender.password}}"/>
+    <argument value="{{sender.connectionUrl}}"/>
+  </bean>
 
   <bean id="irc-command-extractor"
         class="tools.devnull.boteco.domain.extractors.ExpressionCommandExtractor">
@@ -52,6 +64,7 @@
 
   <bean id="irc-income-processor" class="tools.devnull.boteco.channel.irc.IrcIncomeProcessor">
     <argument ref="irc-command-extractor"/>
+    <argument ref="message-sender"/>
   </bean>
 
   <bean id="irc-outcome-processor" class="tools.devnull.boteco.channel.irc.IrcOutcomeProcessor"/>
@@ -81,9 +94,9 @@
 
   <!-- ********************* AMQ configuration ************************** -->
   <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
-    <property name="brokerURL" value="tcp://localhost:61616"/>
-    <property name="userName" value="admin"/>
-    <property name="password" value="admin"/>
+    <property name="brokerURL" value="{{sender.connectionUrl}}"/>
+    <property name="userName" value="{{sender.user}}"/>
+    <property name="password" value="{{sender.password}}"/>
   </bean>
 
 </blueprint>

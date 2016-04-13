@@ -27,16 +27,16 @@ package tools.devnull.boteco.channel.irc;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.component.irc.IrcConstants;
+import tools.devnull.boteco.domain.OutcomeMessage;
 
 public class IrcOutcomeProcessor implements Processor {
 
   @Override
   public void process(Exchange exchange) throws Exception {
-    // TODO use a body conversor (like in the telegram channel implementation)
-    IrcOutcomeMessage message = exchange.getIn().getBody(IrcOutcomeMessage.class);
+    OutcomeMessage message = exchange.getIn().getBody(OutcomeMessage.class);
     if (message != null) {
       exchange.getOut().setHeader(IrcConstants.IRC_TARGET, message.getTarget());
-      exchange.getOut().setHeader(IrcConstants.IRC_MESSAGE_TYPE, message.getType());
+      exchange.getOut().setHeader(IrcConstants.IRC_MESSAGE_TYPE, "PRIVMSG");
       exchange.getOut().setBody(message.getContent());
     }
   }

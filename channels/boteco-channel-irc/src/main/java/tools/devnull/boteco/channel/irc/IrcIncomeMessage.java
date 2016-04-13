@@ -24,18 +24,11 @@
 
 package tools.devnull.boteco.channel.irc;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.camel.component.irc.IrcMessage;
 import tools.devnull.boteco.domain.Command;
 import tools.devnull.boteco.domain.CommandExtractor;
 import tools.devnull.boteco.domain.IncomeMessage;
-
-import javax.jms.Connection;
-import javax.jms.DeliveryMode;
-import javax.jms.Destination;
-import javax.jms.MessageProducer;
-import javax.jms.ObjectMessage;
-import javax.jms.Session;
+import tools.devnull.boteco.domain.MessageSender;
 
 /**
  * An abstraction of an IRC message.
@@ -46,12 +39,14 @@ public class IrcIncomeMessage implements IncomeMessage {
 
   //private final IrcMessage income;
   private final CommandExtractor commandExtractor;
+  private final MessageSender sender;
   private final String message;
   private final String user;
   private final String target;
 
-  public IrcIncomeMessage(IrcMessage income, CommandExtractor commandExtractor) {
+  public IrcIncomeMessage(IrcMessage income, CommandExtractor commandExtractor, MessageSender sender) {
     this.commandExtractor = commandExtractor;
+    this.sender = sender;
     this.message = income.getMessage();
     this.user = income.getUser().getNick();
     this.target = income.getTarget();
@@ -102,35 +97,17 @@ public class IrcIncomeMessage implements IncomeMessage {
     if (isPrivate()) {
       replySender(content);
     } else {
-      send(new IrcOutcomeMessage(content, target()));
+      send(target(), content);
     }
   }
 
   @Override
   public void replySender(String content) {
-    send(new IrcOutcomeMessage(content, sender()));
+    send(sender(), content);
   }
 
-  private void send(IrcOutcomeMessage outcome) {
-    try {
-      ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", "vm://localhost");
-      Connection connection = connectionFactory.createConnection();
-      connection.start();
-
-      Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-      Destination destination = session.createQueue("boteco.message.irc");
-
-      MessageProducer producer = session.createProducer(destination);
-      producer.setDeliveryMode(DeliveryMode.PERSISTENT);
-
-      ObjectMessage message = session.createObjectMessage(outcome);
-      producer.send(message);
-
-      session.close();
-      connection.close();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+  private void send(String target, String content) {
+    sender.send(content).to(target).throught(channel());
   }
 
 }

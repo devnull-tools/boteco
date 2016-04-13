@@ -28,20 +28,23 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.component.irc.IrcMessage;
 import tools.devnull.boteco.domain.CommandExtractor;
+import tools.devnull.boteco.domain.MessageSender;
 
 public class IrcIncomeProcessor implements Processor {
 
   private final CommandExtractor extractor;
+  private final MessageSender messageSender;
 
-  public IrcIncomeProcessor(CommandExtractor extractor) {
+  public IrcIncomeProcessor(CommandExtractor extractor, MessageSender messageSender) {
     this.extractor = extractor;
+    this.messageSender = messageSender;
   }
 
   @Override
   public void process(Exchange exchange) throws Exception {
     IrcMessage income = exchange.getIn(IrcMessage.class);
     if (income.getMessage() != null && !income.getMessage().isEmpty()) {
-      IrcIncomeMessage message = new IrcIncomeMessage(income, extractor);
+      IrcIncomeMessage message = new IrcIncomeMessage(income, extractor, messageSender);
       exchange.getOut().setBody(message);
     } else {
       exchange.setProperty(Exchange.ROUTE_STOP, Boolean.TRUE);
