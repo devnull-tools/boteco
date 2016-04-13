@@ -1,0 +1,15 @@
+= Boteco IRC Channel
+
+This is the implementation of the IRC Channel. It allows Message Processors to receive messages from IRC.
+
+== How to configure
+
+Just put the `tools.devnull.boteco.channel.irc.cfg` file in your fuse `etc` folder. The properties are:
+
+irc.nick:: the nickname to use (defaults to 'boteco')
+irc.server:: the server to connect
+irc.port::  the port to connect (defaults to '6667')
+irc.channels:: the channels to connect separated by commas
+bot.ignorelist:: the nicks separated by commas that the bot should ignore (defaults to '')
+bot.command.expression:: the regular expression that defines a command (defaults to '^boteco[,:]?\s+'
+irc.options:: the camel irc options to use
