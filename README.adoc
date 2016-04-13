@@ -93,7 +93,7 @@ A Channel needs to receive a content, wraps it in an instance of `IncomeMessage`
 Boteco comes with some channel implementations. Look for the `channels` folder to see how they are implemented and how you can configure them.
 ====
 
-=== Message Processor Strategy
+=== Routing to Message Processor
 
 When you write a channel, you need to pass the income content to be processed (or not). Instead of writing the code to find the Message Processor, you can use a JMS queue to do the work. Boteco comes with a OSGi bundle that uses the OSGi Registry to discover the Message Processors, allowing you to _hot-deploy_ a Message Processor.
 
