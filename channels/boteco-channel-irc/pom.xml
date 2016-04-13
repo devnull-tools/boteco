@@ -39,7 +39,6 @@
   <packaging>bundle</packaging>
 
   <properties>
-    <irc.nick>boteco</irc.nick>
     <boteco-domain.version>1.0.0</boteco-domain.version>
   </properties>
 
@@ -68,8 +67,8 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-jms</artifactId>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-camel</artifactId>
     </dependency>
 
     <dependency>
