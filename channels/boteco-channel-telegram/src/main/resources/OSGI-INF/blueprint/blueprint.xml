@@ -49,17 +49,21 @@
         don't want to process older messages.
       -->
       <cm:property name="pooling.initial-offset" value="0"/>
+    </cm:default-properties>
+  </cm:property-placeholder>
 
-      <cm:property name="sender.user" value="admin"/>
-      <cm:property name="sender.password" value="admin"/>
-      <cm:property name="sender.connectionUrl" value="vm://localhost"/>
+  <cm:property-placeholder persistent-id="tools.devnull.boteco.jms">
+    <cm:default-properties>
+      <cm:property name="jms.user" value="admin"/>
+      <cm:property name="jms.password" value="admin"/>
+      <cm:property name="jms.connectionUrl" value="vm://localhost"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
   <bean id="message-sender" class="tools.devnull.boteco.domain.BotecoMessageSender">
-    <argument value="{{sender.user}}"/>
-    <argument value="{{sender.password}}"/>
-    <argument value="{{sender.connectionUrl}}"/>
+    <argument value="${jms.user}}"/>
+    <argument value="${jms.password}}"/>
+    <argument value="${jms.connectionUrl}}"/>
   </bean>
 
   <bean id="telegram-command-extractor"
@@ -120,9 +124,9 @@
 
   <!-- ********************* AMQ configuration ************************** -->
   <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
-    <property name="brokerURL" value="{{sender.connectionUrl}}"/>
-    <property name="userName" value="{{sender.user}}"/>
-    <property name="password" value="{{sender.password}}"/>
+    <property name="brokerURL" value="${jms.connectionUrl}"/>
+    <property name="userName" value="${jms.user}"/>
+    <property name="password" value="${jms.password}"/>
   </bean>
 
 </blueprint>
