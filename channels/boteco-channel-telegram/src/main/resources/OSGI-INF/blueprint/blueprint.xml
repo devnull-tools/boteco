@@ -91,7 +91,7 @@
       <from uri="timer:telegram?period={{pooling.interval}}"/>
       <log message="Pooling Telegram for new messages"
            logName="boteco-message-telegram"
-           loggingLevel="INFO"/>
+           loggingLevel="DEBUG"/>
       <setHeader headerName="CamelHttpQuery">
         <simple>offset=${bean:offset-manager.nextId}</simple>
       </setHeader>
@@ -110,7 +110,7 @@
     <route id="boteco.message.to.telegram">
       <from uri="activemq:queue:boteco.message.telegram"/>
       <log logName="boteco-channel-telegram"
-           loggingLevel="INFO"
+           loggingLevel="DEBUG"
            message="sending message to telegram"/>
       <process ref="telegram-outcome-processor"/>
       <to uri="https4:api.telegram.org:443/bot{{bot.token}}/sendMessage"/>
