@@ -27,6 +27,7 @@ package tools.devnull.boteco.channel.telegram;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.impl.DefaultMessage;
+import tools.devnull.boteco.domain.OutcomeMessage;
 
 /**
  * A processor that receives an outcome telegram message and sends it as a bot message.
@@ -34,10 +35,11 @@ import org.apache.camel.impl.DefaultMessage;
 public class TelegramOutcomeProcessor implements Processor {
   @Override
   public void process(Exchange exchange) throws Exception {
-    TelegramOutcomeMessage message = exchange.getIn().getBody(TelegramOutcomeMessage.class);
+    OutcomeMessage message = exchange.getIn().getBody(OutcomeMessage.class);
     if (message != null) {
       DefaultMessage out = new DefaultMessage();
-      out.setHeader(Exchange.HTTP_QUERY, message.uriQuery());
+      String queryString = String.format("chat_id=%s&text=%s", message.getTarget(), message.getContent());
+      out.setHeader(Exchange.HTTP_QUERY, queryString);
       exchange.setOut(out);
     }
   }

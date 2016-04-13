@@ -24,17 +24,10 @@
 
 package tools.devnull.boteco.channel.telegram;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
 import tools.devnull.boteco.domain.Command;
 import tools.devnull.boteco.domain.CommandExtractor;
 import tools.devnull.boteco.domain.IncomeMessage;
-
-import javax.jms.Connection;
-import javax.jms.DeliveryMode;
-import javax.jms.Destination;
-import javax.jms.MessageProducer;
-import javax.jms.ObjectMessage;
-import javax.jms.Session;
+import tools.devnull.boteco.domain.MessageSender;
 
 public class TelegramIncomeMessage implements IncomeMessage {
 
@@ -42,10 +35,12 @@ public class TelegramIncomeMessage implements IncomeMessage {
 
   private final CommandExtractor extractor;
   private final TelegramPooling.Message message;
+  private final MessageSender sender;
 
-  public TelegramIncomeMessage(CommandExtractor extractor, TelegramPooling.Message message) {
+  public TelegramIncomeMessage(CommandExtractor extractor, TelegramPooling.Message message, MessageSender sender) {
     this.extractor = extractor;
     this.message = message;
+    this.sender = sender;
   }
 
   @Override
@@ -100,25 +95,7 @@ public class TelegramIncomeMessage implements IncomeMessage {
   }
 
   private void replyMessage(Integer id, String content) {
-    try {
-      ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", "vm://localhost");
-      Connection connection = connectionFactory.createConnection();
-      connection.start();
-
-      Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-      Destination destination = session.createQueue("boteco.message.telegram");
-
-      MessageProducer producer = session.createProducer(destination);
-      producer.setDeliveryMode(DeliveryMode.PERSISTENT);
-
-      ObjectMessage message = session.createObjectMessage(new TelegramOutcomeMessage(id, content));
-      producer.send(message);
-
-      session.close();
-      connection.close();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    sender.send(content).to(String.valueOf(id)).throught(channel());
   }
 
 }
