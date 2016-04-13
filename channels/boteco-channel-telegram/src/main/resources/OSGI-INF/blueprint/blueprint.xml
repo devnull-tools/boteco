@@ -100,7 +100,7 @@
         <jsonpath>$.result</jsonpath>
         <unmarshal ref="telegram-message-json"/>
         <filter>
-          <simple>${body.message.chat.id} in "{{bot.whitelist}}"</simple>
+          <simple>${body.message.chat.id} in "{{bot.whitelist}}" || "{{bot.whitelist}}" == ''</simple>
           <process ref="telegram-income-processor"/>
           <to uri="activemq:queue:boteco.process"/>
         </filter>
