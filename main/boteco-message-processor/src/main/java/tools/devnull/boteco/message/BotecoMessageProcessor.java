@@ -22,7 +22,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.strategy;
+package tools.devnull.boteco.message;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
@@ -38,11 +38,11 @@ import java.util.List;
  * and the first one capable of process the {@link IncomeMessage message} will
  * be used.
  */
-public class BotecoMessageProcessorStrategy implements Processor {
+public class BotecoMessageProcessor implements Processor {
 
   private List<MessageProcessor> messageProcessors;
 
-  public BotecoMessageProcessorStrategy(List<MessageProcessor> messageProcessors) {
+  public BotecoMessageProcessor(List<MessageProcessor> messageProcessors) {
     this.messageProcessors = messageProcessors;
   }
 

@@ -32,9 +32,8 @@
   <reference-list id="messageProcessors"
                   interface="tools.devnull.boteco.domain.MessageProcessor"/>
 
-  <bean
-      class="tools.devnull.boteco.strategy.BotecoMessageProcessorStrategy"
-      id="processor">
+
+  <bean id="processor" class="tools.devnull.boteco.message.BotecoMessageProcessor">
     <argument ref="messageProcessors"/>
   </bean>
 
