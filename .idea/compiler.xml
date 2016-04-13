@@ -28,6 +28,7 @@
         <module name="boteco-message-processor" />
         <module name="boteco-message-processor-strategy" />
         <module name="boteco-plugin-ping" />
+        <module name="boteco-rest-api" />
         <module name="boteco-test-helper" />
       </profile>
       <profile default="false" name="Annotation profile for boteco-message-telegram" enabled="true">
@@ -51,6 +52,7 @@
       <module name="boteco-message-telegram" target="1.8" />
       <module name="boteco-parent" target="1.8" />
       <module name="boteco-plugin-ping" target="1.8" />
+      <module name="boteco-rest-api" target="1.8" />
       <module name="boteco-test-helper" target="1.8" />
     </bytecodeTargetLevel>
   </component>

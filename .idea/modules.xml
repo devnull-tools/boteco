@@ -10,6 +10,7 @@
       <module fileurl="file://$PROJECT_DIR$/main/boteco-message-processor/boteco-message-processor.iml" filepath="$PROJECT_DIR$/main/boteco-message-processor/boteco-message-processor.iml" />
       <module fileurl="file://$PROJECT_DIR$/main/boteco-parent/boteco-parent.iml" filepath="$PROJECT_DIR$/main/boteco-parent/boteco-parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/plugins/boteco-plugin-ping/boteco-plugin-ping.iml" filepath="$PROJECT_DIR$/plugins/boteco-plugin-ping/boteco-plugin-ping.iml" />
+      <module fileurl="file://$PROJECT_DIR$/main/boteco-rest-api/boteco-rest-api.iml" filepath="$PROJECT_DIR$/main/boteco-rest-api/boteco-rest-api.iml" />
     </modules>
   </component>
 </project>

@@ -8,6 +8,7 @@
     <file type="Osmorc" url="file://$PROJECT_DIR$/channels/boteco-channel-telegram" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/main/boteco-domain" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/main/boteco-message-processor" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/main/boteco-rest-api" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/misc/boteco-fabric-profile" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/misc/boteco-test-helper" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/plugins/boteco-plugin-ping" />
@@ -18,6 +19,8 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/boteco-message-telegram/pom.xml" />
         <option value="$PROJECT_DIR$/main/boteco-parent/pom.xml" />
+        <option value="$PROJECT_DIR$/main/pom.xml" />
+        <option value="$PROJECT_DIR$/main/boteco-rest-api/pom.xml" />
       </list>
     </option>
   </component>

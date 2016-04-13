@@ -40,6 +40,7 @@
     <module>main/boteco-parent</module>
     <module>main/boteco-domain</module>
     <module>main/boteco-message-processor</module>
+    <module>main/boteco-rest-api</module>
     <!-- channel implementations -->
     <module>channels/boteco-channel-irc</module>
     <module>channels/boteco-channel-telegram</module>
