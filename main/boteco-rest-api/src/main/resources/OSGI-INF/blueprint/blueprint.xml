@@ -32,9 +32,15 @@
                                http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
-  <cm:property-placeholder persistent-id="tools.devnull.boteco.jms"
+  <cm:property-placeholder persistent-id="tools.devnull.boteco.rest"
                            placeholder-prefix="{{"
                            placeholder-suffix="}}">
+    <cm:default-properties>
+      <cm:property name="rest.message.path" value="/boteco"/>
+    </cm:default-properties>
+  </cm:property-placeholder>
+
+  <cm:property-placeholder persistent-id="tools.devnull.boteco.jms">
     <cm:default-properties>
       <cm:property name="jms.user" value="admin"/>
       <cm:property name="jms.password" value="admin"/>
@@ -44,16 +50,16 @@
 
 
   <bean id="message-sender" class="tools.devnull.boteco.domain.BotecoMessageSender">
-    <argument value="{{jms.user}}"/>
-    <argument value="{{jms.password}}"/>
-    <argument value="{{jms.connectionUrl}}"/>
+    <argument value="${jms.user}"/>
+    <argument value="${jms.password}"/>
+    <argument value="${jms.connectionUrl}"/>
   </bean>
 
   <bean id="messageService" class="tools.devnull.boteco.rest.MessageService">
     <argument ref="message-sender"/>
   </bean>
 
-  <jaxrs:server id="messageServer" address="/boteco">
+  <jaxrs:server id="messageServer" address="{{rest.message.path}}">
     <jaxrs:serviceBeans>
       <ref component-id="messageService"/>
     </jaxrs:serviceBeans>
@@ -64,7 +70,7 @@
 
   <cxf:bus>
     <cxf:features>
-      <cxf:logging />
+      <cxf:logging/>
     </cxf:features>
   </cxf:bus>
 
