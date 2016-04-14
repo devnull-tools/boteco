@@ -36,11 +36,13 @@ public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
 
   private final QueueConnectionFactory connectionFactory;
 
+  private final String queueFormat;
   private String content;
   private String target;
 
-  public BotecoOutcomeMessageBuilder(QueueConnectionFactory connectionFactory) {
+  public BotecoOutcomeMessageBuilder(QueueConnectionFactory connectionFactory, String queueFormat) {
     this.connectionFactory = connectionFactory;
+    this.queueFormat = queueFormat;
   }
 
   @Override
@@ -62,7 +64,7 @@ public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
       connection.start();
 
       Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-      Destination destination = session.createQueue("boteco.message." + channel);
+      Destination destination = session.createQueue(String.format(queueFormat, channel));
 
       MessageProducer producer = session.createProducer(destination);
       producer.setDeliveryMode(DeliveryMode.PERSISTENT);

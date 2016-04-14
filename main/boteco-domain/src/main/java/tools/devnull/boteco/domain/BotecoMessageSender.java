@@ -43,7 +43,8 @@ public class BotecoMessageSender implements MessageSender {
   @Override
   public OutcomeMessageBuilder send(String content) {
     OutcomeMessageBuilder builder = new BotecoOutcomeMessageBuilder(
-        new ActiveMQConnectionFactory(user, password, connectionUrl)
+        new ActiveMQConnectionFactory(user, password, connectionUrl),
+        "boteco.message.%s"
     );
     return builder.content(content);
   }
