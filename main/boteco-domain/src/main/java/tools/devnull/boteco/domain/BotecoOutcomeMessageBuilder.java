@@ -24,9 +24,6 @@
 
 package tools.devnull.boteco.domain;
 
-import tools.devnull.boteco.domain.OutcomeMessage;
-import tools.devnull.boteco.domain.OutcomeMessageBuilder;
-
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
 import javax.jms.Destination;
