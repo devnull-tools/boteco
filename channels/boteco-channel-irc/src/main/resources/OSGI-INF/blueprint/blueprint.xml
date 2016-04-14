@@ -56,9 +56,9 @@
   </cm:property-placeholder>
 
   <bean id="message-sender" class="tools.devnull.boteco.domain.BotecoMessageSender">
-    <argument value="${jms.user}}"/>
-    <argument value="${jms.password}}"/>
-    <argument value="${jms.connectionUrl}}"/>
+    <argument value="${jms.user}"/>
+    <argument value="${jms.password}"/>
+    <argument value="${jms.connectionUrl}"/>
   </bean>
 
   <bean id="irc-command-extractor"
