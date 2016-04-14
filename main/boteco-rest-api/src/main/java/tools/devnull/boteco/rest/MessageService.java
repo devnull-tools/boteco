@@ -43,7 +43,7 @@ public class MessageService {
   @POST
   @Consumes("application/json")
   @Path("/{channel}")
-  public void sendMessage(@PathParam("channel") String channel, BotMessage message) {
+  public void sendMessage(@PathParam("channel") String channel, Message message) {
     messageSender.send(message.getContent())
         .to(message.getTarget())
         .throught(channel);

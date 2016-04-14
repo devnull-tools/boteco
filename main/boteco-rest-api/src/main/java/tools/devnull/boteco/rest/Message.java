@@ -24,7 +24,7 @@
 
 package tools.devnull.boteco.rest;
 
-public class BotMessage {
+public class Message {
 
   private String content;
   private String target;
