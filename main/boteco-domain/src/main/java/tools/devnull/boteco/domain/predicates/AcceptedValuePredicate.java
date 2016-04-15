@@ -24,23 +24,22 @@
 
 package tools.devnull.boteco.domain.predicates;
 
-import tools.devnull.boteco.domain.IncomeMessage;
-
-import java.util.Arrays;
-import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class SenderPredicate implements Predicate<IncomeMessage> {
+public class AcceptedValuePredicate<E, T> implements Predicate<E> {
 
-  private final List<String> accepted;
+  private final T accepted;
+  private final Function<E, T> function;
 
-  public SenderPredicate(String... acceptedValues) {
-    this.accepted = Arrays.asList(acceptedValues);
+  public AcceptedValuePredicate(T accepted, Function<E, T> function) {
+    this.accepted = accepted;
+    this.function = function;
   }
 
   @Override
-  public boolean test(IncomeMessage message) {
-    return accepted.contains(message.sender());
+  public boolean test(E object) {
+    return accepted.equals(function.apply(object));
   }
 
 }

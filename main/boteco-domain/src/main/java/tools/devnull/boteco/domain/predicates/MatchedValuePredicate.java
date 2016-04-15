@@ -24,21 +24,23 @@
 
 package tools.devnull.boteco.domain.predicates;
 
-import tools.devnull.boteco.domain.IncomeMessage;
-
+import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class ContentPredicate implements Predicate<IncomeMessage> {
+public class MatchedValuePredicate<E> implements Predicate<E> {
 
   private final String expression;
+  private final Function<E, String> function;
 
-  public ContentPredicate(String expression) {
+  public MatchedValuePredicate(String expression, Function<E, String> function) {
     this.expression = expression;
+    this.function = function;
   }
 
+
   @Override
-  public boolean test(IncomeMessage message) {
-    return message.content().matches(expression);
+  public boolean test(E object) {
+    return function.apply(object).matches(expression);
   }
 
 }

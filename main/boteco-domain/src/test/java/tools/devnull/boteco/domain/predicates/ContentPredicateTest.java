@@ -26,6 +26,7 @@ package tools.devnull.boteco.domain.predicates;
 
 import org.junit.Test;
 import tools.devnull.boteco.domain.IncomeMessage;
+import tools.devnull.boteco.domain.Predicates;
 import tools.devnull.kodo.TestScenario;
 
 import static org.mockito.Mockito.mock;
@@ -44,7 +45,7 @@ public class ContentPredicateTest {
 
   @Test
   public void test() {
-    TestScenario.given(new ContentPredicate("\\w+"))
+    TestScenario.given(Predicates.content("\\w+"))
         .it(should(accept(newMessage("ping"))))
         .it(should(notAccept(newMessage("other test message!"))));
   }

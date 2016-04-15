@@ -24,23 +24,47 @@
 
 package tools.devnull.boteco.domain.predicates;
 
+import org.junit.Before;
+import org.junit.Test;
 import tools.devnull.boteco.domain.IncomeMessage;
+import tools.devnull.boteco.domain.Predicates;
+import tools.devnull.kodo.TestScenario;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Predicate;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static tools.devnull.boteco.domain.predicates.TestHelper.accept;
+import static tools.devnull.boteco.domain.predicates.TestHelper.notAccept;
+import static tools.devnull.kodo.Spec.should;
 
-public class ChannelPredicate implements Predicate<IncomeMessage> {
+public class MessagePredicateTest {
 
-  private final List<String> accepted;
+  private IncomeMessage privateMessage;
+  private IncomeMessage groupMessage;
 
-  public ChannelPredicate(String... acceptedValues) {
-    this.accepted = Arrays.asList(acceptedValues);
+  @Before
+  public void initialize() {
+    privateMessage = mock(IncomeMessage.class);
+    groupMessage = mock(IncomeMessage.class);
+
+    when(privateMessage.isPrivate()).thenReturn(true);
+    when(privateMessage.isGroup()).thenReturn(false);
+
+    when(groupMessage.isPrivate()).thenReturn(false);
+    when(groupMessage.isGroup()).thenReturn(true);
   }
 
-  @Override
-  public boolean test(IncomeMessage message) {
-    return accepted.contains(message.channel());
+  @Test
+  public void testGroupPredicate() {
+    TestScenario.given(Predicates.groupMessage())
+        .it(should(accept(groupMessage)))
+        .it(should(notAccept(privateMessage)));
+  }
+
+  @Test
+  public void testPrivatePredicate() {
+    TestScenario.given(Predicates.privateMessage())
+        .it(should(accept(privateMessage)))
+        .it(should(notAccept(groupMessage)));
   }
 
 }

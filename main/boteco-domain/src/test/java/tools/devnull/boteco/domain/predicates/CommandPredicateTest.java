@@ -27,6 +27,7 @@ package tools.devnull.boteco.domain.predicates;
 import org.junit.Test;
 import tools.devnull.boteco.domain.Command;
 import tools.devnull.boteco.domain.IncomeMessage;
+import tools.devnull.boteco.domain.Predicates;
 import tools.devnull.kodo.TestScenario;
 
 import static org.mockito.Mockito.mock;
@@ -56,7 +57,7 @@ public class CommandPredicateTest {
 
   @Test
   public void test() {
-    TestScenario.given(new CommandPredicate("ping"))
+    TestScenario.given(Predicates.command("ping"))
         .it(should(accept(newCommand("ping"))))
         .it(should(notAccept(newMessage("ping"))))
         .it(should(notAccept(newCommand("pong"))));

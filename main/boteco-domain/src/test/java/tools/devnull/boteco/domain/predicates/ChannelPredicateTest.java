@@ -26,14 +26,16 @@ package tools.devnull.boteco.domain.predicates;
 
 import org.junit.Before;
 import org.junit.Test;
+import tools.devnull.boteco.domain.Channel;
 import tools.devnull.boteco.domain.IncomeMessage;
+import tools.devnull.boteco.domain.Predicates;
 import tools.devnull.kodo.TestScenario;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static tools.devnull.boteco.domain.predicates.TestHelper.accept;
+import static tools.devnull.boteco.domain.predicates.TestHelper.notAccept;
 import static tools.devnull.kodo.Spec.should;
-
-import static tools.devnull.boteco.domain.predicates.TestHelper.*;
 
 public class ChannelPredicateTest {
 
@@ -41,23 +43,33 @@ public class ChannelPredicateTest {
   private IncomeMessage messageFromOtherChannel;
   private IncomeMessage messageFromMyChannel;
 
+  private Channel myChannel = newChannel("my-channel");
+  private Channel otherChannel = newChannel("other-channel");
+  private Channel unknownChannel = newChannel("unknown-channel");
+
+  private Channel newChannel(String id) {
+    Channel channel = mock(Channel.class);
+    when(channel.id()).thenReturn(id);
+    return channel;
+  }
+
   @Before
   public void initialize() {
     messageFromMyChannel = mock(IncomeMessage.class);
-    when(messageFromMyChannel.channel()).thenReturn("my-channel");
+    when(messageFromMyChannel.channel()).thenReturn(myChannel);
 
     messageFromOtherChannel = mock(IncomeMessage.class);
-    when(messageFromOtherChannel.channel()).thenReturn("other-channel");
+    when(messageFromOtherChannel.channel()).thenReturn(otherChannel);
 
     messageFromUnknownChannel = mock(IncomeMessage.class);
-    when(messageFromUnknownChannel.channel()).thenReturn("unknown-channel");
+    when(messageFromUnknownChannel.channel()).thenReturn(unknownChannel);
   }
 
   @Test
   public void test() {
-    TestScenario.given(new ChannelPredicate("my-channel", "other-channel"))
+    TestScenario.given(Predicates.channel("my-channel"))
         .it(should(accept(messageFromMyChannel)))
-        .it(should(accept(messageFromOtherChannel)))
+        .it(should(notAccept(messageFromOtherChannel)))
         .it(should(notAccept(messageFromUnknownChannel)));
   }
 
