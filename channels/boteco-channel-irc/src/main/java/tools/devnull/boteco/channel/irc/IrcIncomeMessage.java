@@ -25,10 +25,10 @@
 package tools.devnull.boteco.channel.irc;
 
 import org.apache.camel.component.irc.IrcMessage;
+import tools.devnull.boteco.domain.Channel;
 import tools.devnull.boteco.domain.Command;
 import tools.devnull.boteco.domain.CommandExtractor;
 import tools.devnull.boteco.domain.IncomeMessage;
-import tools.devnull.boteco.domain.MessageSender;
 import tools.devnull.boteco.domain.service.ServiceLocator;
 
 /**
@@ -38,7 +38,7 @@ public class IrcIncomeMessage implements IncomeMessage, ServiceLocator {
 
   private static final long serialVersionUID = -4838114200533219628L;
 
-  //private final IrcMessage income;
+  private final Channel channel = new IrcChannel();
   private final CommandExtractor commandExtractor;
   private final String message;
   private final String user;
@@ -52,8 +52,8 @@ public class IrcIncomeMessage implements IncomeMessage, ServiceLocator {
   }
 
   @Override
-  public String channel() {
-    return "irc";
+  public Channel channel() {
+    return channel;
   }
 
   @Override
@@ -106,8 +106,7 @@ public class IrcIncomeMessage implements IncomeMessage, ServiceLocator {
   }
 
   private void send(String target, String content) {
-    MessageSender sender = locate(MessageSender.class);
-    sender.send(content).to(target).throught(channel());
+    channel().send(content).to(target);
   }
 
 }

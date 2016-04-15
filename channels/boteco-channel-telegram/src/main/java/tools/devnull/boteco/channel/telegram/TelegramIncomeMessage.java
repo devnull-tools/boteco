@@ -24,27 +24,28 @@
 
 package tools.devnull.boteco.channel.telegram;
 
+import tools.devnull.boteco.domain.Channel;
 import tools.devnull.boteco.domain.Command;
 import tools.devnull.boteco.domain.CommandExtractor;
 import tools.devnull.boteco.domain.IncomeMessage;
-import tools.devnull.boteco.domain.MessageSender;
 import tools.devnull.boteco.domain.service.ServiceLocator;
 
-public class TelegramIncomeMessage implements IncomeMessage, ServiceLocator {
+class TelegramIncomeMessage implements IncomeMessage, ServiceLocator {
 
   private static final long serialVersionUID = -7037612529067018573L;
 
   private final CommandExtractor extractor;
   private final TelegramPooling.Message message;
+  private final Channel channel = new TelegramChannel();
 
-  public TelegramIncomeMessage(CommandExtractor extractor, TelegramPooling.Message message) {
+  TelegramIncomeMessage(CommandExtractor extractor, TelegramPooling.Message message) {
     this.extractor = extractor;
     this.message = message;
   }
 
   @Override
-  public String channel() {
-    return "telegram";
+  public Channel channel() {
+    return channel;
   }
 
   @Override
@@ -94,8 +95,7 @@ public class TelegramIncomeMessage implements IncomeMessage, ServiceLocator {
   }
 
   private void replyMessage(Integer id, String content) {
-    MessageSender sender = locate(MessageSender.class);
-    sender.send(content).to(String.valueOf(id)).throught(channel());
+    channel().send(content).to(String.valueOf(id));
   }
 
 }

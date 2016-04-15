@@ -22,25 +22,22 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.domain.predicates;
+package tools.devnull.boteco.domain;
 
-import tools.devnull.boteco.domain.IncomeMessage;
+public interface ContentFormatter {
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Predicate;
+  String accent(String content);
 
-public class TargetPredicate implements Predicate<IncomeMessage> {
+  String alternativeAccent(String content);
 
-  private final List<String> accepted;
+  String positive(String content);
 
-  public TargetPredicate(String... acceptedValues) {
-    this.accepted = Arrays.asList(acceptedValues);
-  }
+  String negative(String content);
 
-  @Override
-  public boolean test(IncomeMessage message) {
-    return accepted.contains(message.target());
-  }
+  String value(String content);
+
+  String bold(String content);
+
+  String italic(String content);
 
 }

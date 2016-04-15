@@ -24,11 +24,8 @@
 
 package tools.devnull.boteco.domain;
 
-import tools.devnull.boteco.domain.predicates.ChannelPredicate;
-import tools.devnull.boteco.domain.predicates.CommandPredicate;
-import tools.devnull.boteco.domain.predicates.ContentPredicate;
-import tools.devnull.boteco.domain.predicates.SenderPredicate;
-import tools.devnull.boteco.domain.predicates.TargetPredicate;
+import tools.devnull.boteco.domain.predicates.AcceptedValuePredicate;
+import tools.devnull.boteco.domain.predicates.MatchedValuePredicate;
 
 import java.util.function.Predicate;
 
@@ -37,40 +34,86 @@ import java.util.function.Predicate;
  */
 public class Predicates {
 
-  public static Predicate<IncomeMessage> channel(String acceptedValue) {
-    return new ChannelPredicate(acceptedValue);
+  /**
+   * Returns a predicate that allows channels that {@link Channel#isOut() can send a message}.
+   *
+   * @return a predicate that allows channels that can send a message.
+   */
+  public static Predicate<IncomeMessage> outChannel() {
+    return message -> message.channel().isOut();
   }
 
-  public static Predicate<IncomeMessage> channels(String... acceptedValues) {
-    return new ChannelPredicate(acceptedValues);
+  /**
+   * Returns a predicate that allows channels that {@link Channel#isOut() can send a message} and have the
+   * given id.
+   *
+   * @param channelId the channel id
+   * @return a predicate that allows channels that can send a message and have the given id.
+   */
+  public static Predicate<IncomeMessage> outChannel(String channelId) {
+    return channel(channelId)
+        .and(message -> message.channel().isOut());
   }
 
-  public static Predicate<IncomeMessage> command(String acceptedValue) {
-    return new CommandPredicate(acceptedValue);
+  /**
+   * Returns a predicate that allows channels that have the given id.
+   *
+   * @param channelId the channel id
+   * @return a predicate that allows channels that have the given id.
+   */
+  public static Predicate<IncomeMessage> channel(String channelId) {
+    return new AcceptedValuePredicate<>(channelId, m -> m.channel().id());
   }
 
-  public static Predicate<IncomeMessage> commands(String... acceptedValues) {
-    return new CommandPredicate(acceptedValues);
+  /**
+   * Returns a predicate that allows messages that {@link IncomeMessage#hasCommand() have a command}.
+   *
+   * @return a predicate that allows messages that have a command.
+   */
+  public static Predicate<IncomeMessage> hasCommand() {
+    return IncomeMessage::hasCommand;
   }
 
-  public static Predicate<IncomeMessage> target(String acceptedValue) {
-    return new TargetPredicate(acceptedValue);
+  public static Predicate<IncomeMessage> command(String commandName) {
+    return hasCommand().and(new AcceptedValuePredicate<>(commandName, m -> m.command().name()));
   }
 
-  public static Predicate<IncomeMessage> targets(String... acceptedValues) {
-    return new TargetPredicate(acceptedValues);
+  /**
+   * Returns a predicate that allows only {@link IncomeMessage#isGroup() group messages}
+   *
+   * @return a predicate that allows only group messages.
+   */
+  public static Predicate<IncomeMessage> groupMessage() {
+    return IncomeMessage::isGroup;
   }
 
-  public static Predicate<IncomeMessage> sender(String acceptedValue) {
-    return new SenderPredicate(acceptedValue);
+  /**
+   * Returns a predicate that allows only {@link IncomeMessage#isPrivate() private messages}
+   *
+   * @return a predicate that allows only private messages.
+   */
+  public static Predicate<IncomeMessage> privateMessage() {
+    return IncomeMessage::isPrivate;
   }
 
-  public static Predicate<IncomeMessage> senders(String... acceptedValues) {
-    return new SenderPredicate(acceptedValues);
+  /**
+   * Returns a predicate that allows messages for a given target.
+   *
+   * @param targetName the target's name
+   * @return a predicate that allows messages for a given target.
+   */
+  public static Predicate<IncomeMessage> target(String targetName) {
+    return new AcceptedValuePredicate<>(targetName, IncomeMessage::target);
   }
 
+  /**
+   * Returns a predicate that allows messages that have a content like the given expression.
+   *
+   * @param expression the expression to test
+   * @return a predicate that allows messages that have a content like the given expression.
+   */
   public static Predicate<IncomeMessage> content(String expression) {
-    return new ContentPredicate(expression);
+    return new MatchedValuePredicate<>(expression, IncomeMessage::content);
   }
 
 }

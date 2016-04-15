@@ -36,7 +36,7 @@ public interface IncomeMessage extends Serializable {
    *
    * @return the channel this message belongs.
    */
-  String channel();
+  Channel channel();
 
   /**
    * Returns the content of this message.
