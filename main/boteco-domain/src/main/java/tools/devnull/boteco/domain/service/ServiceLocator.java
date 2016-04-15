@@ -22,32 +22,18 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.channel.telegram;
+package tools.devnull.boteco.domain.service;
 
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
-import tools.devnull.boteco.domain.CommandExtractor;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
-/**
- * A processor that deals with income messages from Telegram.
- */
-public class TelegramIncomeProcessor implements Processor {
+public interface ServiceLocator {
 
-  private final CommandExtractor extractor;
-  private final TelegramOffsetManager offsetManager;
-
-  public TelegramIncomeProcessor(CommandExtractor extractor,
-                                 TelegramOffsetManager offsetManager) {
-    this.extractor = extractor;
-    this.offsetManager = offsetManager;
-  }
-
-  @Override
-  public void process(Exchange exchange) throws Exception {
-    offsetManager.process(exchange.getIn().getBody(TelegramPooling.class), pooling -> {
-      TelegramIncomeMessage incomeMessage = new TelegramIncomeMessage(extractor, pooling.getMessage());
-      exchange.getOut().setBody(incomeMessage);
-    });
+  default <T> T locate(Class<T> serviceClass) {
+    BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
+    ServiceReference<T> serviceReference = bundleContext.getServiceReference(serviceClass);
+    return bundleContext.getService(serviceReference);
   }
 
 }

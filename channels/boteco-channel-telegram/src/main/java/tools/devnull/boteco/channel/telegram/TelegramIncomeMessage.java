@@ -28,19 +28,18 @@ import tools.devnull.boteco.domain.Command;
 import tools.devnull.boteco.domain.CommandExtractor;
 import tools.devnull.boteco.domain.IncomeMessage;
 import tools.devnull.boteco.domain.MessageSender;
+import tools.devnull.boteco.domain.service.ServiceLocator;
 
-public class TelegramIncomeMessage implements IncomeMessage {
+public class TelegramIncomeMessage implements IncomeMessage, ServiceLocator {
 
   private static final long serialVersionUID = -7037612529067018573L;
 
   private final CommandExtractor extractor;
   private final TelegramPooling.Message message;
-  private final MessageSender sender;
 
-  public TelegramIncomeMessage(CommandExtractor extractor, TelegramPooling.Message message, MessageSender sender) {
+  public TelegramIncomeMessage(CommandExtractor extractor, TelegramPooling.Message message) {
     this.extractor = extractor;
     this.message = message;
-    this.sender = sender;
   }
 
   @Override
@@ -95,6 +94,7 @@ public class TelegramIncomeMessage implements IncomeMessage {
   }
 
   private void replyMessage(Integer id, String content) {
+    MessageSender sender = locate(MessageSender.class);
     sender.send(content).to(String.valueOf(id)).throught(channel());
   }
 

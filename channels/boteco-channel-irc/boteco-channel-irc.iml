@@ -24,6 +24,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="boteco-domain" />
+    <orderEntry type="library" name="Maven: org.osgi:org.osgi.core:5.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-blueprint:2.15.1.redhat-621084" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-core-xml:2.15.1.redhat-621084" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-core-osgi:2.15.1.redhat-621084" level="project" />

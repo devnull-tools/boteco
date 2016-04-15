@@ -29,24 +29,23 @@ import tools.devnull.boteco.domain.Command;
 import tools.devnull.boteco.domain.CommandExtractor;
 import tools.devnull.boteco.domain.IncomeMessage;
 import tools.devnull.boteco.domain.MessageSender;
+import tools.devnull.boteco.domain.service.ServiceLocator;
 
 /**
  * An abstraction of an IRC message.
  */
-public class IrcIncomeMessage implements IncomeMessage {
+public class IrcIncomeMessage implements IncomeMessage, ServiceLocator {
 
   private static final long serialVersionUID = -4838114200533219628L;
 
   //private final IrcMessage income;
   private final CommandExtractor commandExtractor;
-  private final MessageSender sender;
   private final String message;
   private final String user;
   private final String target;
 
-  public IrcIncomeMessage(IrcMessage income, CommandExtractor commandExtractor, MessageSender sender) {
+  public IrcIncomeMessage(IrcMessage income, CommandExtractor commandExtractor) {
     this.commandExtractor = commandExtractor;
-    this.sender = sender;
     this.message = income.getMessage();
     this.user = income.getUser().getNick();
     this.target = income.getTarget();
@@ -107,6 +106,7 @@ public class IrcIncomeMessage implements IncomeMessage {
   }
 
   private void send(String target, String content) {
+    MessageSender sender = locate(MessageSender.class);
     sender.send(content).to(target).throught(channel());
   }
 

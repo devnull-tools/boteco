@@ -55,11 +55,7 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <bean id="message-sender" class="tools.devnull.boteco.domain.BotecoMessageSender">
-    <argument value="${jms.user}"/>
-    <argument value="${jms.password}"/>
-    <argument value="${jms.connectionUrl}"/>
-  </bean>
+  <reference id="message-sender" interface="tools.devnull.boteco.domain.MessageSender"/>
 
   <bean id="irc-command-extractor"
         class="tools.devnull.boteco.domain.extractors.ExpressionCommandExtractor">
@@ -68,7 +64,6 @@
 
   <bean id="irc-income-processor" class="tools.devnull.boteco.channel.irc.IrcIncomeProcessor">
     <argument ref="irc-command-extractor"/>
-    <argument ref="message-sender"/>
   </bean>
 
   <bean id="irc-outcome-processor" class="tools.devnull.boteco.channel.irc.IrcOutcomeProcessor"/>
