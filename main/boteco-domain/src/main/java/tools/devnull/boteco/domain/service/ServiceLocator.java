@@ -28,8 +28,18 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 
+/**
+ * Interface to locate services in bundles.
+ */
 public interface ServiceLocator {
 
+  /**
+   * Locates the service that implements the given interface
+   *
+   * @param serviceClass the interface that the service implements
+   * @param <T>          the type of the service
+   * @return the located service
+   */
   default <T> T locate(Class<T> serviceClass) {
     BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
     ServiceReference<T> serviceReference = bundleContext.getServiceReference(serviceClass);
