@@ -55,8 +55,6 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <reference id="message-sender" interface="tools.devnull.boteco.domain.MessageSender"/>
-
   <bean id="irc-command-extractor"
         class="tools.devnull.boteco.domain.extractors.ExpressionCommandExtractor">
     <argument value="^boteco[,:]?\s+"/>

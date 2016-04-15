@@ -4,7 +4,7 @@
     <facet type="Osmorc" name="OSGi">
       <configuration manifestGenerationMode="OsmorcControlled" manifestLocation="" jarfileLocation="boteco-domain-1.0.0.jar" outputPathType="CompilerOutputPath" bndFileLocation="" bundlorFileLocation="" bundleActivator="" bundleSymbolicName="tools.devnull.boteco-domain" bundleVersion="1.0.0" ignoreFilePattern="" useProjectDefaultManifestFileLocation="true" alwaysRebuildBundleJAR="false" doNotSynchronizeWithMaven="false">
         <additionalProperties>
-          <property key="Export-Package" value="tools.devnull.boteco.domain,tools.devnull.boteco.domain.predicates,tools.devnull.boteco.domain.extractors" />
+          <property key="Export-Package" value="tools.devnull.boteco.domain,tools.devnull.boteco.domain.predicates,tools.devnull.boteco.domain.extractors,tools.devnull.boteco.domain.service" />
           <property key="Bundle-Name" value="boteco-domain" />
         </additionalProperties>
         <additionalJARContents />

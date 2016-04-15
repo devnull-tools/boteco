@@ -60,8 +60,6 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <reference id="message-sender" interface="tools.devnull.boteco.domain.MessageSender"/>
-
   <bean id="telegram-command-extractor"
         class="tools.devnull.boteco.domain.extractors.ExpressionCommandExtractor">
     <argument value="{{bot.command.expression}}"/>
