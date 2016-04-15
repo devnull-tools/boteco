@@ -26,6 +26,7 @@ package tools.devnull.boteco.plugin.ping;
 
 import org.junit.Before;
 import org.junit.Test;
+import tools.devnull.boteco.domain.Channel;
 import tools.devnull.boteco.domain.Command;
 import tools.devnull.boteco.domain.IncomeMessage;
 import tools.devnull.boteco.domain.MessageProcessor;
@@ -46,7 +47,11 @@ public class PingProcessorTest {
 
   private MessageProcessor processor;
 
+  private Channel outChannel;
+  private Channel nonOutChannel;
+
   private IncomeMessage pingMessage;
+  private IncomeMessage pingMessageFromNonOutChannel;
   private IncomeMessage pongMessage;
 
   private Command pingCommand;
@@ -58,16 +63,29 @@ public class PingProcessorTest {
   public void initialize() {
     processor = new PingMessageProcessor();
 
+    outChannel = mock(Channel.class);
+    nonOutChannel = mock(Channel.class);
+
+    when(outChannel.isOut()).thenReturn(true);
+    when(nonOutChannel.isOut()).thenReturn(false);
+
     pingMessage = mock(IncomeMessage.class);
+    when(pingMessage.channel()).thenReturn(outChannel);
     when(pingMessage.sender()).thenReturn("someone");
     when(pingMessage.hasCommand()).thenReturn(true);
 
     pingCommand = mock(Command.class);
     when(pingCommand.name()).thenReturn("ping");
-
     when(pingMessage.command()).thenReturn(pingCommand);
 
+    pingMessageFromNonOutChannel = mock(IncomeMessage.class);
+    when(pingMessageFromNonOutChannel.channel()).thenReturn(nonOutChannel);
+    when(pingMessageFromNonOutChannel.sender()).thenReturn("someone");
+    when(pingMessageFromNonOutChannel.hasCommand()).thenReturn(true);
+    when(pingMessageFromNonOutChannel.command()).thenReturn(pingCommand);
+
     pongMessage = mock(IncomeMessage.class);
+    when(pongMessage.channel()).thenReturn(outChannel);
     when(pongMessage.sender()).thenReturn("someone");
     when(pongMessage.hasCommand()).thenReturn(true);
 
@@ -90,6 +108,10 @@ public class PingProcessorTest {
         .the(command(), should(be(tested())));
 
     TestScenario.given(pongMessage)
+        .it(should(notBe(processable())))
+        .the(command(), should(be(tested())));
+
+    TestScenario.given(pingMessageFromNonOutChannel)
         .it(should(notBe(processable())))
         .the(command(), should(be(tested())));
   }
