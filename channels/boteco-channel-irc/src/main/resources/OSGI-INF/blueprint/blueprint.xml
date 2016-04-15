@@ -72,7 +72,7 @@
     <route id="boteco.message.from.irc">
       <from uri="irc:{{irc.nick}}@{{irc.server}}:{{irc.port}}?channels={{irc.channels}}&amp;{{irc.options}}"/>
       <log logName="boteco-channel-irc"
-           loggingLevel="INFO"
+           loggingLevel="DEBUG"
            message="received message from irc"/>
       <process ref="irc-income-processor"/>
       <to uri="activemq:queue:boteco.process"/>
@@ -81,7 +81,7 @@
     <route id="boteco.message.to.irc">
       <from uri="activemq:queue:boteco.message.irc"/>
       <log logName="boteco-channel-irc"
-           loggingLevel="INFO"
+           loggingLevel="DEBUG"
            message="sending message to irc"/>
       <process ref="irc-outcome-processor"/>
       <to uri="irc:{{irc.nick}}@{{irc.server}}:{{irc.port}}"/>
