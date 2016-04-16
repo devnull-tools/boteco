@@ -26,7 +26,6 @@
         <module name="boteco-channel-telegram" />
         <module name="boteco-domain" />
         <module name="boteco-message-processor" />
-        <module name="boteco-message-processor-strategy" />
         <module name="boteco-plugin-ping" />
         <module name="boteco-rest-api" />
         <module name="boteco-test-helper" />
@@ -48,7 +47,6 @@
       <module name="boteco-features" target="1.8" />
       <module name="boteco-message-irc" target="1.8" />
       <module name="boteco-message-processor" target="1.8" />
-      <module name="boteco-message-processor-strategy" target="1.8" />
       <module name="boteco-message-telegram" target="1.8" />
       <module name="boteco-parent" target="1.8" />
       <module name="boteco-plugin-ping" target="1.8" />
