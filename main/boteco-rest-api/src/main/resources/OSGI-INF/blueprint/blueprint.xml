@@ -48,11 +48,7 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <reference id="message-sender" interface="tools.devnull.boteco.domain.MessageSender"/>
-
-  <bean id="messageService" class="tools.devnull.boteco.rest.MessageService">
-    <argument ref="message-sender"/>
-  </bean>
+  <bean id="messageService" class="tools.devnull.boteco.rest.MessageService"/>
 
   <jaxrs:server id="messageServer" address="{{rest.message.path}}">
     <jaxrs:serviceBeans>

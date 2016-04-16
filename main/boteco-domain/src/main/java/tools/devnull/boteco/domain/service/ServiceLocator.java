@@ -26,7 +26,13 @@ package tools.devnull.boteco.domain.service;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Interface to locate services in bundles.
@@ -44,6 +50,44 @@ public interface ServiceLocator {
     BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
     ServiceReference<T> serviceReference = bundleContext.getServiceReference(serviceClass);
     return bundleContext.getService(serviceReference);
+  }
+
+  /**
+   * Locates the services that implements the given interface and matches the given filter.
+   *
+   * @param serviceClass the interface that the service implements
+   * @param filter       the filter to match
+   * @param <T>          the type of the service
+   * @return the services that implements the given interface and matches the given filter.
+   */
+  default <T> List<T> locate(Class<T> serviceClass, String filter) {
+    BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
+    try {
+      Collection<ServiceReference<T>> serviceReferences = bundleContext.getServiceReferences(serviceClass, filter);
+      return serviceReferences.stream()
+          .map(bundleContext::getService)
+          .collect(Collectors.toList());
+    } catch (InvalidSyntaxException e) {
+      e.printStackTrace();
+      return Collections.emptyList();
+    }
+  }
+
+  /**
+   * Locates the first service that implements the given interface and matches the given filter.
+   *
+   * @param serviceClass the interface that the service implements
+   * @param filter       the filter to match
+   * @param <T>          the type of the service
+   * @return the first service that implements the given interface and matches the given filter.
+   */
+  default <T> T locateFirst(Class<T> serviceClass, String filter) {
+    List<T> services = locate(serviceClass, filter);
+    if (services.isEmpty()) {
+      return null;
+    } else {
+      return services.get(0);
+    }
   }
 
 }

@@ -45,6 +45,13 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
+  <service id="pushover-channel" interface="tools.devnull.boteco.domain.Channel">
+    <service-properties>
+      <entry key="id" value="pushover"/>
+    </service-properties>
+    <bean class="tools.devnull.boteco.channel.pushover.PushoverChannel"/>
+  </service>
+
   <camelContext id="boteco-channel-pushover"
                 xmlns="http://camel.apache.org/schema/blueprint">
 
