@@ -48,11 +48,6 @@ class IrcChannel implements Channel, ServiceLocator {
   }
 
   @Override
-  public boolean isOut() {
-    return true;
-  }
-
-  @Override
   public TargetSelector send(String content) {
     return target -> locate(MessageSender.class).send(content).to(target).throught(id());
   }

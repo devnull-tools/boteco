@@ -35,27 +35,6 @@ import java.util.function.Predicate;
 public class Predicates {
 
   /**
-   * Returns a predicate that allows channels that {@link Channel#isOut() can send a message}.
-   *
-   * @return a predicate that allows channels that can send a message.
-   */
-  public static Predicate<IncomeMessage> outChannel() {
-    return message -> message.channel().isOut();
-  }
-
-  /**
-   * Returns a predicate that allows channels that {@link Channel#isOut() can send a message} and have the
-   * given id.
-   *
-   * @param channelId the channel id
-   * @return a predicate that allows channels that can send a message and have the given id.
-   */
-  public static Predicate<IncomeMessage> outChannel(String channelId) {
-    return channel(channelId)
-        .and(message -> message.channel().isOut());
-  }
-
-  /**
    * Returns a predicate that allows channels that have the given id.
    *
    * @param channelId the channel id

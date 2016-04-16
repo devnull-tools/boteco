@@ -29,7 +29,6 @@ import tools.devnull.boteco.domain.MessageProcessor;
 
 import static tools.devnull.boteco.domain.MessageChecker.check;
 import static tools.devnull.boteco.domain.Predicates.command;
-import static tools.devnull.boteco.domain.Predicates.outChannel;
 
 /**
  * A simple processor that responds to a "ping" command with a
@@ -39,7 +38,7 @@ public class PingMessageProcessor implements MessageProcessor {
 
   @Override
   public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(outChannel().and(command("ping")));
+    return check(message).accept(command("ping"));
   }
 
   @Override

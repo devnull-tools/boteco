@@ -28,12 +28,6 @@ import java.io.Serializable;
 
 /**
  * Interface that defines a channel.
- * <p>
- * Channels can receive and/or send messages. A channel
- * that only receives messages could be a sensor and a
- * channel that only sends messages could be a notification
- * service. Chat platforms usually have a duplex channel
- * (can send and receive messages).
  */
 public interface Channel extends Serializable {
 
@@ -61,17 +55,7 @@ public interface Channel extends Serializable {
   ContentFormatter formatter();
 
   /**
-   * Returns <code>true</code> if the channel is capable of
-   * sending messages, <code>false</code> otherwise.
-   *
-   * @return <code>true</code> if the channel is capable of
-   * sending messages, <code>false</code> otherwise.
-   */
-  boolean isOut();
-
-  /**
-   * Sends a message to a given target through this channel if
-   * the channel {@link #isOut() can send messages}.
+   * Sends a message to a given target through this channel.
    *
    * @param content the content of the message
    * @return a component to select the target
