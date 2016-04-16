@@ -41,7 +41,7 @@ public class MessageService implements ServiceLocator {
   @Consumes("application/json")
   @Path("/{channel}")
   public Response sendMessage(@PathParam("channel") String channelId, Message message) {
-    Channel channel = locateFirst(Channel.class, String.format("(id=%s)", channelId));
+    Channel channel = locate(Channel.class, String.format("(id=%s)", channelId));
     // if the channel is present, then the message will be delivered as soon as the channel can process it
     if (channel != null) {
       channel.send(message.getContent()).to(message.getTarget());

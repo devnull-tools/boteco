@@ -60,7 +60,7 @@ public interface ServiceLocator {
    * @param <T>          the type of the service
    * @return the services that implements the given interface and matches the given filter.
    */
-  default <T> List<T> locate(Class<T> serviceClass, String filter) {
+  default <T> List<T> locateAll(Class<T> serviceClass, String filter) {
     BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
     try {
       Collection<ServiceReference<T>> serviceReferences = bundleContext.getServiceReferences(serviceClass, filter);
@@ -81,8 +81,8 @@ public interface ServiceLocator {
    * @param <T>          the type of the service
    * @return the first service that implements the given interface and matches the given filter.
    */
-  default <T> T locateFirst(Class<T> serviceClass, String filter) {
-    List<T> services = locate(serviceClass, filter);
+  default <T> T locate(Class<T> serviceClass, String filter) {
+    List<T> services = locateAll(serviceClass, filter);
     if (services.isEmpty()) {
       return null;
     } else {
