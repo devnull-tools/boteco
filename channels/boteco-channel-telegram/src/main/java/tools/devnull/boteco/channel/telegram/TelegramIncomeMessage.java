@@ -28,7 +28,7 @@ import tools.devnull.boteco.domain.Channel;
 import tools.devnull.boteco.domain.Command;
 import tools.devnull.boteco.domain.CommandExtractor;
 import tools.devnull.boteco.domain.IncomeMessage;
-import tools.devnull.boteco.domain.service.ServiceLocator;
+import tools.devnull.boteco.domain.ServiceLocator;
 
 class TelegramIncomeMessage implements IncomeMessage, ServiceLocator {
 

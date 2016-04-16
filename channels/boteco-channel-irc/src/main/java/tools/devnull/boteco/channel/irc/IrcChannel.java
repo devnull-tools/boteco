@@ -28,7 +28,7 @@ import tools.devnull.boteco.domain.Channel;
 import tools.devnull.boteco.domain.ContentFormatter;
 import tools.devnull.boteco.domain.MessageSender;
 import tools.devnull.boteco.domain.TargetSelector;
-import tools.devnull.boteco.domain.service.ServiceLocator;
+import tools.devnull.boteco.domain.ServiceLocator;
 
 class IrcChannel implements Channel, ServiceLocator {
 

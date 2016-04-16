@@ -22,7 +22,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.domain.service;
+package tools.devnull.boteco.domain;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;

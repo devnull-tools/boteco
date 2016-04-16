@@ -29,7 +29,7 @@ import tools.devnull.boteco.domain.ContentFormatter;
 import tools.devnull.boteco.domain.MessageSender;
 import tools.devnull.boteco.domain.NullContentFormatter;
 import tools.devnull.boteco.domain.TargetSelector;
-import tools.devnull.boteco.domain.service.ServiceLocator;
+import tools.devnull.boteco.domain.ServiceLocator;
 
 /**
  * A class that represents the Telegram Channel.
