@@ -30,7 +30,7 @@ import tools.devnull.boteco.domain.MessageSender;
 import tools.devnull.boteco.domain.TargetSelector;
 import tools.devnull.boteco.domain.ServiceLocator;
 
-class IrcChannel implements Channel, ServiceLocator {
+public class IrcChannel implements Channel, ServiceLocator {
 
   @Override
   public String name() {
