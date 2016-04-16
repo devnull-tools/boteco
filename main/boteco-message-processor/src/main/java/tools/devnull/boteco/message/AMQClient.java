@@ -22,7 +22,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.domain;
+package tools.devnull.boteco.message;
 
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
@@ -31,45 +31,30 @@ import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
 import javax.jms.QueueConnectionFactory;
 import javax.jms.Session;
+import java.io.Serializable;
 
-public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
+public class AMQClient {
 
   private final QueueConnectionFactory connectionFactory;
+  private final String queueName;
 
-  private final String queueFormat;
-  private String content;
-  private String target;
-
-  public BotecoOutcomeMessageBuilder(QueueConnectionFactory connectionFactory, String queueFormat) {
+  public AMQClient(QueueConnectionFactory connectionFactory, String queueName) {
     this.connectionFactory = connectionFactory;
-    this.queueFormat = queueFormat;
+    this.queueName = queueName;
   }
 
-  @Override
-  public OutcomeMessageBuilder content(String content) {
-    this.content = content;
-    return this;
-  }
-
-  @Override
-  public OutcomeMessageBuilder to(String target) {
-    this.target = target;
-    return this;
-  }
-
-  @Override
-  public void throught(String channel) {
+  public void send(Serializable object) {
     try {
       Connection connection = connectionFactory.createConnection();
       connection.start();
 
       Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-      Destination destination = session.createQueue(String.format(queueFormat, channel));
+      Destination destination = session.createQueue(queueName);
 
       MessageProducer producer = session.createProducer(destination);
       producer.setDeliveryMode(DeliveryMode.PERSISTENT);
 
-      ObjectMessage message = session.createObjectMessage(new OutcomeMessage(target, content));
+      ObjectMessage message = session.createObjectMessage(object);
       producer.send(message);
 
       session.close();
@@ -78,4 +63,5 @@ public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
       e.printStackTrace();
     }
   }
+
 }

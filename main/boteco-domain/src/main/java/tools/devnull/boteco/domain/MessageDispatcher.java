@@ -22,30 +22,19 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.channel.irc;
+package tools.devnull.boteco.domain;
 
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
-import org.apache.camel.component.irc.IrcMessage;
-import tools.devnull.boteco.domain.CommandExtractor;
-import tools.devnull.boteco.domain.MessageDispatcher;
+/**
+ * Interface that defines a component capable of dispatching income messages
+ * to {@link MessageProcessor processors} capable of handling them.
+ */
+public interface MessageDispatcher {
 
-public class IrcIncomeProcessor implements Processor {
-
-  private final CommandExtractor extractor;
-  private final MessageDispatcher dispatcher;
-
-  public IrcIncomeProcessor(CommandExtractor extractor, MessageDispatcher dispatcher) {
-    this.extractor = extractor;
-    this.dispatcher = dispatcher;
-  }
-
-  @Override
-  public void process(Exchange exchange) throws Exception {
-    IrcMessage income = exchange.getIn(IrcMessage.class);
-    if (income.getMessage() != null && !income.getMessage().isEmpty()) {
-      dispatcher.dispatch(new IrcIncomeMessage(income, extractor));
-    }
-  }
+  /**
+   * Dispatches the message to be processed.
+   *
+   * @param message the message to dispatch
+   */
+  void dispatch(IncomeMessage message);
 
 }

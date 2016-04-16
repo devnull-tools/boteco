@@ -60,8 +60,11 @@
     <argument value="^boteco[,:]?\s+"/>
   </bean>
 
+  <reference id="message-dispatcher" interface="tools.devnull.boteco.domain.MessageDispatcher"/>
+
   <bean id="irc-income-processor" class="tools.devnull.boteco.channel.irc.IrcIncomeProcessor">
     <argument ref="irc-command-extractor"/>
+    <argument ref="message-dispatcher"/>
   </bean>
 
   <bean id="irc-outcome-processor" class="tools.devnull.boteco.channel.irc.IrcOutcomeProcessor"/>
@@ -75,7 +78,6 @@
            loggingLevel="DEBUG"
            message="received message from irc"/>
       <process ref="irc-income-processor"/>
-      <to uri="activemq:queue:boteco.process"/>
     </route>
 
     <route id="boteco.message.to.irc">

@@ -62,16 +62,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-camel</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-osgi</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>tools.devnull</groupId>
       <artifactId>kodo</artifactId>
       <version>1.0</version>

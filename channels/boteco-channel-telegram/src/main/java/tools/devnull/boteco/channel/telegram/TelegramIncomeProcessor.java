@@ -27,6 +27,7 @@ package tools.devnull.boteco.channel.telegram;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import tools.devnull.boteco.domain.CommandExtractor;
+import tools.devnull.boteco.domain.MessageDispatcher;
 
 /**
  * A processor that deals with income messages from Telegram.
@@ -35,19 +36,20 @@ public class TelegramIncomeProcessor implements Processor {
 
   private final CommandExtractor extractor;
   private final TelegramOffsetManager offsetManager;
+  private final MessageDispatcher dispatcher;
 
   public TelegramIncomeProcessor(CommandExtractor extractor,
-                                 TelegramOffsetManager offsetManager) {
+                                 TelegramOffsetManager offsetManager,
+                                 MessageDispatcher dispatcher) {
     this.extractor = extractor;
     this.offsetManager = offsetManager;
+    this.dispatcher = dispatcher;
   }
 
   @Override
   public void process(Exchange exchange) throws Exception {
-    offsetManager.process(exchange.getIn().getBody(TelegramPooling.class), pooling -> {
-      TelegramIncomeMessage incomeMessage = new TelegramIncomeMessage(extractor, pooling.getMessage());
-      exchange.getOut().setBody(incomeMessage);
-    });
+    offsetManager.process(exchange.getIn().getBody(TelegramPooling.class),
+        pooling -> dispatcher.dispatch(new TelegramIncomeMessage(extractor, pooling.getMessage())));
   }
 
 }

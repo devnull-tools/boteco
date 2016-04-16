@@ -22,30 +22,31 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.channel.irc;
+package tools.devnull.boteco.message;
 
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
-import org.apache.camel.component.irc.IrcMessage;
-import tools.devnull.boteco.domain.CommandExtractor;
+import org.apache.activemq.ActiveMQConnectionFactory;
+import tools.devnull.boteco.domain.IncomeMessage;
 import tools.devnull.boteco.domain.MessageDispatcher;
 
-public class IrcIncomeProcessor implements Processor {
+public class BotecoMessageDispatcher implements MessageDispatcher {
 
-  private final CommandExtractor extractor;
-  private final MessageDispatcher dispatcher;
+  private final String queueName;
+  private final String user;
+  private final String password;
+  private final String connectionUrl;
 
-  public IrcIncomeProcessor(CommandExtractor extractor, MessageDispatcher dispatcher) {
-    this.extractor = extractor;
-    this.dispatcher = dispatcher;
+  public BotecoMessageDispatcher(String queueName, String user, String password, String connectionUrl) {
+    this.queueName = queueName;
+    this.user = user;
+    this.password = password;
+    this.connectionUrl = connectionUrl;
   }
 
   @Override
-  public void process(Exchange exchange) throws Exception {
-    IrcMessage income = exchange.getIn(IrcMessage.class);
-    if (income.getMessage() != null && !income.getMessage().isEmpty()) {
-      dispatcher.dispatch(new IrcIncomeMessage(income, extractor));
-    }
+  public void dispatch(IncomeMessage incomeMessage) {
+    ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(user, password, connectionUrl);
+    AMQClient client = new AMQClient(connectionFactory, queueName);
+    client.send(incomeMessage);
   }
 
 }

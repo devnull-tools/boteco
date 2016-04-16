@@ -42,7 +42,18 @@
 
   <service id="message-sender"
            interface="tools.devnull.boteco.domain.MessageSender">
-    <bean class="tools.devnull.boteco.domain.BotecoMessageSender">
+    <bean class="tools.devnull.boteco.message.BotecoMessageSender">
+      <argument value="boteco.message.%s"/>
+      <argument value="${jms.user}"/>
+      <argument value="${jms.password}"/>
+      <argument value="${jms.connectionUrl}"/>
+    </bean>
+  </service>
+
+  <service id="message-dispatcher"
+           interface="tools.devnull.boteco.domain.MessageDispatcher">
+    <bean class="tools.devnull.boteco.message.BotecoMessageDispatcher">
+      <argument value="boteco.process"/>
       <argument value="${jms.user}"/>
       <argument value="${jms.password}"/>
       <argument value="${jms.connectionUrl}"/>

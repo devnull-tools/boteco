@@ -22,31 +22,41 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.domain;
+package tools.devnull.boteco.message;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
+import tools.devnull.boteco.domain.OutcomeMessage;
+import tools.devnull.boteco.domain.OutcomeMessageBuilder;
 
-public class BotecoMessageSender implements MessageSender {
+import javax.jms.QueueConnectionFactory;
 
-  private static final long serialVersionUID = 8229143816118073058L;
+public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
 
-  private final String user;
-  private final String password;
-  private final String connectionUrl;
+  private final QueueConnectionFactory connectionFactory;
 
-  public BotecoMessageSender(String user, String password, String connectionUrl) {
-    this.user = user;
-    this.password = password;
-    this.connectionUrl = connectionUrl;
+  private final String queueFormat;
+  private String content;
+  private String target;
+
+  public BotecoOutcomeMessageBuilder(QueueConnectionFactory connectionFactory, String queueFormat) {
+    this.connectionFactory = connectionFactory;
+    this.queueFormat = queueFormat;
   }
 
   @Override
-  public OutcomeMessageBuilder send(String content) {
-    OutcomeMessageBuilder builder = new BotecoOutcomeMessageBuilder(
-        new ActiveMQConnectionFactory(user, password, connectionUrl),
-        "boteco.message.%s"
-    );
-    return builder.content(content);
+  public OutcomeMessageBuilder content(String content) {
+    this.content = content;
+    return this;
   }
 
+  @Override
+  public OutcomeMessageBuilder to(String target) {
+    this.target = target;
+    return this;
+  }
+
+  @Override
+  public void throught(String channel) {
+    AMQClient client = new AMQClient(connectionFactory, String.format(queueFormat, channel));
+    client.send(new OutcomeMessage(target, content));
+  }
 }

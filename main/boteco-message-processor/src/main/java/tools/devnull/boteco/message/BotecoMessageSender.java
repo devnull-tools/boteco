@@ -22,30 +22,35 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.channel.irc;
+package tools.devnull.boteco.message;
 
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
-import org.apache.camel.component.irc.IrcMessage;
-import tools.devnull.boteco.domain.CommandExtractor;
-import tools.devnull.boteco.domain.MessageDispatcher;
+import org.apache.activemq.ActiveMQConnectionFactory;
+import tools.devnull.boteco.domain.MessageSender;
+import tools.devnull.boteco.domain.OutcomeMessageBuilder;
 
-public class IrcIncomeProcessor implements Processor {
+public class BotecoMessageSender implements MessageSender {
 
-  private final CommandExtractor extractor;
-  private final MessageDispatcher dispatcher;
+  private static final long serialVersionUID = 8229143816118073058L;
 
-  public IrcIncomeProcessor(CommandExtractor extractor, MessageDispatcher dispatcher) {
-    this.extractor = extractor;
-    this.dispatcher = dispatcher;
+  private final String queueFormat;
+  private final String user;
+  private final String password;
+  private final String connectionUrl;
+
+  public BotecoMessageSender(String queueFormat, String user, String password, String connectionUrl) {
+    this.queueFormat = queueFormat;
+    this.user = user;
+    this.password = password;
+    this.connectionUrl = connectionUrl;
   }
 
   @Override
-  public void process(Exchange exchange) throws Exception {
-    IrcMessage income = exchange.getIn(IrcMessage.class);
-    if (income.getMessage() != null && !income.getMessage().isEmpty()) {
-      dispatcher.dispatch(new IrcIncomeMessage(income, extractor));
-    }
+  public OutcomeMessageBuilder send(String content) {
+    OutcomeMessageBuilder builder = new BotecoOutcomeMessageBuilder(
+        new ActiveMQConnectionFactory(user, password, connectionUrl),
+        queueFormat
+    );
+    return builder.content(content);
   }
 
 }
