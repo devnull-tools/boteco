@@ -53,6 +53,23 @@ public interface ServiceLocator {
   }
 
   /**
+   * Locates the first service that implements the given interface and matches the given filter.
+   *
+   * @param serviceClass the interface that the service implements
+   * @param filter       the filter to match
+   * @param <T>          the type of the service
+   * @return the first service that implements the given interface and matches the given filter.
+   */
+  default <T> T locate(Class<T> serviceClass, String filter) {
+    List<T> services = locateAll(serviceClass, filter);
+    if (services.isEmpty()) {
+      return null;
+    } else {
+      return services.get(0);
+    }
+  }
+
+  /**
    * Locates the services that implements the given interface and matches the given filter.
    *
    * @param serviceClass the interface that the service implements
@@ -73,21 +90,5 @@ public interface ServiceLocator {
     }
   }
 
-  /**
-   * Locates the first service that implements the given interface and matches the given filter.
-   *
-   * @param serviceClass the interface that the service implements
-   * @param filter       the filter to match
-   * @param <T>          the type of the service
-   * @return the first service that implements the given interface and matches the given filter.
-   */
-  default <T> T locate(Class<T> serviceClass, String filter) {
-    List<T> services = locateAll(serviceClass, filter);
-    if (services.isEmpty()) {
-      return null;
-    } else {
-      return services.get(0);
-    }
-  }
 
 }
