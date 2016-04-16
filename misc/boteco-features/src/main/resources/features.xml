@@ -43,6 +43,7 @@
 
     <!-- channels -->
     <bundle start="false">mvn:${project.groupId}/boteco-channel-irc/${project.version}</bundle>
+    <bundle start="false">mvn:${project.groupId}/boteco-channel-pushover/${project.version}</bundle>
     <bundle start="false">mvn:${project.groupId}/boteco-channel-telegram/${project.version}</bundle>
   </feature>
 </features>

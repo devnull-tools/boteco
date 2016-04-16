@@ -43,6 +43,7 @@
     <module>main/boteco-rest-api</module>
     <!-- channel implementations -->
     <module>channels/boteco-channel-irc</module>
+    <module>channels/boteco-channel-pushover</module>
     <module>channels/boteco-channel-telegram</module>
     <!-- miscellaneous projects -->
     <module>misc/boteco-features</module>
