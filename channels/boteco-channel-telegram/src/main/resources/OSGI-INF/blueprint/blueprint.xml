@@ -84,7 +84,7 @@
 
   <bean id="telegram-outcome-processor" class="tools.devnull.boteco.channel.telegram.TelegramOutcomeProcessor"/>
 
-  <service id="irc-channel" interface="tools.devnull.boteco.domain.Channel">
+  <service id="telegram-channel" interface="tools.devnull.boteco.domain.Channel">
     <service-properties>
       <entry key="id" value="telegram"/>
     </service-properties>
