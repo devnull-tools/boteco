@@ -24,18 +24,69 @@
 
 package tools.devnull.boteco.domain;
 
+/**
+ * Interface that defines a formatter for content sent through channels.
+ *
+ * @see Channel#formatter()
+ */
 public interface ContentFormatter {
 
+  /**
+   * Adds an accent to the content
+   *
+   * @param content the content to format
+   * @return the formatted content
+   */
   String accent(String content);
 
+  /**
+   * Adds an alternative accent to the content
+   *
+   * @param content the content to format
+   * @return the formatted content
+   */
   String alternativeAccent(String content);
 
+  /**
+   * Adds a positive format to the content.
+   * <p>
+   * Positive formats can be used to highlight positive numbers
+   * or positive messages.
+   *
+   * @param content the content to format
+   * @return the formatted content
+   */
   String positive(String content);
 
+  /**
+   * Adds a negative format to the content.
+   * <p>
+   * Negative formats can be used to highlight negative numbers
+   * or negative messages.
+   *
+   * @param content the content to format
+   * @return the formatted content
+   */
   String negative(String content);
 
+  /**
+   * Adds a value format to the content.
+   * <p>
+   * Value formats can be used to highlight numbers.
+   *
+   * @param content the content to format
+   * @return the formatted content
+   */
   String value(String content);
 
+  /**
+   * Adds an error format to the content.
+   * <p>
+   * Error formats can be used to highlight error messages.
+   *
+   * @param content the content to format
+   * @return the formatted content
+   */
   String error(String content);
 
 }
