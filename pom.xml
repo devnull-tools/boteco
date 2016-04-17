@@ -49,6 +49,7 @@
     <module>misc/boteco-features</module>
     <!-- plugins -->
     <module>plugins/boteco-plugin-ping</module>
+    <module>plugins/boteco-plugin-weather</module>
   </modules>
 
   <properties>
