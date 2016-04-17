@@ -27,11 +27,25 @@ package tools.devnull.boteco.domain.predicates;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+/**
+ * A predicate that accepts values if they matches a given patter.
+ *
+ * @param <E> the type of the target object
+ */
+
 public class MatchedValuePredicate<E> implements Predicate<E> {
 
   private final String expression;
   private final Function<E, String> function;
 
+  /**
+   * Creates a new predicate using the given pattern and the function to extract
+   * the value from the targets to evaluate.
+   *
+   * @param expression the pattern to match
+   * @param function   the function that should be used to extract the
+   *                   value from the target to evaluate
+   */
   public MatchedValuePredicate(String expression, Function<E, String> function) {
     this.expression = expression;
     this.function = function;

@@ -27,11 +27,25 @@ package tools.devnull.boteco.domain.predicates;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+/**
+ * A predicate that accepts values if they equals a predefined one.
+ *
+ * @param <E> the type of the target object
+ * @param <T> the type of the value to evaluate
+ */
 public class AcceptedValuePredicate<E, T> implements Predicate<E> {
 
   private final T accepted;
   private final Function<E, T> function;
 
+  /**
+   * Creates a new predicate using the given value and the function to
+   * extract the value from targets to evaluate.
+   *
+   * @param accepted the accepted value
+   * @param function the function that should be used to extract the
+   *                 value from the target to evaluate
+   */
   public AcceptedValuePredicate(T accepted, Function<E, T> function) {
     this.accepted = accepted;
     this.function = function;
