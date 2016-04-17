@@ -32,11 +32,7 @@
   <reference-list id="messageProcessors"
                   interface="tools.devnull.boteco.domain.MessageProcessor"/>
 
-  <bean id="client" class="tools.devnull.boteco.domain.client.jms.AMQClient">
-    <argument value="${jms.user}"/>
-    <argument value="${jms.password}"/>
-    <argument value="${jms.connectionUrl}"/>
-  </bean>
+  <reference id="client" interface="tools.devnull.boteco.domain.client.jms.JmsClient"/>
 
   <service id="message-sender"
            interface="tools.devnull.boteco.domain.MessageSender">
