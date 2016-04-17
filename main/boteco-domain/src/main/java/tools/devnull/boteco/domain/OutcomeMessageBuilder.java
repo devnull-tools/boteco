@@ -31,14 +31,6 @@ package tools.devnull.boteco.domain;
 public interface OutcomeMessageBuilder {
 
   /**
-   * Sets the content of the message
-   *
-   * @param content the content of the message
-   * @return a reference to this object
-   */
-  OutcomeMessageBuilder content(String content);
-
-  /**
    * Sets the target of the message
    *
    * @param target the target of the message

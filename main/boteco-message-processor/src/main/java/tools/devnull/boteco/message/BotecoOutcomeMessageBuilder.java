@@ -34,18 +34,13 @@ public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
 
   private final JmsClient client;
   private final String queueFormat;
-  private String content;
+  private final String content;
   private String target;
 
-  public BotecoOutcomeMessageBuilder(JmsClient client, String queueFormat) {
+  public BotecoOutcomeMessageBuilder(JmsClient client, String queueFormat, String content) {
     this.client = client;
     this.queueFormat = queueFormat;
-  }
-
-  @Override
-  public OutcomeMessageBuilder content(String content) {
     this.content = content;
-    return this;
   }
 
   @Override

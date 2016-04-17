@@ -42,8 +42,7 @@ public class BotecoMessageSender implements MessageSender {
 
   @Override
   public OutcomeMessageBuilder send(String content) {
-    OutcomeMessageBuilder builder = new BotecoOutcomeMessageBuilder(client, queueFormat);
-    return builder.content(content);
+    return new BotecoOutcomeMessageBuilder(client, queueFormat, content);
   }
 
 }
