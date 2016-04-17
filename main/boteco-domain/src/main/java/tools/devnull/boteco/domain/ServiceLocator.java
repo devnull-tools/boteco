@@ -28,6 +28,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -85,7 +86,7 @@ public interface ServiceLocator {
           .map(bundleContext::getService)
           .collect(Collectors.toList());
     } catch (InvalidSyntaxException e) {
-      e.printStackTrace();
+      LoggerFactory.getLogger(getClass()).error("Error while locating service", e);
       return Collections.emptyList();
     }
   }
