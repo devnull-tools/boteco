@@ -102,12 +102,7 @@ public class IrcContentFormatter implements ContentFormatter {
   }
 
   @Override
-  public String bold(String content) {
-    return content;
-  }
-
-  @Override
-  public String italic(String content) {
-    return content;
+  public String error(String content) {
+    return colorize(content, Color.RED);
   }
 }

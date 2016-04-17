@@ -36,8 +36,6 @@ public interface ContentFormatter {
 
   String value(String content);
 
-  String bold(String content);
-
-  String italic(String content);
+  String error(String content);
 
 }

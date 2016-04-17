@@ -32,29 +32,35 @@
                                http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
-  <cm:property-placeholder persistent-id="tools.devnull.boteco.rest"
-                           placeholder-prefix="{{"
-                           placeholder-suffix="}}">
+  <cm:property-placeholder persistent-id="tools.devnull.boteco.jms">
     <cm:default-properties>
-      <cm:property name="rest.message.path" value="/boteco"/>
+      <cm:property name="jms.user" value="admin"/>
+      <cm:property name="jms.password" value="admin"/>
+      <cm:property name="jms.connectionUrl" value="vm://amq"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <bean id="messageService" class="tools.devnull.boteco.rest.MessageService"/>
+  <service id="jms-client" interface="tools.devnull.boteco.domain.client.jms.JmsClient">
+    <bean class="tools.devnull.boteco.domain.client.jms.AMQClient">
+      <argument value="${jms.user}"/>
+      <argument value="${jms.password}"/>
+      <argument value="${jms.connectionUrl}"/>
+    </bean>
+  </service>
 
-  <jaxrs:server id="messageServer" address="{{rest.message.path}}">
-    <jaxrs:serviceBeans>
-      <ref component-id="messageService"/>
-    </jaxrs:serviceBeans>
-    <jaxrs:providers>
-      <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>
-    </jaxrs:providers>
-  </jaxrs:server>
+  <service id="rest-client" interface="tools.devnull.boteco.domain.client.rest.RestClient">
+    <bean class="tools.devnull.boteco.domain.client.rest.DefaultRestClient"/>
+  </service>
 
-  <cxf:bus>
-    <cxf:features>
-      <cxf:logging/>
-    </cxf:features>
-  </cxf:bus>
+  <service id="activemq-component" interface="org.apache.camel.Component">
+    <service-properties>
+      <entry key="component" value="activemq"/>
+    </service-properties>
+    <bean class="org.apache.activemq.camel.component.ActiveMQComponent">
+      <property name="brokerURL" value="${jms.connectionUrl}"/>
+      <property name="userName" value="${jms.user}"/>
+      <property name="password" value="${jms.password}"/>
+    </bean>
+  </service>
 
 </blueprint>

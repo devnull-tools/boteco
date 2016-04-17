@@ -27,13 +27,13 @@ package tools.devnull.boteco.domain;
 /**
  * Interface to select the target of an operation.
  */
-public interface TargetSelector {
+public interface TargetSelector<E> {
 
   /**
    * Selects the target and then do the operation specified.
    *
    * @param target the target of the operation.
    */
-  void to(String target);
+  void to(E target);
 
 }

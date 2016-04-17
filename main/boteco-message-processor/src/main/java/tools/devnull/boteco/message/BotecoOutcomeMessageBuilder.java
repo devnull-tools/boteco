@@ -26,19 +26,19 @@ package tools.devnull.boteco.message;
 
 import tools.devnull.boteco.domain.OutcomeMessage;
 import tools.devnull.boteco.domain.OutcomeMessageBuilder;
+import tools.devnull.boteco.domain.client.jms.JmsClient;
 
-import javax.jms.QueueConnectionFactory;
+import static tools.devnull.boteco.domain.client.jms.Destinations.queue;
 
 public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
 
-  private final QueueConnectionFactory connectionFactory;
-
+  private final JmsClient client;
   private final String queueFormat;
   private String content;
   private String target;
 
-  public BotecoOutcomeMessageBuilder(QueueConnectionFactory connectionFactory, String queueFormat) {
-    this.connectionFactory = connectionFactory;
+  public BotecoOutcomeMessageBuilder(JmsClient client, String queueFormat) {
+    this.client = client;
     this.queueFormat = queueFormat;
   }
 
@@ -56,7 +56,6 @@ public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
 
   @Override
   public void throught(String channel) {
-    AMQClient client = new AMQClient(connectionFactory, String.format(queueFormat, channel));
-    client.send(new OutcomeMessage(target, content));
+    client.send(new OutcomeMessage(target, content)).to(queue(String.format(queueFormat, channel)));
   }
 }

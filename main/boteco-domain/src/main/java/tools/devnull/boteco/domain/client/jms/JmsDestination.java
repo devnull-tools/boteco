@@ -22,39 +22,14 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.channel.telegram;
+package tools.devnull.boteco.domain.client.jms;
 
-import tools.devnull.boteco.domain.Channel;
-import tools.devnull.boteco.domain.ContentFormatter;
-import tools.devnull.boteco.domain.MessageSender;
-import tools.devnull.boteco.domain.ServiceLocator;
-import tools.devnull.boteco.domain.TargetSelector;
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Session;
 
-/**
- * A class that represents the Telegram Channel.
- */
-public class TelegramChannel implements Channel, ServiceLocator {
+public interface JmsDestination {
 
-  private static final long serialVersionUID = -774477127136914325L;
-
-  @Override
-  public String name() {
-    return "Telegram";
-  }
-
-  @Override
-  public String id() {
-    return "telegram";
-  }
-
-  @Override
-  public ContentFormatter formatter() {
-    return new TelegramContentFormatter();
-  }
-
-  @Override
-  public TargetSelector<String> send(String content) {
-    return target -> locate(MessageSender.class).send(content).to(target).throught(id());
-  }
+  Destination createDestination(Session session) throws JMSException;
 
 }

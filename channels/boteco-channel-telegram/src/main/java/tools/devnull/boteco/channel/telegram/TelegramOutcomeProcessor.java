@@ -38,7 +38,8 @@ public class TelegramOutcomeProcessor implements Processor {
     OutcomeMessage message = exchange.getIn().getBody(OutcomeMessage.class);
     if (message != null) {
       DefaultMessage out = new DefaultMessage();
-      String queryString = String.format("chat_id=%s&text=%s", message.getTarget(), message.getContent());
+      String queryString = String.format("parse_mode=Markdown&chat_id=%s&text=%s",
+          message.getTarget(), message.getContent());
       out.setHeader(Exchange.HTTP_QUERY, queryString);
       exchange.setOut(out);
     }

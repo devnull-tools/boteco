@@ -62,6 +62,26 @@
     </dependency>
 
     <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-camel</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient-osgi</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-gson</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>tools.devnull</groupId>
       <artifactId>kodo</artifactId>
       <version>1.0</version>
@@ -95,7 +115,9 @@
               tools.devnull.boteco.domain,
               tools.devnull.boteco.domain.predicates,
               tools.devnull.boteco.domain.extractors,
-              tools.devnull.boteco.domain.service
+              tools.devnull.boteco.domain.service,
+              tools.devnull.boteco.domain.client.jms,
+              tools.devnull.boteco.domain.client.rest,
             </Export-Package>
           </instructions>
         </configuration>

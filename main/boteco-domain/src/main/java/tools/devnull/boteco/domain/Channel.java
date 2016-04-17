@@ -60,6 +60,6 @@ public interface Channel extends Serializable {
    * @param content the content of the message
    * @return a component to select the target
    */
-  TargetSelector send(String content);
+  TargetSelector<String> send(String content);
 
 }

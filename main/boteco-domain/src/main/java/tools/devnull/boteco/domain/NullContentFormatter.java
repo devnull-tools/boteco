@@ -55,12 +55,8 @@ public class NullContentFormatter implements ContentFormatter {
   }
 
   @Override
-  public String bold(String content) {
+  public String error(String content) {
     return content;
   }
 
-  @Override
-  public String italic(String content) {
-    return content;
-  }
 }

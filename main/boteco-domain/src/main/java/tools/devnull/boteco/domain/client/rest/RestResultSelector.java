@@ -22,39 +22,10 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.channel.telegram;
+package tools.devnull.boteco.domain.client.rest;
 
-import tools.devnull.boteco.domain.Channel;
-import tools.devnull.boteco.domain.ContentFormatter;
-import tools.devnull.boteco.domain.MessageSender;
-import tools.devnull.boteco.domain.ServiceLocator;
-import tools.devnull.boteco.domain.TargetSelector;
+public interface RestResultSelector {
 
-/**
- * A class that represents the Telegram Channel.
- */
-public class TelegramChannel implements Channel, ServiceLocator {
-
-  private static final long serialVersionUID = -774477127136914325L;
-
-  @Override
-  public String name() {
-    return "Telegram";
-  }
-
-  @Override
-  public String id() {
-    return "telegram";
-  }
-
-  @Override
-  public ContentFormatter formatter() {
-    return new TelegramContentFormatter();
-  }
-
-  @Override
-  public TargetSelector<String> send(String content) {
-    return target -> locate(MessageSender.class).send(content).to(target).throught(id());
-  }
+  <E> E to(Class<? extends E> type);
 
 }

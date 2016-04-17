@@ -24,32 +24,25 @@
 
 package tools.devnull.boteco.message;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
 import tools.devnull.boteco.domain.MessageSender;
 import tools.devnull.boteco.domain.OutcomeMessageBuilder;
+import tools.devnull.boteco.domain.client.jms.JmsClient;
 
 public class BotecoMessageSender implements MessageSender {
 
   private static final long serialVersionUID = 8229143816118073058L;
 
+  private final JmsClient client;
   private final String queueFormat;
-  private final String user;
-  private final String password;
-  private final String connectionUrl;
 
-  public BotecoMessageSender(String queueFormat, String user, String password, String connectionUrl) {
+  public BotecoMessageSender(JmsClient client, String queueFormat) {
+    this.client = client;
     this.queueFormat = queueFormat;
-    this.user = user;
-    this.password = password;
-    this.connectionUrl = connectionUrl;
   }
 
   @Override
   public OutcomeMessageBuilder send(String content) {
-    OutcomeMessageBuilder builder = new BotecoOutcomeMessageBuilder(
-        new ActiveMQConnectionFactory(user, password, connectionUrl),
-        queueFormat
-    );
+    OutcomeMessageBuilder builder = new BotecoOutcomeMessageBuilder(client, queueFormat);
     return builder.content(content);
   }
 

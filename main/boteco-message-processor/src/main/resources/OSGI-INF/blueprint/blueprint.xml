@@ -28,35 +28,29 @@
            xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
                                http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
-  <cm:property-placeholder persistent-id="tools.devnull.boteco.jms">
-    <cm:default-properties>
-      <cm:property name="jms.user" value="admin"/>
-      <cm:property name="jms.password" value="admin"/>
-      <cm:property name="jms.connectionUrl" value="vm://amq"/>
-    </cm:default-properties>
-  </cm:property-placeholder>
-
   <!-- Dynamic list containing all message processors in the OSGi Registry -->
   <reference-list id="messageProcessors"
                   interface="tools.devnull.boteco.domain.MessageProcessor"/>
 
+  <bean id="client" class="tools.devnull.boteco.domain.client.jms.AMQClient">
+    <argument value="${jms.user}"/>
+    <argument value="${jms.password}"/>
+    <argument value="${jms.connectionUrl}"/>
+  </bean>
+
   <service id="message-sender"
            interface="tools.devnull.boteco.domain.MessageSender">
     <bean class="tools.devnull.boteco.message.BotecoMessageSender">
+      <argument ref="client"/>
       <argument value="boteco.message.%s"/>
-      <argument value="${jms.user}"/>
-      <argument value="${jms.password}"/>
-      <argument value="${jms.connectionUrl}"/>
     </bean>
   </service>
 
   <service id="message-dispatcher"
            interface="tools.devnull.boteco.domain.MessageDispatcher">
     <bean class="tools.devnull.boteco.message.BotecoMessageDispatcher">
+      <argument ref="client"/>
       <argument value="boteco.process"/>
-      <argument value="${jms.user}"/>
-      <argument value="${jms.password}"/>
-      <argument value="${jms.connectionUrl}"/>
     </bean>
   </service>
 
@@ -72,11 +66,6 @@
     </route>
   </camelContext>
 
-  <!-- ********************* AMQ configuration ************************** -->
-  <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
-    <property name="brokerURL" value="${jms.connectionUrl}"/>
-    <property name="userName" value="${jms.user}"/>
-    <property name="password" value="${jms.password}"/>
-  </bean>
+  <reference id="activemq" interface="org.apache.camel.Component" filter="(component=activemq)"/>
 
 </blueprint>

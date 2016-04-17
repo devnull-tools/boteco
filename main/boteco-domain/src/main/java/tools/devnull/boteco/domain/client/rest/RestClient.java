@@ -22,46 +22,46 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.message;
+package tools.devnull.boteco.domain.client.rest;
 
-import javax.jms.Connection;
-import javax.jms.DeliveryMode;
-import javax.jms.Destination;
-import javax.jms.MessageProducer;
-import javax.jms.ObjectMessage;
-import javax.jms.QueueConnectionFactory;
-import javax.jms.Session;
-import java.io.Serializable;
+import java.io.IOException;
+import java.net.URI;
 
-public class AMQClient {
+/**
+ * Interface that defines a rest client.
+ */
+public interface RestClient {
 
-  private final QueueConnectionFactory connectionFactory;
-  private final String queueName;
+  /**
+   * Invokes the POST method and returns the result.
+   *
+   * @param uri the uri to invoke
+   * @return a component to select the type of the result
+   */
+  RestResultSelector post(URI uri) throws IOException;
 
-  public AMQClient(QueueConnectionFactory connectionFactory, String queueName) {
-    this.connectionFactory = connectionFactory;
-    this.queueName = queueName;
-  }
+  /**
+   * Invokes the POST method and returns the result.
+   *
+   * @param url the url to invoke
+   * @return a component to select the type of the result
+   */
+  RestResultSelector post(String url) throws IOException;
 
-  public void send(Serializable object) {
-    try {
-      Connection connection = connectionFactory.createConnection();
-      connection.start();
+  /**
+   * Invokes the GET method and returns the result.
+   *
+   * @param uri the uri to invoke
+   * @return a component to select the type of the result
+   */
+  RestResultSelector get(URI uri) throws IOException;
 
-      Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-      Destination destination = session.createQueue(queueName);
-
-      MessageProducer producer = session.createProducer(destination);
-      producer.setDeliveryMode(DeliveryMode.PERSISTENT);
-
-      ObjectMessage message = session.createObjectMessage(object);
-      producer.send(message);
-
-      session.close();
-      connection.close();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
+  /**
+   * Invokes the GET method and returns the result.
+   *
+   * @param url the url to invoke
+   * @return a component to select the type of the result
+   */
+  RestResultSelector get(String url) throws IOException;
 
 }

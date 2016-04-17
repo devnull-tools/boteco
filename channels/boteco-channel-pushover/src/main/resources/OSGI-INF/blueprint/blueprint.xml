@@ -37,14 +37,6 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <cm:property-placeholder persistent-id="tools.devnull.boteco.jms">
-    <cm:default-properties>
-      <cm:property name="jms.user" value="admin"/>
-      <cm:property name="jms.password" value="admin"/>
-      <cm:property name="jms.connectionUrl" value="vm://amq"/>
-    </cm:default-properties>
-  </cm:property-placeholder>
-
   <service id="pushover-channel" interface="tools.devnull.boteco.domain.Channel">
     <service-properties>
       <entry key="id" value="pushover"/>
@@ -74,11 +66,6 @@
 
   </camelContext>
 
-  <!-- ********************* AMQ configuration ************************** -->
-  <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
-    <property name="brokerURL" value="${jms.connectionUrl}"/>
-    <property name="userName" value="${jms.user}"/>
-    <property name="password" value="${jms.password}"/>
-  </bean>
+  <reference id="activemq" interface="org.apache.camel.Component" filter="(component=activemq)"/>
 
 </blueprint>

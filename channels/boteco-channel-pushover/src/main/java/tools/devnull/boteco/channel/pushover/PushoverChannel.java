@@ -48,7 +48,7 @@ public class PushoverChannel implements Channel, ServiceLocator {
   }
 
   @Override
-  public TargetSelector send(String content) {
+  public TargetSelector<String> send(String content) {
     return target -> locate(MessageSender.class).send(content).to(target).throught(id());
   }
 }

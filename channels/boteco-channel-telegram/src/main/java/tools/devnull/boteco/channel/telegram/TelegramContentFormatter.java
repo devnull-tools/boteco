@@ -24,37 +24,38 @@
 
 package tools.devnull.boteco.channel.telegram;
 
-import tools.devnull.boteco.domain.Channel;
 import tools.devnull.boteco.domain.ContentFormatter;
-import tools.devnull.boteco.domain.MessageSender;
-import tools.devnull.boteco.domain.ServiceLocator;
-import tools.devnull.boteco.domain.TargetSelector;
 
-/**
- * A class that represents the Telegram Channel.
- */
-public class TelegramChannel implements Channel, ServiceLocator {
-
-  private static final long serialVersionUID = -774477127136914325L;
+public class TelegramContentFormatter implements ContentFormatter {
 
   @Override
-  public String name() {
-    return "Telegram";
+  public String accent(String content) {
+    return "*" + content + "*";
   }
 
   @Override
-  public String id() {
-    return "telegram";
+  public String alternativeAccent(String content) {
+    return "_" + content + "_";
   }
 
   @Override
-  public ContentFormatter formatter() {
-    return new TelegramContentFormatter();
+  public String positive(String content) {
+    return content;
   }
 
   @Override
-  public TargetSelector<String> send(String content) {
-    return target -> locate(MessageSender.class).send(content).to(target).throught(id());
+  public String negative(String content) {
+    return content;
+  }
+
+  @Override
+  public String value(String content) {
+    return "`" + content + "`";
+  }
+
+  @Override
+  public String error(String content) {
+    return "*_" + content + "_*";
   }
 
 }

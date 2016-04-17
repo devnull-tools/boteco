@@ -24,29 +24,25 @@
 
 package tools.devnull.boteco.message;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
 import tools.devnull.boteco.domain.IncomeMessage;
 import tools.devnull.boteco.domain.MessageDispatcher;
+import tools.devnull.boteco.domain.client.jms.JmsClient;
+
+import static tools.devnull.boteco.domain.client.jms.Destinations.queue;
 
 public class BotecoMessageDispatcher implements MessageDispatcher {
 
+  private final JmsClient client;
   private final String queueName;
-  private final String user;
-  private final String password;
-  private final String connectionUrl;
 
-  public BotecoMessageDispatcher(String queueName, String user, String password, String connectionUrl) {
+  public BotecoMessageDispatcher(JmsClient client, String queueName) {
+    this.client = client;
     this.queueName = queueName;
-    this.user = user;
-    this.password = password;
-    this.connectionUrl = connectionUrl;
   }
 
   @Override
   public void dispatch(IncomeMessage incomeMessage) {
-    ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(user, password, connectionUrl);
-    AMQClient client = new AMQClient(connectionFactory, queueName);
-    client.send(incomeMessage);
+    client.send(incomeMessage).to(queue(queueName));
   }
 
 }
