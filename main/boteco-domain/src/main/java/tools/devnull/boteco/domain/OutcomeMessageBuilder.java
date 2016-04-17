@@ -30,6 +30,6 @@ public interface OutcomeMessageBuilder {
 
   OutcomeMessageBuilder to(String target);
 
-  void throught(String channel);
+  void through(String channel);
 
 }

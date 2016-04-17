@@ -55,7 +55,7 @@ public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
   }
 
   @Override
-  public void throught(String channel) {
+  public void through(String channel) {
     client.send(new OutcomeMessage(target, content)).to(queue(String.format(queueFormat, channel)));
   }
 }

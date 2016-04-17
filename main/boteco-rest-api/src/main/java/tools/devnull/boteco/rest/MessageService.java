@@ -54,7 +54,7 @@ public class MessageService implements ServiceLocator {
       // otherwise, the message will be delivered when channel bundle starts
       locate(MessageSender.class).send(message.getContent())
           .to(message.getTarget())
-          .throught(channelId);
+          .through(channelId);
       return Response.ok().status(202).build();
     }
   }
