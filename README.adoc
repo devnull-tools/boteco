@@ -29,18 +29,32 @@ It's easier than fall of a bike! From your Fuse console, do the following comman
 features:addurl mvn:tools.devnull/boteco-features/1.0.0/xml/features #<1>
 
 features:install boteco #<2>
-
-osgi:start boteco-channel-irc boteco-chanel-telegram #<3>
 ----
 <1> Use the version you desire to run
-<2> Installs all necessary bundles to run Boteco
-<3> Starts the built in channels
+<2> Installs all necessary bundles to run Boteco, plugins and channels
 
 [NOTE]
 ====
-Built in channels will not start automatically. You need to specify the channels you want (and configure them correctly).
+Built in channels will start automatically but you need to configure them correctly.
 
 See the channel projects for details about how to configure each one.
+====
+
+If you want to specify which channels you want, you can use the other features:
+[source]
+----
+features:addurl mvn:tools.devnull/boteco-features/1.0.0/xml/features
+
+features:install boteco-base
+features:install boteco-plugins
+features:install boteco-channels
+
+osgi:start boteco-channel-telegram boteco-channel-pushover boteco-channel-irc
+----
+
+[NOTE]
+====
+When you install `boteco-base`
 ====
 
 == Concepts

@@ -25,7 +25,8 @@
 
 <features name="tools.devnull.boteco"
           xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
-  <feature version="${project.version}" name="boteco">
+  <feature version="${project.version}" name="boteco"
+           description="Contains base bundles, channels and plugins">
     <!-- additional camel features -->
     <feature>camel-irc</feature>
     <feature>activemq-camel</feature>
@@ -46,5 +47,35 @@
     <bundle>mvn:${project.groupId}/boteco-channel-irc/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-channel-pushover/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-channel-telegram/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-base"
+           description="Contains base bundles">
+    <!-- additional camel features -->
+    <feature>camel-irc</feature>
+    <feature>activemq-camel</feature>
+    <feature>camel-http4</feature>
+    <feature>camel-gson</feature>
+    <feature>camel-jsonpath</feature>
+
+    <!-- main bundles -->
+    <bundle>mvn:${project.groupId}/boteco-domain/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-message-processor/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-rest-api/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-plugins"
+           description="Contains plugin bundles">
+    <!-- plugins -->
+    <bundle>mvn:${project.groupId}/boteco-plugin-ping/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-weather/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-channels"
+           description="Contains channel bundles">
+    <!-- channels -->
+    <bundle start="false">mvn:${project.groupId}/boteco-channel-irc/${project.version}</bundle>
+    <bundle start="false">mvn:${project.groupId}/boteco-channel-pushover/${project.version}</bundle>
+    <bundle start="false">mvn:${project.groupId}/boteco-channel-telegram/${project.version}</bundle>
   </feature>
 </features>
