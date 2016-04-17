@@ -24,12 +24,33 @@
 
 package tools.devnull.boteco.domain;
 
+/**
+ * Interface that defines a component for building
+ * outcome messages to be sent.
+ */
 public interface OutcomeMessageBuilder {
 
+  /**
+   * Sets the content of the message
+   *
+   * @param content the content of the message
+   * @return a reference to this object
+   */
   OutcomeMessageBuilder content(String content);
 
+  /**
+   * Sets the target of the message
+   *
+   * @param target the target of the message
+   * @return a reference to this object
+   */
   OutcomeMessageBuilder to(String target);
 
+  /**
+   * Sets the channel to send the message and sends the message
+   *
+   * @param channel the id of the channel to send the message
+   */
   void through(String channel);
 
 }
