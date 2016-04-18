@@ -32,20 +32,6 @@
                                http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
-  <cm:property-placeholder persistent-id="tools.devnull.boteco.jms">
-    <cm:default-properties>
-      <cm:property name="jms.user" value="admin"/>
-      <cm:property name="jms.password" value="admin"/>
-      <cm:property name="jms.connectionUrl" value="vm://amq"/>
-    </cm:default-properties>
-  </cm:property-placeholder>
-
-  <bean id="client" class="tools.devnull.boteco.domain.client.jms.AMQClient">
-    <argument value="${jms.user}"/>
-    <argument value="${jms.password}"/>
-    <argument value="${jms.connectionUrl}"/>
-  </bean>
-
   <service id="weather-plugin"
            interface="tools.devnull.boteco.domain.MessageProcessor">
     <bean class="tools.devnull.boteco.plugin.weather.WeatherMessageProcessor"/>
