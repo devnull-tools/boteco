@@ -50,30 +50,36 @@ public class DefaultRestClient implements RestClient {
   }
 
   @Override
-  public RestResultSelector post(URI uri) throws IOException {
+  public RestConfiguration post(URI uri) throws IOException {
     return execute(new HttpPost(uri));
   }
 
   @Override
-  public RestResultSelector post(String url) throws IOException {
+  public RestConfiguration post(String url) throws IOException {
     return execute(new HttpPost(url));
   }
 
   @Override
-  public RestResultSelector get(URI uri) throws IOException {
+  public RestConfiguration get(URI uri) throws IOException {
     return execute(new HttpGet(uri));
   }
 
   @Override
-  public RestResultSelector get(String url) throws IOException {
+  public RestConfiguration get(String url) throws IOException {
     return execute(new HttpGet(url));
   }
 
-  private RestResultSelector execute(HttpUriRequest request) throws IOException {
+  private RestConfiguration execute(HttpUriRequest request) throws IOException {
     HttpResponse response = client.execute(request);
     String content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
     Gson gson = new Gson();
-    return new RestResultSelector() {
+    return new RestConfiguration() {
+      @Override
+      public RestConfiguration withHeader(String name, Object value) {
+        request.addHeader(name, String.valueOf(value));
+        return this;
+      }
+
       @Override
       public <E> E to(Class<? extends E> type) {
         return gson.fromJson(content, type);

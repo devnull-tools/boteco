@@ -38,7 +38,7 @@ public interface RestClient {
    * @param uri the uri to invoke
    * @return a component to select the type of the result
    */
-  RestResultSelector post(URI uri) throws IOException;
+  RestConfiguration post(URI uri) throws IOException;
 
   /**
    * Invokes the POST method and returns the result.
@@ -46,7 +46,7 @@ public interface RestClient {
    * @param url the url to invoke
    * @return a component to select the type of the result
    */
-  RestResultSelector post(String url) throws IOException;
+  RestConfiguration post(String url) throws IOException;
 
   /**
    * Invokes the GET method and returns the result.
@@ -54,7 +54,7 @@ public interface RestClient {
    * @param uri the uri to invoke
    * @return a component to select the type of the result
    */
-  RestResultSelector get(URI uri) throws IOException;
+  RestConfiguration get(URI uri) throws IOException;
 
   /**
    * Invokes the GET method and returns the result.
@@ -62,6 +62,6 @@ public interface RestClient {
    * @param url the url to invoke
    * @return a component to select the type of the result
    */
-  RestResultSelector get(String url) throws IOException;
+  RestConfiguration get(String url) throws IOException;
 
 }

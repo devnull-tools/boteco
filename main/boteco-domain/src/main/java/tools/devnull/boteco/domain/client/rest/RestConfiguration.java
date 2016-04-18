@@ -24,8 +24,28 @@
 
 package tools.devnull.boteco.domain.client.rest;
 
-public interface RestResultSelector {
+/**
+ * Interface that defines a rest configuration.
+ *
+ * @see RestClient
+ */
+public interface RestConfiguration {
 
+  /**
+   * Adds the given header to invocation
+   *
+   * @param name  the name of the header
+   * @param value the value of the header
+   * @return an instance to this object
+   */
+  RestConfiguration withHeader(String name, Object value);
+
+  /**
+   * Invokes the rest url and parses the response into an object of the given class.
+   *
+   * @param type the type of the result
+   * @return the parsed result
+   */
   <E> E to(Class<? extends E> type);
 
 }
