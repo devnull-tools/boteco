@@ -37,7 +37,7 @@ public interface ContentFormatter {
    * @param content the content to format
    * @return the formatted content
    */
-  String accent(String content);
+  String accent(Object content);
 
   /**
    * Adds an alternative accent to the content
@@ -45,7 +45,7 @@ public interface ContentFormatter {
    * @param content the content to format
    * @return the formatted content
    */
-  String alternativeAccent(String content);
+  String alternativeAccent(Object content);
 
   /**
    * Adds a positive format to the content.
@@ -56,7 +56,7 @@ public interface ContentFormatter {
    * @param content the content to format
    * @return the formatted content
    */
-  String positive(String content);
+  String positive(Object content);
 
   /**
    * Adds a negative format to the content.
@@ -67,7 +67,7 @@ public interface ContentFormatter {
    * @param content the content to format
    * @return the formatted content
    */
-  String negative(String content);
+  String negative(Object content);
 
   /**
    * Adds a value format to the content.
@@ -77,7 +77,7 @@ public interface ContentFormatter {
    * @param content the content to format
    * @return the formatted content
    */
-  String value(String content);
+  String value(Object content);
 
   /**
    * Adds an error format to the content.
@@ -87,6 +87,14 @@ public interface ContentFormatter {
    * @param content the content to format
    * @return the formatted content
    */
-  String error(String content);
+  String error(Object content);
+
+  /**
+   * Adds a detail highlight format to the content.
+   *
+   * @param content the content to format
+   * @return the formatted content
+   */
+  String detail(Object content);
 
 }

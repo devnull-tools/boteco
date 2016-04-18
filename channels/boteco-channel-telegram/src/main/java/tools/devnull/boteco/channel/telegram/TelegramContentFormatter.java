@@ -29,33 +29,38 @@ import tools.devnull.boteco.domain.ContentFormatter;
 public class TelegramContentFormatter implements ContentFormatter {
 
   @Override
-  public String accent(String content) {
-    return "*" + content + "*";
+  public String accent(Object content) {
+    return "*" + String.valueOf(content) + "*";
   }
 
   @Override
-  public String alternativeAccent(String content) {
-    return "_" + content + "_";
+  public String alternativeAccent(Object content) {
+    return "_" + String.valueOf(content) + "_";
   }
 
   @Override
-  public String positive(String content) {
-    return content;
+  public String positive(Object content) {
+    return String.valueOf(content);
   }
 
   @Override
-  public String negative(String content) {
-    return content;
+  public String negative(Object content) {
+    return String.valueOf(content);
   }
 
   @Override
-  public String value(String content) {
-    return "`" + content + "`";
+  public String value(Object content) {
+    return "`" + String.valueOf(content) + "`";
   }
 
   @Override
-  public String error(String content) {
-    return "*_" + content + "_*";
+  public String error(Object content) {
+    return "*_" + String.valueOf(content) + "_*";
+  }
+
+  @Override
+  public String detail(Object content) {
+    return String.valueOf(content);
   }
 
 }

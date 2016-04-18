@@ -77,32 +77,37 @@ public class IrcContentFormatter implements ContentFormatter {
   }
 
   @Override
-  public String accent(String content) {
-    return colorize(content, Color.YELLOW);
+  public String accent(Object content) {
+    return colorize(String.valueOf(content), Color.YELLOW);
   }
 
   @Override
-  public String alternativeAccent(String content) {
-    return colorize(content, Color.ORANGE);
+  public String alternativeAccent(Object content) {
+    return colorize(String.valueOf(content), Color.ORANGE);
   }
 
   @Override
-  public String positive(String content) {
-    return colorize(content, Color.GREEN);
+  public String positive(Object content) {
+    return colorize(String.valueOf(content), Color.GREEN);
   }
 
   @Override
-  public String negative(String content) {
-    return colorize(content, Color.RED);
+  public String negative(Object content) {
+    return colorize(String.valueOf(content), Color.RED);
   }
 
   @Override
-  public String value(String content) {
-    return colorize(content, Color.PINK);
+  public String value(Object content) {
+    return colorize(String.valueOf(content), Color.PINK);
   }
 
   @Override
-  public String error(String content) {
-    return colorize(content, Color.RED);
+  public String error(Object content) {
+    return colorize(String.valueOf(content), Color.RED);
+  }
+
+  @Override
+  public String detail(Object content) {
+    return colorize(String.valueOf(content), Color.PURPLE);
   }
 }
