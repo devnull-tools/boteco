@@ -27,7 +27,7 @@ package tools.devnull.boteco.channel.pushover;
 import tools.devnull.boteco.domain.Channel;
 import tools.devnull.boteco.domain.ContentFormatter;
 import tools.devnull.boteco.domain.MessageSender;
-import tools.devnull.boteco.domain.NullContentFormatter;
+import tools.devnull.boteco.domain.DefaultContentFormatter;
 import tools.devnull.boteco.domain.TargetSelector;
 import tools.devnull.boteco.domain.ServiceLocator;
 
@@ -44,7 +44,7 @@ public class PushoverChannel implements Channel, ServiceLocator {
 
   @Override
   public ContentFormatter formatter() {
-    return new NullContentFormatter();
+    return new DefaultContentFormatter();
   }
 
   @Override

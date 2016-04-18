@@ -29,6 +29,7 @@ import tools.devnull.boteco.domain.ContentFormatter;
 public class IrcContentFormatter implements ContentFormatter {
 
   enum Color {
+    // IRC colors sorted by code
 
     WHITE,
     BLACK,
@@ -49,65 +50,48 @@ public class IrcContentFormatter implements ContentFormatter {
 
   }
 
-  /*
-  default: :default,
-  title: :yellow,
-  name: :yellow,
-  detail: :orange,
-  link: :light_cyan,
-  value: :pink,
-  date: :orange,
-  time: :orange,
-  good: :light_green,
-  bad: :red,
-  neutral: :yellow,
-  min: :light_cyan,
-  max: :red,
-  warn: :orange,
-  error: :red,
-  info: :yellow,
-  parameter: :orange,
-  optional: :light_cyan,
-  keyword: :red,
-  command_type: :light_cyan
-   */
-
-  private String colorize(String content, Color color) {
-    return String.format("\u0003%02d%s\u0003", color.ordinal(), content);
+  private String colorize(Object content, Color color) {
+    return String.format("\u0003%02d%s\u0003", color.ordinal(), String.valueOf(content));
   }
 
   @Override
   public String accent(Object content) {
-    return colorize(String.valueOf(content), Color.YELLOW);
+    return colorize(content, Color.YELLOW);
   }
 
   @Override
   public String alternativeAccent(Object content) {
-    return colorize(String.valueOf(content), Color.ORANGE);
+    return colorize(content, Color.ORANGE);
   }
 
   @Override
   public String positive(Object content) {
-    return colorize(String.valueOf(content), Color.GREEN);
+    return colorize(content, Color.GREEN);
   }
 
   @Override
   public String negative(Object content) {
-    return colorize(String.valueOf(content), Color.RED);
+    return colorize(content, Color.RED);
   }
 
   @Override
   public String value(Object content) {
-    return colorize(String.valueOf(content), Color.PINK);
+    return colorize(content, Color.PINK);
   }
 
   @Override
   public String error(Object content) {
-    return colorize(String.valueOf(content), Color.RED);
+    return colorize(content, Color.RED);
   }
 
   @Override
-  public String detail(Object content) {
-    return colorize(String.valueOf(content), Color.PURPLE);
+  public String link(String title, String url) {
+    return String.format("%s <%s>", colorize(title, Color.YELLOW), url);
   }
+
+  @Override
+  public String tag(Object content) {
+    return String.format("[%s]", colorize(content, Color.ORANGE));
+  }
+
 }

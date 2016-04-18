@@ -25,9 +25,9 @@
 package tools.devnull.boteco.domain;
 
 /**
- * A null object for the {@link ContentFormatter} interface.
+ * A default object for the {@link ContentFormatter} interface.
  */
-public class NullContentFormatter implements ContentFormatter {
+public class DefaultContentFormatter implements ContentFormatter {
 
   @Override
   public String accent(Object content) {
@@ -60,8 +60,13 @@ public class NullContentFormatter implements ContentFormatter {
   }
 
   @Override
-  public String detail(Object content) {
-    return String.valueOf(content);
+  public String link(String title, String url) {
+    return String.format("%s <%s>", title, url);
+  }
+
+  @Override
+  public String tag(Object content) {
+    return String.format("[%s]", String.valueOf(content));
   }
 
 }

@@ -90,11 +90,20 @@ public interface ContentFormatter {
   String error(Object content);
 
   /**
-   * Adds a detail highlight format to the content.
+   * Adds a link format to the given url
+   *
+   * @param title the title of the link
+   * @param url   the url of the link
+   * @return the formatted content
+   */
+  String link(String title, String url);
+
+  /**
+   * Adds a tag format to the given content.
    *
    * @param content the content to format
    * @return the formatted content
    */
-  String detail(Object content);
+  String tag(Object content);
 
 }

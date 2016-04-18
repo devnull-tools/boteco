@@ -59,8 +59,12 @@ public class TelegramContentFormatter implements ContentFormatter {
   }
 
   @Override
-  public String detail(Object content) {
-    return String.valueOf(content);
+  public String link(String title, String url) {
+    return String.format("[%s](%s)", title, url);
   }
 
+  @Override
+  public String tag(Object content) {
+    return String.format("[[%s]]", String.valueOf(content));
+  }
 }
