@@ -22,34 +22,24 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.message;
+package tools.devnull.boteco.process;
 
-/**
- * Interface that defines a plugin that can process a message.
- */
-public interface MessageProcessor {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.message.MessageProcessorListener;
 
-  /**
-   * Returns this processor's id. This id will be shown on logs and other related
-   * information.
-   *
-   * @return the id of this message processor
-   */
-  String id();
+public class LogMessageProcessorListener implements MessageProcessorListener {
 
-  /**
-   * Checks if this processor can process the given message.
-   *
-   * @param message the message to process
-   * @return <code>true</code> if this processor can process the given message.
-   */
-  boolean canProcess(IncomeMessage message);
+  private static final Logger logger = LoggerFactory.getLogger("boteco-message-processor");
 
-  /**
-   * Process the given message.
-   *
-   * @param message the message to process.
-   */
-  void process(IncomeMessage message);
-
+  @Override
+  public void onProcess(IncomeMessage message, MessageProcessor messageProcessor) {
+    logger.info(String.format("[%s] processing income message from %s@%s:%s",
+        messageProcessor.id(),
+        message.sender(),
+        message.channel().id(),
+        message.target()));
+  }
 }

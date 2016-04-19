@@ -37,6 +37,11 @@ import static tools.devnull.boteco.Predicates.command;
 public class PingMessageProcessor implements MessageProcessor {
 
   @Override
+  public String id() {
+    return "ping";
+  }
+
+  @Override
   public boolean canProcess(IncomeMessage message) {
     return check(message).accept(command("ping"));
   }

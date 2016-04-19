@@ -56,6 +56,10 @@
     </bean>
   </service>
 
+  <service id="log-listener" interface="tools.devnull.boteco.message.MessageProcessorListener">
+    <bean class="tools.devnull.boteco.process.LogMessageProcessorListener"/>
+  </service>
+
   <bean id="processor" class="tools.devnull.boteco.process.BotecoMessageProcessor">
     <argument ref="message-processors"/>
     <argument ref="message-listeners"/>

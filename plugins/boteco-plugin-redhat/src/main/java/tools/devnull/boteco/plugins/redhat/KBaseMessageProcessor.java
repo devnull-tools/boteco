@@ -46,6 +46,11 @@ public class KBaseMessageProcessor implements MessageProcessor, ServiceLocator {
       Pattern.compile("http(s)?://access\\.redhat\\.com/(?<type>solutions|articles)/(?<number>\\d+)");
 
   @Override
+  public String id() {
+    return "redhat-kbase";
+  }
+
+  @Override
   public boolean canProcess(IncomeMessage message) {
     return pattern.matcher(message.content()).find();
   }

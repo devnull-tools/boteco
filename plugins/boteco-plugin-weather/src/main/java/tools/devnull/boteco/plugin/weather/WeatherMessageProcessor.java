@@ -43,6 +43,11 @@ public class WeatherMessageProcessor implements MessageProcessor, ServiceLocator
   private static final Logger logger = LoggerFactory.getLogger(WeatherMessageProcessor.class);
 
   @Override
+  public String id() {
+    return "weather";
+  }
+
+  @Override
   public boolean canProcess(IncomeMessage message) {
     return check(message).accept(command("weather"));
   }
