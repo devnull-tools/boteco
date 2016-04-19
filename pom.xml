@@ -50,6 +50,7 @@
     <!-- plugins -->
     <module>plugins/boteco-plugin-ping</module>
     <module>plugins/boteco-plugin-weather</module>
+    <module>plugins/boteco-plugin-redhat</module>
   </modules>
 
   <properties>
