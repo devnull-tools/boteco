@@ -28,6 +28,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.message.MessageProcessorListener;
 
 import java.util.List;
 
@@ -40,10 +41,13 @@ import java.util.List;
  */
 public class BotecoMessageProcessor implements Processor {
 
-  private List<MessageProcessor> messageProcessors;
+  private final List<MessageProcessor> messageProcessors;
+  private final List<MessageProcessorListener> listeners;
 
-  public BotecoMessageProcessor(List<MessageProcessor> messageProcessors) {
+  public BotecoMessageProcessor(List<MessageProcessor> messageProcessors,
+                                List<MessageProcessorListener> listeners) {
     this.messageProcessors = messageProcessors;
+    this.listeners = listeners;
   }
 
   @Override
@@ -52,7 +56,10 @@ public class BotecoMessageProcessor implements Processor {
     messageProcessors.stream()
         .filter(processor -> processor.canProcess(message))
         .findFirst()
-        .ifPresent(processor -> processor.process(message));
+        .ifPresent(processor -> {
+          listeners.stream().forEach(listener -> listener.onProcess(message, processor));
+          processor.process(message);
+        });
   }
 
 }

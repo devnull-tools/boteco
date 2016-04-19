@@ -29,8 +29,14 @@
                                http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
   <!-- Dynamic list containing all message processors in the OSGi Registry -->
-  <reference-list id="messageProcessors"
-                  interface="tools.devnull.boteco.message.MessageProcessor"/>
+  <reference-list id="message-processors"
+                  interface="tools.devnull.boteco.message.MessageProcessor"
+                  availability="optional"/>
+
+  <!-- Dynamic list containing all message processor listeners in the OSGi Registry -->
+  <reference-list id="message-listeners"
+                  interface="tools.devnull.boteco.message.MessageProcessorListener"
+                  availability="optional"/>
 
   <reference id="client" interface="tools.devnull.boteco.client.jms.JmsClient"/>
 
@@ -51,7 +57,8 @@
   </service>
 
   <bean id="processor" class="tools.devnull.boteco.process.BotecoMessageProcessor">
-    <argument ref="messageProcessors"/>
+    <argument ref="message-processors"/>
+    <argument ref="message-listeners"/>
   </bean>
 
   <camelContext id="boteco-content-processing-strategy"
