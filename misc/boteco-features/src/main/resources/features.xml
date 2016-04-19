@@ -42,6 +42,7 @@
     <!-- plugins -->
     <bundle>mvn:${project.groupId}/boteco-plugin-ping/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-weather/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-redhat/${project.version}</bundle>
 
     <!-- channels -->
     <bundle>mvn:${project.groupId}/boteco-channel-irc/${project.version}</bundle>
@@ -69,6 +70,7 @@
     <!-- plugins -->
     <bundle>mvn:${project.groupId}/boteco-plugin-ping/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-weather/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-redhat/${project.version}</bundle>
   </feature>
 
   <feature version="${project.version}" name="boteco-channels"
