@@ -33,13 +33,14 @@
     <groupId>tools.devnull</groupId>
     <artifactId>boteco-parent</artifactId>
     <version>1.0.0</version>
+    <relativePath>../../main/boteco-parent/pom.xml</relativePath>
   </parent>
 
   <artifactId>boteco-plugin-redhat</artifactId>
   <packaging>bundle</packaging>
 
   <properties>
-    <boteco-domain.version>1.0.0</boteco-domain.version>
+    <boteco-base.version>1.0.0</boteco-base.version>
   </properties>
 
   <dependencyManagement>
@@ -57,8 +58,8 @@
   <dependencies>
     <dependency>
       <groupId>tools.devnull</groupId>
-      <artifactId>boteco-domain</artifactId>
-      <version>${boteco-domain.version}</version>
+      <artifactId>boteco-base</artifactId>
+      <version>${boteco-base.version}</version>
     </dependency>
 
     <dependency>

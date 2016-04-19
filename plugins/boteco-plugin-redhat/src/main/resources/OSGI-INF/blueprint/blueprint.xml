@@ -32,12 +32,8 @@
                                http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
-  <reference id="service-locator" interface="tools.devnull.boteco.service.ServiceLocator"/>
-
   <service id="kbase-plugin" interface="tools.devnull.boteco.message.MessageProcessor">
-    <bean class="tools.devnull.boteco.plugins.redhat.KBaseMessageProcessor">
-      <argument ref="service-locator"/>
-    </bean>
+    <bean class="tools.devnull.boteco.plugins.redhat.KBaseMessageProcessor"/>
   </service>
 
 </blueprint>

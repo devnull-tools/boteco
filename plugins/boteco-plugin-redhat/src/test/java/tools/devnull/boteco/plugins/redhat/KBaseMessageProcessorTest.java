@@ -26,9 +26,8 @@ package tools.devnull.boteco.plugins.redhat;
 
 import org.junit.Before;
 import org.junit.Test;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.service.ServiceLocator;
+import tools.devnull.boteco.domain.IncomeMessage;
+import tools.devnull.boteco.domain.MessageProcessor;
 import tools.devnull.kodo.TestScenario;
 
 import java.util.function.Predicate;
@@ -43,8 +42,7 @@ public class KBaseMessageProcessorTest {
 
   @Before
   public void initialize() {
-    ServiceLocator serviceLocator = mock(ServiceLocator.class);
-    processor = new KBaseMessageProcessor(serviceLocator);
+    processor = new KBaseMessageProcessor();
   }
 
   private IncomeMessage message(String content) {

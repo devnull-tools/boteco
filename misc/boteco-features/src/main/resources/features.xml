@@ -35,7 +35,7 @@
     <feature>camel-jsonpath</feature>
 
     <!-- main bundles -->
-    <bundle>mvn:${project.groupId}/boteco-domain/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-base/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-message-processor/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-rest-api/${project.version}</bundle>
 
@@ -59,7 +59,7 @@
     <feature>camel-jsonpath</feature>
 
     <!-- main bundles -->
-    <bundle>mvn:${project.groupId}/boteco-domain/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-base/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-message-processor/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-rest-api/${project.version}</bundle>
   </feature>
