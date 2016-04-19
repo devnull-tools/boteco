@@ -40,12 +40,12 @@ public class TelegramContentFormatter implements ContentFormatter {
 
   @Override
   public String positive(Object content) {
-    return String.valueOf(content);
+    return value(content);
   }
 
   @Override
   public String negative(Object content) {
-    return String.valueOf(content);
+    return value(content);
   }
 
   @Override
