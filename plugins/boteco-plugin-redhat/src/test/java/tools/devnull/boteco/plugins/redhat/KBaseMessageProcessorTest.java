@@ -26,8 +26,8 @@ package tools.devnull.boteco.plugins.redhat;
 
 import org.junit.Before;
 import org.junit.Test;
-import tools.devnull.boteco.domain.IncomeMessage;
-import tools.devnull.boteco.domain.MessageProcessor;
+import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.kodo.TestScenario;
 
 import java.util.function.Predicate;

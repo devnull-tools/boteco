@@ -26,8 +26,8 @@ package tools.devnull.boteco.channel.telegram;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import tools.devnull.boteco.domain.CommandExtractor;
-import tools.devnull.boteco.domain.MessageDispatcher;
+import tools.devnull.boteco.CommandExtractor;
+import tools.devnull.boteco.message.MessageDispatcher;
 
 /**
  * A processor that deals with income messages from Telegram.

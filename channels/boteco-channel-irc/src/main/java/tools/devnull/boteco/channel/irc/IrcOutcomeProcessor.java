@@ -27,7 +27,7 @@ package tools.devnull.boteco.channel.irc;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.component.irc.IrcConstants;
-import tools.devnull.boteco.domain.OutcomeMessage;
+import tools.devnull.boteco.message.OutcomeMessage;
 
 public class IrcOutcomeProcessor implements Processor {
 

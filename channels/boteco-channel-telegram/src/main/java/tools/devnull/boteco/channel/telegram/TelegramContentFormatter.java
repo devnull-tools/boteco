@@ -24,7 +24,7 @@
 
 package tools.devnull.boteco.channel.telegram;
 
-import tools.devnull.boteco.domain.ContentFormatter;
+import tools.devnull.boteco.ContentFormatter;
 
 public class TelegramContentFormatter implements ContentFormatter {
 

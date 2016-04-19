@@ -26,9 +26,9 @@ package tools.devnull.boteco.plugin.ping;
 
 import org.junit.Before;
 import org.junit.Test;
-import tools.devnull.boteco.domain.Command;
-import tools.devnull.boteco.domain.IncomeMessage;
-import tools.devnull.boteco.domain.MessageProcessor;
+import tools.devnull.boteco.Command;
+import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.kodo.TestScenario;
 
 import java.util.function.Consumer;

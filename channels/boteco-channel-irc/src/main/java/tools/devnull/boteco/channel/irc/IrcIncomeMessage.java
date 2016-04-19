@@ -25,11 +25,11 @@
 package tools.devnull.boteco.channel.irc;
 
 import org.apache.camel.component.irc.IrcMessage;
-import tools.devnull.boteco.domain.Channel;
-import tools.devnull.boteco.domain.Command;
-import tools.devnull.boteco.domain.CommandExtractor;
-import tools.devnull.boteco.domain.IncomeMessage;
-import tools.devnull.boteco.domain.ServiceLocator;
+import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.Command;
+import tools.devnull.boteco.CommandExtractor;
+import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.ServiceLocator;
 
 /**
  * An abstraction of an IRC message.

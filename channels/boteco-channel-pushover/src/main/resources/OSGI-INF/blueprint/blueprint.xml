@@ -37,7 +37,7 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <service id="pushover-channel" interface="tools.devnull.boteco.domain.Channel">
+  <service id="pushover-channel" interface="tools.devnull.boteco.Channel">
     <service-properties>
       <entry key="id" value="pushover"/>
     </service-properties>

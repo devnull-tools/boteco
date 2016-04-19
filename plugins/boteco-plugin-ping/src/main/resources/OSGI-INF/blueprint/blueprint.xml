@@ -29,7 +29,7 @@
                                http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
   <service id="ping-plugin"
-           interface="tools.devnull.boteco.domain.MessageProcessor">
+           interface="tools.devnull.boteco.message.MessageProcessor">
     <bean class="tools.devnull.boteco.plugin.ping.PingMessageProcessor" />
   </service>
 

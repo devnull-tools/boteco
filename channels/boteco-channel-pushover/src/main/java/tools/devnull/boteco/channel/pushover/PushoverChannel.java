@@ -24,12 +24,12 @@
 
 package tools.devnull.boteco.channel.pushover;
 
-import tools.devnull.boteco.domain.Channel;
-import tools.devnull.boteco.domain.ContentFormatter;
-import tools.devnull.boteco.domain.MessageSender;
-import tools.devnull.boteco.domain.DefaultContentFormatter;
-import tools.devnull.boteco.domain.TargetSelector;
-import tools.devnull.boteco.domain.ServiceLocator;
+import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.ContentFormatter;
+import tools.devnull.boteco.message.MessageSender;
+import tools.devnull.boteco.DefaultContentFormatter;
+import tools.devnull.boteco.TargetSelector;
+import tools.devnull.boteco.ServiceLocator;
 
 public class PushoverChannel implements Channel, ServiceLocator {
   @Override

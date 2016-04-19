@@ -24,7 +24,7 @@
 
 package tools.devnull.boteco.channel.irc;
 
-import tools.devnull.boteco.domain.ContentFormatter;
+import tools.devnull.boteco.ContentFormatter;
 
 public class IrcContentFormatter implements ContentFormatter {
 

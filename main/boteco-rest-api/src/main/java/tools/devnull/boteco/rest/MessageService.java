@@ -24,9 +24,9 @@
 
 package tools.devnull.boteco.rest;
 
-import tools.devnull.boteco.domain.Channel;
-import tools.devnull.boteco.domain.MessageSender;
-import tools.devnull.boteco.domain.ServiceLocator;
+import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.message.MessageSender;
+import tools.devnull.boteco.ServiceLocator;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;

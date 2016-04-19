@@ -27,7 +27,7 @@ package tools.devnull.boteco.channel.telegram;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.impl.DefaultMessage;
-import tools.devnull.boteco.domain.OutcomeMessage;
+import tools.devnull.boteco.message.OutcomeMessage;
 
 /**
  * A processor that receives an outcome telegram message and sends it as a bot message.

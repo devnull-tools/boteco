@@ -113,12 +113,12 @@
         <configuration>
           <instructions>
             <Export-Package>
-              tools.devnull.boteco.domain,
-              tools.devnull.boteco.domain.predicates,
-              tools.devnull.boteco.domain.extractors,
-              tools.devnull.boteco.domain.service,
-              tools.devnull.boteco.domain.client.jms,
-              tools.devnull.boteco.domain.client.rest,
+              tools.devnull.boteco,
+              tools.devnull.boteco.message,
+              tools.devnull.boteco.predicates,
+              tools.devnull.boteco.extractors,
+              tools.devnull.boteco.client.jms,
+              tools.devnull.boteco.client.rest,
             </Export-Package>
           </instructions>
         </configuration>

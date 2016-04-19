@@ -24,11 +24,11 @@
 
 package tools.devnull.boteco.channel.telegram;
 
-import tools.devnull.boteco.domain.Channel;
-import tools.devnull.boteco.domain.ContentFormatter;
-import tools.devnull.boteco.domain.MessageSender;
-import tools.devnull.boteco.domain.ServiceLocator;
-import tools.devnull.boteco.domain.TargetSelector;
+import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.ContentFormatter;
+import tools.devnull.boteco.message.MessageSender;
+import tools.devnull.boteco.ServiceLocator;
+import tools.devnull.boteco.TargetSelector;
 
 /**
  * A class that represents the Telegram Channel.

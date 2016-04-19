@@ -24,11 +24,11 @@
 
 package tools.devnull.boteco.plugin.ping;
 
-import tools.devnull.boteco.domain.IncomeMessage;
-import tools.devnull.boteco.domain.MessageProcessor;
+import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessor;
 
-import static tools.devnull.boteco.domain.MessageChecker.check;
-import static tools.devnull.boteco.domain.Predicates.command;
+import static tools.devnull.boteco.message.MessageChecker.check;
+import static tools.devnull.boteco.Predicates.command;
 
 /**
  * A simple processor that responds to a "ping" command with a

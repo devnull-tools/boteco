@@ -33,7 +33,7 @@
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
   <service id="weather-plugin"
-           interface="tools.devnull.boteco.domain.MessageProcessor">
+           interface="tools.devnull.boteco.message.MessageProcessor">
     <bean class="tools.devnull.boteco.plugin.weather.WeatherMessageProcessor"/>
   </service>
 

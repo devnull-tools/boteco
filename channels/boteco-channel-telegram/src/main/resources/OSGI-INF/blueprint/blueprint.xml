@@ -53,7 +53,7 @@
   </cm:property-placeholder>
 
   <bean id="telegram-command-extractor"
-        class="tools.devnull.boteco.domain.extractors.ExpressionCommandExtractor">
+        class="tools.devnull.boteco.extractors.ExpressionCommandExtractor">
     <argument value="{{bot.command.expression}}"/>
   </bean>
 
@@ -61,7 +61,7 @@
     <argument value="{{pooling.initial-offset}}"/>
   </bean>
 
-  <reference id="message-dispatcher" interface="tools.devnull.boteco.domain.MessageDispatcher"/>
+  <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>
 
   <bean id="telegram-income-processor" class="tools.devnull.boteco.channel.telegram.TelegramIncomeProcessor">
     <argument ref="telegram-command-extractor"/>
@@ -76,7 +76,7 @@
 
   <bean id="telegram-outcome-processor" class="tools.devnull.boteco.channel.telegram.TelegramOutcomeProcessor"/>
 
-  <service id="telegram-channel" interface="tools.devnull.boteco.domain.Channel">
+  <service id="telegram-channel" interface="tools.devnull.boteco.Channel">
     <service-properties>
       <entry key="id" value="telegram"/>
     </service-properties>

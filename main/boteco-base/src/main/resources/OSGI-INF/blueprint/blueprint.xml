@@ -40,16 +40,16 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <service id="jms-client" interface="tools.devnull.boteco.domain.client.jms.JmsClient">
-    <bean class="tools.devnull.boteco.domain.client.jms.AMQClient">
+  <service id="jms-client" interface="tools.devnull.boteco.client.jms.JmsClient">
+    <bean class="tools.devnull.boteco.client.jms.AMQClient">
       <argument value="${jms.user}"/>
       <argument value="${jms.password}"/>
       <argument value="${jms.connectionUrl}"/>
     </bean>
   </service>
 
-  <service id="rest-client" interface="tools.devnull.boteco.domain.client.rest.RestClient">
-    <bean class="tools.devnull.boteco.domain.client.rest.DefaultRestClient"/>
+  <service id="rest-client" interface="tools.devnull.boteco.client.rest.RestClient">
+    <bean class="tools.devnull.boteco.client.rest.DefaultRestClient"/>
   </service>
 
   <service id="activemq-component" interface="org.apache.camel.Component">

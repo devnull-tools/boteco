@@ -27,11 +27,11 @@ package tools.devnull.boteco.plugins.redhat;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tools.devnull.boteco.domain.ContentFormatter;
-import tools.devnull.boteco.domain.IncomeMessage;
-import tools.devnull.boteco.domain.MessageProcessor;
-import tools.devnull.boteco.domain.ServiceLocator;
-import tools.devnull.boteco.domain.client.rest.RestClient;
+import tools.devnull.boteco.ContentFormatter;
+import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.ServiceLocator;
+import tools.devnull.boteco.client.rest.RestClient;
 
 import java.net.URI;
 import java.util.function.Predicate;

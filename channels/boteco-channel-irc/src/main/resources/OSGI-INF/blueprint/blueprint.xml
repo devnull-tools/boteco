@@ -47,7 +47,7 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <service id="irc-channel" interface="tools.devnull.boteco.domain.Channel">
+  <service id="irc-channel" interface="tools.devnull.boteco.Channel">
     <service-properties>
       <entry key="id" value="irc"/>
     </service-properties>
@@ -55,11 +55,11 @@
   </service>
 
   <bean id="irc-command-extractor"
-        class="tools.devnull.boteco.domain.extractors.ExpressionCommandExtractor">
+        class="tools.devnull.boteco.extractors.ExpressionCommandExtractor">
     <argument value="^boteco[,:]?\s+"/>
   </bean>
 
-  <reference id="message-dispatcher" interface="tools.devnull.boteco.domain.MessageDispatcher"/>
+  <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>
 
   <bean id="irc-income-processor" class="tools.devnull.boteco.channel.irc.IrcIncomeProcessor">
     <argument ref="irc-command-extractor"/>
