@@ -115,6 +115,7 @@
             <Export-Package>
               tools.devnull.boteco,
               tools.devnull.boteco.message,
+              tools.devnull.boteco.storage,
               tools.devnull.boteco.predicates,
               tools.devnull.boteco.extractors,
               tools.devnull.boteco.client.jms,
