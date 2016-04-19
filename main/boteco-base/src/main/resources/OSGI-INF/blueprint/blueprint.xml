@@ -52,6 +52,10 @@
     <bean class="tools.devnull.boteco.client.rest.DefaultRestClient"/>
   </service>
 
+  <service id="object-storage" interface="tools.devnull.boteco.storage.ObjectStorage">
+    <bean class="tools.devnull.boteco.storage.impl.DefaultObjectStorage"/>
+  </service>
+
   <service id="activemq-component" interface="org.apache.camel.Component">
     <service-properties>
       <entry key="component" value="activemq"/>
