@@ -22,12 +22,10 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.predicates;
+package tools.devnull.boteco;
 
 import org.junit.Before;
 import org.junit.Test;
-import tools.devnull.boteco.Command;
-import tools.devnull.boteco.CommandExtractor;
 import tools.devnull.boteco.extractors.ExpressionCommandExtractor;
 import tools.devnull.kodo.TestScenario;
 

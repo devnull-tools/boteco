@@ -22,43 +22,20 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.predicates;
+package tools.devnull.boteco;
 
-import org.junit.Before;
-import org.junit.Test;
 import tools.devnull.boteco.message.IncomeMessage;
 
 import java.util.function.Predicate;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static tools.devnull.boteco.message.MessageChecker.check;
+public class TestHelper {
 
-public class MessageCheckerTest {
-
-  private Predicate<IncomeMessage> somethingTrue;
-  private IncomeMessage incomeMessage;
-
-  @Before
-  public void initialize() {
-    somethingTrue = mock(Predicate.class);
-    incomeMessage = mock(IncomeMessage.class);
-    when(somethingTrue.test(incomeMessage)).thenReturn(true);
+  public static Predicate<Predicate<IncomeMessage>> accept(IncomeMessage message) {
+    return p -> p.test(message);
   }
 
-  @Test
-  public void testAccept() {
-    assertTrue(check(incomeMessage).accept(somethingTrue));
-    verify(somethingTrue).test(incomeMessage);
-  }
-
-  @Test
-  public void testReject() {
-    assertFalse(check(incomeMessage).reject(somethingTrue));
-    verify(somethingTrue).test(incomeMessage);
+  public static Predicate<Predicate<IncomeMessage>> notAccept(IncomeMessage message) {
+    return accept(message).negate();
   }
 
 }

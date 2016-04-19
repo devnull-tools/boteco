@@ -31,8 +31,8 @@ import tools.devnull.kodo.TestScenario;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static tools.devnull.boteco.predicates.TestHelper.accept;
-import static tools.devnull.boteco.predicates.TestHelper.notAccept;
+import static tools.devnull.boteco.TestHelper.accept;
+import static tools.devnull.boteco.TestHelper.notAccept;
 import static tools.devnull.kodo.Spec.should;
 
 public class ContentPredicateTest {
