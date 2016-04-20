@@ -22,50 +22,38 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.storage;
+package tools.devnull.boteco.plugins.karma;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.function.Predicate;
+import tools.devnull.boteco.storage.Storable;
 
-/**
- * Interface to select a value for an operation.
- *
- * @param <T> the type of the value
- */
-public interface ValueSelector<T extends Storable> {
+public class Karma implements Storable<String> {
 
-  /**
-   * Selects the object that has the given id.
-   *
-   * @param id the id of the object to retrieve
-   * @return the object that has the given id.
-   */
-  T id(Serializable id);
+  private final String name;
+  private int value;
 
-  /**
-   * Selects the object that has the same id as the given object.
-   *
-   * @param value the value that has the desired id
-   * @return the object that has the same id as the given object
-   */
-  default T value(T value) {
-    return id(value.id());
+  public Karma(String name) {
+    this.name = name;
   }
 
-  /**
-   * Selects all objects from the store.
-   *
-   * @return all objects from the store.
-   */
-  List<T> all();
+  @Override
+  public String id() {
+    return name;
+  }
 
-  /**
-   * Selects all objects that matches the given filter.
-   *
-   * @param filter the filter to match
-   * @return all objects from the store that matches the given filter.
-   */
-  List<T> where(Predicate<? super T> filter);
+  public String name() {
+    return name;
+  }
+
+  public int value() {
+    return value;
+  }
+
+  public void raise() {
+    value++;
+  }
+
+  public void lower() {
+    value--;
+  }
 
 }

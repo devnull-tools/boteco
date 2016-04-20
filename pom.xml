@@ -51,6 +51,7 @@
     <module>plugins/boteco-plugin-ping</module>
     <module>plugins/boteco-plugin-weather</module>
     <module>plugins/boteco-plugin-redhat</module>
+    <module>plugins/boteco-plugin-karma</module>
   </modules>
 
   <properties>
