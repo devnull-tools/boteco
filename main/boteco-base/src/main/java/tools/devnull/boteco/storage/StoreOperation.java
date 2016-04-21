@@ -27,17 +27,7 @@ package tools.devnull.boteco.storage;
 /**
  * Interface that defines a store operation in an {@link ObjectStorage}.
  */
-public interface StoreOperation {
-
-  /**
-   * Selects the store related to the given class
-   *
-   * @param store the store to use
-   * @return a component to select the value
-   */
-  default <T extends Storable> StoreValueSelector<T> into(Class<T> store) {
-    return into(store.getName());
-  }
+public interface StoreOperation<T extends Storable> {
 
   /**
    * Selects the store related to the given name
@@ -45,6 +35,6 @@ public interface StoreOperation {
    * @param store the store to use
    * @return a component to select the value
    */
-  <T extends Storable> StoreValueSelector<T> into(String store);
+  StoreValueSelector<T> into(String store);
 
 }

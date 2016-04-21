@@ -29,7 +29,6 @@ import tools.devnull.boteco.storage.RemoveOperation;
 import tools.devnull.boteco.storage.RetrieveOperation;
 import tools.devnull.boteco.storage.Storable;
 import tools.devnull.boteco.storage.StoreOperation;
-import tools.devnull.boteco.storage.StoreValueSelector;
 import tools.devnull.boteco.storage.ValueSelector;
 
 import java.io.Serializable;
@@ -37,12 +36,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * The default object storage. This class uses maps to store value and
@@ -73,74 +68,43 @@ public class DefaultObjectStorage implements ObjectStorage {
   }
 
   @Override
-  public StoreOperation store() {
-    return new StoreOperation() {
+  public <T extends Storable> StoreOperation<T> store(Class<T> type) {
+    return store -> value -> storage(store).put(value.id(), value);
+  }
+
+  @Override
+  public <T extends Storable> RetrieveOperation retrieve(Class<T> type) {
+    return (RetrieveOperation<T>) store -> new ValueSelector<T>() {
       @Override
-      public <T extends Storable> StoreValueSelector<T> into(String store) {
-        return value -> storage(store).put(value.id(), value);
+      public T id(Serializable id) {
+        return (T) storage(store).get(id);
       }
+
+      @Override
+      public List<T> all() {
+        return new ArrayList<>((Collection<T>) storage(store).values());
+      }
+
     };
   }
 
   @Override
-  public RetrieveOperation retrieve() {
-    return new RetrieveOperation() {
+  public <T extends Storable> RemoveOperation remove(Class<T> type) {
+    return (RemoveOperation<T>) store -> new ValueSelector<T>() {
       @Override
-      public <T extends Storable> ValueSelector<T> from(String store) {
-        return new ValueSelector<T>() {
-          @Override
-          public T id(Serializable id) {
-            return (T) storage(store).get(id);
-          }
-
-          @Override
-          public List<T> all() {
-            return new ArrayList<>((Collection<T>) storage(store).values());
-          }
-
-          @Override
-          public List<T> where(Predicate filter) {
-            return (List<T>) storage(store).values().stream().filter(filter).collect(toList());
-          }
-        };
+      public T id(Serializable id) {
+        return (T) storage(store).remove(id);
       }
-    };
-  }
 
-  @Override
-  public RemoveOperation remove() {
-    return new RemoveOperation() {
       @Override
-      public <T extends Storable> ValueSelector<T> from(String store) {
-        return new ValueSelector<T>() {
-          @Override
-          public T id(Serializable id) {
-            return (T) storage(store).remove(id);
-          }
-
-          @Override
-          public List<T> all() {
-            try {
-              return new ArrayList<>((Collection<T>) storage(store).values());
-            } finally {
-              storage(store).clear();
-            }
-          }
-
-          @Override
-          public List<T> where(Predicate filter) {
-            List result = new ArrayList<>();
-            Map map = storage(store);
-            Set<Map.Entry<Serializable, Storable>> entrySet = map.entrySet();
-            for (Map.Entry<Serializable, Storable> entry : entrySet) {
-              if (filter.test(entry.getValue())) {
-                result.add(map.remove(entry.getKey()));
-              }
-            }
-            return result;
-          }
-        };
+      public List<T> all() {
+        try {
+          return new ArrayList<>((Collection<T>) storage(store).values());
+        } finally {
+          storage(store).clear();
+        }
       }
+
     };
   }
 

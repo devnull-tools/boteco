@@ -26,7 +26,6 @@ package tools.devnull.boteco.storage;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * Interface to select a value for an operation.
@@ -59,13 +58,5 @@ public interface ValueSelector<T extends Storable> {
    * @return all objects from the store.
    */
   List<T> all();
-
-  /**
-   * Selects all objects that matches the given filter.
-   *
-   * @param filter the filter to match
-   * @return all objects from the store that matches the given filter.
-   */
-  List<T> where(Predicate<? super T> filter);
 
 }

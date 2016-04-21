@@ -27,17 +27,7 @@ package tools.devnull.boteco.storage;
 /**
  * Interface that defines a remove operation in an {@link ObjectStorage}.
  */
-public interface RemoveOperation {
-
-  /**
-   * Selects the store related to the given class
-   *
-   * @param store the store to use
-   * @return a component to select the value
-   */
-  default <T extends Storable> ValueSelector<T> from(Class<T> store) {
-    return from(store.getName());
-  }
+public interface RemoveOperation<T extends Storable> {
 
   /**
    * Selects the store related to the given name
@@ -45,6 +35,6 @@ public interface RemoveOperation {
    * @param store the store to use
    * @return a component to select the value
    */
-  <T extends Storable> ValueSelector<T> from(String store);
+  ValueSelector<T> from(String store);
 
 }

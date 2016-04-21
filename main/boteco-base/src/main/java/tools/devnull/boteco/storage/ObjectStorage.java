@@ -34,20 +34,20 @@ public interface ObjectStorage {
    *
    * @return a component to do the operation
    */
-  StoreOperation store();
+  <T extends Storable> StoreOperation<T> store(Class<T> type);
 
   /**
    * Starts a retrieve operation.
    *
    * @return a component to do the operation
    */
-  RetrieveOperation retrieve();
+  <T extends Storable> RetrieveOperation<T> retrieve(Class<T> type);
 
   /**
    * Starts a remove operation.
    *
    * @return a component to do the operation
    */
-  RemoveOperation remove();
+  <T extends Storable> RemoveOperation<T> remove(Class<T> type);
 
 }

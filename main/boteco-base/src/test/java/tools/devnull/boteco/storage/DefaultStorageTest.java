@@ -54,42 +54,43 @@ public class DefaultStorageTest {
   @Test
   public void testStoreOperation() {
     Storable object = newObject(10);
-    storage.store().into("storage-a").value(object);
-    assertSame(object, storage.retrieve().from("storage-a").id(10));
-    assertNull(storage.retrieve().from("storage-b").id(10));
+    storage.store(Storable.class).into("storage-a").value(object);
+    assertSame(object, storage.retrieve(Storable.class).from("storage-a").id(10));
+    assertNull(storage.retrieve(Storable.class).from("storage-b").id(10));
   }
 
   @Test
   public void testRetrieveOperation() {
-    storage.store().into("storage-a").value(newObject(10));
-    storage.store().into("storage-a").value(newObject(20));
-    storage.store().into("storage-a").value(newObject(30));
+    storage.store(Storable.class).into("storage-a").value(newObject(10));
+    storage.store(Storable.class).into("storage-a").value(newObject(20));
+    storage.store(Storable.class).into("storage-a").value(newObject(30));
 
-    assertEquals(3, storage.retrieve().from("storage-a").all().size());
+    assertEquals(3, storage.retrieve(Storable.class).from("storage-a").all().size());
 
-    assertEquals(3, storage.retrieve().from("storage-a").where(o -> true).size());
-    assertEquals(0, storage.retrieve().from("storage-a").where(o -> false).size());
+    assertEquals(10, storage.retrieve(Storable.class).from("storage-a").id(10).id());
+    assertEquals(20, storage.retrieve(Storable.class).from("storage-a").id(20).id());
+    assertEquals(30, storage.retrieve(Storable.class).from("storage-a").id(30).id());
   }
 
   @Test
   public void testRemoveOperation() {
-    storage.store().into("storage-a").value(newObject(10));
-    storage.store().into("storage-a").value(newObject(20));
-    storage.store().into("storage-a").value(newObject(30));
+    storage.store(Storable.class).into("storage-a").value(newObject(10));
+    storage.store(Storable.class).into("storage-a").value(newObject(20));
+    storage.store(Storable.class).into("storage-a").value(newObject(30));
 
-    assertEquals(3, storage.remove().from("storage-a").all().size());
+    assertEquals(3, storage.remove(Storable.class).from("storage-a").all().size());
 
-    assertEquals(0, storage.retrieve().from("storage-a").all().size());
+    assertEquals(0, storage.retrieve(Storable.class).from("storage-a").all().size());
 
-    storage.store().into("storage-a").value(newObject(10));
-    storage.store().into("storage-a").value(newObject(20));
-    storage.store().into("storage-a").value(newObject(30));
+    storage.store(Storable.class).into("storage-a").value(newObject(10));
+    storage.store(Storable.class).into("storage-a").value(newObject(20));
+    storage.store(Storable.class).into("storage-a").value(newObject(30));
 
-    assertEquals(0, storage.remove().from("storage-a").where(o -> false).size());
-    assertEquals(3, storage.retrieve().from("storage-a").all().size());
+    assertEquals(10, storage.remove(Storable.class).from("storage-a").id(10).id());
+    assertEquals(20, storage.remove(Storable.class).from("storage-a").id(20).id());
+    assertEquals(30, storage.remove(Storable.class).from("storage-a").id(30).id());
 
-    assertEquals(3, storage.remove().from("storage-a").where(o -> true).size());
-    assertEquals(0, storage.retrieve().from("storage-a").all().size());
+    assertEquals(0, storage.retrieve(Storable.class).from("storage-a").all().size());
   }
 
 }
