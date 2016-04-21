@@ -24,10 +24,12 @@
 
 package tools.devnull.boteco.plugins.karma;
 
+import com.google.gson.annotations.SerializedName;
 import tools.devnull.boteco.storage.Storable;
 
 public class Karma implements Storable<String> {
 
+  @SerializedName("_id")
   private final String name;
   private int value;
 

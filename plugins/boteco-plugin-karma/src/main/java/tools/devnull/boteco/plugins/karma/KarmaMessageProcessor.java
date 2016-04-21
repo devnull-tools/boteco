@@ -80,15 +80,15 @@ public class KarmaMessageProcessor implements MessageProcessor, ServiceLocator {
   private int operateKarma(String term, Consumer<Karma> operation) {
     ObjectStorage storage = locate(ObjectStorage.class);
     term = term.toLowerCase();
-    Karma karma = storage.retrieve().from(Karma.class).id(term);
+    Karma karma = storage.retrieve(Karma.class).from("karmas").id(term);
     if (karma == null) {
       karma = new Karma(term);
     }
     operation.accept(karma);
     if (karma.value() == 0) {
-      storage.remove().from(Karma.class).id(term);
+      storage.remove(Karma.class).from("karmas").id(term);
     } else {
-      storage.store().into(Karma.class).value(karma);
+      storage.store(Karma.class).into("karmas").value(karma);
     }
     return karma.value();
   }
