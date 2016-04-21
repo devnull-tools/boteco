@@ -25,8 +25,8 @@
 package tools.devnull.boteco.rest;
 
 import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.ServiceLocator;
+import tools.devnull.boteco.message.MessageSender;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -49,19 +49,19 @@ public class MessageService implements ServiceLocator {
     // if the channel is present, then the message will be delivered as soon as the channel can process it
     if (channel != null) {
       channel.send(message.getContent()).to(message.getTarget());
-      return Response.ok().status(200).build();
+      return Response.ok().build();
     } else {
       // otherwise, the message will be delivered when channel bundle starts
       locate(MessageSender.class).send(message.getContent())
           .to(message.getTarget())
           .through(channelId);
-      return Response.ok().status(202).build();
+      return Response.accepted().build();
     }
   }
 
   @GET
-  @Path("/channels")
   @Produces("application/json")
+  @Path("/channels")
   public Response getAvailableChannels() {
     List<Channel> channels = locateAll(Channel.class, "(id=*)");
     return Response.ok(
