@@ -50,12 +50,12 @@ public class WeatherResults {
     return query.results.channel.item.condition.text;
   }
 
-  public double temperatureInCelsius() {
+  public int temperatureInCelsius() {
     return query.results.channel.item.condition.temperature;
   }
 
-  public double temperatureInFahrenheits() {
-    return temperatureInCelsius() * 1.8 + 32;
+  public int temperatureInFahrenheits() {
+    return (int) (temperatureInCelsius() * 1.8 + 32);
   }
 
   public static class Query {
@@ -180,7 +180,7 @@ public class WeatherResults {
     private int code;
 
     @SerializedName("temp")
-    private double temperature;
+    private int temperature;
 
     private String text;
 
@@ -192,11 +192,11 @@ public class WeatherResults {
       this.code = code;
     }
 
-    public double getTemperature() {
+    public int getTemperature() {
       return temperature;
     }
 
-    public void setTemperature(double temperature) {
+    public void setTemperature(int temperature) {
       this.temperature = temperature;
     }
 
