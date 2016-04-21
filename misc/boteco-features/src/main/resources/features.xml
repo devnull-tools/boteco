@@ -34,6 +34,8 @@
     <feature>camel-gson</feature>
     <feature>camel-jsonpath</feature>
 
+    <bundle>mvn:org.mongodb/mongo-java-driver/3.0.4</bundle>
+
     <!-- main bundles -->
     <bundle>mvn:${project.groupId}/boteco-base/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-message-processor/${project.version}</bundle>
@@ -44,6 +46,7 @@
     <bundle>mvn:${project.groupId}/boteco-plugin-weather/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-redhat/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-karma/${project.version}</bundle>
+    <bundle start="false">mvn:${project.groupId}/boteco-plugin-mongodb/${project.version}</bundle>
 
     <!-- channels -->
     <bundle>mvn:${project.groupId}/boteco-channel-irc/${project.version}</bundle>
@@ -73,6 +76,7 @@
     <bundle>mvn:${project.groupId}/boteco-plugin-weather/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-redhat/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-karma/${project.version}</bundle>
+    <bundle start="false">mvn:${project.groupId}/boteco-plugin-mongodb/${project.version}</bundle>
   </feature>
 
   <feature version="${project.version}" name="boteco-channels"
