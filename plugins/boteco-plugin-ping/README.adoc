@@ -1,0 +1,7 @@
+= Ping Plugin
+
+This is the simplest plugin for boteco. This plugin contains a Message Processor that responds to the
+`ping` command.
+
+For example: if you send the message `boteco ping` in a channel that boteco is listening, boteco will
+respond `pong`.
