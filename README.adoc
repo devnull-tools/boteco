@@ -13,6 +13,18 @@ Boteco is gladly built on top of JBoss Fuse.
 
 == How to build
 
+=== Pre Requisites
+
+Make sure you have https://maven.apache.org[Apache Maven] installed and a profile in your `settings.xml` file to fetch
+JBoss Fuse artifacts.
+
+[source,xml]
+----
+include::assets/profile.xml[]
+----
+
+=== Build Step [line-through]#s#
+
 Just do the classical Maven command:
 
 [source,bash]
@@ -52,11 +64,6 @@ features:install boteco-channels
 osgi:start boteco-channel-telegram boteco-channel-pushover boteco-channel-irc
 ----
 
-[NOTE]
-====
-When you install `boteco-base`
-====
-
 == Concepts
 
 Boteco consists basically on the following components:
@@ -80,13 +87,13 @@ A Message Processor is a class that implements the _MessageProcessor_ interface:
 public class PingMessageProcessor implements MessageProcessor {
 
   @Override
-  public boolean canProcess(IncomeMessage content) { //<1>
-    return check(content).accept(command("ping")); //<2>
+  public boolean canProcess(IncomeMessage message) { //<1>
+    return check(message).accept(command("ping")); //<2>
   }
 
   @Override
-  public void process(IncomeMessage content) { //<3>
-    content.reply("%s: pong", content.sender()); //<4>
+  public void process(IncomeMessage message) { //<3>
+    message.reply("%s: pong", message.sender()); //<4>
   }
 
 }
