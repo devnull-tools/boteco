@@ -70,8 +70,8 @@ public class WeatherMessageProcessor implements MessageProcessor, ServiceLocator
         message.reply(String.format("%s: %s - %s / %s",
             formatter.accent(results.text()),
             formatter.alternativeAccent(results.condition()),
-            formatter.value(String.valueOf(results.temperatureInCelsius()) + "ºC"),
-            formatter.value(String.valueOf(results.temperatureInFahrenheits()) + "ºF")));
+            formatter.value(String.valueOf(results.temperatureInCelsius()) + "\u00BAC"),
+            formatter.value(String.valueOf(results.temperatureInFahrenheits()) + "\u00BAF")));
       } else {
         message.reply(formatter.error("Could not find any weather for " + message.command().arg()));
       }
