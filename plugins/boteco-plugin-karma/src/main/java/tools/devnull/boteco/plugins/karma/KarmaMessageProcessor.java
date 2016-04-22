@@ -46,7 +46,7 @@ public class KarmaMessageProcessor implements MessageProcessor, ServiceLocator {
 
   @Override
   public boolean canProcess(IncomeMessage message) {
-    return pattern.matcher(message.content()).find();
+    return message.isGroup() && pattern.matcher(message.content()).find();
   }
 
   @Override
