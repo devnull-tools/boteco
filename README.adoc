@@ -76,7 +76,7 @@ JBoss Fuse artifacts.
 </profile>
 ----
 
-=== Build Step [line-through]#s#
+=== Build Step
 
 Just do the classical Maven command:
 
@@ -96,7 +96,7 @@ features:addurl mvn:tools.devnull/boteco-features/1.0.0/xml/features #<1>
 features:install boteco #<2>
 ----
 <1> Use the version you desire to run
-<2> Installs all necessary bundles to run Boteco, plugins and channels
+<2> Installs all necessary bundles to run Boteco (base, plugins and channels)
 
 [NOTE]
 ====
@@ -151,10 +151,10 @@ public class PingMessageProcessor implements MessageProcessor {
 
 }
 ----
-<1> Checks if the processor can process a content
+<1> Checks if the processor can process a message
 <2> Built in DSL to help you write the check code
-<3> Process the given content
-<4> Reply to the content without know how to send it
+<3> Process the given message
+<4> Reply to the message without worrying how to send it
 
 === Channel
 
