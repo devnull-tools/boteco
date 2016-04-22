@@ -34,6 +34,8 @@
   <version>1.0.0</version>
   <packaging>pom</packaging>
   <name>boteco: the multiplatform bot</name>
+  <description>Boteco is a bot that allows you to write platform agnostic plugins.</description>
+  <url>https://github.com/devnull-tools/boteco</url>
 
   <modules>
     <!-- main projects -->
@@ -64,59 +66,26 @@
     <maven-bundle-plugin-version>2.5.4</maven-bundle-plugin-version>
   </properties>
 
-  <repositories>
-    <repository>
-      <id>fuse-public-repository</id>
-      <name>FuseSource Community Release Repository</name>
-      <url>https://repo.fusesource.com/nexus/content/groups/public</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-    </repository>
-    <repository>
-      <id>fusesource.ea</id>
-      <name>JBoss Community Early Access Release Repository</name>
-      <url>https://repo.fusesource.com/nexus/content/groups/ea</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-    </repository>
-  </repositories>
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+    </license>
+  </licenses>
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>fuse-public-repository</id>
-      <name>FuseSource Community Release Repository</name>
-      <url>https://repo.fusesource.com/nexus/content/groups/public</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-    </pluginRepository>
-    <pluginRepository>
-      <id>fusesource.ea</id>
-      <name>JBoss Community Early Access Release Repository</name>
-      <url>https://repo.fusesource.com/nexus/content/groups/ea</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
+  <developers>
+    <developer>
+      <name>Marcelo "Ataxexe" Guimarães"</name>
+      <email>ataxexe@devnull.tools</email>
+      <organization>/dev/null > tools</organization>
+      <organizationUrl>https://github.com/devnull-tools</organizationUrl>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git@github.com:devnull-tools/boteco.git</connection>
+    <url>https://github.com/devnull-tools/boteco</url>
+  </scm>
 
   <build>
     <plugins>
