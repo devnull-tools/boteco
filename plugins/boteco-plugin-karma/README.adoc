@@ -3,5 +3,5 @@
 This is a simple karma plugin. It will parse any (++/--) terms that arrives in channels and computes the
 karma.
 
-This plugin uses the Object Storage so you can plug a different Object Storage (like the MongoDB plugin)
-to store the karmas outside the JVM.
+This plugin uses a MongoDB Database to store the karmas outside the JVM so make sure you have a MongoDB instance
+running and make sure you have configured the `boteco-plugin-mongodb`.
