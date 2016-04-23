@@ -29,7 +29,7 @@
                                http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
   <cm:property-placeholder id="mongodb.properties"
-                           persistent-id="tools.devnull.boteco.plugin.mongodb"
+                           persistent-id="tools.devnull.boteco.plugins.mongodb"
                            placeholder-prefix="{{"
                            placeholder-suffix="}}">
     <cm:default-properties>
