@@ -80,14 +80,24 @@
       <to uri="direct:invoke-message-processor"/>
     </route>
 
-    <route id="boteco.message.processing.processor">
+    <route id="boteco.message.processing.invoker">
       <from uri="direct:invoke-message-processor"/>
-      <process ref="message-processor-invoker"/>
+      <choice>
+        <when>
+          <simple>${in.header.messageProcessor} != null</simple>
+          <process ref="message-processor-invoker"/>
+        </when>
+      </choice>
     </route>
 
     <route id="boteco.message.processing.listener">
       <from uri="direct:invoke-listeners"/>
-      <process ref="message-listener-invoker"/>
+      <choice>
+        <when>
+          <simple>${in.header.messageProcessor} != null</simple>
+          <process ref="message-listener-invoker"/>
+        </when>
+      </choice>
     </route>
 
   </camelContext>

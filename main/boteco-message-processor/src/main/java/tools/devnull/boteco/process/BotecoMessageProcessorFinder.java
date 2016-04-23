@@ -33,7 +33,7 @@ import java.util.List;
 
 public class BotecoMessageProcessorFinder implements Processor {
 
-  public static String MESSAGE_PROCESSOR = "MESSAGE_PROCESSOR";
+  public static String MESSAGE_PROCESSOR = "messageProcessor";
 
   private final List<MessageProcessor> messageProcessors;
 
