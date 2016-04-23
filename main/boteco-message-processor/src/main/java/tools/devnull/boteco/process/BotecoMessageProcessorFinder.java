@@ -48,6 +48,7 @@ public class BotecoMessageProcessorFinder implements Processor {
         .filter(processor -> processor.canProcess(message))
         .findFirst()
         .ifPresent(processor -> {
+          exchange.getIn().setHeader(MESSAGE_PROCESSOR, processor);
           exchange.getOut().setBody(message);
           exchange.getOut().setHeader(MESSAGE_PROCESSOR, processor);
         });

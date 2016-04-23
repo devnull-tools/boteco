@@ -76,15 +76,10 @@
       <from uri="activemq:queue:boteco.process"/>
       <!-- Finds the message processor for this income message -->
       <process ref="message-processor-finder"/>
-      <wireTap uri="direct:invoke-listeners"/>
-      <to uri="direct:invoke-message-processor"/>
-    </route>
-
-    <route id="boteco.message.processing.invoker">
-      <from uri="direct:invoke-message-processor"/>
       <choice>
         <when>
           <simple>${in.header.messageProcessor} != null</simple>
+          <wireTap uri="direct:invoke-listeners"/>
           <process ref="message-processor-invoker"/>
         </when>
       </choice>
@@ -92,12 +87,7 @@
 
     <route id="boteco.message.processing.listener">
       <from uri="direct:invoke-listeners"/>
-      <choice>
-        <when>
-          <simple>${in.header.messageProcessor} != null</simple>
-          <process ref="message-listener-invoker"/>
-        </when>
-      </choice>
+      <process ref="message-listener-invoker"/>
     </route>
 
   </camelContext>
