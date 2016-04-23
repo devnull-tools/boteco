@@ -27,7 +27,16 @@
           xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
   <feature version="${project.version}" name="boteco"
            description="Contains base bundles, channels and plugins">
-    <feature>boteco-base</feature>
+    <feature>camel-irc</feature>
+    <feature>activemq-camel</feature>
+    <feature>camel-http4</feature>
+    <feature>camel-gson</feature>
+    <feature>camel-jsonpath</feature>
+
+    <!-- main bundles -->
+    <bundle>mvn:${project.groupId}/boteco-base/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-message-processor/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-rest-api/${project.version}</bundle>
 
     <bundle>mvn:org.mongodb/mongo-java-driver/3.0.4</bundle>
 
