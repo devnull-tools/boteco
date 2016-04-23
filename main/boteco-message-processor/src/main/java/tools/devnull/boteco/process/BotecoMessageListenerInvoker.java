@@ -25,6 +25,7 @@
 package tools.devnull.boteco.process;
 
 import org.apache.camel.Exchange;
+import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
@@ -32,34 +33,23 @@ import tools.devnull.boteco.message.MessageProcessorListener;
 
 import java.util.List;
 
-/**
- * A default strategy to process messages.
- * <p>
- * This strategy checks all {@link MessageProcessor message processors}
- * and the first one capable of process the {@link IncomeMessage message} will
- * be used.
- */
-public class BotecoMessageProcessor implements Processor {
+public class BotecoMessageListenerInvoker implements Processor {
 
-  private final List<MessageProcessor> messageProcessors;
   private final List<MessageProcessorListener> listeners;
 
-  public BotecoMessageProcessor(List<MessageProcessor> messageProcessors,
-                                List<MessageProcessorListener> listeners) {
-    this.messageProcessors = messageProcessors;
+  public BotecoMessageListenerInvoker(List<MessageProcessorListener> listeners) {
     this.listeners = listeners;
   }
 
   @Override
   public void process(Exchange exchange) throws Exception {
-    IncomeMessage message = exchange.getIn().getBody(IncomeMessage.class);
-    messageProcessors.stream()
-        .filter(processor -> processor.canProcess(message))
-        .findFirst()
-        .ifPresent(processor -> {
-          listeners.stream().forEach(listener -> listener.onProcess(message, processor));
-          processor.process(message);
-        });
+    Message income = exchange.getIn();
+    IncomeMessage message = income.getBody(IncomeMessage.class);
+    MessageProcessor messageProcessor = income.getHeader(
+        BotecoMessageProcessorFinder.MESSAGE_PROCESSOR,
+        MessageProcessor.class
+    );
+    listeners.stream().forEach(listener -> listener.onProcess(message, messageProcessor));
   }
 
 }
