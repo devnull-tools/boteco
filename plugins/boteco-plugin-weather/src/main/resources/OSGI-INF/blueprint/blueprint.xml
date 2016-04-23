@@ -34,7 +34,7 @@
 
   <service id="weather-plugin"
            interface="tools.devnull.boteco.message.MessageProcessor">
-    <bean class="tools.devnull.boteco.plugin.weather.WeatherMessageProcessor"/>
+    <bean class="tools.devnull.boteco.plugins.weather.WeatherMessageProcessor"/>
   </service>
 
 </blueprint>

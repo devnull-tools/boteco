@@ -30,7 +30,7 @@
 
   <service id="ping-plugin"
            interface="tools.devnull.boteco.message.MessageProcessor">
-    <bean class="tools.devnull.boteco.plugin.ping.PingMessageProcessor" />
+    <bean class="tools.devnull.boteco.plugins.ping.PingMessageProcessor" />
   </service>
 
 </blueprint>

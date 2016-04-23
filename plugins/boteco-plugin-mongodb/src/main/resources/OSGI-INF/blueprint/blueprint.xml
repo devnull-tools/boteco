@@ -41,7 +41,7 @@
   <service id="mongodb-object-storage"
            interface="tools.devnull.boteco.storage.ObjectStorage"
            ranking="1">
-    <bean class="tools.devnull.boteco.plugin.mongodb.MongodbObjectStorage">
+    <bean class="tools.devnull.boteco.plugins.mongodb.MongodbObjectStorage">
       <argument value="{{db.url}}"/>
       <argument value="{{db.database}}"/>
     </bean>
