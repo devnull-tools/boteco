@@ -93,16 +93,21 @@ public class KarmaMessageProcessor implements MessageProcessor, ServiceLocator {
     BasicDBObject query = new BasicDBObject();
     query.put("_id", term);
     Document result = karmas.find(query).first();
-    return result == null ? new Karma(term) : gson.fromJson(result.toJson(), Karma.class);
+    if (result == null) {
+      Karma newKarma = new Karma(term);
+      karmas.insertOne(Document.parse(gson.toJson(newKarma)));
+      return newKarma;
+    }
+    return gson.fromJson(result.toJson(), Karma.class);
   }
 
   private void updateKarma(Karma karma) {
     BasicDBObject query = new BasicDBObject();
     query.put("_id", karma.name());
-    // remove karma
     if (karma.value() != 0) {
       karmas.updateOne(query, new Document("$set", new Document().append("value", karma.value())));
     } else {
+      // remove karma if it's value is zero (something like a garbage collector)
       karmas.findOneAndDelete(query);
     }
 
