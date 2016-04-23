@@ -27,26 +27,16 @@
           xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
   <feature version="${project.version}" name="boteco"
            description="Contains base bundles, channels and plugins">
-    <!-- additional camel features -->
-    <feature>camel-irc</feature>
-    <feature>activemq-camel</feature>
-    <feature>camel-http4</feature>
-    <feature>camel-gson</feature>
-    <feature>camel-jsonpath</feature>
+    <feature>boteco-base</feature>
 
     <bundle>mvn:org.mongodb/mongo-java-driver/3.0.4</bundle>
-
-    <!-- main bundles -->
-    <bundle>mvn:${project.groupId}/boteco-base/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-message-processor/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-rest-api/${project.version}</bundle>
 
     <!-- plugins -->
     <bundle>mvn:${project.groupId}/boteco-plugin-ping/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-weather/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-redhat/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-karma/${project.version}</bundle>
-    <bundle start="false">mvn:${project.groupId}/boteco-plugin-mongodb/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-mongodb/${project.version}</bundle>
 
     <!-- channels -->
     <bundle>mvn:${project.groupId}/boteco-channel-irc/${project.version}</bundle>
@@ -56,7 +46,6 @@
 
   <feature version="${project.version}" name="boteco-base"
            description="Contains base bundles">
-    <!-- additional camel features -->
     <feature>camel-irc</feature>
     <feature>activemq-camel</feature>
     <feature>camel-http4</feature>
@@ -67,23 +56,5 @@
     <bundle>mvn:${project.groupId}/boteco-base/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-message-processor/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-rest-api/${project.version}</bundle>
-  </feature>
-
-  <feature version="${project.version}" name="boteco-plugins"
-           description="Contains plugin bundles">
-    <!-- plugins -->
-    <bundle>mvn:${project.groupId}/boteco-plugin-ping/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-plugin-weather/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-plugin-redhat/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-plugin-karma/${project.version}</bundle>
-    <bundle start="false">mvn:${project.groupId}/boteco-plugin-mongodb/${project.version}</bundle>
-  </feature>
-
-  <feature version="${project.version}" name="boteco-channels"
-           description="Contains channel bundles">
-    <!-- channels -->
-    <bundle start="false">mvn:${project.groupId}/boteco-channel-irc/${project.version}</bundle>
-    <bundle start="false">mvn:${project.groupId}/boteco-channel-pushover/${project.version}</bundle>
-    <bundle start="false">mvn:${project.groupId}/boteco-channel-telegram/${project.version}</bundle>
   </feature>
 </features>

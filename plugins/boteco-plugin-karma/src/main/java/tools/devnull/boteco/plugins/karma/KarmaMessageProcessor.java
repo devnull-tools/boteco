@@ -24,11 +24,15 @@
 
 package tools.devnull.boteco.plugins.karma;
 
+import com.google.gson.Gson;
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
 import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.storage.ObjectStorage;
 
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -38,6 +42,14 @@ public class KarmaMessageProcessor implements MessageProcessor, ServiceLocator {
 
   private final Pattern pattern =
       Pattern.compile("(?<term>\\S+)(?<operation>\\+\\+|\\-\\-)(\\s|$)");
+
+  private final MongoCollection<Document> karmas;
+  private final Gson gson;
+
+  public KarmaMessageProcessor(MongoDatabase database) {
+    this.karmas = database.getCollection("karmas");
+    this.gson = new Gson();
+  }
 
   @Override
   public String id() {
@@ -77,19 +89,30 @@ public class KarmaMessageProcessor implements MessageProcessor, ServiceLocator {
     }
   }
 
-  private int operateKarma(String term, Consumer<Karma> operation) {
-    ObjectStorage storage = locate(ObjectStorage.class);
-    term = term.toLowerCase();
-    Karma karma = storage.retrieve(Karma.class).from("karmas").id(term);
-    if (karma == null) {
-      karma = new Karma(term);
-    }
-    operation.accept(karma);
-    if (karma.value() == 0) {
-      storage.remove(Karma.class).from("karmas").id(term);
+  private Karma findKarma(String term) {
+    BasicDBObject query = new BasicDBObject();
+    query.put("_id", term);
+    Document result = karmas.find(query).first();
+    return result == null ? new Karma(term) : gson.fromJson(result.toJson(), Karma.class);
+  }
+
+  private void updateKarma(Karma karma) {
+    BasicDBObject query = new BasicDBObject();
+    query.put("_id", karma.name());
+    // remove karma
+    if (karma.value() != 0) {
+      karmas.updateOne(query, new Document("$set", new Document().append("value", karma.value())));
     } else {
-      storage.store(Karma.class).into("karmas").value(karma);
+      karmas.findOneAndDelete(query);
     }
+
+  }
+
+  private int operateKarma(String term, Consumer<Karma> operation) {
+    term = term.toLowerCase();
+    Karma karma = findKarma(term);
+    operation.accept(karma);
+    updateKarma(karma);
     return karma.value();
   }
 

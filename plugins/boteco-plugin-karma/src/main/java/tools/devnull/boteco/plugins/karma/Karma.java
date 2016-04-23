@@ -25,9 +25,12 @@
 package tools.devnull.boteco.plugins.karma;
 
 import com.google.gson.annotations.SerializedName;
-import tools.devnull.boteco.storage.Storable;
 
-public class Karma implements Storable<String> {
+import java.io.Serializable;
+
+public class Karma implements Serializable {
+
+  private static final long serialVersionUID = 2646677579622620059L;
 
   @SerializedName("_id")
   private final String name;
@@ -35,11 +38,6 @@ public class Karma implements Storable<String> {
 
   public Karma(String name) {
     this.name = name;
-  }
-
-  @Override
-  public String id() {
-    return name;
   }
 
   public String name() {

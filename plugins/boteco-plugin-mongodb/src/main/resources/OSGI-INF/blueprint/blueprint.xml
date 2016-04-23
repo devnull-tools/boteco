@@ -38,10 +38,9 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <service id="mongodb-object-storage"
-           interface="tools.devnull.boteco.storage.ObjectStorage"
-           ranking="1">
-    <bean class="tools.devnull.boteco.plugins.mongodb.MongodbObjectStorage">
+  <service id="mongo-database" interface="com.mongodb.client.MongoDatabase">
+    <bean class="tools.devnull.boteco.plugins.mongodb.MongoDatabaseFactory"
+          factory-method="createDatabase">
       <argument value="{{db.url}}"/>
       <argument value="{{db.database}}"/>
     </bean>

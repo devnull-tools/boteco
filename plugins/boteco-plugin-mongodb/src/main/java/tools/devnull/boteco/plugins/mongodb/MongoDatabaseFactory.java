@@ -22,41 +22,27 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.storage;
+package tools.devnull.boteco.plugins.mongodb;
 
-import java.io.Serializable;
-import java.util.List;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoDatabase;
 
 /**
- * Interface to select a value for an operation.
- *
- * @param <T> the type of the value
+ * A factory for creating MongoDatabase objects
  */
-public interface ValueSelector<T extends Storable> {
+public class MongoDatabaseFactory {
 
   /**
-   * Selects the object that has the given id.
+   * Creates a new MongoDatabase object using the given uri and database name.
    *
-   * @param id the id of the object to retrieve
-   * @return the object that has the given id.
+   * @param uri      the mongo uri
+   * @param database the database to access
+   * @return a new MongoDatabase
    */
-  T id(Serializable id);
-
-  /**
-   * Selects the object that has the same id as the given object.
-   *
-   * @param value the value that has the desired id
-   * @return the object that has the same id as the given object
-   */
-  default T value(T value) {
-    return id(value.id());
+  public static MongoDatabase createDatabase(String uri, String database) {
+    MongoClient client = new MongoClient(new MongoClientURI(uri));
+    return client.getDatabase(database);
   }
-
-  /**
-   * Selects all objects from the store.
-   *
-   * @return all objects from the store.
-   */
-  List<T> all();
 
 }
