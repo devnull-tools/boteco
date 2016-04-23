@@ -4,7 +4,7 @@ This plugin contains an Object Storage that access a MongoDB instance.
 
 == How to configure
 
-Just put the `tools.devnull.boteco.plugin.mongodb.cfg` file in your fuse `etc` folder. The properties are:
+Just put the `tools.devnull.boteco.plugins.mongodb.cfg` file in your fuse `etc` folder. The properties are:
 
 db.url:: the url for the MongoDB instance (defaults to `mongodb://localhost:27017`)
 db.database:: the database to store the collections (defaults to `boteco`)
