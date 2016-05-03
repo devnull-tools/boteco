@@ -43,4 +43,10 @@
     </bean>
   </service>
 
+  <service id="karma-ranking-plugin" interface="tools.devnull.boteco.message.MessageProcessor">
+    <bean class="tools.devnull.boteco.plugins.karma.RankingMessageProcessor">
+      <argument ref="mongo-database"/>
+    </bean>
+  </service>
+
 </blueprint>

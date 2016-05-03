@@ -77,7 +77,6 @@ public class KarmaMessageProcessor implements MessageProcessor, ServiceLocator {
   }
 
   private String update(String term, String operation, ContentFormatter f) {
-    String value;
     int updatedValue = 0;
     switch (operation) {
       case "++":
@@ -87,14 +86,7 @@ public class KarmaMessageProcessor implements MessageProcessor, ServiceLocator {
         updatedValue = operateKarma(term, Karma::lower);
         break;
     }
-    if (updatedValue > 0) {
-      value = f.positive(updatedValue);
-    } else if (updatedValue < 0) {
-      value = f.negative(updatedValue);
-    } else {
-      value = f.value(updatedValue);
-    }
-    return value;
+    return f.number(updatedValue);
   }
 
   private void reply(IncomeMessage message, String term, String value, ContentFormatter f) {
