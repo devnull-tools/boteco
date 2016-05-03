@@ -72,7 +72,11 @@ public class RankingMessageProcessor implements MessageProcessor {
   private List<Karma> findKarmas(String term) {
     List<Karma> result = new ArrayList<>();
     BasicDBObject query = new BasicDBObject();
-    query.put("_id", new BasicDBObject("$regex", term).append("$options", "i"));
+    if (term.contains("*")) {
+      query.put("_id", new BasicDBObject("$regex", term.replace("*", ".*")).append("$options", "i"));
+    } else {
+      query.put("_id", term);
+    }
     FindIterable<Document> documents = karmas.find(query).sort(new BasicDBObject().append("value", -1)).limit(10);
     documents.forEach((Consumer<Document>) document -> result.add(gson.fromJson(document.toJson(), Karma.class)));
     return result;
