@@ -49,7 +49,7 @@ public class WeatherMessageProcessor implements MessageProcessor, ServiceLocator
 
   @Override
   public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("weather"));
+    return check(message).accept(command("weather").withArgs());
   }
 
   @Override
