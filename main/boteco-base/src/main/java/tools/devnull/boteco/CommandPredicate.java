@@ -24,44 +24,41 @@
 
 package tools.devnull.boteco;
 
-import java.util.List;
+import tools.devnull.boteco.message.IncomeMessage;
+
+import java.util.function.Predicate;
 
 /**
- * Interface that defines a command sent in a message.
+ * Interface that can create predicates for {@link Command} objects.
  */
-public interface Command {
+public interface CommandPredicate extends Predicate<IncomeMessage> {
 
   /**
-   * Returns the command name
+   * Returns a new predicate that accepts any arguments
    *
-   * @return the command name
+   * @return a new predicate that accepts any arguments
    */
-  String name();
+  default Predicate<IncomeMessage> withArgs() {
+    return this.and(message -> message.command().hasArgs());
+  }
 
   /**
-   * Returns the arguments list assuming that the arguments are separated by spaces.
-   * <p>
-   * If you need another implementation, just call {@link #arg()} and the entire string
-   * will be returned.
+   * Returns a new predicate that accepts arguments that matches the given filter
    *
-   * @return the arguments list
+   * @param predicate the filter to test
+   * @return a new predicate that accepts arguments that matches the given filter
    */
-  List<String> args();
+  default Predicate<IncomeMessage> withArgs(Predicate<String> predicate) {
+    return this.and(message -> message.command().args().stream().allMatch(predicate));
+  }
 
   /**
-   * Returns the argument string
+   * Returns a new predicate that rejects any arguments
    *
-   * @return the argument
+   * @return a new predicate that rejects any arguments
    */
-  String arg();
-
-  /**
-   * Returns {@code true} if this command has arguments
-   *
-   * @return {@code true} if this command has arguments
-   */
-  default boolean hasArgs() {
-    return arg() != null && !arg().isEmpty();
+  default Predicate<IncomeMessage> withoutArgs() {
+    return this.and(message -> !message.command().hasArgs());
   }
 
 }

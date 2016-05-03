@@ -54,8 +54,10 @@ public class Predicates {
     return IncomeMessage::hasCommand;
   }
 
-  public static Predicate<IncomeMessage> command(String commandName) {
-    return hasCommand().and(new AcceptedValuePredicate<>(commandName, m -> m.command().name()));
+  public static CommandPredicate command(String commandName) {
+    return message -> hasCommand()
+        .and(new AcceptedValuePredicate<>(commandName, m -> m.command().name()))
+        .test(message);
   }
 
   /**
