@@ -5,3 +5,11 @@ karma.
 
 This plugin uses a MongoDB Database to store the karmas outside the JVM so make sure you have a MongoDB instance
 running and make sure you have configured the `boteco-plugin-mongodb`.
+
+== Configuration
+
+You can configure the karma expressions by creating a config named `tools.devnull.boteco.plugins.karma` with the
+following key patterns:
+
+${key}.karma:: the value of this property will be used instead of the word karma
+${key}.term:: the value of this property will be used instead of the karma term

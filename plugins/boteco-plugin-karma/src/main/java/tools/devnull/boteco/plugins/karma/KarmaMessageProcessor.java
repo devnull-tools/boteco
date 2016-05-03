@@ -34,6 +34,7 @@ import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 
+import java.util.Properties;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,8 +46,10 @@ public class KarmaMessageProcessor implements MessageProcessor, ServiceLocator {
 
   private final MongoCollection<Document> karmas;
   private final Gson gson;
+  private final Properties properties;
 
-  public KarmaMessageProcessor(MongoDatabase database) {
+  public KarmaMessageProcessor(MongoDatabase database, Properties properties) {
+    this.properties = properties;
     this.karmas = database.getCollection("karmas");
     this.gson = new Gson();
   }
@@ -63,30 +66,41 @@ public class KarmaMessageProcessor implements MessageProcessor, ServiceLocator {
 
   @Override
   public void process(IncomeMessage message) {
+    ContentFormatter f = message.channel().formatter();
     Matcher matcher = pattern.matcher(message.content());
     while (matcher.find()) {
       String term = matcher.group("term");
       String operation = matcher.group("operation");
-      int updatedValue = 0;
-      switch (operation) {
-        case "++":
-          updatedValue = operateKarma(term, Karma::raise);
-          break;
-        case "--":
-          updatedValue = operateKarma(term, Karma::lower);
-          break;
-      }
-      ContentFormatter f = message.channel().formatter();
-      String value;
-      if (updatedValue > 0) {
-        value = f.positive(updatedValue);
-      } else if (updatedValue < 0) {
-        value = f.negative(updatedValue);
-      } else {
-        value = f.value(updatedValue);
-      }
-      message.reply("%s has now %s points of karma", f.accent(term), value);
+      String value = update(term, operation, f);
+      reply(message, term, value, f);
     }
+  }
+
+  private String update(String term, String operation, ContentFormatter f) {
+    String value;
+    int updatedValue = 0;
+    switch (operation) {
+      case "++":
+        updatedValue = operateKarma(term, Karma::raise);
+        break;
+      case "--":
+        updatedValue = operateKarma(term, Karma::lower);
+        break;
+    }
+    if (updatedValue > 0) {
+      value = f.positive(updatedValue);
+    } else if (updatedValue < 0) {
+      value = f.negative(updatedValue);
+    } else {
+      value = f.value(updatedValue);
+    }
+    return value;
+  }
+
+  private void reply(IncomeMessage message, String term, String value, ContentFormatter f) {
+    String karma = properties.getProperty(term + ".karma", "karma");
+    term = properties.getProperty(term + ".term", term);
+    message.reply("%s has now %s points of %s", f.accent(term), value, karma);
   }
 
   private Karma findKarma(String term) {
