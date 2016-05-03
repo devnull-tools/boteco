@@ -6,6 +6,14 @@ karma.
 This plugin uses a MongoDB Database to store the karmas outside the JVM so make sure you have a MongoDB instance
 running and make sure you have configured the `boteco-plugin-mongodb`.
 
+== Querying ranks
+
+There is a command `rank` that allows queries to the karma database. The options are:
+
+- Query for a specific term by using the term as is
+- Query for a _like_ term by using `*` as wildcard
+- Reverse order by using the prefix `!` (can be combined with the other options)
+
 == Configuration
 
 You can configure the karma expressions by creating a config named `tools.devnull.boteco.plugins.karma` with the

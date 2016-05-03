@@ -43,6 +43,9 @@ import static tools.devnull.boteco.message.MessageChecker.check;
 
 public class RankingMessageProcessor implements MessageProcessor {
 
+  private static final int ASC = 1;
+  private static final int DESC = -1;
+
   private final MongoCollection<Document> karmas;
   private final Gson gson;
 
@@ -70,14 +73,19 @@ public class RankingMessageProcessor implements MessageProcessor {
   }
 
   private List<Karma> findKarmas(String term) {
+    int order = DESC;
     List<Karma> result = new ArrayList<>();
     BasicDBObject query = new BasicDBObject();
+    if (term.startsWith("!")) {
+      term = term.substring(1, term.length());
+      order = ASC;
+    }
     if (term.contains("*")) {
       query.put("_id", new BasicDBObject("$regex", term.replace("*", ".*")).append("$options", "i"));
     } else {
       query.put("_id", term);
     }
-    FindIterable<Document> documents = karmas.find(query).sort(new BasicDBObject().append("value", -1)).limit(10);
+    FindIterable<Document> documents = karmas.find(query).sort(new BasicDBObject().append("value", order)).limit(10);
     documents.forEach((Consumer<Document>) document -> result.add(gson.fromJson(document.toJson(), Karma.class)));
     return result;
   }
