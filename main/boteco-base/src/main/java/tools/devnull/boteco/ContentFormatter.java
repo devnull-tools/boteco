@@ -106,4 +106,24 @@ public interface ContentFormatter {
    */
   String tag(Object content);
 
+  /**
+   * Adds a number format to the given content.
+   * <p>
+   * The default implementation adds a {@link #positive(Object)} format
+   * if the number is positive and a {@link #negative(Object)} format if
+   * the number is negative.
+   *
+   * @param value the value to format
+   * @return the formatted value
+   */
+  default String number(int value) {
+    if (value > 0) {
+      return positive(value);
+    } else if (value < 0) {
+      return negative(value);
+    } else {
+      return value(value);
+    }
+  }
+
 }
