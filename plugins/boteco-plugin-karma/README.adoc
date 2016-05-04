@@ -24,4 +24,6 @@ ${key}.term:: the value of this property will be used instead of the "karma" ter
 ${key}.unit:: the value of this property will be used instead of the "points" term
 ${key}:: the value of this property will be used instead of the default template
 
-The default template is `%t has now %n %u of %k`.
+The default template is `%t has now %n %u of %k`. The placeholders are:
+
+
