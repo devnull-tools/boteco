@@ -22,3 +22,5 @@ following key patterns:
 ${key}.karma:: the value of this property will be used instead of the word karma
 ${key}.term:: the value of this property will be used instead of the "karma" term
 ${key}.unit:: the value of this property will be used instead of the "points" term
+${key}:: the value of this property will be used instead of the default template
+
