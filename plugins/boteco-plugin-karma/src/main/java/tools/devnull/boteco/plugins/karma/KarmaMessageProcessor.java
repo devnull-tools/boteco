@@ -24,11 +24,6 @@
 
 package tools.devnull.boteco.plugins.karma;
 
-import com.google.gson.Gson;
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
 import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.message.IncomeMessage;
@@ -44,14 +39,12 @@ public class KarmaMessageProcessor implements MessageProcessor, ServiceLocator {
   private final Pattern pattern =
       Pattern.compile("(?<term>\\S+)(?<operation>\\+\\+|\\-\\-)(\\s|$)");
 
-  private final MongoCollection<Document> karmas;
-  private final Gson gson;
+  private final KarmaRepository repository;
   private final Properties properties;
 
-  public KarmaMessageProcessor(MongoDatabase database, Properties properties) {
+  public KarmaMessageProcessor(KarmaRepository repository, Properties properties) {
+    this.repository = repository;
     this.properties = properties;
-    this.karmas = database.getCollection("karmas");
-    this.gson = new Gson();
   }
 
   @Override
@@ -98,35 +91,11 @@ public class KarmaMessageProcessor implements MessageProcessor, ServiceLocator {
     message.reply(content);
   }
 
-  private Karma findKarma(String term) {
-    BasicDBObject query = new BasicDBObject();
-    query.put("_id", term);
-    Document result = karmas.find(query).first();
-    if (result == null) {
-      Karma newKarma = new Karma(term);
-      karmas.insertOne(Document.parse(gson.toJson(newKarma)));
-      return newKarma;
-    }
-    return gson.fromJson(result.toJson(), Karma.class);
-  }
-
-  private void updateKarma(Karma karma) {
-    BasicDBObject query = new BasicDBObject();
-    query.put("_id", karma.name());
-    if (karma.value() != 0) {
-      karmas.updateOne(query, new Document("$set", new Document().append("value", karma.value())));
-    } else {
-      // remove karma if it's value is zero (something like a garbage collector)
-      karmas.findOneAndDelete(query);
-    }
-
-  }
-
   private int operateKarma(String term, Consumer<Karma> operation) {
     term = term.toLowerCase();
-    Karma karma = findKarma(term);
+    Karma karma = repository.find(term);
     operation.accept(karma);
-    updateKarma(karma);
+    repository.update(karma);
     return karma.value();
   }
 

@@ -24,39 +24,14 @@
 
 package tools.devnull.boteco.plugins.karma;
 
-import tools.devnull.boteco.ContentFormatter;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
-
 import java.util.List;
 
-import static tools.devnull.boteco.Predicates.command;
-import static tools.devnull.boteco.message.MessageChecker.check;
+public interface KarmaRepository {
 
-public class RankingMessageProcessor implements MessageProcessor {
+  Karma find(String term);
 
-  private final KarmaRepository repository;
+  void update(Karma karma);
 
-  public RankingMessageProcessor(KarmaRepository repository) {
-    this.repository = repository;
-  }
-
-  @Override
-  public String id() {
-    return "rank";
-  }
-
-  @Override
-  public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("rank").withArgs());
-  }
-
-  @Override
-  public void process(IncomeMessage message) {
-    ContentFormatter f = message.channel().formatter();
-    List<Karma> result = repository.search(message.command().arg());
-    if (result.isEmpty()) message.reply(f.error("No karmas found"));
-    result.forEach(karma -> message.reply("%s (%s)", f.accent(karma.name()), f.number(karma.value())));
-  }
+  List<Karma> search(String query);
 
 }

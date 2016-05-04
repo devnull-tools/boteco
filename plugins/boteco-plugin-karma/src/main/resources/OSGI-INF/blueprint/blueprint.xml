@@ -34,9 +34,13 @@
 
   <reference id="mongo-database" interface="com.mongodb.client.MongoDatabase"/>
 
+  <bean id="repository" class="tools.devnull.boteco.plugins.karma.KarmaMongoDB">
+    <argument ref="mongo-database"/>
+  </bean>
+
   <service id="karma-plugin" interface="tools.devnull.boteco.message.MessageProcessor">
     <bean class="tools.devnull.boteco.plugins.karma.KarmaMessageProcessor">
-      <argument ref="mongo-database"/>
+      <argument ref="repository"/>
       <argument>
         <cm:cm-properties persistent-id="tools.devnull.boteco.plugins.karma" update="true"/>
       </argument>
@@ -45,7 +49,7 @@
 
   <service id="karma-ranking-plugin" interface="tools.devnull.boteco.message.MessageProcessor">
     <bean class="tools.devnull.boteco.plugins.karma.RankingMessageProcessor">
-      <argument ref="mongo-database"/>
+      <argument ref="repository"/>
     </bean>
   </service>
 
