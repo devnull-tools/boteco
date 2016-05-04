@@ -71,12 +71,12 @@ public class KarmaMessageProcessor implements MessageProcessor, ServiceLocator {
     while (matcher.find()) {
       String term = matcher.group("term");
       String operation = matcher.group("operation");
-      String value = update(term, operation, f);
+      int value = update(term, operation, f);
       reply(message, term, value, f);
     }
   }
 
-  private String update(String term, String operation, ContentFormatter f) {
+  private int update(String term, String operation, ContentFormatter f) {
     int updatedValue = 0;
     switch (operation) {
       case "++":
@@ -86,13 +86,16 @@ public class KarmaMessageProcessor implements MessageProcessor, ServiceLocator {
         updatedValue = operateKarma(term, Karma::lower);
         break;
     }
-    return f.number(updatedValue);
+    return updatedValue;
   }
 
-  private void reply(IncomeMessage message, String term, String value, ContentFormatter f) {
-    String karma = properties.getProperty(term + ".karma", "karma");
-    term = properties.getProperty(term + ".term", term);
-    message.reply("%s has now %s points of %s", f.accent(term), value, karma);
+  private void reply(IncomeMessage message, String term, int value, ContentFormatter f) {
+    String content = properties.getProperty(term, "%t has now %n %u of %k");
+    content = content.replace("%t", f.accent(properties.getProperty(term + ".term", term)));
+    content = content.replace("%n", f.number(value));
+    content = content.replace("%u", properties.getProperty(term + ".unit", "points"));
+    content = content.replace("%k", properties.getProperty(term + ".karma", "karma"));
+    message.reply(content);
   }
 
   private Karma findKarma(String term) {
