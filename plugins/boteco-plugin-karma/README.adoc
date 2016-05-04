@@ -19,11 +19,15 @@ There is a command `rank` that allows queries to the karma database. The options
 You can configure the karma expressions by creating a config named `tools.devnull.boteco.plugins.karma` with the
 following key patterns:
 
-${key}.karma:: the value of this property will be used instead of the word karma
-${key}.term:: the value of this property will be used instead of the "karma" term
-${key}.unit:: the value of this property will be used instead of the "points" term
 ${key}:: the value of this property will be used instead of the default template
 
 The default template is `%t has now %n %u of %k`. The placeholders are:
 
+- `%t`: the term
+- `%n`: the amount
+- `%u`: the unit of the amount (defaults to "points")
+- `%k`: the type of the amount (defaults to "karma")
 
+${key}.term:: defines the value for the `%t` placeholder
+${key}.unit:: defines the value for the `%u` placeholder
+${key}.karma:: defines the value for the `%k` placeholder
