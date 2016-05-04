@@ -20,4 +20,5 @@ You can configure the karma expressions by creating a config named `tools.devnul
 following key patterns:
 
 ${key}.karma:: the value of this property will be used instead of the word karma
-${key}.term:: the value of this property will be used instead of the karma term
+${key}.term:: the value of this property will be used instead of the "karma" term
+${key}.unit:: the value of this property will be used instead of the "points" term
