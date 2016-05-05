@@ -55,7 +55,7 @@ public class TelegramContentFormatter implements ContentFormatter {
 
   @Override
   public String error(Object content) {
-    return "*_" + String.valueOf(content) + "_*";
+    return "*" + String.valueOf(content) + "*";
   }
 
   @Override
