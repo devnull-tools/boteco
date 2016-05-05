@@ -67,4 +67,10 @@ public class TelegramContentFormatter implements ContentFormatter {
   public String tag(Object content) {
     return String.format("[[%s]]", String.valueOf(content));
   }
+
+  @Override
+  public String mention(String user) {
+    return "@" + user;
+  }
+
 }

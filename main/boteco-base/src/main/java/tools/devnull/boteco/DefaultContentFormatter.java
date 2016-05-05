@@ -69,4 +69,9 @@ public class DefaultContentFormatter implements ContentFormatter {
     return String.format("[%s]", String.valueOf(content));
   }
 
+  @Override
+  public String mention(String user) {
+    return user;
+  }
+
 }

@@ -107,6 +107,14 @@ public interface ContentFormatter {
   String tag(Object content);
 
   /**
+   * Formats a mention to the given user
+   *
+   * @param user the user to mention
+   * @return the formatted content
+   */
+  String mention(String user);
+
+  /**
    * Adds a number format to the given content.
    * <p>
    * The default implementation adds a {@link #positive(Object)} format
