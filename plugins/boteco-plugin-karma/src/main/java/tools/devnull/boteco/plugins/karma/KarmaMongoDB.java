@@ -79,7 +79,7 @@ public class KarmaMongoDB implements KarmaRepository {
     List<Karma> result = new ArrayList<>();
     BasicDBObject query = new BasicDBObject();
     if (queryString.startsWith("!")) {
-      queryString = queryString.substring(1, queryString.length());
+      queryString = queryString.substring(1);
       order = ASC;
     }
     if (queryString.contains("*")) {
