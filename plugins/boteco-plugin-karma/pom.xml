@@ -73,12 +73,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.mongodb</groupId>
-      <artifactId>mongo-java-driver</artifactId>
-      <version>3.0.4</version>
-    </dependency>
-
-    <dependency>
       <groupId>tools.devnull</groupId>
       <artifactId>kodo</artifactId>
       <version>1.0</version>
