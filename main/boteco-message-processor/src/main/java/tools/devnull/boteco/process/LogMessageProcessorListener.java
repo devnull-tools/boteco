@@ -36,18 +36,11 @@ public class LogMessageProcessorListener implements MessageProcessorListener {
 
   @Override
   public void onProcess(IncomeMessage message, MessageProcessor messageProcessor) {
-    logger.info(String.format("[%s] processing income message from %s@%s:%s",
+    logger.info(String.format("[%s] [%s@%s:%s] %s",
         messageProcessor.id(),
         message.sender(),
         message.channel().id(),
-        message.target()));
-    if (logger.isDebugEnabled()) {
-      logger.debug(String.format("[%s] [%s@%s:%s] %s",
-          messageProcessor.id(),
-          message.sender(),
-          message.channel().id(),
-          message.target(),
-          message.content()));
-    }
+        message.target(),
+        message.content()));
   }
 }
