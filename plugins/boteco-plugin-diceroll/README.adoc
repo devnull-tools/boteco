@@ -6,11 +6,13 @@ pattern `n`d`s`, where:
 - `n`: number of dices
 - `s`: number of sides (valid ones: 4, 6, 8, 10, 12 and 20)
 
+To concat more dices, use the `+` operator. You can also add a bonus by using a number without the `d`.
+
 Example:
 
 [source]
 ----
-<prefix> roll 2d6 d8
+<prefix> roll 2d6 + d8 + 2
 ----
 
-This will roll two d6's plus one d8.
+This will roll two d6's plus one d8 and add a bonus of 2.

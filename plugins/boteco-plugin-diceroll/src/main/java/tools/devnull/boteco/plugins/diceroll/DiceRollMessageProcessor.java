@@ -48,7 +48,7 @@ public class DiceRollMessageProcessor implements MessageProcessor {
     ContentFormatter f = message.channel().formatter();
     DiceRoll diceRoll = new DiceRoll(message.command().arg());
     int points = diceRoll.roll();
-    message.reply("You got %s points!", f.value(points));
+    message.reply("%s, you got %s points!", f.accent(message.sender()), f.value(points));
   }
 
 }

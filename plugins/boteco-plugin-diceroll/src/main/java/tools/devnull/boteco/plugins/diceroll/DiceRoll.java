@@ -35,7 +35,7 @@ public class DiceRoll {
   }
 
   public int roll() {
-    String[] rolls = roll.split("\\s+");
+    String[] rolls = roll.split("\\s*[+]\\s*");
     if (rolls.length > 1) {
       return Arrays.stream(rolls)
           .mapToInt(s -> new DiceRoll(s).roll())
@@ -47,12 +47,14 @@ public class DiceRoll {
 
   private int _roll() {
     int total = 0;
-    int dices;
-    int sides;
+    int dices = 0;
+    int sides = 0;
 
     if (roll.startsWith("d")) {
       dices = 1;
       sides = Integer.parseInt(roll.substring(1));
+    } else if(roll.matches("\\d+")) {
+      total = Integer.parseInt(roll);
     } else {
       String[] split = roll.split("d");
       dices = Integer.parseInt(split[0]);
@@ -62,6 +64,7 @@ public class DiceRoll {
     for (int i = 0; i < dices; i++) {
       total += new Dice(sides).roll();
     }
+
     return total;
   }
 
