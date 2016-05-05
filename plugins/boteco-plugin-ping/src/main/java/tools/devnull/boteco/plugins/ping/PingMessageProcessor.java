@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.plugins.ping;
 
+import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 
@@ -48,7 +49,8 @@ public class PingMessageProcessor implements MessageProcessor {
 
   @Override
   public void process(IncomeMessage message) {
-    message.reply("%s: pong", message.sender());
+    ContentFormatter f = message.channel().formatter();
+    message.reply("%s: pong", f.mention(message.sender()));
   }
 
 }
