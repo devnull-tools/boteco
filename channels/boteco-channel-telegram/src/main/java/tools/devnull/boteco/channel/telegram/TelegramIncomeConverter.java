@@ -39,7 +39,7 @@ public class TelegramIncomeConverter {
   @Converter
   public InputStream toInputStream(Map map) throws Exception {
     Gson gson = new GsonBuilder().create();
-    return new ByteArrayInputStream(gson.toJson(map).getBytes(Charset.defaultCharset()));
+    return new ByteArrayInputStream(gson.toJson(map).getBytes(Charset.forName("UTF-8")));
   }
 
 }
