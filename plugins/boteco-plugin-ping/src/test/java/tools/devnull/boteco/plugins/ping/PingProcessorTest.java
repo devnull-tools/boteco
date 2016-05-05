@@ -26,7 +26,10 @@ package tools.devnull.boteco.plugins.ping;
 
 import org.junit.Before;
 import org.junit.Test;
+import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.Command;
+import tools.devnull.boteco.ContentFormatter;
+import tools.devnull.boteco.DefaultContentFormatter;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.kodo.TestScenario;
@@ -56,11 +59,16 @@ public class PingProcessorTest {
 
   @Before
   public void initialize() {
+    Channel channel = mock(Channel.class);
+    ContentFormatter f = new DefaultContentFormatter();
+    when(channel.formatter()).thenReturn(f);
+
     processor = new PingMessageProcessor();
 
     pingMessage = mock(IncomeMessage.class);
     when(pingMessage.sender()).thenReturn("someone");
     when(pingMessage.hasCommand()).thenReturn(true);
+    when(pingMessage.channel()).thenReturn(channel);
 
     pingCommand = mock(Command.class);
     when(pingCommand.name()).thenReturn("ping");
