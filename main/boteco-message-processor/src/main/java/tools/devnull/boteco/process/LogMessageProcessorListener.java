@@ -41,5 +41,13 @@ public class LogMessageProcessorListener implements MessageProcessorListener {
         message.sender(),
         message.channel().id(),
         message.target()));
+    if (logger.isDebugEnabled()) {
+      logger.debug(String.format("[%s] [%s@%s:%s] %s",
+          messageProcessor.id(),
+          message.sender(),
+          message.channel().id(),
+          message.target(),
+          message.content()));
+    }
   }
 }
