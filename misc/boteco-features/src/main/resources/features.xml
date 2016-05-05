@@ -46,6 +46,7 @@
     <bundle>mvn:${project.groupId}/boteco-plugin-redhat/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-karma/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-mongodb/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-diceroll/${project.version}</bundle>
 
     <!-- channels -->
     <bundle>mvn:${project.groupId}/boteco-channel-irc/${project.version}</bundle>

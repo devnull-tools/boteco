@@ -1,0 +1,16 @@
+= DiceRoll Plugin
+
+This is a simple plugin for rolling dices. It exposes the `roll` command, which accepts a list of dices in the
+pattern `n`d`s`, where:
+
+- `n`: number of dices
+- `s`: number of sides (valid ones: 4, 6, 8, 10, 12 and 20)
+
+Example:
+
+[source]
+----
+<prefix> roll 2d6 d8
+----
+
+This will roll two d6's plus one d8.
