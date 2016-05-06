@@ -34,8 +34,8 @@
                            placeholder-suffix="}}">
     <cm:default-properties>
       <cm:property name="irc.nick" value="boteco"/>
-      <cm:property name="irc.server" value=""/>
-      <cm:property name="irc.channels" value=""/>
+      <cm:property name="irc.server" value="localhost"/>
+      <cm:property name="irc.channels" value="#boteco"/>
       <cm:property name="irc.port" value="6667"/>
       <!-- The irc nicknames the bot should ignore messages from -->
       <cm:property name="bot.ignorelist" value=""/>
