@@ -27,12 +27,15 @@ package tools.devnull.boteco;
 import org.junit.Before;
 import org.junit.Test;
 import tools.devnull.boteco.extractors.ExpressionCommandExtractor;
+import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.kodo.TestScenario;
 
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static tools.devnull.kodo.Spec.EMPTY;
 import static tools.devnull.kodo.Spec.be;
 import static tools.devnull.kodo.Spec.should;
@@ -42,10 +45,16 @@ public class ExpressionCommandExtractorTest {
   private CommandExtractor extractor;
   private Command command;
 
+  private IncomeMessage message(String content) {
+    IncomeMessage message = mock(IncomeMessage.class);
+    when(message.content()).thenReturn(content);
+    return message;
+  }
+
   @Before
   public void initialize() {
     extractor = new ExpressionCommandExtractor("^command\\s");
-    command = extractor.extract("command foo arg0 arg1");
+    command = extractor.extract(message("command foo arg0 arg1"));
   }
 
   @Test
@@ -57,11 +66,11 @@ public class ExpressionCommandExtractorTest {
 
   @Test
   public void testExtraction() {
-    TestScenario.given(extractor.extract("command foo"))
+    TestScenario.given(extractor.extract(message("command foo")))
         .the(name, should(be("foo")))
         .the(args, should(be(EMPTY)));
 
-    TestScenario.given(extractor.extract("command bar"))
+    TestScenario.given(extractor.extract(message("command bar")))
         .the(name, should(be("bar")))
         .the(args, should(be(EMPTY)));
 
@@ -87,7 +96,7 @@ public class ExpressionCommandExtractorTest {
   }
 
   private Predicate<CommandExtractor> accept(String string) {
-    return commandExtractor -> commandExtractor.isCommand(string);
+    return commandExtractor -> commandExtractor.isCommand(message(string));
   }
 
   private Predicate<CommandExtractor> reject(String string) {

@@ -83,12 +83,12 @@ public class IrcIncomeMessage implements IncomeMessage, ServiceLocator {
 
   @Override
   public boolean hasCommand() {
-    return commandExtractor.isCommand(content());
+    return commandExtractor.isCommand(this);
   }
 
   @Override
   public Command command() {
-    return commandExtractor.extract(content());
+    return commandExtractor.extract(this);
   }
 
   @Override

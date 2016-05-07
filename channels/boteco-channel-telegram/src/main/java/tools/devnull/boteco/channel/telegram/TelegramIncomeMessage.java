@@ -76,12 +76,12 @@ class TelegramIncomeMessage implements IncomeMessage, ServiceLocator {
 
   @Override
   public boolean hasCommand() {
-    return extractor.isCommand(content());
+    return extractor.isCommand(this);
   }
 
   @Override
   public Command command() {
-    return extractor.extract(content());
+    return extractor.extract(this);
   }
 
   @Override

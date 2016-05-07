@@ -26,6 +26,7 @@ package tools.devnull.boteco.extractors;
 
 import tools.devnull.boteco.Command;
 import tools.devnull.boteco.CommandExtractor;
+import tools.devnull.boteco.message.IncomeMessage;
 
 import java.io.Serializable;
 import java.util.regex.Pattern;
@@ -43,13 +44,13 @@ public class ExpressionCommandExtractor implements CommandExtractor, Serializabl
   }
 
   @Override
-  public boolean isCommand(String content) {
-    return pattern.matcher(content).find();
+  public boolean isCommand(IncomeMessage message) {
+    return message.isPrivate() || pattern.matcher(message.content()).find();
   }
 
-  public Command extract(String content) {
+  public Command extract(IncomeMessage message) {
     StringBuilder command = new StringBuilder(
-        pattern.matcher(content).replaceFirst("").trim()
+        pattern.matcher(message.content()).replaceFirst("").trim()
     );
     int firstSpace = command.indexOf(" ");
     if (firstSpace < 0) { // no arguments

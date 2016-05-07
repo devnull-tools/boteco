@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco;
 
+import tools.devnull.boteco.message.IncomeMessage;
+
 /**
  * Interface that defines a component capable of extracting a command from a message.
  */
@@ -32,17 +34,17 @@ public interface CommandExtractor {
   /**
    * Extracts a command from the given message.
    *
-   * @param content the message
+   * @param message the message
    * @return the extracted command.
    */
-  Command extract(String content);
+  Command extract(IncomeMessage message);
 
   /**
    * Checks if the given string is a command.
    *
-   * @param content the content to check
+   * @param message the message to check
    * @return <code>true</code> if the given content is a command.
    */
-  boolean isCommand(String content);
+  boolean isCommand(IncomeMessage message);
 
 }
