@@ -40,6 +40,7 @@ import org.apache.http.impl.client.HttpClients;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.function.Function;
 
 public class DefaultRestClient implements RestClient {
 
@@ -118,6 +119,9 @@ public class DefaultRestClient implements RestClient {
     String content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
     Gson gson = new Gson();
     return new RestConfiguration() {
+
+      Function<String, String> function = (string) -> string;
+
       @Override
       public RestConfiguration withHeader(String name, Object value) {
         request.addHeader(name, String.valueOf(value));
@@ -125,13 +129,19 @@ public class DefaultRestClient implements RestClient {
       }
 
       @Override
+      public RestConfiguration extract(Function<String, String> function) {
+        this.function = function;
+        return this;
+      }
+
+      @Override
       public String rawBody() {
-        return content;
+        return function.apply(content);
       }
 
       @Override
       public <E> E to(Class<? extends E> type) {
-        return gson.fromJson(content, type);
+        return gson.fromJson(function.apply(content), type);
       }
     };
   }
