@@ -81,6 +81,11 @@ public class DefaultRestClient implements RestClient {
       }
 
       @Override
+      public String rawBody() {
+        return content;
+      }
+
+      @Override
       public <E> E to(Class<? extends E> type) {
         return gson.fromJson(content, type);
       }

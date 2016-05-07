@@ -48,4 +48,11 @@ public interface RestConfiguration {
    */
   <E> E to(Class<? extends E> type);
 
+  /**
+   * Invokes the rest url and returns the raw body without parsing
+   *
+   * @return the raw body returned by the rest url
+   */
+  String rawBody();
+
 }
