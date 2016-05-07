@@ -30,7 +30,7 @@ import org.apache.camel.Converter;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Converter
@@ -39,7 +39,7 @@ public class TelegramIncomeConverter {
   @Converter
   public InputStream toInputStream(Map map) throws Exception {
     Gson gson = new GsonBuilder().create();
-    return new ByteArrayInputStream(gson.toJson(map).getBytes(Charset.forName("UTF-8")));
+    return new ByteArrayInputStream(gson.toJson(map).getBytes(StandardCharsets.UTF_8));
   }
 
 }
