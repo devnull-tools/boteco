@@ -27,10 +27,14 @@ package tools.devnull.boteco.process;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 
 public class BotecoMessageProcessorInvoker implements Processor {
+
+  private static final Logger logger = LoggerFactory.getLogger(BotecoMessageProcessorInvoker.class);
 
   @Override
   public void process(Exchange exchange) throws Exception {
@@ -40,7 +44,11 @@ public class BotecoMessageProcessorInvoker implements Processor {
         BotecoMessageProcessorFinder.MESSAGE_PROCESSOR,
         MessageProcessor.class
     );
-    messageProcessor.process(message);
+    try {
+      messageProcessor.process(message);
+    } catch (Throwable e) {
+      logger.error(e.getMessage(), e);
+    }
   }
 
 }

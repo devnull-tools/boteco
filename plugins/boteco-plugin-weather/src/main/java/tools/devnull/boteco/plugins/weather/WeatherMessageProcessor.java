@@ -64,7 +64,7 @@ public class WeatherMessageProcessor implements MessageProcessor, ServiceLocator
               "(select woeid from geo.places(1) where text=\"" +
               message.command().arg() + "\") and u=\"c\"")
           .build();
-      WeatherResults results = locate(RestClient.class).get(uri).to(WeatherResults.class);
+      WeatherResults results = locate(RestClient.class).get(uri).to(WeatherResults.class).result();
       ContentFormatter formatter = message.channel().formatter();
       if (results.hasResult()) {
         message.reply(String.format("%s: %s - %s / %s",
