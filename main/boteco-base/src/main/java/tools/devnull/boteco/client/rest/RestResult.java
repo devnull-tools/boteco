@@ -24,45 +24,44 @@
 
 package tools.devnull.boteco.client.rest;
 
-import java.util.function.Function;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
- * Interface that defines a rest configuration.
+ * Interface that defines a result to a REST invocation
  *
- * @see RestClient
+ * @param <E> The type of the result
  */
-public interface RestConfiguration {
+public interface RestResult<E> {
 
   /**
-   * Adds the given header to invocation
+   * Returns the result of the rest invocation.
    *
-   * @param name  the name of the header
-   * @param value the value of the header
-   * @return an instance of this object
+   * @return the result of the rest invocation.
    */
-  RestConfiguration withHeader(String name, Object value);
+  E result();
 
   /**
-   * Uses the given function to extract the body content before returning or parsing it.
+   * Invokes the given consumer passing the result.
    *
-   * @param function the function to apply to the returned body content
-   * @return an instance of this object
+   * @param consumer the consumer to use
+   * @return an instance of this object.
    */
-  RestConfiguration extract(Function<String, String> function);
+  RestResult and(Consumer<E> consumer);
 
   /**
-   * Invokes the rest url and parses the response into an object of the given class.
+   * Executes the given action in case of no result from the REST invocation
    *
-   * @param type the type of the result
-   * @return the parsed result
+   * @param action the action to execute.
    */
-  <E> RestResult<E> to(Class<? extends E> type);
+  void orElse(Runnable action);
 
   /**
-   * Invokes the rest url and returns the raw body without parsing
+   * Uses the given supplier to return a value in case of no result from the REST invocation
    *
-   * @return the raw body returned by the rest url
+   * @param supplier the supplier to use for retrieving the result
+   * @return the value returned by the supplier.
    */
-  String rawBody();
+  E orElse(Supplier<E> supplier);
 
 }

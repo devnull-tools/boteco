@@ -115,7 +115,7 @@ public interface ContentFormatter {
   String mention(String user);
 
   /**
-   * Adds a number format to the given content.
+   * Adds a number format to the given value.
    * <p>
    * The default implementation adds a {@link #positive(Object)} format
    * if the number is positive and a {@link #negative(Object)} format if
@@ -125,12 +125,27 @@ public interface ContentFormatter {
    * @return the formatted value
    */
   default String number(int value) {
+    return number((double) value, "%.0f");
+  }
+
+  /**
+   * Adds a number format to the given value.
+   * <p>
+   * The default implementation adds a {@link #positive(Object)} format
+   * if the number is positive and a {@link #negative(Object)} format if
+   * the number is negative.
+   *
+   * @param value the value to format
+   * @return the formatted value
+   */
+  default String number(double value, String format) {
+    String content = String.format(format, value);
     if (value > 0) {
-      return positive(value);
+      return positive(content);
     } else if (value < 0) {
-      return negative(value);
+      return negative(content);
     } else {
-      return value(value);
+      return value(content);
     }
   }
 

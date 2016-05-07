@@ -22,9 +22,10 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.client.rest;
+package tools.devnull.boteco.client.rest.impl;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -36,6 +37,10 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import tools.devnull.boteco.client.rest.RestClient;
+import tools.devnull.boteco.client.rest.RestConfiguration;
+import tools.devnull.boteco.client.rest.RestResult;
 
 import java.io.IOException;
 import java.net.URI;
@@ -51,7 +56,13 @@ public class DefaultRestClient implements RestClient {
   }
 
   public DefaultRestClient() {
-    this(HttpClients.createDefault());
+    PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+    cm.setMaxTotal(200);
+    cm.setDefaultMaxPerRoute(20);
+
+    this.client = HttpClients.custom()
+        .setConnectionManager(cm)
+        .build();
   }
 
   @Override
@@ -140,8 +151,12 @@ public class DefaultRestClient implements RestClient {
       }
 
       @Override
-      public <E> E to(Class<? extends E> type) {
-        return gson.fromJson(function.apply(content), type);
+      public <E> RestResult<E> to(Class<? extends E> type) {
+        try {
+          return new DefaultRestResult<>(gson.fromJson(function.apply(content), type));
+        } catch (JsonSyntaxException e) {
+          return new DefaultRestResult<>(null);
+        }
       }
     };
   }

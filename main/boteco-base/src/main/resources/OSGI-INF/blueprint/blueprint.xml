@@ -49,7 +49,7 @@
   </service>
 
   <service id="rest-client" interface="tools.devnull.boteco.client.rest.RestClient">
-    <bean class="tools.devnull.boteco.client.rest.DefaultRestClient"/>
+    <bean class="tools.devnull.boteco.client.rest.impl.DefaultRestClient"/>
   </service>
 
   <service id="activemq-component" interface="org.apache.camel.Component">

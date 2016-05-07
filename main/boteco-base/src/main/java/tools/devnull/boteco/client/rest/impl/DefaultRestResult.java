@@ -22,47 +22,43 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.client.rest;
+package tools.devnull.boteco.client.rest.impl;
 
-import java.util.function.Function;
+import tools.devnull.boteco.client.rest.RestResult;
 
-/**
- * Interface that defines a rest configuration.
- *
- * @see RestClient
- */
-public interface RestConfiguration {
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-  /**
-   * Adds the given header to invocation
-   *
-   * @param name  the name of the header
-   * @param value the value of the header
-   * @return an instance of this object
-   */
-  RestConfiguration withHeader(String name, Object value);
+public class DefaultRestResult<E> implements RestResult<E> {
 
-  /**
-   * Uses the given function to extract the body content before returning or parsing it.
-   *
-   * @param function the function to apply to the returned body content
-   * @return an instance of this object
-   */
-  RestConfiguration extract(Function<String, String> function);
+  private final E result;
 
-  /**
-   * Invokes the rest url and parses the response into an object of the given class.
-   *
-   * @param type the type of the result
-   * @return the parsed result
-   */
-  <E> RestResult<E> to(Class<? extends E> type);
+  public DefaultRestResult(E result) {
+    this.result = result;
+  }
 
-  /**
-   * Invokes the rest url and returns the raw body without parsing
-   *
-   * @return the raw body returned by the rest url
-   */
-  String rawBody();
+  @Override
+  public E result() {
+    return result;
+  }
 
+  @Override
+  public RestResult and(Consumer<E> consumer) {
+    if (result != null) {
+      consumer.accept(result);
+    }
+    return this;
+  }
+
+  @Override
+  public void orElse(Runnable action) {
+    if (result == null) {
+      action.run();
+    }
+  }
+
+  @Override
+  public E orElse(Supplier<E> supplier) {
+    return result != null ? result : supplier.get();
+  }
 }
