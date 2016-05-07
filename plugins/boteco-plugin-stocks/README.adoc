@@ -1,0 +1,4 @@
+= Stocks Plugin
+
+This is a plugin that retrieves stocks values. Use the command `stocks` or `stock` with the query and boteco will
+respond with the last traded value for the stock.
