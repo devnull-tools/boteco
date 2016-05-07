@@ -77,7 +77,8 @@ public class KBaseMessageProcessor implements MessageProcessor, ServiceLocator {
 
       KBaseSearchResult result = locate(RestClient.class).get(uri)
           .withHeader("Accept", "application/vnd.redhat.solr+json")
-          .to(KBaseSearchResult.class);
+          .to(KBaseSearchResult.class)
+          .result();
 
       ContentFormatter formatter = message.channel().formatter();
       KBaseSearchResult.Doc document = result.results().stream()
