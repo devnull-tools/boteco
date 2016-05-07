@@ -28,8 +28,12 @@ import com.google.gson.Gson;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.HttpClients;
 
@@ -67,6 +71,46 @@ public class DefaultRestClient implements RestClient {
   @Override
   public RestConfiguration get(String url) throws IOException {
     return execute(new HttpGet(url));
+  }
+
+  @Override
+  public RestConfiguration delete(URI uri) throws IOException {
+    return execute(new HttpDelete(uri));
+  }
+
+  @Override
+  public RestConfiguration delete(String url) throws IOException {
+    return execute(new HttpDelete(url));
+  }
+
+  @Override
+  public RestConfiguration put(URI uri) throws IOException {
+    return execute(new HttpPut(uri));
+  }
+
+  @Override
+  public RestConfiguration put(String url) throws IOException {
+    return execute(new HttpPut(url));
+  }
+
+  @Override
+  public RestConfiguration head(URI uri) throws IOException {
+    return execute(new HttpHead(uri));
+  }
+
+  @Override
+  public RestConfiguration head(String url) throws IOException {
+    return execute(new HttpHead(url));
+  }
+
+  @Override
+  public RestConfiguration options(URI uri) throws IOException {
+    return execute(new HttpOptions(uri));
+  }
+
+  @Override
+  public RestConfiguration options(String url) throws IOException {
+    return execute(new HttpOptions(url));
   }
 
   private RestConfiguration execute(HttpUriRequest request) throws IOException {
