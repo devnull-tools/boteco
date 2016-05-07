@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.client.rest;
 
+import java.util.function.Function;
+
 /**
  * Interface that defines a rest configuration.
  *
@@ -36,9 +38,17 @@ public interface RestConfiguration {
    *
    * @param name  the name of the header
    * @param value the value of the header
-   * @return an instance to this object
+   * @return an instance of this object
    */
   RestConfiguration withHeader(String name, Object value);
+
+  /**
+   * Uses the given function to extract the body content before returning or parsing it.
+   *
+   * @param function the function to apply to the returned body content
+   * @return an instance of this object
+   */
+  RestConfiguration extract(Function<String, String> function);
 
   /**
    * Invokes the rest url and parses the response into an object of the given class.
