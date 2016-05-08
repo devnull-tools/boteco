@@ -65,7 +65,7 @@ public class StocksMessageProcessor implements MessageProcessor, ServiceLocator 
           .extract(json())
           .to(StockResult.class)
           .and(stock -> stock.reply(message))
-          .orElse(() -> message.reply("%s: I didn't found results for %s",
+          .orElse(() -> message.reply("%s: I didn't find results for %s",
               f.mention(message.sender()),
               f.accent(query))
           );
