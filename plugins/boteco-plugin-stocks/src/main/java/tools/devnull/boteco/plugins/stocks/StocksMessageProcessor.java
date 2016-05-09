@@ -33,6 +33,7 @@ import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 
 import java.io.IOException;
+import java.util.Properties;
 import java.util.function.Function;
 
 import static tools.devnull.boteco.Predicates.command;
@@ -41,6 +42,12 @@ import static tools.devnull.boteco.message.MessageChecker.check;
 public class StocksMessageProcessor implements MessageProcessor, ServiceLocator {
 
   private static final Logger logger = LoggerFactory.getLogger(StocksMessageProcessor.class);
+
+  private final Properties configuration;
+
+  public StocksMessageProcessor(Properties configuration) {
+    this.configuration = configuration;
+  }
 
   @Override
   public String id() {
@@ -58,7 +65,13 @@ public class StocksMessageProcessor implements MessageProcessor, ServiceLocator 
   @Override
   public void process(IncomeMessage message) {
     ContentFormatter f = message.channel().formatter();
-    String query = message.command().arg();
+    String arg = message.command().arg();
+    String query;
+    if (!arg.contains(":") && configuration.containsKey("query.defaults.exchange")) {
+      query = configuration.getProperty("query.defaults.exchange") + ":" + arg;
+    } else {
+      query = arg;
+    }
     String url = "https://finance.google.com/finance/info?client=ig&q=" + query;
     try {
       locate(RestClient.class).get(url)

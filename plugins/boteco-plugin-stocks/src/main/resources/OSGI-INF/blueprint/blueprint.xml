@@ -35,7 +35,11 @@
   <reference id="mongo-database" interface="com.mongodb.client.MongoDatabase"/>
 
   <service id="stocks-plugin" interface="tools.devnull.boteco.message.MessageProcessor">
-    <bean class="tools.devnull.boteco.plugins.stocks.StocksMessageProcessor"/>
+    <bean class="tools.devnull.boteco.plugins.stocks.StocksMessageProcessor">
+      <argument>
+        <cm:cm-properties persistent-id="tools.devnull.boteco.plugins.stocks" update="true"/>
+      </argument>
+    </bean>
   </service>
 
 </blueprint>

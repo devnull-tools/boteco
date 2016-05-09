@@ -34,7 +34,7 @@ public class StockResult {
   private String name;
 
   @SerializedName("e")
-  private String trader;
+  private String exchange;
 
   @SerializedName("l_cur")
   private String lastTraded;
@@ -54,7 +54,7 @@ public class StockResult {
   public void reply(IncomeMessage message) {
     ContentFormatter f = message.channel().formatter();
     message.reply(String.format("%s as of %s: Opened at %s. Last traded at %s. Varied %s (%s)",
-        f.accent(name + ":" + trader),
+        f.accent(name + ":" + exchange),
         f.alternativeAccent(date),
         f.value(openedValue),
         f.value(lastTraded),
