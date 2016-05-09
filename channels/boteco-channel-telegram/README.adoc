@@ -4,7 +4,7 @@ This is the implementation of the Telegram Channel. It allows Message Processors
 
 == How to configure
 
-Just put the `tools.devnull.boteco.channel.telegram.cfg` file in your fuse `etc` folder. The properties are:
+Just use the config `tools.devnull.boteco.channel.telegram`. The supported properties are:
 
 bot.token:: the bot token (you get this one after a new bot registration)
 bot.whitelist:: the IDs that this bot will listen for messages (defaults to '' for all IDs)

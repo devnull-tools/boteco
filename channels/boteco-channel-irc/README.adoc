@@ -4,7 +4,7 @@ This is the implementation of the IRC Channel. It allows Message Processors to r
 
 == How to configure
 
-Just put the `tools.devnull.boteco.channel.irc.cfg` file in your fuse `etc` folder. The properties are:
+Just use the config `tools.devnull.boteco.channel.irc`. The supported properties are:
 
 irc.nick:: the nickname to use (defaults to 'boteco')
 irc.server:: the server to connect (defaults to 'localhost'

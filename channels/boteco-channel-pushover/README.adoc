@@ -5,6 +5,6 @@ alerts and notifications.
 
 == How to configure
 
-Just put the `tools.devnull.boteco.channel.pushover.cfg` file in your fuse `etc` folder. The properties are:
+Just use the config `tools.devnull.boteco.channel.pushover`. The supported properties are:
 
 pushover.token:: your pushover token
