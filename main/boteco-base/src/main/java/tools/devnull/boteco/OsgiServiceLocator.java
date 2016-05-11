@@ -30,6 +30,7 @@ import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +39,9 @@ import java.util.stream.Collectors;
 /**
  * A ServiceLocator that lookups services by using the OSGi Registry
  */
-public class OsgiServiceLocator implements ServiceLocator {
+public class OsgiServiceLocator implements ServiceLocator, Serializable {
+
+  private static final long serialVersionUID = 8996784912658235746L;
 
   public <T> T locate(Class<T> serviceClass) {
     BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
