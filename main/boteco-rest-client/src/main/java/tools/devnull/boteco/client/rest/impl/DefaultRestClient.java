@@ -43,7 +43,6 @@ import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.client.rest.RestConfiguration;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.Properties;
 
@@ -78,62 +77,62 @@ public class DefaultRestClient implements RestClient {
   }
 
   @Override
-  public RestConfiguration post(URI uri) throws IOException {
+  public RestConfiguration post(URI uri) {
     return execute(new HttpPost(uri));
   }
 
   @Override
-  public RestConfiguration post(String url) throws IOException {
+  public RestConfiguration post(String url) {
     return execute(new HttpPost(url));
   }
 
   @Override
-  public RestConfiguration get(URI uri) throws IOException {
+  public RestConfiguration get(URI uri) {
     return execute(new HttpGet(uri));
   }
 
   @Override
-  public RestConfiguration get(String url) throws IOException {
+  public RestConfiguration get(String url) {
     return execute(new HttpGet(url));
   }
 
   @Override
-  public RestConfiguration delete(URI uri) throws IOException {
+  public RestConfiguration delete(URI uri) {
     return execute(new HttpDelete(uri));
   }
 
   @Override
-  public RestConfiguration delete(String url) throws IOException {
+  public RestConfiguration delete(String url) {
     return execute(new HttpDelete(url));
   }
 
   @Override
-  public RestConfiguration put(URI uri) throws IOException {
+  public RestConfiguration put(URI uri) {
     return execute(new HttpPut(uri));
   }
 
   @Override
-  public RestConfiguration put(String url) throws IOException {
+  public RestConfiguration put(String url) {
     return execute(new HttpPut(url));
   }
 
   @Override
-  public RestConfiguration head(URI uri) throws IOException {
+  public RestConfiguration head(URI uri) {
     return execute(new HttpHead(uri));
   }
 
   @Override
-  public RestConfiguration head(String url) throws IOException {
+  public RestConfiguration head(String url) {
     return execute(new HttpHead(url));
   }
 
   @Override
-  public RestConfiguration options(URI uri) throws IOException {
+  public RestConfiguration options(URI uri) {
     return execute(new HttpOptions(uri));
   }
 
   @Override
-  public RestConfiguration options(String url) throws IOException {
+  public RestConfiguration options(String url) {
     return execute(new HttpOptions(url));
   }
 

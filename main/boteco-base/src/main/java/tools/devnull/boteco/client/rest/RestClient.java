@@ -24,7 +24,6 @@
 
 package tools.devnull.boteco.client.rest;
 
-import java.io.IOException;
 import java.net.URI;
 
 /**
@@ -38,7 +37,7 @@ public interface RestClient {
    * @param uri the uri to invoke
    * @return a component to select the type of the result
    */
-  RestConfiguration post(URI uri) throws IOException;
+  RestConfiguration post(URI uri);
 
   /**
    * Invokes the url using the POST http verb.
@@ -46,7 +45,7 @@ public interface RestClient {
    * @param url the url to invoke
    * @return a component to select the type of the result
    */
-  RestConfiguration post(String url) throws IOException;
+  RestConfiguration post(String url);
 
   /**
    * Invokes the url using the GET http verb.
@@ -54,7 +53,7 @@ public interface RestClient {
    * @param uri the uri to invoke
    * @return a component to select the type of the result
    */
-  RestConfiguration get(URI uri) throws IOException;
+  RestConfiguration get(URI uri);
 
   /**
    * Invokes the url using the GET http verb.
@@ -62,7 +61,7 @@ public interface RestClient {
    * @param url the url to invoke
    * @return a component to select the type of the result
    */
-  RestConfiguration get(String url) throws IOException;
+  RestConfiguration get(String url);
 
   /**
    * Invokes the url using the DELETE http verb.
@@ -70,7 +69,7 @@ public interface RestClient {
    * @param uri the uri to invoke
    * @return a component to select the type of the result
    */
-  RestConfiguration delete(URI uri) throws IOException;
+  RestConfiguration delete(URI uri);
 
   /**
    * Invokes the url using the DELETE http verb.
@@ -78,7 +77,7 @@ public interface RestClient {
    * @param url the url to invoke
    * @return a component to select the type of the result
    */
-  RestConfiguration delete(String url) throws IOException;
+  RestConfiguration delete(String url);
 
   /**
    * Invokes the url using the PUT http verb.
@@ -86,7 +85,7 @@ public interface RestClient {
    * @param uri the uri to invoke
    * @return a component to select the type of the result
    */
-  RestConfiguration put(URI uri) throws IOException;
+  RestConfiguration put(URI uri);
 
   /**
    * Invokes the url using the PUT http verb.
@@ -94,7 +93,7 @@ public interface RestClient {
    * @param url the url to invoke
    * @return a component to select the type of the result
    */
-  RestConfiguration put(String url) throws IOException;
+  RestConfiguration put(String url);
 
   /**
    * Invokes the url using the HEAD http verb.
@@ -102,7 +101,7 @@ public interface RestClient {
    * @param uri the uri to invoke
    * @return a component to select the type of the result
    */
-  RestConfiguration head(URI uri) throws IOException;
+  RestConfiguration head(URI uri);
 
   /**
    * Invokes the url using the HEAD http verb.
@@ -110,7 +109,7 @@ public interface RestClient {
    * @param url the url to invoke
    * @return a component to select the type of the result
    */
-  RestConfiguration head(String url) throws IOException;
+  RestConfiguration head(String url);
 
   /**
    * Invokes the url using the OPTIONS http verb.
@@ -118,7 +117,7 @@ public interface RestClient {
    * @param uri the uri to invoke
    * @return a component to select the type of the result
    */
-  RestConfiguration options(URI uri) throws IOException;
+  RestConfiguration options(URI uri);
 
   /**
    * Invokes the url using the OPTIONS http verb.
@@ -126,6 +125,6 @@ public interface RestClient {
    * @param url the url to invoke
    * @return a component to select the type of the result
    */
-  RestConfiguration options(String url) throws IOException;
+  RestConfiguration options(String url);
 
 }
