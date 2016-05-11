@@ -25,7 +25,6 @@
 package tools.devnull.boteco.plugins.karma;
 
 import tools.devnull.boteco.ContentFormatter;
-import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 
@@ -34,7 +33,7 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class KarmaMessageProcessor implements MessageProcessor, ServiceLocator {
+public class KarmaMessageProcessor implements MessageProcessor {
 
   private final Pattern pattern =
       Pattern.compile("(?<term>\\S+)(?<operation>\\+\\+|\\-\\-)(\\s|$)");
