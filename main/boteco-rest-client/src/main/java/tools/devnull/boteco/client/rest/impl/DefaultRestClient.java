@@ -24,10 +24,6 @@
 
 package tools.devnull.boteco.client.rest.impl;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
@@ -46,13 +42,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.client.rest.RestConfiguration;
-import tools.devnull.boteco.client.rest.RestResult;
 
 import java.io.IOException;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.util.Properties;
-import java.util.function.Function;
 
 public class DefaultRestClient implements RestClient {
 
@@ -141,38 +134,6 @@ public class DefaultRestClient implements RestClient {
   }
 
   private RestConfiguration execute(HttpUriRequest request) {
-    return new RestConfiguration() {
-
-      Function<String, String> function = (string) -> string;
-
-      @Override
-      public RestConfiguration withHeader(String name, Object value) {
-        request.addHeader(name, String.valueOf(value));
-        return this;
-      }
-
-      @Override
-      public RestConfiguration extract(Function<String, String> function) {
-        this.function = function;
-        return this;
-      }
-
-      @Override
-      public String rawBody() throws IOException {
-        HttpResponse response = client.execute(request);
-        String content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
-        return function.apply(content);
-      }
-
-      @Override
-      public <E> RestResult<E> to(Class<? extends E> type) throws IOException {
-        try {
-          Gson gson = new Gson();
-          return new DefaultRestResult<>(gson.fromJson(rawBody(), type));
-        } catch (JsonSyntaxException e) {
-          return new DefaultRestResult<>(null);
-        }
-      }
-    };
+    return new DefaultRestConfiguration(client, request);
   }
 }
