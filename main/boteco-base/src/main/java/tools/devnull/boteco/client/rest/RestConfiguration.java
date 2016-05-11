@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.client.rest;
 
+import java.io.IOException;
 import java.util.function.Function;
 
 /**
@@ -56,13 +57,13 @@ public interface RestConfiguration {
    * @param type the type of the result
    * @return the parsed result
    */
-  <E> RestResult<E> to(Class<? extends E> type);
+  <E> RestResult<E> to(Class<? extends E> type) throws IOException;
 
   /**
    * Invokes the rest url and returns the raw body without parsing
    *
    * @return the raw body returned by the rest url
    */
-  String rawBody();
+  String rawBody() throws IOException;
 
 }

@@ -36,7 +36,7 @@
     <relativePath>../../main/boteco-parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>boteco-plugin-redhat</artifactId>
+  <artifactId>boteco-amq-client</artifactId>
   <packaging>bundle</packaging>
 
   <properties>
@@ -73,9 +73,10 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient-osgi</artifactId>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-camel</artifactId>
     </dependency>
+
   </dependencies>
 
 </project>

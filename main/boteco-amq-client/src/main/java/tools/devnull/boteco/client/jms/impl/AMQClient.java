@@ -22,12 +22,14 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.client.jms;
+package tools.devnull.boteco.client.jms.impl;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.TargetSelector;
+import tools.devnull.boteco.client.jms.JmsClient;
+import tools.devnull.boteco.client.jms.JmsDestination;
 
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;

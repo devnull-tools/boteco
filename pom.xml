@@ -43,6 +43,8 @@
     <module>main/boteco-base</module>
     <module>main/boteco-message-processor</module>
     <module>main/boteco-rest-api</module>
+    <module>main/boteco-rest-client</module>
+    <module>main/boteco-amq-client</module>
     <!-- channel implementations -->
     <module>channels/boteco-channel-irc</module>
     <module>channels/boteco-channel-pushover</module>

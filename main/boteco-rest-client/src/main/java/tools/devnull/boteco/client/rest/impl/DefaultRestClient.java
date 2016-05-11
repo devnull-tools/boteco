@@ -28,6 +28,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -36,8 +39,11 @@ import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.client.rest.RestConfiguration;
 import tools.devnull.boteco.client.rest.RestResult;
@@ -45,9 +51,12 @@ import tools.devnull.boteco.client.rest.RestResult;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 import java.util.function.Function;
 
 public class DefaultRestClient implements RestClient {
+
+  private static final Logger logger = LoggerFactory.getLogger(DefaultRestClient.class);
 
   private final HttpClient client;
 
@@ -55,14 +64,20 @@ public class DefaultRestClient implements RestClient {
     this.client = client;
   }
 
-  public DefaultRestClient() {
+  public DefaultRestClient(Properties configuration) {
+    logger.info("Configuring client");
     PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
-    cm.setMaxTotal(200);
-    cm.setDefaultMaxPerRoute(20);
+    cm.setMaxTotal(Integer.parseInt(configuration.getProperty("client.max.total", "200")));
+    cm.setDefaultMaxPerRoute(Integer.parseInt(configuration.getProperty("client.max.perRoute", "20")));
 
-    this.client = HttpClients.custom()
-        .setConnectionManager(cm)
-        .build();
+    CredentialsProvider provider = new BasicCredentialsProvider();
+    configuration.entrySet().stream()
+        .filter(entry -> entry.getKey().toString().startsWith("auth."))
+        .forEach(entry -> provider.setCredentials(
+            new AuthScope(entry.getKey().toString().replaceFirst("^auth\\.", ""), AuthScope.ANY_PORT),
+            new UsernamePasswordCredentials(entry.getValue().toString())));
+
+    this.client = HttpClients.custom().setConnectionManager(cm).build();
   }
 
   @Override
@@ -125,10 +140,7 @@ public class DefaultRestClient implements RestClient {
     return execute(new HttpOptions(url));
   }
 
-  private RestConfiguration execute(HttpUriRequest request) throws IOException {
-    HttpResponse response = client.execute(request);
-    String content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
-    Gson gson = new Gson();
+  private RestConfiguration execute(HttpUriRequest request) {
     return new RestConfiguration() {
 
       Function<String, String> function = (string) -> string;
@@ -146,14 +158,17 @@ public class DefaultRestClient implements RestClient {
       }
 
       @Override
-      public String rawBody() {
+      public String rawBody() throws IOException {
+        HttpResponse response = client.execute(request);
+        String content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
         return function.apply(content);
       }
 
       @Override
-      public <E> RestResult<E> to(Class<? extends E> type) {
+      public <E> RestResult<E> to(Class<? extends E> type) throws IOException {
         try {
-          return new DefaultRestResult<>(gson.fromJson(function.apply(content), type));
+          Gson gson = new Gson();
+          return new DefaultRestResult<>(gson.fromJson(rawBody(), type));
         } catch (JsonSyntaxException e) {
           return new DefaultRestResult<>(null);
         }

@@ -36,7 +36,7 @@
     <relativePath>../../main/boteco-parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>boteco-plugin-redhat</artifactId>
+  <artifactId>boteco-rest-client</artifactId>
   <packaging>bundle</packaging>
 
   <properties>
@@ -76,6 +76,12 @@
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient-osgi</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+
   </dependencies>
 
 </project>
