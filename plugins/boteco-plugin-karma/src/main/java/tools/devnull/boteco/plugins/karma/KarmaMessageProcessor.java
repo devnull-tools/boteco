@@ -83,11 +83,12 @@ public class KarmaMessageProcessor implements MessageProcessor, ServiceLocator {
   }
 
   private void reply(IncomeMessage message, String term, int value, ContentFormatter f) {
-    String content = properties.getProperty(term, "%t has now %n %u of %k");
-    content = content.replace("%t", f.accent(properties.getProperty(term + ".term", term)));
+    String key = term.toLowerCase();
+    String content = properties.getProperty(key, "%t has now %n %u of %k");
+    content = content.replace("%t", f.accent(properties.getProperty(key + ".term", term)));
     content = content.replace("%n", f.number(value));
-    content = content.replace("%u", properties.getProperty(term + ".unit", "points"));
-    content = content.replace("%k", properties.getProperty(term + ".karma", "karma"));
+    content = content.replace("%u", properties.getProperty(key + ".unit", "points"));
+    content = content.replace("%k", properties.getProperty(key + ".karma", "karma"));
     message.reply(content);
   }
 
