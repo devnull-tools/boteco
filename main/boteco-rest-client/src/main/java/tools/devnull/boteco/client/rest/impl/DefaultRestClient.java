@@ -66,9 +66,13 @@ public class DefaultRestClient implements RestClient {
     CredentialsProvider provider = new BasicCredentialsProvider();
     configuration.entrySet().stream()
         .filter(entry -> entry.getKey().toString().startsWith("auth."))
-        .forEach(entry -> provider.setCredentials(
-            new AuthScope(entry.getKey().toString().replaceFirst("^auth\\.", ""), AuthScope.ANY_PORT),
-            new UsernamePasswordCredentials(entry.getValue().toString())));
+        .forEach(entry -> {
+          String host = entry.getKey().toString().replaceFirst("^auth\\.", "");
+          logger.info("Adding authentication for " + host);
+          provider.setCredentials(
+              new AuthScope(host, AuthScope.ANY_PORT),
+              new UsernamePasswordCredentials(entry.getValue().toString()));
+        });
 
     this.client = HttpClients.custom().setConnectionManager(cm).build();
   }
