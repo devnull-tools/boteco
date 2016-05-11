@@ -24,16 +24,7 @@
 
 package tools.devnull.boteco;
 
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceReference;
-import org.slf4j.LoggerFactory;
-
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Interface to locate services in bundles.
@@ -47,11 +38,7 @@ public interface ServiceLocator {
    * @param <T>          the type of the service
    * @return the located service
    */
-  default <T> T locate(Class<T> serviceClass) {
-    BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
-    ServiceReference<T> serviceReference = bundleContext.getServiceReference(serviceClass);
-    return bundleContext.getService(serviceReference);
-  }
+  <T> T locate(Class<T> serviceClass);
 
   /**
    * Locates the first service that implements the given interface and matches the given filter.
@@ -61,14 +48,7 @@ public interface ServiceLocator {
    * @param <T>          the type of the service
    * @return the first service that implements the given interface and matches the given filter.
    */
-  default <T> T locate(Class<T> serviceClass, String filter) {
-    List<T> services = locateAll(serviceClass, filter);
-    if (services.isEmpty()) {
-      return null;
-    } else {
-      return services.get(0);
-    }
-  }
+  <T> T locate(Class<T> serviceClass, String filter);
 
   /**
    * Locates the services that implements the given interface and matches the given filter.
@@ -78,18 +58,6 @@ public interface ServiceLocator {
    * @param <T>          the type of the service
    * @return the services that implements the given interface and matches the given filter.
    */
-  default <T> List<T> locateAll(Class<T> serviceClass, String filter) {
-    BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
-    try {
-      Collection<ServiceReference<T>> serviceReferences = bundleContext.getServiceReferences(serviceClass, filter);
-      return serviceReferences.stream()
-          .map(bundleContext::getService)
-          .collect(Collectors.toList());
-    } catch (InvalidSyntaxException e) {
-      LoggerFactory.getLogger(getClass()).error("Error while locating service", e);
-      return Collections.emptyList();
-    }
-  }
-
+  <T> List<T> locateAll(Class<T> serviceClass, String filter);
 
 }

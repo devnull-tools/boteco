@@ -40,7 +40,14 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <bean id="messageService" class="tools.devnull.boteco.rest.MessageService"/>
+  <bean id="service-locator" class="tools.devnull.boteco.OsgiServiceLocator"/>
+
+  <reference id="message-sender" interface="tools.devnull.boteco.message.MessageSender"/>
+
+  <bean id="messageService" class="tools.devnull.boteco.rest.MessageService">
+    <argument ref="message-sender"/>
+    <argument ref="service-locator"/>
+  </bean>
 
   <jaxrs:server id="messageServer" address="{{rest.message.path}}">
     <jaxrs:serviceBeans>

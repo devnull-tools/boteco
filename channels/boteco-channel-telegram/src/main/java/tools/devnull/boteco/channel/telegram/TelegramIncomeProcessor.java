@@ -27,6 +27,7 @@ package tools.devnull.boteco.channel.telegram;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import tools.devnull.boteco.CommandExtractor;
+import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.message.MessageDispatcher;
 
 /**
@@ -37,19 +38,22 @@ public class TelegramIncomeProcessor implements Processor {
   private final CommandExtractor extractor;
   private final TelegramOffsetManager offsetManager;
   private final MessageDispatcher dispatcher;
+  private final ServiceLocator serviceLocator;
 
   public TelegramIncomeProcessor(CommandExtractor extractor,
                                  TelegramOffsetManager offsetManager,
-                                 MessageDispatcher dispatcher) {
+                                 MessageDispatcher dispatcher,
+                                 ServiceLocator serviceLocator) {
     this.extractor = extractor;
     this.offsetManager = offsetManager;
     this.dispatcher = dispatcher;
+    this.serviceLocator = serviceLocator;
   }
 
   @Override
   public void process(Exchange exchange) throws Exception {
     offsetManager.process(exchange.getIn().getBody(TelegramPooling.class),
-        pooling -> dispatcher.dispatch(new TelegramIncomeMessage(extractor, pooling.getMessage())));
+        pooling -> dispatcher.dispatch(new TelegramIncomeMessage(extractor, pooling.getMessage(), serviceLocator)));
   }
 
 }

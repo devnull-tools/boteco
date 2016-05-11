@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.client.rest.RestClient;
 
 import java.net.URI;
@@ -38,12 +37,18 @@ import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class KBaseMessageProcessor implements MessageProcessor, ServiceLocator {
+public class KBaseMessageProcessor implements MessageProcessor {
 
   private static final Logger logger = LoggerFactory.getLogger(KBaseMessageProcessor.class);
 
   private final Pattern pattern =
       Pattern.compile("http(s)?://access\\.redhat\\.com/(?<type>solutions|articles)/(?<number>\\d+)");
+
+  private final RestClient restClient;
+
+  public KBaseMessageProcessor(RestClient restClient) {
+    this.restClient = restClient;
+  }
 
   @Override
   public String id() {
@@ -75,7 +80,7 @@ public class KBaseMessageProcessor implements MessageProcessor, ServiceLocator {
           .addParameter("q", number)
           .build();
 
-      KBaseSearchResult result = locate(RestClient.class).get(uri)
+      KBaseSearchResult result = restClient.get(uri)
           .withHeader("Accept", "application/vnd.redhat.solr+json")
           .to(KBaseSearchResult.class)
           .result();

@@ -26,12 +26,9 @@ package tools.devnull.boteco.channel.pushover;
 
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.ContentFormatter;
-import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.DefaultContentFormatter;
-import tools.devnull.boteco.TargetSelector;
-import tools.devnull.boteco.ServiceLocator;
 
-public class PushoverChannel implements Channel, ServiceLocator {
+public class PushoverChannel implements Channel {
   @Override
   public String name() {
     return "Pushover";
@@ -47,8 +44,4 @@ public class PushoverChannel implements Channel, ServiceLocator {
     return new DefaultContentFormatter();
   }
 
-  @Override
-  public TargetSelector<String> send(String content) {
-    return target -> locate(MessageSender.class).send(content).to(target).through(id());
-  }
 }

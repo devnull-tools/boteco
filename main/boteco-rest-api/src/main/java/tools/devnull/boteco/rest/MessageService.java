@@ -39,31 +39,34 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Path("/message")
-public class MessageService implements ServiceLocator {
+public class MessageService {
+
+  private final MessageSender messageSender;
+  private final ServiceLocator serviceLocator;
+
+  public MessageService(MessageSender messageSender, ServiceLocator serviceLocator) {
+    this.messageSender = messageSender;
+    this.serviceLocator = serviceLocator;
+  }
 
   @POST
   @Consumes("application/json")
   @Path("/{channel}")
   public Response sendMessage(@PathParam("channel") String channelId, Message message) {
-    Channel channel = locate(Channel.class, String.format("(id=%s)", channelId));
+    Channel channel = serviceLocator.locate(Channel.class, String.format("(id=%s)", channelId));
+    messageSender.send(message.getContent())
+        .to(message.getTarget())
+        .through(channelId);
     // if the channel is present, then the message will be delivered as soon as the channel can process it
-    if (channel != null) {
-      channel.send(message.getContent()).to(message.getTarget());
-      return Response.ok().build();
-    } else {
-      // otherwise, the message will be delivered when channel bundle starts
-      locate(MessageSender.class).send(message.getContent())
-          .to(message.getTarget())
-          .through(channelId);
-      return Response.accepted().build();
-    }
+    // otherwise, the message will be delivered when channel bundle starts
+    return channel != null ? Response.ok().build() : Response.accepted().build();
   }
 
   @GET
   @Produces("application/json")
   @Path("/channels")
   public Response getAvailableChannels() {
-    List<Channel> channels = locateAll(Channel.class, "(id=*)");
+    List<Channel> channels = serviceLocator.locateAll(Channel.class, "(id=*)");
     return Response.ok(
         channels.stream()
             .map(channel -> new AvailableChannel(channel.id(), channel.name()))

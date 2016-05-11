@@ -26,14 +26,11 @@ package tools.devnull.boteco.channel.telegram;
 
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.ContentFormatter;
-import tools.devnull.boteco.message.MessageSender;
-import tools.devnull.boteco.ServiceLocator;
-import tools.devnull.boteco.TargetSelector;
 
 /**
  * A class that represents the Telegram Channel.
  */
-public class TelegramChannel implements Channel, ServiceLocator {
+public class TelegramChannel implements Channel {
 
   private static final long serialVersionUID = -774477127136914325L;
 
@@ -50,11 +47,6 @@ public class TelegramChannel implements Channel, ServiceLocator {
   @Override
   public ContentFormatter formatter() {
     return new TelegramContentFormatter();
-  }
-
-  @Override
-  public TargetSelector<String> send(String content) {
-    return target -> locate(MessageSender.class).send(content).to(target).through(id());
   }
 
 }

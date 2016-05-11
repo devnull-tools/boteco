@@ -27,7 +27,6 @@ package tools.devnull.boteco.plugins.stocks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.ContentFormatter;
-import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
@@ -39,13 +38,15 @@ import java.util.function.Function;
 import static tools.devnull.boteco.Predicates.command;
 import static tools.devnull.boteco.message.MessageChecker.check;
 
-public class StocksMessageProcessor implements MessageProcessor, ServiceLocator {
+public class StocksMessageProcessor implements MessageProcessor {
 
   private static final Logger logger = LoggerFactory.getLogger(StocksMessageProcessor.class);
 
+  private final RestClient restClient;
   private final Properties configuration;
 
-  public StocksMessageProcessor(Properties configuration) {
+  public StocksMessageProcessor(RestClient restClient, Properties configuration) {
+    this.restClient = restClient;
     this.configuration = configuration;
   }
 
@@ -74,7 +75,7 @@ public class StocksMessageProcessor implements MessageProcessor, ServiceLocator 
     }
     String url = "https://finance.google.com/finance/info?client=ig&q=" + query;
     try {
-      locate(RestClient.class).get(url)
+      restClient.get(url)
           .extract(json())
           .to(StockResult.class)
           .and(stock -> stock.reply(message))

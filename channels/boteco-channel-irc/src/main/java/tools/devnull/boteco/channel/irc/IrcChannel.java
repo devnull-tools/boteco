@@ -26,11 +26,8 @@ package tools.devnull.boteco.channel.irc;
 
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.ContentFormatter;
-import tools.devnull.boteco.message.MessageSender;
-import tools.devnull.boteco.TargetSelector;
-import tools.devnull.boteco.ServiceLocator;
 
-public class IrcChannel implements Channel, ServiceLocator {
+public class IrcChannel implements Channel {
 
   @Override
   public String name() {
@@ -47,8 +44,4 @@ public class IrcChannel implements Channel, ServiceLocator {
     return new IrcContentFormatter();
   }
 
-  @Override
-  public TargetSelector<String> send(String content) {
-    return target -> locate(MessageSender.class).send(content).to(target).through(id());
-  }
 }

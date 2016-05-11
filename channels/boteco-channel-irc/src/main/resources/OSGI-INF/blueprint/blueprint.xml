@@ -61,9 +61,12 @@
 
   <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>
 
+  <bean id="service-locator" class="tools.devnull.boteco.OsgiServiceLocator"/>
+
   <bean id="irc-income-processor" class="tools.devnull.boteco.channel.irc.IrcIncomeProcessor">
     <argument ref="irc-command-extractor"/>
     <argument ref="message-dispatcher"/>
+    <argument ref="service-locator"/>
   </bean>
 
   <bean id="irc-outcome-processor" class="tools.devnull.boteco.channel.irc.IrcOutcomeProcessor"/>

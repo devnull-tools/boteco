@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.client.rest.RestClient;
 
 import java.net.URI;
@@ -38,9 +37,15 @@ import java.net.URI;
 import static tools.devnull.boteco.message.MessageChecker.check;
 import static tools.devnull.boteco.Predicates.command;
 
-public class WeatherMessageProcessor implements MessageProcessor, ServiceLocator {
+public class WeatherMessageProcessor implements MessageProcessor {
 
   private static final Logger logger = LoggerFactory.getLogger(WeatherMessageProcessor.class);
+
+  private final RestClient restClient;
+
+  public WeatherMessageProcessor(RestClient restClient) {
+    this.restClient = restClient;
+  }
 
   @Override
   public String id() {
@@ -64,7 +69,7 @@ public class WeatherMessageProcessor implements MessageProcessor, ServiceLocator
               "(select woeid from geo.places(1) where text=\"" +
               message.command().arg() + "\") and u=\"c\"")
           .build();
-      WeatherResults results = locate(RestClient.class).get(uri).to(WeatherResults.class).result();
+      WeatherResults results = restClient.get(uri).to(WeatherResults.class).result();
       ContentFormatter formatter = message.channel().formatter();
       if (results.hasResult()) {
         message.reply(String.format("%s: %s - %s / %s",

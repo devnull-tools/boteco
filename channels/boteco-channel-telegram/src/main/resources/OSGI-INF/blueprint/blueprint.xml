@@ -63,10 +63,13 @@
 
   <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>
 
+  <bean id="service-locator" class="tools.devnull.boteco.OsgiServiceLocator"/>
+
   <bean id="telegram-income-processor" class="tools.devnull.boteco.channel.telegram.TelegramIncomeProcessor">
     <argument ref="telegram-command-extractor"/>
     <argument ref="offset-manager"/>
     <argument ref="message-dispatcher"/>
+    <argument ref="service-locator"/>
   </bean>
 
   <bean id="telegram-message-json" class="org.apache.camel.component.gson.GsonDataFormat">

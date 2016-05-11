@@ -54,12 +54,4 @@ public interface Channel extends Serializable {
    */
   ContentFormatter formatter();
 
-  /**
-   * Sends a message to a given target through this channel.
-   *
-   * @param content the content of the message
-   * @return a component to select the target
-   */
-  TargetSelector<String> send(String content);
-
 }

@@ -26,6 +26,7 @@ package tools.devnull.boteco.plugins.redhat;
 
 import org.junit.Before;
 import org.junit.Test;
+import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.kodo.TestScenario;
@@ -42,7 +43,8 @@ public class KBaseMessageProcessorTest {
 
   @Before
   public void initialize() {
-    processor = new KBaseMessageProcessor();
+    RestClient client = mock(RestClient.class);
+    processor = new KBaseMessageProcessor(client);
   }
 
   private IncomeMessage message(String content) {
