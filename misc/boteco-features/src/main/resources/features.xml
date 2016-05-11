@@ -33,14 +33,14 @@
     <feature>camel-gson</feature>
     <feature>camel-jsonpath</feature>
 
+    <bundle>mvn:org.mongodb/mongo-java-driver/3.0.4</bundle>
+
     <!-- main bundles -->
     <bundle>mvn:${project.groupId}/boteco-base/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-rest-client/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-amq-client/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-message-processor/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-rest-api/${project.version}</bundle>
-
-    <bundle>mvn:org.mongodb/mongo-java-driver/3.0.4</bundle>
 
     <!-- plugins -->
     <bundle>mvn:${project.groupId}/boteco-plugin-ping/${project.version}</bundle>
