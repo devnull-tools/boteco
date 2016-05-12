@@ -27,9 +27,10 @@ package tools.devnull.boteco.client.rest.impl;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.protocol.HttpContext;
 import tools.devnull.boteco.client.rest.RestConfiguration;
 import tools.devnull.boteco.client.rest.RestResult;
 
@@ -39,12 +40,14 @@ import java.util.function.Function;
 
 public class DefaultRestConfiguration implements RestConfiguration {
 
-  private final HttpClient client;
+  private final CloseableHttpClient client;
+  private final HttpContext context;
   private final HttpUriRequest request;
   private Function<String, String> function = (string) -> string;
 
-  public DefaultRestConfiguration(HttpClient client, HttpUriRequest request) {
+  public DefaultRestConfiguration(CloseableHttpClient client, HttpContext context, HttpUriRequest request) {
     this.client = client;
+    this.context = context;
     this.request = request;
   }
 
@@ -62,8 +65,9 @@ public class DefaultRestConfiguration implements RestConfiguration {
 
   @Override
   public String rawBody() throws IOException {
-    HttpResponse response = client.execute(request);
+    CloseableHttpResponse response = client.execute(request, context);
     String content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+    response.close();
     return function.apply(content);
   }
 

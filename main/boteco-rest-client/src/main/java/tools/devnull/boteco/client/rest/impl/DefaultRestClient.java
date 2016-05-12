@@ -24,10 +24,11 @@
 
 package tools.devnull.boteco.client.rest.impl;
 
+import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.AuthCache;
 import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
@@ -35,7 +36,11 @@ import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.slf4j.Logger;
@@ -50,11 +55,8 @@ public class DefaultRestClient implements RestClient {
 
   private static final Logger logger = LoggerFactory.getLogger(DefaultRestClient.class);
 
-  private final HttpClient client;
-
-  public DefaultRestClient(HttpClient client) {
-    this.client = client;
-  }
+  private final CloseableHttpClient client;
+  private final HttpClientContext context;
 
   public DefaultRestClient(Properties configuration) {
     logger.info("Configuring client");
@@ -62,18 +64,35 @@ public class DefaultRestClient implements RestClient {
     cm.setMaxTotal(Integer.parseInt(configuration.getProperty("client.max.total", "200")));
     cm.setDefaultMaxPerRoute(Integer.parseInt(configuration.getProperty("client.max.perRoute", "20")));
 
+    // Create AuthCache instance
+    AuthCache authCache = new BasicAuthCache();
+    // Generate BASIC scheme object and add it to the local auth cache
+    BasicScheme basicAuth = new BasicScheme();
+
     CredentialsProvider provider = new BasicCredentialsProvider();
+
     configuration.entrySet().stream()
-        .filter(entry -> entry.getKey().toString().startsWith("auth."))
+        .filter(entry -> entry.getKey().toString().startsWith("auth.") && entry.getKey().toString().endsWith(".host"))
         .forEach(entry -> {
-          String host = entry.getKey().toString().replaceFirst("^auth\\.", "");
-          logger.info("Adding authentication for " + host);
+          String host = entry.getValue().toString();
+          String id = entry.getKey().toString().replaceAll("^auth\\.(\\S+)\\.host$", "$1");
+          logger.info("Adding authentication for " + id);
+          int port = Integer.parseInt(configuration.getProperty("auth." + id + ".port", "-1"));
+          String scheme = configuration.getProperty("auth." + id + ".scheme", null);
+          authCache.put(new HttpHost(host, port, scheme), basicAuth);
           provider.setCredentials(
               new AuthScope(host, AuthScope.ANY_PORT),
-              new UsernamePasswordCredentials(entry.getValue().toString()));
+              new UsernamePasswordCredentials(configuration.getProperty("auth." + id + ".credentials")));
         });
 
-    this.client = HttpClients.custom().setConnectionManager(cm).build();
+    // Add AuthCache to the execution context
+    this.context = HttpClientContext.create();
+    this.context.setCredentialsProvider(provider);
+    this.context.setAuthCache(authCache);
+
+    this.client = HttpClients.custom()
+        .setConnectionManager(cm)
+        .build();
   }
 
   @Override
@@ -137,6 +156,7 @@ public class DefaultRestClient implements RestClient {
   }
 
   private RestConfiguration execute(HttpUriRequest request) {
-    return new DefaultRestConfiguration(client, request);
+    return new DefaultRestConfiguration(client, context, request);
   }
+
 }
