@@ -25,6 +25,7 @@
 package tools.devnull.boteco.client.rest;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.function.Function;
 
 /**
@@ -52,12 +53,28 @@ public interface RestConfiguration {
   RestConfiguration extract(Function<String, String> function);
 
   /**
+   * Sets the date format to use when parsing the object.
+   *
+   * @param pattern the date format to use
+   * @return an instance of this object
+   */
+  RestConfiguration withDateFormat(String pattern);
+
+  /**
    * Invokes the rest url and parses the response into an object of the given class.
    *
    * @param type the type of the result
    * @return the parsed result
    */
   <E> RestResult<E> to(Class<? extends E> type) throws IOException;
+
+  /**
+   * Invokes the rest url and parses the response into an object of the given type.
+   *
+   * @param type the type of the result
+   * @return the parsed result
+   */
+  <E> RestResult<E> to(Type type) throws IOException;
 
   /**
    * Invokes the rest url and returns the raw body without parsing

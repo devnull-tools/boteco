@@ -24,31 +24,38 @@
 
 package tools.devnull.boteco.client.rest.impl;
 
-import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.protocol.HttpContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.client.rest.RestConfiguration;
 import tools.devnull.boteco.client.rest.RestResult;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.function.Function;
 
 public class DefaultRestConfiguration implements RestConfiguration {
 
+  private static final Logger logger = LoggerFactory.getLogger(DefaultRestClient.class);
+
   private final CloseableHttpClient client;
   private final HttpContext context;
   private final HttpUriRequest request;
+  private final GsonBuilder gsonBuilder;
   private Function<String, String> function = (string) -> string;
 
   public DefaultRestConfiguration(CloseableHttpClient client, HttpContext context, HttpUriRequest request) {
     this.client = client;
     this.context = context;
     this.request = request;
+    this.gsonBuilder = new GsonBuilder();
   }
 
   @Override
@@ -64,6 +71,12 @@ public class DefaultRestConfiguration implements RestConfiguration {
   }
 
   @Override
+  public RestConfiguration withDateFormat(String pattern) {
+    this.gsonBuilder.setDateFormat(pattern).create();
+    return this;
+  }
+
+  @Override
   public String rawBody() throws IOException {
     CloseableHttpResponse response = client.execute(request, context);
     String content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
@@ -74,9 +87,19 @@ public class DefaultRestConfiguration implements RestConfiguration {
   @Override
   public <E> RestResult<E> to(Class<? extends E> type) throws IOException {
     try {
-      Gson gson = new Gson();
-      return new DefaultRestResult<>(gson.fromJson(rawBody(), type));
+      return new DefaultRestResult<>(gsonBuilder.create().fromJson(rawBody(), type));
     } catch (JsonSyntaxException e) {
+      logger.error("Error while parsing JSON", e);
+      return new DefaultRestResult<>(null);
+    }
+  }
+
+  @Override
+  public <E> RestResult<E> to(Type type) throws IOException {
+    try {
+      return new DefaultRestResult<>(gsonBuilder.create().fromJson(rawBody(), type));
+    } catch (JsonSyntaxException e) {
+      logger.error("Error while parsing JSON", e);
       return new DefaultRestResult<>(null);
     }
   }
