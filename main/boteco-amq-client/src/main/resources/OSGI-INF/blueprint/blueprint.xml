@@ -32,7 +32,7 @@
                                http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
-  <cm:property-placeholder persistent-id="tools.devnull.boteco.jms">
+  <cm:property-placeholder persistent-id="tools.devnull.boteco.client.jms">
     <cm:default-properties>
       <cm:property name="jms.user" value="admin"/>
       <cm:property name="jms.password" value="admin"/>
