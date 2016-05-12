@@ -35,7 +35,7 @@
   <service id="rest-client" interface="tools.devnull.boteco.client.rest.RestClient">
     <bean class="tools.devnull.boteco.client.rest.impl.DefaultRestClient">
       <argument>
-        <cm:cm-properties persistent-id="tools.devnull.boteco.rest.client"/>
+        <cm:cm-properties persistent-id="tools.devnull.boteco.client.rest"/>
       </argument>
     </bean>
   </service>
