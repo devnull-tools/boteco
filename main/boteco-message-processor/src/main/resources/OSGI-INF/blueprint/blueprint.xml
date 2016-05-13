@@ -72,22 +72,25 @@
 
   <camelContext id="boteco-content-processing-strategy"
                 xmlns="http://camel.apache.org/schema/blueprint">
-    <route id="boteco.message.processing">
+    <route id="boteco.message.process">
       <from uri="activemq:queue:boteco.process"/>
-      <!-- Finds the message processor for this income message -->
+      <!-- Finds the message processors for this income message -->
       <process ref="message-processor-finder"/>
-      <choice>
-        <when>
-          <simple>${in.header.messageProcessor} != null</simple>
-          <wireTap uri="direct:invoke-listeners"/>
-          <process ref="message-processor-invoker"/>
-        </when>
-      </choice>
+      <split parallelProcessing="true">
+        <simple>${in.body}</simple>
+        <wireTap uri="direct:invoke-listeners"/>
+        <to uri="direct:invoke-processor"/>
+      </split>
     </route>
 
-    <route id="boteco.message.processing.listener">
+    <route id="boteco.message.process.listener">
       <from uri="direct:invoke-listeners"/>
       <process ref="message-listener-invoker"/>
+    </route>
+
+    <route id="boteco.message.process.processor">
+      <from uri="direct:invoke-processor"/>
+      <process ref="message-processor-invoker"/>
     </route>
 
   </camelContext>

@@ -44,11 +44,8 @@ public class BotecoMessageListenerInvoker implements Processor {
   @Override
   public void process(Exchange exchange) throws Exception {
     Message income = exchange.getIn();
-    IncomeMessage message = income.getBody(IncomeMessage.class);
-    MessageProcessor messageProcessor = income.getHeader(
-        BotecoMessageProcessorFinder.MESSAGE_PROCESSOR,
-        MessageProcessor.class
-    );
+    MessageProcessor messageProcessor = income.getBody(MessageProcessor.class);
+    IncomeMessage message = income.getHeader(BotecoMessageProcessorFinder.INCOME_MESSAGE, IncomeMessage.class);
     listeners.stream().forEach(listener -> listener.onProcess(message, messageProcessor));
   }
 

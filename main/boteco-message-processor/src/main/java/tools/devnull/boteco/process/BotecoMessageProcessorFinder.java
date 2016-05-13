@@ -30,10 +30,11 @@ import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BotecoMessageProcessorFinder implements Processor {
 
-  public static String MESSAGE_PROCESSOR = "messageProcessor";
+  public static String INCOME_MESSAGE = "incomeMessage";
 
   private final List<MessageProcessor> messageProcessors;
 
@@ -44,14 +45,11 @@ public class BotecoMessageProcessorFinder implements Processor {
   @Override
   public void process(Exchange exchange) throws Exception {
     IncomeMessage message = exchange.getIn().getBody(IncomeMessage.class);
-    messageProcessors.stream()
+    List<MessageProcessor> processors = messageProcessors.stream()
         .filter(processor -> processor.canProcess(message))
-        .findFirst()
-        .ifPresent(processor -> {
-          exchange.getIn().setHeader(MESSAGE_PROCESSOR, processor);
-          exchange.getOut().setBody(message);
-          exchange.getOut().setHeader(MESSAGE_PROCESSOR, processor);
-        });
+        .collect(Collectors.toList());
+    exchange.getOut().setBody(processors);
+    exchange.getOut().setHeader(INCOME_MESSAGE, message);
   }
 
 }
