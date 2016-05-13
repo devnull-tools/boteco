@@ -44,7 +44,7 @@ public class PingMessageProcessor implements MessageProcessor {
 
   @Override
   public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("ping"));
+    return check(message).accept(command("ping").withArgs());
   }
 
   @Override
