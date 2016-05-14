@@ -30,6 +30,8 @@ import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 
+import java.util.List;
+
 import static tools.devnull.boteco.Predicates.command;
 import static tools.devnull.boteco.message.MessageChecker.check;
 
@@ -37,10 +39,10 @@ public class WeatherMessageProcessor implements MessageProcessor {
 
   private static final Logger logger = LoggerFactory.getLogger(WeatherMessageProcessor.class);
 
-  private final WeatherSearcher searcher;
+  private final List<WeatherSearcher> searchers;
 
-  public WeatherMessageProcessor(WeatherSearcher searcher) {
-    this.searcher = searcher;
+  public WeatherMessageProcessor(List<WeatherSearcher> searchers) {
+    this.searchers = searchers;
   }
 
   @Override
@@ -56,29 +58,44 @@ public class WeatherMessageProcessor implements MessageProcessor {
   @Override
   public void process(IncomeMessage message) {
     try {
-      Weather weather = searcher.search(message.command().arg());
       ContentFormatter formatter = message.channel().formatter();
+      Weather weather = search(message.command().arg());
       if (weather != null) {
-        StringBuilder response = new StringBuilder();
-        if (weather.text() != null) {
-          response.append(formatter.accent(weather.text()));
-        }
-        if (weather.condition() != null) {
-          response.append(": ").append(formatter.alternativeAccent(weather.condition()));
-        }
-        if (weather.temperature() != null) {
-          response.append(" - ")
-              .append(formatter.value(String.valueOf((int) weather.temperature().celsius()) + "\u00BAC"))
-              .append(" / ")
-              .append(formatter.value(String.valueOf((int) weather.temperature().fahrenheits()) + "\u00BAF"));
-        }
-        message.reply(response.toString());
+        message.reply(buildResponse(formatter, weather));
       } else {
         message.reply(formatter.error("Could not find any weather for " + message.command().arg()));
       }
     } catch (Exception e) {
       logger.error("Error while fetching weather", e);
     }
+  }
+
+  private Weather search(String query) {
+    Weather weather;
+    for (WeatherSearcher searcher : searchers) {
+      weather = searcher.search(query);
+      if (weather != null) {
+        return weather;
+      }
+    }
+    return null;
+  }
+
+  private String buildResponse(ContentFormatter formatter, Weather weather) {
+    StringBuilder response = new StringBuilder();
+    if (weather.text() != null) {
+      response.append(formatter.accent(weather.text()));
+    }
+    if (weather.condition() != null) {
+      response.append(": ").append(formatter.alternativeAccent(weather.condition()));
+    }
+    if (weather.temperature() != null) {
+      response.append(" - ")
+          .append(formatter.value(String.valueOf((int) weather.temperature().celsius()) + "\u00BAC"))
+          .append(" / ")
+          .append(formatter.value(String.valueOf((int) weather.temperature().fahrenheits()) + "\u00BAF"));
+    }
+    return response.toString();
   }
 
 }
