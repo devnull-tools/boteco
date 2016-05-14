@@ -59,11 +59,20 @@ public class WeatherMessageProcessor implements MessageProcessor {
       Weather weather = searcher.search(message.command().arg());
       ContentFormatter formatter = message.channel().formatter();
       if (weather != null) {
-        message.reply(String.format("%s: %s - %s / %s",
-            formatter.accent(weather.text()),
-            formatter.alternativeAccent(weather.condition()),
-            formatter.value(String.valueOf((int) weather.temperature().celsius()) + "\u00BAC"),
-            formatter.value(String.valueOf((int) weather.temperature().fahrenheits()) + "\u00BAF")));
+        StringBuilder response = new StringBuilder();
+        if (weather.text() != null) {
+          response.append(formatter.accent(weather.text()));
+        }
+        if (weather.condition() != null) {
+          response.append(": ").append(formatter.alternativeAccent(weather.condition()));
+        }
+        if (weather.temperature() != null) {
+          response.append(" - ")
+              .append(formatter.value(String.valueOf((int) weather.temperature().celsius()) + "\u00BAC"))
+              .append(" / ")
+              .append(formatter.value(String.valueOf((int) weather.temperature().fahrenheits()) + "\u00BAF"));
+        }
+        message.reply(response.toString());
       } else {
         message.reply(formatter.error("Could not find any weather for " + message.command().arg()));
       }
