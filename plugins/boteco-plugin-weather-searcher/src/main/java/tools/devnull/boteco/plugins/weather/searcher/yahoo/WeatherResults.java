@@ -22,11 +22,13 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.weather;
+package tools.devnull.boteco.plugins.weather.searcher.yahoo;
 
 import com.google.gson.annotations.SerializedName;
+import tools.devnull.boteco.plugins.weather.Temperature;
+import tools.devnull.boteco.plugins.weather.Weather;
 
-public class WeatherResults {
+public class WeatherResults implements Weather {
 
   private Query query;
 
@@ -50,12 +52,8 @@ public class WeatherResults {
     return query.results.channel.item.condition.text;
   }
 
-  public int temperatureInCelsius() {
-    return query.results.channel.item.condition.temperature;
-  }
-
-  public int temperatureInFahrenheits() {
-    return (int) (temperatureInCelsius() * 1.8 + 32);
+  public Temperature temperature() {
+    return Temperature.fromCelsius(query.results.channel.item.condition.temperature);
   }
 
   public static class Query {

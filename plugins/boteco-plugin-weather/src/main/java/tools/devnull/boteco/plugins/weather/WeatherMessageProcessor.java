@@ -24,27 +24,23 @@
 
 package tools.devnull.boteco.plugins.weather;
 
-import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.client.rest.RestClient;
 
-import java.net.URI;
-
-import static tools.devnull.boteco.message.MessageChecker.check;
 import static tools.devnull.boteco.Predicates.command;
+import static tools.devnull.boteco.message.MessageChecker.check;
 
 public class WeatherMessageProcessor implements MessageProcessor {
 
   private static final Logger logger = LoggerFactory.getLogger(WeatherMessageProcessor.class);
 
-  private final RestClient restClient;
+  private final WeatherSearcher searcher;
 
-  public WeatherMessageProcessor(RestClient restClient) {
-    this.restClient = restClient;
+  public WeatherMessageProcessor(WeatherSearcher searcher) {
+    this.searcher = searcher;
   }
 
   @Override
@@ -60,23 +56,14 @@ public class WeatherMessageProcessor implements MessageProcessor {
   @Override
   public void process(IncomeMessage message) {
     try {
-      URI uri = new URIBuilder()
-          .setScheme("https")
-          .setHost("query.yahooapis.com")
-          .setPath("/v1/public/yql")
-          .addParameter("format", "json")
-          .addParameter("q", "select item from weather.forecast where woeid in " +
-              "(select woeid from geo.places(1) where text=\"" +
-              message.command().arg() + "\") and u=\"c\"")
-          .build();
-      WeatherResults results = restClient.get(uri).to(WeatherResults.class).result();
+      Weather weather = searcher.search(message.command().arg());
       ContentFormatter formatter = message.channel().formatter();
-      if (results.hasResult()) {
+      if (weather != null) {
         message.reply(String.format("%s: %s - %s / %s",
-            formatter.accent(results.text()),
-            formatter.alternativeAccent(results.condition()),
-            formatter.value(String.valueOf(results.temperatureInCelsius()) + "\u00BAC"),
-            formatter.value(String.valueOf(results.temperatureInFahrenheits()) + "\u00BAF")));
+            formatter.accent(weather.text()),
+            formatter.alternativeAccent(weather.condition()),
+            formatter.value(String.valueOf((int) weather.temperature().celsius()) + "\u00BAC"),
+            formatter.value(String.valueOf((int) weather.temperature().fahrenheits()) + "\u00BAF")));
       } else {
         message.reply(formatter.error("Could not find any weather for " + message.command().arg()));
       }
