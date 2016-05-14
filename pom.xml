@@ -56,6 +56,7 @@
     <module>plugins/boteco-plugin-weather</module>
     <module>plugins/boteco-plugin-redhat</module>
     <module>plugins/boteco-plugin-karma</module>
+    <module>plugins/boteco-plugin-karma-repository</module>
     <module>plugins/boteco-plugin-mongodb</module>
     <module>plugins/boteco-plugin-diceroll</module>
     <module>plugins/boteco-plugin-stocks</module>

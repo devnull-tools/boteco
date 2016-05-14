@@ -22,7 +22,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.karma;
+package tools.devnull.boteco.plugins.karma.repository;
 
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
@@ -30,6 +30,8 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import tools.devnull.boteco.plugins.karma.Karma;
+import tools.devnull.boteco.plugins.karma.KarmaRepository;
 
 import java.util.ArrayList;
 import java.util.List;

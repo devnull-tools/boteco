@@ -32,20 +32,11 @@
                                http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
-  <reference id="repository" interface="tools.devnull.boteco.plugins.karma.KarmaRepository"/>
+  <reference id="mongo-database" interface="com.mongodb.client.MongoDatabase"/>
 
-  <service id="karma-plugin" interface="tools.devnull.boteco.message.MessageProcessor">
-    <bean class="tools.devnull.boteco.plugins.karma.KarmaMessageProcessor">
-      <argument ref="repository"/>
-      <argument>
-        <cm:cm-properties persistent-id="tools.devnull.boteco.plugins.karma" update="true"/>
-      </argument>
-    </bean>
-  </service>
-
-  <service id="karma-ranking-plugin" interface="tools.devnull.boteco.message.MessageProcessor">
-    <bean class="tools.devnull.boteco.plugins.karma.RankingMessageProcessor">
-      <argument ref="repository"/>
+  <service interface="tools.devnull.boteco.plugins.karma.KarmaRepository">
+    <bean class="tools.devnull.boteco.plugins.karma.repository.KarmaMongoDB">
+      <argument ref="mongo-database"/>
     </bean>
   </service>
 

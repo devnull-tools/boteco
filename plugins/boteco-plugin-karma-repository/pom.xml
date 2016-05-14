@@ -36,11 +36,12 @@
     <relativePath>../../main/boteco-parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>boteco-plugin-karma</artifactId>
+  <artifactId>boteco-plugin-karma-repository</artifactId>
   <packaging>bundle</packaging>
 
   <properties>
     <boteco-base.version>1.0.0</boteco-base.version>
+    <boteco-karma.version>1.0.0</boteco-karma.version>
   </properties>
 
   <dependencyManagement>
@@ -63,6 +64,12 @@
     </dependency>
 
     <dependency>
+      <groupId>tools.devnull</groupId>
+      <artifactId>boteco-plugin-karma</artifactId>
+      <version>${boteco-karma.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-blueprint</artifactId>
     </dependency>
@@ -72,23 +79,11 @@
       <artifactId>org.osgi.core</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongo-java-driver</artifactId>
+      <version>3.0.4</version>
+    </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <instructions>
-            <Export-Package>
-              tools.devnull.boteco.plugins.karma
-            </Export-Package>
-          </instructions>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
 </project>
