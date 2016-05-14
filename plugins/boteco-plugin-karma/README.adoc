@@ -3,8 +3,8 @@
 This is a simple karma plugin. It will parse any (++/--) terms that arrives in channels and computes the
 karma.
 
-This plugin uses a MongoDB Database to store the karmas outside the JVM so make sure you have a MongoDB instance
-running and make sure you have configured the `boteco-plugin-mongodb`.
+This plugin requires a repository implementation (check `boteco-plugin-karma-repository` bundle for the default
+implementation).
 
 == Querying ranks
 
