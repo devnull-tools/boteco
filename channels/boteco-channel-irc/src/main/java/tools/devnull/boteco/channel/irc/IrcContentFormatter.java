@@ -89,8 +89,8 @@ public class IrcContentFormatter implements ContentFormatter {
 
   @Override
   public String link(String content) {
-    Matcher matcher = Pattern.compile("^(?<title>.+)\\s*:\\s*<(?<url>.+)>$").matcher(content);
-    return matcher.find() ? String.format("%s <%s>", matcher.group("title").trim(), matcher.group("url")) : content;
+    Matcher matcher = Pattern.compile("^(?<title>.+)\\s*<(?<url>.+)>$").matcher(content);
+    return matcher.find() ? String.format("%s <%s>", accent(matcher.group("title").trim()), matcher.group("url")) : content;
   }
 
   @Override

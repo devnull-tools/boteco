@@ -22,59 +22,26 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.channel.telegram;
+package tools.devnull.boteco.channel.pushover;
 
 import tools.devnull.boteco.ContentFormatter;
+import tools.devnull.boteco.message.FormatExpressionParser;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+/**
+ * A class to parse the messages that arrives for delivering
+ */
+public class ContentParser {
 
-public class TelegramContentFormatter implements ContentFormatter {
+  private final FormatExpressionParser parser;
+  private final ContentFormatter formatter;
 
-  @Override
-  public String accent(String content) {
-    return "*" + content + "*";
+  public ContentParser(FormatExpressionParser parser, ContentFormatter formatter) {
+    this.parser = parser;
+    this.formatter = formatter;
   }
 
-  @Override
-  public String alternativeAccent(String content) {
-    return "_" + content + "_";
-  }
-
-  @Override
-  public String positive(String content) {
-    return value(content);
-  }
-
-  @Override
-  public String negative(String content) {
-    return value(content);
-  }
-
-  @Override
-  public String value(String content) {
-    return "`" + content + "`";
-  }
-
-  @Override
-  public String error(String content) {
-    return "*" + content + "*";
-  }
-
-  @Override
-  public String link(String content) {
-    Matcher matcher = Pattern.compile("^(?<title>.+)\\s*<(?<url>.+)>$").matcher(content);
-    return matcher.find() ? String.format("[%s](%s)", matcher.group("title").trim(), matcher.group("url")) : content;
-  }
-
-  @Override
-  public String tag(String content) {
-    return String.format("[[%s]]", content);
-  }
-
-  @Override
-  public String mention(String user) {
-    return "@" + user;
+  public String parse(String content) {
+    return parser.parse(formatter, content);
   }
 
 }

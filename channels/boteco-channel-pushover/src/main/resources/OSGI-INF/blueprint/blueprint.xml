@@ -44,6 +44,15 @@
     <bean class="tools.devnull.boteco.channel.pushover.PushoverChannel"/>
   </service>
 
+  <bean id="parser" class="tools.devnull.boteco.channel.pushover.ContentParser">
+    <argument>
+      <reference interface="tools.devnull.boteco.message.FormatExpressionParser"/>
+    </argument>
+    <argument>
+      <bean class="tools.devnull.boteco.DefaultContentFormatter"/>
+    </argument>
+  </bean>
+
   <camelContext id="boteco-channel-pushover"
                 xmlns="http://camel.apache.org/schema/blueprint">
 
@@ -53,7 +62,9 @@
            loggingLevel="DEBUG"
            message="sending message to pushover"/>
       <setHeader headerName="CamelHttpQuery">
-        <simple>token={{pushover.token}}&amp;user=${body.target}&amp;message=${body.content}</simple>
+        <simple>
+          token={{pushover.token}}&amp;user=${body.target}&amp;message=${bean:parser.parse(${body.content})}
+        </simple>
       </setHeader>
       <setHeader headerName="CamelHttpMethod">
         <simple>POST</simple>
