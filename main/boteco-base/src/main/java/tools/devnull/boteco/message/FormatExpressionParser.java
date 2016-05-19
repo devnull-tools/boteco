@@ -33,8 +33,4 @@ public interface FormatExpressionParser {
 
   String parse(ContentFormatter formatter, String expression);
 
-  default String parse(ContentFormatter formatter, String expression, Object... args) {
-    return parse(formatter, String.format(expression, args));
-  }
-
 }
