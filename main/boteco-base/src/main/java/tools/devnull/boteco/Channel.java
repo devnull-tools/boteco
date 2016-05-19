@@ -46,12 +46,4 @@ public interface Channel extends Serializable {
    */
   String id();
 
-  /**
-   * Returns a component capable of format a message
-   * or part of a message. Useful to send a rich content.
-   *
-   * @return a component to format messages
-   */
-  ContentFormatter formatter();
-
 }

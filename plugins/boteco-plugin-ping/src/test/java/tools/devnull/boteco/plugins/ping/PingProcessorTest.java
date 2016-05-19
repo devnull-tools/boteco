@@ -28,7 +28,6 @@ import org.junit.Before;
 import org.junit.Test;
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.Command;
-import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.kodo.TestScenario;
@@ -62,10 +61,6 @@ public class PingProcessorTest {
   public void initialize() {
     sender = "someone";
     Channel channel = mock(Channel.class);
-    ContentFormatter f = mock(ContentFormatter.class);
-
-    when(channel.formatter()).thenReturn(f);
-    when(f.mention(sender)).thenReturn(sender);
 
     processor = new PingMessageProcessor();
 
@@ -123,7 +118,7 @@ public class PingProcessorTest {
 
   private Predicate<IncomeMessage> replied() {
     return m -> {
-      verify(m).reply("%s: pong", m.sender());
+      verify(m).reply("[m]%s[/m]: pong", m.sender());
       return true;
     };
   }

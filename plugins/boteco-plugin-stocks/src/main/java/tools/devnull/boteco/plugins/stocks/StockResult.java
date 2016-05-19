@@ -25,7 +25,6 @@
 package tools.devnull.boteco.plugins.stocks;
 
 import com.google.gson.annotations.SerializedName;
-import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.message.IncomeMessage;
 
 public class StockResult {
@@ -52,14 +51,14 @@ public class StockResult {
   private double variationPer;
 
   public void reply(IncomeMessage message) {
-    ContentFormatter f = message.channel().formatter();
-    message.reply(String.format("%s as of %s: Opened at %s. Last traded at %s. Varied %s (%s)",
-        f.accent(name + ":" + exchange),
-        f.alternativeAccent(date),
-        f.value(openedValue),
-        f.value(lastTraded),
-        f.number(variation, "%.2f"),
-        f.number(variationPer, "%.2f%%")
+    message.reply(String.format(
+        "[a]%s[/a] as of [aa]%s[/aa]: Opened at [v]%s[/v]. Last traded at [v]%s[/v]. Varied %.2f (%.2f%%)",
+        name + ":" + exchange,
+        date,
+        openedValue,
+        lastTraded,
+        variation,
+        variationPer
     ));
   }
 

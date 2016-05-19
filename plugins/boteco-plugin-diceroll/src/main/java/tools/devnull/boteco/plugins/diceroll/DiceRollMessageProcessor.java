@@ -24,7 +24,6 @@
 
 package tools.devnull.boteco.plugins.diceroll;
 
-import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 
@@ -45,10 +44,9 @@ public class DiceRollMessageProcessor implements MessageProcessor {
 
   @Override
   public void process(IncomeMessage message) {
-    ContentFormatter f = message.channel().formatter();
     DiceRoll diceRoll = new DiceRoll(message.command().arg());
     int points = diceRoll.roll();
-    message.reply("%s, you got %s points!", f.mention(message.sender()), f.value(points));
+    message.reply("[m]%s[/m], you got [v]%s[/v] points!", message.sender(), points);
   }
 
 }

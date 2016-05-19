@@ -25,7 +25,6 @@
 package tools.devnull.boteco.channel.irc;
 
 import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.ContentFormatter;
 
 public class IrcChannel implements Channel {
 
@@ -37,11 +36,6 @@ public class IrcChannel implements Channel {
   @Override
   public String id() {
     return "irc";
-  }
-
-  @Override
-  public ContentFormatter formatter() {
-    return new IrcContentFormatter();
   }
 
 }

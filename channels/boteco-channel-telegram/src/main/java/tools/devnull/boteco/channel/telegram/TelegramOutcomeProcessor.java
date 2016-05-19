@@ -27,19 +27,30 @@ package tools.devnull.boteco.channel.telegram;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.impl.DefaultMessage;
+import tools.devnull.boteco.ContentFormatter;
+import tools.devnull.boteco.message.FormatExpressionParser;
 import tools.devnull.boteco.message.OutcomeMessage;
 
 /**
  * A processor that receives an outcome telegram message and sends it as a bot message.
  */
 public class TelegramOutcomeProcessor implements Processor {
+
+  private final FormatExpressionParser parser;
+  private final ContentFormatter contentFormatter;
+
+  public TelegramOutcomeProcessor(FormatExpressionParser parser, ContentFormatter contentFormatter) {
+    this.parser = parser;
+    this.contentFormatter = contentFormatter;
+  }
+
   @Override
   public void process(Exchange exchange) throws Exception {
     OutcomeMessage message = exchange.getIn().getBody(OutcomeMessage.class);
     if (message != null) {
       DefaultMessage out = new DefaultMessage();
       String queryString = String.format("parse_mode=Markdown&chat_id=%s&text=%s",
-          message.getTarget(), message.getContent());
+          message.getTarget(), parser.parse(contentFormatter, message.getContent()));
       out.setHeader(Exchange.HTTP_QUERY, queryString);
       exchange.setOut(out);
     }

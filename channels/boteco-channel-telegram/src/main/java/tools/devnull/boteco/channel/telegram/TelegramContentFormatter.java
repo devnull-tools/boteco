@@ -26,46 +26,50 @@ package tools.devnull.boteco.channel.telegram;
 
 import tools.devnull.boteco.ContentFormatter;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class TelegramContentFormatter implements ContentFormatter {
 
   @Override
-  public String accent(Object content) {
-    return "*" + String.valueOf(content) + "*";
+  public String accent(String content) {
+    return "*" + content + "*";
   }
 
   @Override
-  public String alternativeAccent(Object content) {
-    return "_" + String.valueOf(content) + "_";
+  public String alternativeAccent(String content) {
+    return "_" + content + "_";
   }
 
   @Override
-  public String positive(Object content) {
+  public String positive(String content) {
     return value(content);
   }
 
   @Override
-  public String negative(Object content) {
+  public String negative(String content) {
     return value(content);
   }
 
   @Override
-  public String value(Object content) {
-    return "`" + String.valueOf(content) + "`";
+  public String value(String content) {
+    return "`" + content + "`";
   }
 
   @Override
-  public String error(Object content) {
-    return "*" + String.valueOf(content) + "*";
+  public String error(String content) {
+    return "*" + content + "*";
   }
 
   @Override
-  public String link(String title, String url) {
-    return String.format("[%s](%s)", title, url);
+  public String link(String content) {
+    Matcher matcher = Pattern.compile("^(?<title>.+)\\s*:\\s*<(?<url>.+)>$").matcher(content);
+    return matcher.find() ? String.format("[%s](%s)", matcher.group("title").trim(), matcher.group("url")) : content;
   }
 
   @Override
-  public String tag(Object content) {
-    return String.format("[[%s]]", String.valueOf(content));
+  public String tag(String content) {
+    return String.format("[[%s]]", content);
   }
 
   @Override

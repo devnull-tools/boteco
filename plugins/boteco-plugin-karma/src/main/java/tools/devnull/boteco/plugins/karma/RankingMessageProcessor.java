@@ -24,7 +24,6 @@
 
 package tools.devnull.boteco.plugins.karma;
 
-import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 
@@ -53,10 +52,20 @@ public class RankingMessageProcessor implements MessageProcessor {
 
   @Override
   public void process(IncomeMessage message) {
-    ContentFormatter f = message.channel().formatter();
     List<Karma> result = repository.search(message.command().arg());
-    if (result.isEmpty()) message.reply(f.error("No karmas found"));
-    result.forEach(karma -> message.reply("%s (%s)", f.accent(karma.name()), f.number(karma.value())));
+    if (result.isEmpty()) {
+      message.reply("[e]No karmas found[/e]");
+    } else {
+      result.forEach(karma -> {
+            String tag = karma.value() < 0 ? "n" : "p";
+            message.reply("[a]%s[/a] ([%s]%d[/%s])",
+                karma.name(),
+                tag,
+                karma.value(),
+                tag);
+          }
+      );
+    }
   }
 
 }

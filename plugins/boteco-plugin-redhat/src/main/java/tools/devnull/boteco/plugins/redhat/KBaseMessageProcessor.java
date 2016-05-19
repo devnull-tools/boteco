@@ -27,10 +27,9 @@ package tools.devnull.boteco.plugins.redhat;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tools.devnull.boteco.ContentFormatter;
+import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.client.rest.RestClient;
 
 import java.net.URI;
 import java.util.function.Predicate;
@@ -85,17 +84,17 @@ public class KBaseMessageProcessor implements MessageProcessor {
           .to(KBaseSearchResult.class)
           .result();
 
-      ContentFormatter formatter = message.channel().formatter();
       KBaseSearchResult.Doc document = result.results().stream()
           .filter(rightSolution(number))
           .findFirst()
           .orElse(null);
 
       if (document != null) {
-        message.reply("%s %s (%s links)",
-            formatter.tag(document.getDocumentKind()),
-            formatter.link(document.getTitle(), document.getViewUri()),
-            formatter.value(document.getCaseCount())
+        message.reply("[t]%s[/t] [l]%s:<%s>[/l] ([v]%s[/v] links)",
+            document.getDocumentKind(),
+            document.getTitle(),
+            document.getViewUri(),
+            document.getCaseCount()
         );
       }
     } catch (Exception e) {

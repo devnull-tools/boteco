@@ -25,8 +25,6 @@
 package tools.devnull.boteco.channel.pushover;
 
 import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.ContentFormatter;
-import tools.devnull.boteco.DefaultContentFormatter;
 
 public class PushoverChannel implements Channel {
   @Override
@@ -37,11 +35,6 @@ public class PushoverChannel implements Channel {
   @Override
   public String id() {
     return "pushover";
-  }
-
-  @Override
-  public ContentFormatter formatter() {
-    return new DefaultContentFormatter();
   }
 
 }

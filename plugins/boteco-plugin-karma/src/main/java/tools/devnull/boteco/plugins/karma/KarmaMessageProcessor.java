@@ -24,7 +24,6 @@
 
 package tools.devnull.boteco.plugins.karma;
 
-import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 
@@ -58,17 +57,16 @@ public class KarmaMessageProcessor implements MessageProcessor {
 
   @Override
   public void process(IncomeMessage message) {
-    ContentFormatter f = message.channel().formatter();
     Matcher matcher = pattern.matcher(message.content());
     while (matcher.find()) {
       String term = matcher.group("term");
       String operation = matcher.group("operation");
-      int value = update(term, operation, f);
-      reply(message, term, value, f);
+      int value = update(term, operation);
+      reply(message, term, value);
     }
   }
 
-  private int update(String term, String operation, ContentFormatter f) {
+  private int update(String term, String operation) {
     int updatedValue = 0;
     switch (operation) {
       case "++":
@@ -81,11 +79,12 @@ public class KarmaMessageProcessor implements MessageProcessor {
     return updatedValue;
   }
 
-  private void reply(IncomeMessage message, String term, int value, ContentFormatter f) {
+  private void reply(IncomeMessage message, String term, int value) {
     String key = term.toLowerCase();
-    String content = properties.getProperty(key, "%t has now %n %u of %k");
-    content = content.replace("%t", f.accent(properties.getProperty(key + ".term", term)));
-    content = content.replace("%n", f.number(value));
+    String content = properties.getProperty(key, "[a]%t[/a] has now %n %u of %k");
+    String tag = value < 0 ? "n" : "p";
+    content = content.replace("%t", properties.getProperty(key + ".term", term));
+    content = content.replace("%n", String.format("[%s]%d[/%s]", tag, value, tag));
     content = content.replace("%u", properties.getProperty(key + ".unit", "points"));
     content = content.replace("%k", properties.getProperty(key + ".karma", "karma"));
     message.reply(content);

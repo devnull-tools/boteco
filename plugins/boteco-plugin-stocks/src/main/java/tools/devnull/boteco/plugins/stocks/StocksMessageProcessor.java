@@ -26,7 +26,6 @@ package tools.devnull.boteco.plugins.stocks;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
@@ -65,7 +64,6 @@ public class StocksMessageProcessor implements MessageProcessor {
 
   @Override
   public void process(IncomeMessage message) {
-    ContentFormatter f = message.channel().formatter();
     String arg = message.command().arg();
     String query;
     if (!arg.contains(":") && configuration.containsKey("query.defaults.exchange")) {
@@ -79,10 +77,10 @@ public class StocksMessageProcessor implements MessageProcessor {
           .extract(json())
           .to(StockResult.class)
           .and(stock -> stock.reply(message))
-          .orElse(() -> message.reply("%s: I didn't find results for %s",
-              f.mention(message.sender()),
-              f.accent(query))
-          );
+          .orElse(() -> message.reply("%s: I didn't find results for [a]%s[/a]",
+              message.sender(),
+              query
+          ));
     } catch (IOException e) {
       logger.error(e.getMessage(), e);
     }

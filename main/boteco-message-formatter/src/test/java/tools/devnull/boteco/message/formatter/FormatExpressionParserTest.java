@@ -22,12 +22,12 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.message;
+package tools.devnull.boteco.message.formatter;
 
 import org.junit.Before;
 import org.junit.Test;
 import tools.devnull.boteco.ContentFormatter;
-import tools.devnull.boteco.message.impl.DefaultFormatExpressionParser;
+import tools.devnull.boteco.message.FormatExpressionParser;
 import tools.devnull.kodo.TestScenario;
 
 import java.util.function.Function;
@@ -52,11 +52,12 @@ public class FormatExpressionParserTest {
     when(formatter.accent("value")).thenReturn("accent: value");
     when(formatter.alternativeAccent("value")).thenReturn("alternative_accent: value");
     when(formatter.error("value")).thenReturn("error: value");
-    when(formatter.link("title", "url")).thenReturn("link: title - url");
+    when(formatter.link("title <url>")).thenReturn("link: title - url");
     when(formatter.mention("user")).thenReturn("mention: user");
     when(formatter.negative("value")).thenReturn("negative: value");
     when(formatter.positive("value")).thenReturn("positive: value");
     when(formatter.tag("value")).thenReturn("tag: value");
+    when(formatter.mention("value")).thenReturn("mention: value");
     when(formatter.value("value")).thenReturn("value: value");
   }
 
@@ -64,25 +65,29 @@ public class FormatExpressionParserTest {
   public void testExpressionBuild() {
     TestScenario.given(parser)
         .the(expression("[a]value[/a]"), should(be("accent: value")))
-        .the(expression("[b]value[/b]"), should(be("accent: value")))
         .the(expression("lorem ipsum [a]value[/a] dolor [/a]"), should(be("lorem ipsum accent: value dolor [/a]")))
 
         .the(expression("[aa]value[/aa]"), should(be("alternative_accent: value")))
-        .the(expression("[i]value[/i]"), should(be("alternative_accent: value")))
 
         .the(expression("[v]value[/v]"), should(be("value: value")))
         .the(expression("[p]value[/p]"), should(be("positive: value")))
         .the(expression("[n]value[/n]"), should(be("negative: value")))
         .the(expression("[t]value[/t]"), should(be("tag: value")))
+        .the(expression("[e]value[/e]"), should(be("error: value")))
+        .the(expression("[m]value[/m]"), should(be("mention: value")))
+        .the(expression("[l]title <url>[/l]"), should(be("link: title - url")))
 
         .the(expression("[t]value[/a]"), should(be("[t]value[/a]")));
 
-    verify(formatter, times(3)).accent("value");
-    verify(formatter, times(2)).alternativeAccent("value");
+    verify(formatter, times(2)).accent("value");
+    verify(formatter, times(1)).alternativeAccent("value");
     verify(formatter, times(1)).value("value");
     verify(formatter, times(1)).positive("value");
     verify(formatter, times(1)).negative("value");
     verify(formatter, times(1)).tag("value");
+    verify(formatter, times(1)).mention("value");
+    verify(formatter, times(1)).error("value");
+    verify(formatter, times(1)).link("title <url>");
   }
 
   private Function<FormatExpressionParser, ?> expression(String expression) {

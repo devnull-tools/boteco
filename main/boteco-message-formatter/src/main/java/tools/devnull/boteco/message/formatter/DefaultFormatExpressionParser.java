@@ -22,7 +22,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.message.impl;
+package tools.devnull.boteco.message.formatter;
 
 import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.message.FormatExpressionParser;
@@ -38,13 +38,14 @@ public class DefaultFormatExpressionParser implements FormatExpressionParser {
     Map<String, Function<String, String>> map = new HashMap<>();
 
     map.put("a", formatter::accent);
-    map.put("b", formatter::accent);
     map.put("aa", formatter::alternativeAccent);
-    map.put("i", formatter::alternativeAccent);
     map.put("v", formatter::value);
     map.put("p", formatter::positive);
     map.put("n", formatter::negative);
     map.put("t", formatter::tag);
+    map.put("e", formatter::error);
+    map.put("m", formatter::mention);
+    map.put("l", formatter::link);
 
     StringBuilder result = new StringBuilder(expression);
     map.entrySet().forEach(entry -> replaceText(result, entry.getKey(), entry.getValue()));

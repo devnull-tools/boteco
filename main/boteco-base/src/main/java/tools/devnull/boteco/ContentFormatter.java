@@ -26,8 +26,6 @@ package tools.devnull.boteco;
 
 /**
  * Interface that defines a formatter for content sent through channels.
- *
- * @see Channel#formatter()
  */
 public interface ContentFormatter {
 
@@ -37,7 +35,7 @@ public interface ContentFormatter {
    * @param content the content to format
    * @return the formatted content
    */
-  String accent(Object content);
+  String accent(String content);
 
   /**
    * Adds an alternative accent to the content
@@ -45,7 +43,7 @@ public interface ContentFormatter {
    * @param content the content to format
    * @return the formatted content
    */
-  String alternativeAccent(Object content);
+  String alternativeAccent(String content);
 
   /**
    * Adds a positive format to the content.
@@ -56,7 +54,7 @@ public interface ContentFormatter {
    * @param content the content to format
    * @return the formatted content
    */
-  String positive(Object content);
+  String positive(String content);
 
   /**
    * Adds a negative format to the content.
@@ -67,7 +65,7 @@ public interface ContentFormatter {
    * @param content the content to format
    * @return the formatted content
    */
-  String negative(Object content);
+  String negative(String content);
 
   /**
    * Adds a value format to the content.
@@ -77,7 +75,7 @@ public interface ContentFormatter {
    * @param content the content to format
    * @return the formatted content
    */
-  String value(Object content);
+  String value(String content);
 
   /**
    * Adds an error format to the content.
@@ -87,16 +85,17 @@ public interface ContentFormatter {
    * @param content the content to format
    * @return the formatted content
    */
-  String error(Object content);
+  String error(String content);
 
   /**
    * Adds a link format to the given url
+   * <p>
+   * The content should be in the given format "title &lt;link&gt;"
    *
-   * @param title the title of the link
-   * @param url   the url of the link
+   * @param content the content
    * @return the formatted content
    */
-  String link(String title, String url);
+  String link(String content);
 
   /**
    * Adds a tag format to the given content.
@@ -104,7 +103,7 @@ public interface ContentFormatter {
    * @param content the content to format
    * @return the formatted content
    */
-  String tag(Object content);
+  String tag(String content);
 
   /**
    * Formats a mention to the given user
@@ -113,40 +112,5 @@ public interface ContentFormatter {
    * @return the formatted content
    */
   String mention(String user);
-
-  /**
-   * Adds a number format to the given value.
-   * <p>
-   * The default implementation adds a {@link #positive(Object)} format
-   * if the number is positive and a {@link #negative(Object)} format if
-   * the number is negative.
-   *
-   * @param value the value to format
-   * @return the formatted value
-   */
-  default String number(int value) {
-    return number((double) value, "%.0f");
-  }
-
-  /**
-   * Adds a number format to the given value.
-   * <p>
-   * The default implementation adds a {@link #positive(Object)} format
-   * if the number is positive and a {@link #negative(Object)} format if
-   * the number is negative.
-   *
-   * @param value the value to format
-   * @return the formatted value
-   */
-  default String number(double value, String format) {
-    String content = String.format(format, value);
-    if (value > 0) {
-      return positive(content);
-    } else if (value < 0) {
-      return negative(content);
-    } else {
-      return value(content);
-    }
-  }
 
 }

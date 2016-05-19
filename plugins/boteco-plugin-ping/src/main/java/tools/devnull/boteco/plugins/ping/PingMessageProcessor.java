@@ -24,12 +24,11 @@
 
 package tools.devnull.boteco.plugins.ping;
 
-import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 
-import static tools.devnull.boteco.message.MessageChecker.check;
 import static tools.devnull.boteco.Predicates.command;
+import static tools.devnull.boteco.message.MessageChecker.check;
 
 /**
  * A simple processor that responds to a "ping" command with a
@@ -49,8 +48,7 @@ public class PingMessageProcessor implements MessageProcessor {
 
   @Override
   public void process(IncomeMessage message) {
-    ContentFormatter f = message.channel().formatter();
-    message.reply("%s: pong", f.mention(message.sender()));
+    message.reply("[m]%s[/m]: pong", message.sender());
   }
 
 }

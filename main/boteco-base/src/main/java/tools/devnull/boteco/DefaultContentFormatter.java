@@ -30,43 +30,43 @@ package tools.devnull.boteco;
 public class DefaultContentFormatter implements ContentFormatter {
 
   @Override
-  public String accent(Object content) {
-    return String.valueOf(content);
+  public String accent(String content) {
+    return content;
   }
 
   @Override
-  public String alternativeAccent(Object content) {
-    return String.valueOf(content);
+  public String alternativeAccent(String content) {
+    return content;
   }
 
   @Override
-  public String positive(Object content) {
-    return String.valueOf(content);
+  public String positive(String content) {
+    return content;
   }
 
   @Override
-  public String negative(Object content) {
-    return String.valueOf(content);
+  public String negative(String content) {
+    return content;
   }
 
   @Override
-  public String value(Object content) {
-    return String.valueOf(content);
+  public String value(String content) {
+    return content;
   }
 
   @Override
-  public String error(Object content) {
-    return String.valueOf(content);
+  public String error(String content) {
+    return content;
   }
 
   @Override
-  public String link(String title, String url) {
-    return String.format("%s <%s>", title, url);
+  public String link(String content) {
+    return content;
   }
 
   @Override
-  public String tag(Object content) {
-    return String.format("[%s]", String.valueOf(content));
+  public String tag(String content) {
+    return String.format("[%s]", content);
   }
 
   @Override

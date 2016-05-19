@@ -26,7 +26,6 @@ package tools.devnull.boteco.plugins.weather;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 
@@ -58,12 +57,11 @@ public class WeatherMessageProcessor implements MessageProcessor {
   @Override
   public void process(IncomeMessage message) {
     try {
-      ContentFormatter formatter = message.channel().formatter();
       Weather weather = search(message.command().arg());
       if (weather != null) {
-        message.reply(buildResponse(formatter, weather));
+        message.reply(buildResponse(weather));
       } else {
-        message.reply(formatter.error("Could not find any weather for " + message.command().arg()));
+        message.reply("[e]Could not find any weather for " + message.command().arg() + "[/e]");
       }
     } catch (Exception e) {
       logger.error("Error while fetching weather", e);
@@ -81,19 +79,19 @@ public class WeatherMessageProcessor implements MessageProcessor {
     return null;
   }
 
-  private String buildResponse(ContentFormatter formatter, Weather weather) {
+  private String buildResponse(Weather weather) {
     StringBuilder response = new StringBuilder();
     if (weather.text() != null) {
-      response.append(formatter.accent(weather.text()));
+      response.append("[a]").append(weather.text()).append("[/a]");
     }
     if (weather.condition() != null) {
-      response.append(": ").append(formatter.alternativeAccent(weather.condition()));
+      response.append(": [aa]").append(weather.condition()).append("[/aa]");
     }
     if (weather.temperature() != null) {
-      response.append(" - ")
-          .append(formatter.value(String.valueOf((int) weather.temperature().celsius()) + "\u00BAC"))
-          .append(" / ")
-          .append(formatter.value(String.valueOf((int) weather.temperature().fahrenheits()) + "\u00BAF"));
+      response.append(" - [v]")
+          .append(String.valueOf((int) weather.temperature().celsius())).append("\u00BAC").append("[/v]")
+          .append(" / [v]").append(String.valueOf((int) weather.temperature().fahrenheits())).append("\u00BAF")
+          .append("[/v]");
     }
     return response.toString();
   }

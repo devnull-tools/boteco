@@ -27,9 +27,19 @@ package tools.devnull.boteco.channel.irc;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.component.irc.IrcConstants;
+import tools.devnull.boteco.ContentFormatter;
+import tools.devnull.boteco.message.FormatExpressionParser;
 import tools.devnull.boteco.message.OutcomeMessage;
 
 public class IrcOutcomeProcessor implements Processor {
+
+  private final FormatExpressionParser parser;
+  private final ContentFormatter contentFormatter;
+
+  public IrcOutcomeProcessor(FormatExpressionParser parser, ContentFormatter contentFormatter) {
+    this.parser = parser;
+    this.contentFormatter = contentFormatter;
+  }
 
   @Override
   public void process(Exchange exchange) throws Exception {
@@ -37,7 +47,7 @@ public class IrcOutcomeProcessor implements Processor {
     if (message != null) {
       exchange.getOut().setHeader(IrcConstants.IRC_TARGET, message.getTarget());
       exchange.getOut().setHeader(IrcConstants.IRC_MESSAGE_TYPE, "PRIVMSG");
-      exchange.getOut().setBody(message.getContent());
+      exchange.getOut().setBody(parser.parse(contentFormatter, message.getContent()));
     }
   }
 

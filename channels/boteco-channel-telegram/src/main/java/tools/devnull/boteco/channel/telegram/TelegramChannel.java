@@ -25,7 +25,6 @@
 package tools.devnull.boteco.channel.telegram;
 
 import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.ContentFormatter;
 
 /**
  * A class that represents the Telegram Channel.
@@ -42,11 +41,6 @@ public class TelegramChannel implements Channel {
   @Override
   public String id() {
     return "telegram";
-  }
-
-  @Override
-  public ContentFormatter formatter() {
-    return new TelegramContentFormatter();
   }
 
 }

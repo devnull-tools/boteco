@@ -41,6 +41,7 @@
     <!-- main projects -->
     <module>main/boteco-parent</module>
     <module>main/boteco-base</module>
+    <module>main/boteco-message-formatter</module>
     <module>main/boteco-message-processor</module>
     <module>main/boteco-rest-api</module>
     <module>main/boteco-rest-client</module>

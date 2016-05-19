@@ -69,7 +69,14 @@
     <argument ref="service-locator"/>
   </bean>
 
-  <bean id="irc-outcome-processor" class="tools.devnull.boteco.channel.irc.IrcOutcomeProcessor"/>
+  <bean id="irc-outcome-processor" class="tools.devnull.boteco.channel.irc.IrcOutcomeProcessor">
+    <argument>
+      <reference interface="tools.devnull.boteco.message.FormatExpressionParser"/>
+    </argument>
+    <argument>
+      <bean class="tools.devnull.boteco.channel.irc.IrcContentFormatter"/>
+    </argument>
+  </bean>
 
   <camelContext id="boteco-channel-irc"
                 xmlns="http://camel.apache.org/schema/blueprint">

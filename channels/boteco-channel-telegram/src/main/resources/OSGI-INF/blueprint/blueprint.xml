@@ -77,7 +77,14 @@
     <property name="fieldNamingPolicy" value="LOWER_CASE_WITH_UNDERSCORES"/>
   </bean>
 
-  <bean id="telegram-outcome-processor" class="tools.devnull.boteco.channel.telegram.TelegramOutcomeProcessor"/>
+  <bean id="telegram-outcome-processor" class="tools.devnull.boteco.channel.telegram.TelegramOutcomeProcessor">
+    <argument>
+      <reference interface="tools.devnull.boteco.message.FormatExpressionParser"/>
+    </argument>
+    <argument>
+      <bean class="tools.devnull.boteco.channel.telegram.TelegramContentFormatter"/>
+    </argument>
+  </bean>
 
   <service id="telegram-channel" interface="tools.devnull.boteco.Channel">
     <service-properties>

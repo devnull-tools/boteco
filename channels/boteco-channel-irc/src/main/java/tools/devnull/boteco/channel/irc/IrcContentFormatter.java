@@ -26,6 +26,9 @@ package tools.devnull.boteco.channel.irc;
 
 import tools.devnull.boteco.ContentFormatter;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class IrcContentFormatter implements ContentFormatter {
 
   enum Color {
@@ -50,47 +53,48 @@ public class IrcContentFormatter implements ContentFormatter {
 
   }
 
-  private String colorize(Object content, Color color) {
-    return String.format("\u0003%02d%s\u0003", color.ordinal(), String.valueOf(content));
+  private String colorize(String content, Color color) {
+    return String.format("\u0003%02d%s\u0003", color.ordinal(), content);
   }
 
   @Override
-  public String accent(Object content) {
+  public String accent(String content) {
     return colorize(content, Color.YELLOW);
   }
 
   @Override
-  public String alternativeAccent(Object content) {
+  public String alternativeAccent(String content) {
     return colorize(content, Color.ORANGE);
   }
 
   @Override
-  public String positive(Object content) {
+  public String positive(String content) {
     return colorize(content, Color.GREEN);
   }
 
   @Override
-  public String negative(Object content) {
+  public String negative(String content) {
     return colorize(content, Color.RED);
   }
 
   @Override
-  public String value(Object content) {
+  public String value(String content) {
     return colorize(content, Color.PINK);
   }
 
   @Override
-  public String error(Object content) {
+  public String error(String content) {
     return colorize(content, Color.RED);
   }
 
   @Override
-  public String link(String title, String url) {
-    return String.format("%s <%s>", colorize(title, Color.YELLOW), url);
+  public String link(String content) {
+    Matcher matcher = Pattern.compile("^(?<title>.+)\\s*:\\s*<(?<url>.+)>$").matcher(content);
+    return matcher.find() ? String.format("%s <%s>", matcher.group("title").trim(), matcher.group("url")) : content;
   }
 
   @Override
-  public String tag(Object content) {
+  public String tag(String content) {
     return String.format("[%s]", colorize(content, Color.ORANGE));
   }
 
