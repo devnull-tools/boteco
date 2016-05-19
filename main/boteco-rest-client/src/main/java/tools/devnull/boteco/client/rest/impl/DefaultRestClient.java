@@ -80,9 +80,8 @@ public class DefaultRestClient implements RestClient {
           int port = Integer.parseInt(configuration.getProperty("auth." + id + ".port", "-1"));
           String scheme = configuration.getProperty("auth." + id + ".scheme", null);
           authCache.put(new HttpHost(host, port, scheme), basicAuth);
-          provider.setCredentials(
-              new AuthScope(host, AuthScope.ANY_PORT),
-              new UsernamePasswordCredentials(configuration.getProperty("auth." + id + ".credentials")));
+          String credentials = configuration.getProperty("auth." + id + ".credentials");
+          provider.setCredentials(new AuthScope(host, AuthScope.ANY_PORT), new UsernamePasswordCredentials(credentials));
         });
 
     // Add AuthCache to the execution context
