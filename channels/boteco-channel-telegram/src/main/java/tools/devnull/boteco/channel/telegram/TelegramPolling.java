@@ -27,10 +27,10 @@ package tools.devnull.boteco.channel.telegram;
 import java.io.Serializable;
 
 /**
- * A class that represents a result fetched by pooling using
+ * A class that represents a result fetched by polling using
  * the Telegram Bot API.
  */
-public class TelegramPooling {
+public class TelegramPolling {
 
   private Integer updateId;
   private Message message;

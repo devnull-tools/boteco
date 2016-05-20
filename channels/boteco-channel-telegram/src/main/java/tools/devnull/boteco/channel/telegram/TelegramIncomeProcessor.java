@@ -52,7 +52,7 @@ public class TelegramIncomeProcessor implements Processor {
 
   @Override
   public void process(Exchange exchange) throws Exception {
-    offsetManager.process(exchange.getIn().getBody(TelegramPooling.class),
+    offsetManager.process(exchange.getIn().getBody(TelegramPolling.class),
         pooling -> dispatcher.dispatch(new TelegramIncomeMessage(extractor, pooling.getMessage(), serviceLocator)));
   }
 

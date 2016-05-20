@@ -36,11 +36,11 @@ class TelegramIncomeMessage implements IncomeMessage {
   private static final long serialVersionUID = -7037612529067018573L;
 
   private final CommandExtractor extractor;
-  private final TelegramPooling.Message message;
+  private final TelegramPolling.Message message;
   private final Channel channel = new TelegramChannel();
   private final ServiceLocator serviceLocator;
 
-  TelegramIncomeMessage(CommandExtractor extractor, TelegramPooling.Message message, ServiceLocator serviceLocator) {
+  TelegramIncomeMessage(CommandExtractor extractor, TelegramPolling.Message message, ServiceLocator serviceLocator) {
     this.extractor = extractor;
     this.message = message;
     this.serviceLocator = serviceLocator;

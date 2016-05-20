@@ -39,8 +39,8 @@
       <cm:property name="bot.whitelist" value=""/>
       <!-- The expression that defines a bot command -->
       <cm:property name="bot.command.expression" value="^@?boteco(_bot)?[,:]?\s+"/>
-      <!-- The pooling interval -->
-      <cm:property name="pooling.interval" value="2s"/>
+      <!-- The polling interval -->
+      <cm:property name="polling.interval" value="2s"/>
       <!--
         The initial value of the offset
 
@@ -48,7 +48,7 @@
         received. Use this offset if the channel was down for a long time and you
         don't want to process older messages.
       -->
-      <cm:property name="pooling.initial-offset" value="0"/>
+      <cm:property name="polling.initial-offset" value="0"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
@@ -58,7 +58,7 @@
   </bean>
 
   <bean id="offset-manager" class="tools.devnull.boteco.channel.telegram.TelegramOffsetManager">
-    <argument value="{{pooling.initial-offset}}"/>
+    <argument value="{{polling.initial-offset}}"/>
   </bean>
 
   <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>
@@ -73,7 +73,7 @@
   </bean>
 
   <bean id="telegram-message-json" class="org.apache.camel.component.gson.GsonDataFormat">
-    <property name="unmarshalType" value="tools.devnull.boteco.channel.telegram.TelegramPooling"/>
+    <property name="unmarshalType" value="tools.devnull.boteco.channel.telegram.TelegramPolling"/>
     <property name="fieldNamingPolicy" value="LOWER_CASE_WITH_UNDERSCORES"/>
   </bean>
 
@@ -97,7 +97,7 @@
                 xmlns="http://camel.apache.org/schema/blueprint">
 
     <route id="boteco.message.from.telegram">
-      <from uri="timer:telegram?period={{pooling.interval}}"/>
+      <from uri="timer:telegram?period={{polling.interval}}"/>
       <log message="Pooling Telegram for new messages"
            logName="boteco-message-telegram"
            loggingLevel="DEBUG"/>

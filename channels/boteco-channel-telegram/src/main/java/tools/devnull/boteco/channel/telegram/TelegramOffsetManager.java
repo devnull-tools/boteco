@@ -58,7 +58,7 @@ public class TelegramOffsetManager {
     return this.nextId.intValue();
   }
 
-  public void process(TelegramPooling pooling, Consumer<TelegramPooling> consumer) {
+  public void process(TelegramPolling pooling, Consumer<TelegramPolling> consumer) {
     Integer updateId = pooling.getUpdateId();
     if (updateId >= this.nextId.get()) {
       this.nextId.set(updateId + 1);
