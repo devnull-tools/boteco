@@ -27,6 +27,7 @@ package tools.devnull.boteco.client.rest.impl;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -79,7 +80,8 @@ public class DefaultRestConfiguration implements RestConfiguration {
   @Override
   public String rawBody() throws IOException {
     CloseableHttpResponse response = client.execute(request, context);
-    String content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+    HttpEntity entity = response.getEntity();
+    String content = entity == null ? "" : IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
     response.close();
     return function.apply(content);
   }
