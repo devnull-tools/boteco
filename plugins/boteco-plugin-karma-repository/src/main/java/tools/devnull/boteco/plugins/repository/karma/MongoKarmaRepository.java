@@ -22,7 +22,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.karma.repository;
+package tools.devnull.boteco.plugins.repository.karma;
 
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;

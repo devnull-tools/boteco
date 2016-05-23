@@ -32,11 +32,11 @@
                                http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
-  <reference id="mongo-database" interface="com.mongodb.client.MongoDatabase"/>
-
   <service interface="tools.devnull.boteco.plugins.karma.KarmaRepository">
-    <bean class="tools.devnull.boteco.plugins.karma.repository.MongoKarmaRepository">
-      <argument ref="mongo-database"/>
+    <bean class="tools.devnull.boteco.plugins.repository.karma.MongoKarmaRepository">
+      <argument>
+        <reference interface="com.mongodb.client.MongoDatabase"/>
+      </argument>
     </bean>
   </service>
 
