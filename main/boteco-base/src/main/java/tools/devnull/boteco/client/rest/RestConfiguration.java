@@ -83,4 +83,9 @@ public interface RestConfiguration {
    */
   String rawBody() throws IOException;
 
+  /**
+   * Executes the rest url ignoring the response content.
+   */
+  void execute() throws IOException;
+
 }
