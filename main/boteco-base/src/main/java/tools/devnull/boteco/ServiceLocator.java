@@ -24,12 +24,13 @@
 
 package tools.devnull.boteco;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Interface to locate services in bundles.
  */
-public interface ServiceLocator {
+public interface ServiceLocator extends Serializable {
 
   /**
    * Locates the service that implements the given interface
