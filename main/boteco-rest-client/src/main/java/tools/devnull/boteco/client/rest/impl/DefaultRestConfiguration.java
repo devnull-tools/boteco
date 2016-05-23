@@ -87,6 +87,11 @@ public class DefaultRestConfiguration implements RestConfiguration {
   }
 
   @Override
+  public void execute() throws IOException {
+    client.execute(request, context).close();
+  }
+
+  @Override
   public <E> RestResult<E> to(Class<? extends E> type) throws IOException {
     try {
       return new DefaultRestResult<>(gsonBuilder.create().fromJson(rawBody(), type));
