@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class KarmaMongoDB implements KarmaRepository {
+public class MongoKarmaRepository implements KarmaRepository {
 
   private static final int ASC = 1;
   private static final int DESC = -1;
@@ -45,7 +45,7 @@ public class KarmaMongoDB implements KarmaRepository {
   private final MongoCollection<Document> karmas;
   private final Gson gson;
 
-  public KarmaMongoDB(MongoDatabase database) {
+  public MongoKarmaRepository(MongoDatabase database) {
     this.karmas = database.getCollection("karmas");
     this.gson = new Gson();
   }

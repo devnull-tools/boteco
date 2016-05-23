@@ -35,7 +35,7 @@
   <reference id="mongo-database" interface="com.mongodb.client.MongoDatabase"/>
 
   <service interface="tools.devnull.boteco.plugins.karma.KarmaRepository">
-    <bean class="tools.devnull.boteco.plugins.karma.repository.KarmaMongoDB">
+    <bean class="tools.devnull.boteco.plugins.karma.repository.MongoKarmaRepository">
       <argument ref="mongo-database"/>
     </bean>
   </service>
