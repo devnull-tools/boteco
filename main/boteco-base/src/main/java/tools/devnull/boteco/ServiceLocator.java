@@ -61,4 +61,13 @@ public interface ServiceLocator extends Serializable {
    */
   <T> List<T> locateAll(Class<T> serviceClass, String filter);
 
+  /**
+   * Locates the services that implements the given interface.
+   *
+   * @param serviceClass the interface that the service implements
+   * @param <T>          the type of the service
+   * @return the services that implements the given interface.
+   */
+  <T> List<T> locateAll(Class<T> serviceClass);
+
 }

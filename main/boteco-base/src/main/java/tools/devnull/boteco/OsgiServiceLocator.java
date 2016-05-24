@@ -71,4 +71,8 @@ public class OsgiServiceLocator implements ServiceLocator, Serializable {
     }
   }
 
+  @Override
+  public <T> List<T> locateAll(Class<T> serviceClass) {
+    return locateAll(serviceClass, null);
+  }
 }
