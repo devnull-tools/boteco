@@ -30,6 +30,7 @@ import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.Command;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.message.Sender;
 import tools.devnull.kodo.TestScenario;
 
 import java.util.function.Consumer;
@@ -55,11 +56,19 @@ public class PingProcessorTest {
 
   private IncomeMessage messageWithoutCommand;
 
-  private String sender;
+  private Sender sender;
+
+  private Sender sender(String username, String name, String id) {
+    Sender mock = mock(Sender.class);
+    when(mock.username()).thenReturn(username);
+    when(mock.name()).thenReturn(name);
+    when(mock.id()).thenReturn(id);
+    return mock;
+  }
 
   @Before
   public void initialize() {
-    sender = "someone";
+    sender = sender("someone", "Full Name", "8139");
     Channel channel = mock(Channel.class);
 
     processor = new PingMessageProcessor();
@@ -88,22 +97,25 @@ public class PingProcessorTest {
   }
 
   @Test
-  public void testProcess() {
+  public void testProcessable() {
     TestScenario.given(pingMessage)
         .it(should(be(processable())))
 
         .when(processed())
         .it(should(be(replied())))
-        .the(command(), should(be(tested())));
-
-    TestScenario.given(pongMessage)
-        .it(should(notBe(processable())))
-        .the(command(), should(be(tested())));
+        .the(command(), should(be(verified())));
   }
 
-  private Predicate<Command> tested() {
-    return c -> {
-      verify(c).name();
+  @Test
+  public void testNotProcessable() {
+    TestScenario.given(pongMessage)
+        .it(should(notBe(processable())))
+        .the(command(), should(be(verified())));
+  }
+
+  private Predicate<Command> verified() {
+    return command -> {
+      verify(command).name();
       return true;
     };
   }
@@ -118,7 +130,11 @@ public class PingProcessorTest {
 
   private Predicate<IncomeMessage> replied() {
     return m -> {
-      verify(m).reply("[m]%s[/m]: pong", m.sender());
+      Sender sender = m.sender();
+      verify(sender).username();
+      verify(sender).name();
+      verify(sender).id();
+      verify(m).reply("[m]%s[/m]: pong", sender.username());
       return true;
     };
   }

@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.channel.telegram;
 
+import tools.devnull.boteco.message.Sender;
+
 import java.io.Serializable;
 
 /**
@@ -102,38 +104,29 @@ public class TelegramPolling {
     }
   }
 
-  public static class User implements Serializable {
+  public static class User implements Serializable, Sender {
 
     private static final long serialVersionUID = -4899947249105033703L;
 
     private Integer id;
     private String firstName;
+    private String lastName;
     private String username;
 
-    public Integer getId() {
-      return id;
+    @Override
+    public String id() {
+      return this.id.toString();
     }
 
-    public void setId(Integer id) {
-      this.id = id;
+    @Override
+    public String name() {
+      return lastName != null ? firstName + " " + lastName : firstName;
     }
 
-    public String getFirstName() {
-      return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-      this.firstName = firstName;
-    }
-
-    public String getUsername() {
+    @Override
+    public String username() {
       return username;
     }
-
-    public void setUsername(String username) {
-      this.username = username;
-    }
-
   }
 
   public static class Chat implements Serializable {

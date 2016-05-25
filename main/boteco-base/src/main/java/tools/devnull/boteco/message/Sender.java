@@ -22,43 +22,32 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.ping;
-
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
-
-import java.util.Arrays;
-
-import static tools.devnull.boteco.Predicates.command;
-import static tools.devnull.boteco.message.MessageChecker.check;
+package tools.devnull.boteco.message;
 
 /**
- * A simple processor that responds to a "ping" command with a
- * "pong" response.
+ * Interface that represents a sender
  */
-public class PingMessageProcessor implements MessageProcessor {
+public interface Sender {
 
-  @Override
-  public String id() {
-    return "ping";
-  }
+  /**
+   * Returns the id of this sender
+   *
+   * @return the id of this sender
+   */
+  String id();
 
-  @Override
-  public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("ping").withoutArgs());
-  }
+  /**
+   * Returns the name of this sender
+   *
+   * @return the name of this sender
+   */
+  String name();
 
-  @Override
-  public void process(IncomeMessage message) {
-    String sender = Arrays.stream(new String[]
-        {
-            message.sender().username(),
-            message.sender().name(),
-            message.sender().id()
-        }).filter(s -> s != null && !s.isEmpty())
-        .findFirst()
-        .get();
-    message.reply("[m]%s[/m]: pong", sender);
-  }
+  /**
+   * Returns the username of this sender
+   *
+   * @return the username of this sender
+   */
+  String username();
 
 }

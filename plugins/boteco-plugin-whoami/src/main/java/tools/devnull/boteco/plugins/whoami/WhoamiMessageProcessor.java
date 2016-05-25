@@ -22,43 +22,36 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.ping;
+package tools.devnull.boteco.plugins.whoami;
 
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
-
-import java.util.Arrays;
+import tools.devnull.boteco.message.Sender;
 
 import static tools.devnull.boteco.Predicates.command;
 import static tools.devnull.boteco.message.MessageChecker.check;
 
 /**
- * A simple processor that responds to a "ping" command with a
- * "pong" response.
+ * A message processor that outputs the sender information
  */
-public class PingMessageProcessor implements MessageProcessor {
+public class WhoamiMessageProcessor implements MessageProcessor {
 
   @Override
   public String id() {
-    return "ping";
+    return "whoami";
   }
 
   @Override
   public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("ping").withoutArgs());
+    return check(message).accept(command("whoami").withoutArgs());
   }
 
   @Override
   public void process(IncomeMessage message) {
-    String sender = Arrays.stream(new String[]
-        {
-            message.sender().username(),
-            message.sender().name(),
-            message.sender().id()
-        }).filter(s -> s != null && !s.isEmpty())
-        .findFirst()
-        .get();
-    message.reply("[m]%s[/m]: pong", sender);
+    Sender sender = message.sender();
+    message.replySender("[a]ID:[/a] %s", sender.id());
+    message.replySender("[a]Username:[/a] %s", sender.username());
+    message.replySender("[a]Name:[/a] %s", sender.name());
   }
 
 }

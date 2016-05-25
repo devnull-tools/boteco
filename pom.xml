@@ -54,6 +54,7 @@
     <module>misc/boteco-features</module>
     <!-- plugins -->
     <module>plugins/boteco-plugin-ping</module>
+    <module>plugins/boteco-plugin-whoami</module>
     <module>plugins/boteco-plugin-weather</module>
     <module>plugins/boteco-plugin-weather-searcher</module>
     <module>plugins/boteco-plugin-redhat</module>

@@ -53,7 +53,7 @@ public interface IncomeMessage extends Serializable {
    *
    * @return the sender of this message.
    */
-  String sender();
+  Sender sender();
 
   /**
    * Returns the target of this message.

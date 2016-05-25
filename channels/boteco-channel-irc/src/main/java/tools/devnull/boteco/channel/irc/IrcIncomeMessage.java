@@ -25,12 +25,16 @@
 package tools.devnull.boteco.channel.irc;
 
 import org.apache.camel.component.irc.IrcMessage;
+import org.schwering.irc.lib.IRCUser;
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.Command;
 import tools.devnull.boteco.CommandExtractor;
-import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.ServiceLocator;
+import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageSender;
+import tools.devnull.boteco.message.Sender;
+
+import java.io.Serializable;
 
 /**
  * An abstraction of an IRC message.
@@ -43,13 +47,13 @@ public class IrcIncomeMessage implements IncomeMessage {
   private final CommandExtractor commandExtractor;
   private final ServiceLocator serviceLocator;
   private final String message;
-  private final String user;
+  private final Sender sender;
   private final String target;
 
   public IrcIncomeMessage(IrcMessage income, CommandExtractor commandExtractor, ServiceLocator serviceLocator) {
     this.commandExtractor = commandExtractor;
     this.message = income.getMessage();
-    this.user = income.getUser().getNick();
+    this.sender = new IrcSender(income.getUser());
     this.target = income.getTarget();
     this.serviceLocator = serviceLocator;
   }
@@ -65,8 +69,8 @@ public class IrcIncomeMessage implements IncomeMessage {
   }
 
   @Override
-  public String sender() {
-    return user;
+  public Sender sender() {
+    return this.sender;
   }
 
   @Override
@@ -105,11 +109,41 @@ public class IrcIncomeMessage implements IncomeMessage {
 
   @Override
   public void replySender(String content) {
-    send(sender(), content);
+    send(sender.username(), content);
   }
 
   private void send(String target, String content) {
     serviceLocator.locate(MessageSender.class).send(content).to(target).through(channel().id());
+  }
+
+  private static class IrcSender implements Sender, Serializable {
+
+    private static final long serialVersionUID = 6728222816835888595L;
+
+    private final String id;
+    private final String name;
+    private final String username;
+
+    private IrcSender(IRCUser user) {
+      this.id = String.format("%s:%s:%s", user.getHost(), user.getServername(), user.getNick());
+      this.name = user.getUsername();
+      this.username = user.getNick();
+    }
+
+    @Override
+    public String id() {
+      return id;
+    }
+
+    @Override
+    public String name() {
+      return name;
+    }
+
+    @Override
+    public String username() {
+      return username;
+    }
   }
 
 }

@@ -30,6 +30,7 @@ import tools.devnull.boteco.CommandExtractor;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.message.MessageSender;
+import tools.devnull.boteco.message.Sender;
 
 class TelegramIncomeMessage implements IncomeMessage {
 
@@ -68,8 +69,8 @@ class TelegramIncomeMessage implements IncomeMessage {
   }
 
   @Override
-  public String sender() {
-    return message.getFrom().getUsername();
+  public Sender sender() {
+    return message.getFrom();
   }
 
   @Override
@@ -89,16 +90,16 @@ class TelegramIncomeMessage implements IncomeMessage {
 
   @Override
   public void reply(String content) {
-    replyMessage(message.getChat().getId(), content);
+    replyMessage(String.valueOf(message.getChat().getId()), content);
   }
 
   @Override
   public void replySender(String content) {
-    replyMessage(message.getFrom().getId(), content);
+    replyMessage(message.getFrom().id(), content);
   }
 
-  private void replyMessage(Integer id, String content) {
-    serviceLocator.locate(MessageSender.class).send(content).to(String.valueOf(id)).through(channel().id());
+  private void replyMessage(String id, String content) {
+    serviceLocator.locate(MessageSender.class).send(content).to(id).through(channel().id());
   }
 
 }
