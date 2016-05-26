@@ -36,8 +36,6 @@
       <!-- The bot's token -->
       <cm:property name="bot.token" value=""/>
       <!-- The chat ids the bot should listen to -->
-      <cm:property name="bot.whitelist" value=""/>
-      <!-- The expression that defines a bot command -->
       <cm:property name="bot.command.expression" value="^@?boteco(_bot)?[,:]?\s+"/>
       <!-- The polling interval -->
       <cm:property name="polling.interval" value="2s"/>
@@ -108,10 +106,7 @@
       <split>
         <jsonpath>$.result</jsonpath>
         <unmarshal ref="telegram-message-json"/>
-        <filter>
-          <simple>${body.message.chat.id} in "{{bot.whitelist}}" || "{{bot.whitelist}}" == ''</simple>
-          <process ref="telegram-income-processor"/>
-        </filter>
+        <process ref="telegram-income-processor"/>
       </split>
     </route>
 

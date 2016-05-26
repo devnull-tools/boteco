@@ -7,13 +7,6 @@ This is the implementation of the Telegram Channel. It allows Message Processors
 Just use the config `tools.devnull.boteco.channel.telegram`. The supported properties are:
 
 bot.token:: the bot token (you get this one after a new bot registration)
-bot.whitelist:: the IDs that this bot will listen for messages (defaults to '' for all IDs)
 bot.command.expression:: the regular expression that defines a command (defaults to '^@?boteco(_bot)?[,:]?\s+')
 polling.interval:: the interval in which the channel should polling for new messages (defaults to '2s')
 polling.initial-offset:: the initial offset to fetch the messages (defaults to 0)
-
-[NOTE]
-====
-The whitelist purpose is to make the telegram bot a more "private" bot. By using a whitelist, only messages from the
-specific chats will be handled.
-====
