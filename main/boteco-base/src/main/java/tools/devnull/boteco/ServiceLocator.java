@@ -52,6 +52,19 @@ public interface ServiceLocator extends Serializable {
   <T> T locate(Class<T> serviceClass, String filter);
 
   /**
+   * Locates the first service that implements the given interface and matches the given filter.
+   *
+   * @param serviceClass the interface that the service implements
+   * @param filter       the filter to match
+   * @param args         the arguments to format the filter
+   * @param <T>          the type of the service
+   * @return the first service that implements the given interface and matches the given filter.
+   */
+  default <T> T locate(Class<T> serviceClass, String filter, Object... args) {
+    return this.locate(serviceClass, String.format(filter, args));
+  }
+
+  /**
    * Locates the services that implements the given interface and matches the given filter.
    *
    * @param serviceClass the interface that the service implements
@@ -60,6 +73,19 @@ public interface ServiceLocator extends Serializable {
    * @return the services that implements the given interface and matches the given filter.
    */
   <T> List<T> locateAll(Class<T> serviceClass, String filter);
+
+  /**
+   * Locates the services that implements the given interface and matches the given filter.
+   *
+   * @param serviceClass the interface that the service implements
+   * @param filter       the filter to match
+   * @param args         the arguments to format the filter
+   * @param <T>          the type of the service
+   * @return the services that implements the given interface and matches the given filter.
+   */
+  default <T> List<T> locateAll(Class<T> serviceClass, String filter, Object... args) {
+    return this.locateAll(serviceClass, String.format(filter, args));
+  }
 
   /**
    * Locates the services that implements the given interface.
