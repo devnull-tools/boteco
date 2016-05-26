@@ -22,19 +22,15 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.message;
+package tools.devnull.boteco;
+
+import tools.devnull.boteco.message.IncomeMessage;
 
 /**
- * Interface that defines a listener that listens to message processor events
+ * Interface that defines a rule to accept an income message.
  */
-public interface MessageProcessorListener {
+public interface Rule {
 
-  /**
-   * Method called before the message processor executes.
-   *
-   * @param message          the income message
-   * @param messageProcessor the message processor that will handle the message
-   */
-  void onProcess(IncomeMessage message, MessageProcessor messageProcessor);
+  boolean accept(IncomeMessage message);
 
 }
