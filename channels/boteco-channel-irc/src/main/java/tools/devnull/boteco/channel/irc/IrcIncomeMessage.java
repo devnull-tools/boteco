@@ -125,7 +125,7 @@ public class IrcIncomeMessage implements IncomeMessage {
     private final String username;
 
     private IrcSender(IRCUser user) {
-      this.id = String.format("%s:%s:%s", user.getHost(), user.getServername(), user.getNick());
+      this.id = String.format("%s:%s", user.getHost(), user.getNick());
       this.name = user.getUsername();
       this.username = user.getNick();
     }
