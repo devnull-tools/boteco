@@ -41,11 +41,21 @@ public class BotecoMessageProcessorInvoker implements Processor {
     Message income = exchange.getIn();
     MessageProcessor messageProcessor = income.getBody(MessageProcessor.class);
     IncomeMessage message = income.getHeader(BotecoMessageProcessorFinder.INCOME_MESSAGE, IncomeMessage.class);
+    log(messageProcessor, message);
     try {
       messageProcessor.process(message);
     } catch (Throwable e) {
       logger.error(e.getMessage(), e);
     }
+  }
+
+  private void log(MessageProcessor messageProcessor, IncomeMessage message) {
+    logger.info(String.format("[%s] [%s@%s:%s] %s",
+        messageProcessor.id(),
+        message.sender().username() != null ? message.sender().username() : message.sender().name(),
+        message.channel().id(),
+        message.target(),
+        message.content()));
   }
 
 }

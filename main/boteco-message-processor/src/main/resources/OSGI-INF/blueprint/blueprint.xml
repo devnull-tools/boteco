@@ -33,12 +33,8 @@
                   interface="tools.devnull.boteco.message.MessageProcessor"
                   availability="optional"/>
 
-  <!-- Dynamic list containing all message processor listeners in the OSGi Registry -->
-  <reference-list id="message-listeners"
-                  interface="tools.devnull.boteco.message.MessageProcessorListener"
-                  availability="optional"/>
-
   <reference id="client" interface="tools.devnull.boteco.client.jms.JmsClient"/>
+  <bean id="service-locator" class="tools.devnull.boteco.OsgiServiceLocator"/>
 
   <service id="message-sender"
            interface="tools.devnull.boteco.message.MessageSender">
@@ -52,12 +48,9 @@
            interface="tools.devnull.boteco.message.MessageDispatcher">
     <bean class="tools.devnull.boteco.process.BotecoMessageDispatcher">
       <argument ref="client"/>
+      <argument ref="service-locator"/>
       <argument value="boteco.process"/>
     </bean>
-  </service>
-
-  <service id="log-listener" interface="tools.devnull.boteco.message.MessageProcessorListener">
-    <bean class="tools.devnull.boteco.process.LogMessageProcessorListener"/>
   </service>
 
   <bean id="message-processor-finder" class="tools.devnull.boteco.process.BotecoMessageProcessorFinder">
@@ -65,10 +58,6 @@
   </bean>
 
   <bean id="message-processor-invoker" class="tools.devnull.boteco.process.BotecoMessageProcessorInvoker"/>
-
-  <bean id="message-listener-invoker" class="tools.devnull.boteco.process.BotecoMessageListenerInvoker">
-    <argument ref="message-listeners"/>
-  </bean>
 
   <camelContext id="boteco-content-processing-strategy"
                 xmlns="http://camel.apache.org/schema/blueprint">
@@ -78,21 +67,9 @@
       <process ref="message-processor-finder"/>
       <split parallelProcessing="true">
         <simple>${in.body}</simple>
-        <wireTap uri="direct:invoke-listeners"/>
-        <to uri="direct:invoke-processor"/>
+        <process ref="message-processor-invoker"/>
       </split>
     </route>
-
-    <route id="boteco.message.process.listener">
-      <from uri="direct:invoke-listeners"/>
-      <process ref="message-listener-invoker"/>
-    </route>
-
-    <route id="boteco.message.process.processor">
-      <from uri="direct:invoke-processor"/>
-      <process ref="message-processor-invoker"/>
-    </route>
-
   </camelContext>
 
   <reference id="activemq" interface="org.apache.camel.Component" filter="(component=activemq)"/>
