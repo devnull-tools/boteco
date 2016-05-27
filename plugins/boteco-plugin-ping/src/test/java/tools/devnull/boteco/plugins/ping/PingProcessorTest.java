@@ -58,17 +58,15 @@ public class PingProcessorTest {
 
   private Sender sender;
 
-  private Sender sender(String username, String name, String id) {
+  private Sender sender(String mention) {
     Sender mock = mock(Sender.class);
-    when(mock.username()).thenReturn(username);
-    when(mock.name()).thenReturn(name);
-    when(mock.id()).thenReturn(id);
+    when(mock.mention()).thenReturn(mention);
     return mock;
   }
 
   @Before
   public void initialize() {
-    sender = sender("someone", "Full Name", "8139");
+    sender = sender("someone");
     Channel channel = mock(Channel.class);
 
     processor = new PingMessageProcessor();
@@ -130,11 +128,8 @@ public class PingProcessorTest {
 
   private Predicate<IncomeMessage> replied() {
     return m -> {
-      Sender sender = m.sender();
-      verify(sender).username();
-      verify(sender).name();
-      verify(sender).id();
-      verify(m).reply("[m]%s[/m]: pong", sender.username());
+      verify(m.sender()).mention();
+      verify(m).reply("[m]%s[/m]: pong", sender.mention());
       return true;
     };
   }

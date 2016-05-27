@@ -24,10 +24,12 @@
 
 package tools.devnull.boteco.message;
 
+import java.io.Serializable;
+
 /**
  * Interface that represents a sender
  */
-public interface Sender {
+public interface Sender extends Serializable {
 
   /**
    * Returns the id of this sender
@@ -49,5 +51,13 @@ public interface Sender {
    * @return the username of this sender
    */
   String username();
+
+  /**
+   * Returns how the sender should be mentioned in a message (a nickname for IRC or
+   * the username for Telegram, for example)
+   *
+   * @return how the sender should be mentioned in a message
+   */
+  String mention();
 
 }

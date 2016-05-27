@@ -27,8 +27,6 @@ package tools.devnull.boteco.plugins.ping;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 
-import java.util.Arrays;
-
 import static tools.devnull.boteco.Predicates.command;
 import static tools.devnull.boteco.message.MessageChecker.check;
 
@@ -50,15 +48,7 @@ public class PingMessageProcessor implements MessageProcessor {
 
   @Override
   public void process(IncomeMessage message) {
-    String sender = Arrays.stream(new String[]
-        {
-            message.sender().username(),
-            message.sender().name(),
-            message.sender().id()
-        }).filter(s -> s != null && !s.isEmpty())
-        .findFirst()
-        .get();
-    message.reply("[m]%s[/m]: pong", sender);
+    message.reply("[m]%s[/m]: pong", message.sender().mention());
   }
 
 }

@@ -104,7 +104,7 @@ public class TelegramPolling {
     }
   }
 
-  public static class User implements Serializable, Sender {
+  public static class User implements Sender {
 
     private static final long serialVersionUID = -4899947249105033703L;
 
@@ -127,6 +127,12 @@ public class TelegramPolling {
     public String username() {
       return username;
     }
+
+    @Override
+    public String mention() {
+      return username != null ? username : name();
+    }
+
   }
 
   public static class Chat implements Serializable {

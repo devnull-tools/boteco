@@ -34,8 +34,6 @@ import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.message.Sender;
 
-import java.io.Serializable;
-
 /**
  * An abstraction of an IRC message.
  */
@@ -116,18 +114,20 @@ public class IrcIncomeMessage implements IncomeMessage {
     serviceLocator.locate(MessageSender.class).send(content).to(target).through(channel().id());
   }
 
-  private static class IrcSender implements Sender, Serializable {
+  private static class IrcSender implements Sender {
 
     private static final long serialVersionUID = 6728222816835888595L;
 
     private final String id;
     private final String name;
     private final String username;
+    private final String nickname;
 
     private IrcSender(IRCUser user) {
       this.id = String.format("%s:%s", user.getHost(), user.getNick());
-      this.name = user.getUsername();
-      this.username = user.getNick();
+      this.name = user.getUsername(); // IRCUser don't have this so use the username
+      this.username = user.getUsername();
+      this.nickname = user.getNick();
     }
 
     @Override
@@ -144,6 +144,12 @@ public class IrcIncomeMessage implements IncomeMessage {
     public String username() {
       return username;
     }
+
+    @Override
+    public String mention() {
+      return nickname;
+    }
+
   }
 
 }
