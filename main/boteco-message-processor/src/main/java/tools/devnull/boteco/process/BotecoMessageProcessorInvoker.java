@@ -52,7 +52,7 @@ public class BotecoMessageProcessorInvoker implements Processor {
   private void log(MessageProcessor messageProcessor, IncomeMessage message) {
     logger.info(String.format("[%s] [%s@%s:%s] %s",
         messageProcessor.id(),
-        message.sender().username() != null ? message.sender().username() : message.sender().name(),
+        message.sender().mention(),
         message.channel().id(),
         message.target(),
         message.content()));
