@@ -150,6 +150,11 @@ public class IrcIncomeMessage implements IncomeMessage {
       return nickname;
     }
 
+    @Override
+    public String toString() {
+      return mention();
+    }
+
   }
 
 }

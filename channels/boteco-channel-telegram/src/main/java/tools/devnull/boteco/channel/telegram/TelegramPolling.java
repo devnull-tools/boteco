@@ -133,6 +133,10 @@ public class TelegramPolling {
       return username != null ? username : name();
     }
 
+    @Override
+    public String toString() {
+      return mention();
+    }
   }
 
   public static class Chat implements Serializable {
