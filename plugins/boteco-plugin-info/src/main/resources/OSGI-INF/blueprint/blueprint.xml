@@ -36,4 +36,8 @@
     <bean class="tools.devnull.boteco.plugins.whoami.WhoamiMessageProcessor"/>
   </service>
 
+  <service interface="tools.devnull.boteco.message.MessageProcessor">
+    <bean class="tools.devnull.boteco.plugins.whoami.WhereamiMessageProcessor"/>
+  </service>
+
 </blueprint>

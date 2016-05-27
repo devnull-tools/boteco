@@ -36,7 +36,7 @@
     <relativePath>../../main/boteco-parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>boteco-plugin-whoami</artifactId>
+  <artifactId>boteco-plugin-info</artifactId>
   <packaging>bundle</packaging>
 
   <properties>

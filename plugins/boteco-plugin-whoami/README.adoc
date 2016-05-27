@@ -1,4 +1,0 @@
-= Who Am I Plugin
-
-This is a simple plugin that outputs sender information. The best use case of this plugin is to get the Telegram ID
-(useful to send notifications). Just use the command `whoami` and boteco will respond with your information.

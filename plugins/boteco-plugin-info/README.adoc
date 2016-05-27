@@ -1,0 +1,5 @@
+= Info Plugin
+
+This is a simple plugin that outputs information. The best use case of this plugin is to get the Telegram ID
+(useful to send notifications). Just use the commands `whoami` or `whereami` and boteco will respond with information
+about you or the chat.
