@@ -33,7 +33,7 @@
     <groupId>tools.devnull</groupId>
     <artifactId>boteco-parent</artifactId>
     <version>1.0.0</version>
-    <relativePath>../../main/boteco-parent/pom.xml</relativePath>
+    <relativePath>../../misc/boteco-parent/pom.xml</relativePath>
   </parent>
 
   <artifactId>boteco-plugin-karma-repository</artifactId>
