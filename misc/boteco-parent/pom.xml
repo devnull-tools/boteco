@@ -43,6 +43,27 @@
     <maven-bundle-plugin-version>2.5.4</maven-bundle-plugin-version>
   </properties>
 
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Marcelo "Ataxexe" Guimarães"</name>
+      <email>ataxexe@devnull.tools</email>
+      <organization>/dev/null > tools</organization>
+      <organizationUrl>https://github.com/devnull-tools</organizationUrl>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git@github.com:devnull-tools/boteco.git</connection>
+    <url>https://github.com/devnull-tools/boteco</url>
+  </scm>
+
   <dependencies>
     <dependency>
       <groupId>tools.devnull</groupId>
