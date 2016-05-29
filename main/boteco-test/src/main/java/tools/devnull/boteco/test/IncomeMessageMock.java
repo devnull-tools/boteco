@@ -30,6 +30,7 @@ import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.Sender;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.function.Consumer;
 
 import static org.mockito.Mockito.mock;
@@ -71,13 +72,16 @@ public class IncomeMessageMock {
 
   public IncomeMessageMock withCommand(String name, String... args) {
     Command command = mock(Command.class);
+    when(command.name()).thenReturn(name);
     StringBuilder arg = new StringBuilder();
     Arrays.stream(args).forEach(s -> arg.append(s).append(" "));
-    when(command.name()).thenReturn(name);
+    when(command.arg()).thenReturn(arg.toString().trim());
     if (args.length > 0) {
       when(command.args()).thenReturn(Arrays.asList(args));
-      when(command.arg()).thenReturn(arg.toString().trim());
       when(command.hasArgs()).thenReturn(true);
+    } else {
+      when(command.args()).thenReturn(Collections.emptyList());
+      when(command.hasArgs()).thenReturn(false);
     }
     when(mock.command()).thenReturn(command);
     when(mock.hasCommand()).thenReturn(true);
