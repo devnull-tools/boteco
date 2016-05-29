@@ -26,116 +26,47 @@ package tools.devnull.boteco.plugins.ping;
 
 import org.junit.Before;
 import org.junit.Test;
-import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.Command;
 import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.message.Sender;
 import tools.devnull.kodo.TestScenario;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static tools.devnull.kodo.Spec.be;
-import static tools.devnull.kodo.Spec.notBe;
+import static tools.devnull.boteco.test.IncomeMessageConsumers.reply;
+import static tools.devnull.boteco.test.IncomeMessageMock.message;
+import static tools.devnull.boteco.test.Predicates.accept;
+import static tools.devnull.boteco.test.Predicates.notAccept;
+import static tools.devnull.boteco.test.Predicates.receive;
 import static tools.devnull.kodo.Spec.should;
 
 public class PingProcessorTest {
 
-  private MessageProcessor processor;
-
   private IncomeMessage pingMessage;
   private IncomeMessage pongMessage;
 
-  private Command pingCommand;
-  private Command pongCommand;
-
-  private IncomeMessage messageWithoutCommand;
-
-  private Sender sender;
-
-  private Sender sender(String mention) {
-    Sender mock = mock(Sender.class);
-    when(mock.mention()).thenReturn(mention);
-    return mock;
-  }
-
   @Before
   public void initialize() {
-    sender = sender("someone");
-    Channel channel = mock(Channel.class);
+    pingMessage = message("ping", message -> message
+        .sentBy("someone")
+        .withCommand("ping"));
 
-    processor = new PingMessageProcessor();
-
-    pingMessage = mock(IncomeMessage.class);
-
-    when(pingMessage.sender()).thenReturn(sender);
-    when(pingMessage.hasCommand()).thenReturn(true);
-    when(pingMessage.channel()).thenReturn(channel);
-
-    pingCommand = mock(Command.class);
-    when(pingCommand.name()).thenReturn("ping");
-    when(pingMessage.command()).thenReturn(pingCommand);
-
-    pongMessage = mock(IncomeMessage.class);
-    when(pongMessage.sender()).thenReturn(sender);
-    when(pongMessage.hasCommand()).thenReturn(true);
-
-    pongCommand = mock(Command.class);
-    when(pongCommand.name()).thenReturn("pong");
-
-    when(pongMessage.command()).thenReturn(pongCommand);
-
-    messageWithoutCommand = mock(IncomeMessage.class);
-    when(messageWithoutCommand.hasCommand()).thenReturn(false);
+    pongMessage = message("pong", message -> message
+        .sentBy("someone")
+        .withCommand("pong"));
   }
 
   @Test
-  public void testProcessable() {
-    TestScenario.given(pingMessage)
-        .it(should(be(processable())))
-
-        .when(processed())
-        .it(should(be(replied())))
-        .the(command(), should(be(verified())));
+  public void testAcceptance() {
+    TestScenario.given(new PingMessageProcessor())
+        .it(should(accept(pingMessage)))
+        .it(should(notAccept(pongMessage)))
+        // only accepts messages with command
+        .it(should(notAccept(message("ping"))));
   }
 
   @Test
-  public void testNotProcessable() {
-    TestScenario.given(pongMessage)
-        .it(should(notBe(processable())))
-        .the(command(), should(be(verified())));
-  }
-
-  private Predicate<Command> verified() {
-    return command -> {
-      verify(command).name();
-      return true;
-    };
-  }
-
-  private Function<IncomeMessage, Command> command() {
-    return m -> m.command();
-  }
-
-  private Predicate<IncomeMessage> processable() {
-    return m -> processor.canProcess(m);
-  }
-
-  private Predicate<IncomeMessage> replied() {
-    return m -> {
-      verify(m.sender()).mention();
-      verify(m).reply("[m]%s[/m]: pong", sender.mention());
-      return true;
-    };
-  }
-
-  private Consumer<IncomeMessage> processed() {
-    return m -> processor.process(m);
+  public void testProcessing() {
+    TestScenario.given(new PingMessageProcessor())
+        .when(processor -> processor.process(pingMessage))
+        .the(pingMessage, should(receive(IncomeMessage::sender)))
+        .the(pingMessage, should(receive(reply("[m]%s[/m]: pong", "someone"))));
   }
 
 }
