@@ -24,30 +24,46 @@
 
 package tools.devnull.boteco.plugins.diceroll;
 
-/**
- * Interface that represents a dice roll.
- * <p>
- * A dice roll may use a set of different dices and also has a fixed
- * increment to the total value.
- */
-public interface DiceRoll {
+import org.junit.Test;
+import tools.devnull.kodo.TestScenario;
 
-  /**
-   * Rolls the dices specified by the given expression.
-   * <p>
-   * A dice roll is represented by the following expression:
-   * <p>
-   * {@code n}d{@code s} (+ {@code n}d{@code s})* (+ {@code v})?
-   * <p>
-   * Where 'n' is the number of dices (optional in case of '1'), 's' is the number
-   * of sides and 'v' is a static increment to the final value.
-   * <p>
-   * Example: 2d4 + d8 + 3 will roll 2 dices of 4 sides, one dice of 8 sides and add
-   * 3 to the final score.
-   *
-   * @param expression the expression that defines the roll
-   * @return the final score
-   */
-  int roll(String expression);
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Predicate;
+
+import static tools.devnull.kodo.Spec.raise;
+import static tools.devnull.kodo.Spec.should;
+
+public class SimpleDiceTest {
+
+  @Test
+  public void testDice() {
+    for (int i : new int[]{4, 6, 8, 10, 12, 20}) {
+      TestScenario.given(new SimpleDice(i))
+          .it(should(rollProperly()));
+    }
+  }
+
+  @Test
+  public void testInvalidSides() {
+    for (int i : new int[]{1, 2, 3, 5, 7, 9, 11, 13, 14, 15, 16, 17, 18, 19}) {
+      TestScenario.given(i)
+          .then(SimpleDice::new, should(raise(IllegalArgumentException.class)));
+    }
+  }
+
+  private Predicate<SimpleDice> rollProperly() {
+    return dice -> {
+      Set<Integer> values = new HashSet<>();
+      for (int i = 0; i < 1000; i++) {
+        int value = dice.roll();
+        if (value < 1 || value > dice.sides()) {
+          return false;
+        }
+        values.add(value);
+      }
+      return values.size() == dice.sides();
+    };
+  }
 
 }

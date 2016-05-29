@@ -24,30 +24,35 @@
 
 package tools.devnull.boteco.plugins.diceroll;
 
-/**
- * Interface that represents a dice roll.
- * <p>
- * A dice roll may use a set of different dices and also has a fixed
- * increment to the total value.
- */
-public interface DiceRoll {
+import java.util.Arrays;
+
+public class SimpleDice implements Dice {
+
+  private final int sides;
 
   /**
-   * Rolls the dices specified by the given expression.
+   * Creates a new dice with the given number of sides.
    * <p>
-   * A dice roll is represented by the following expression:
-   * <p>
-   * {@code n}d{@code s} (+ {@code n}d{@code s})* (+ {@code v})?
-   * <p>
-   * Where 'n' is the number of dices (optional in case of '1'), 's' is the number
-   * of sides and 'v' is a static increment to the final value.
-   * <p>
-   * Example: 2d4 + d8 + 3 will roll 2 dices of 4 sides, one dice of 8 sides and add
-   * 3 to the final score.
+   * Only dices with 4, 6, 8, 10, 12 or 20 sides can be created.
    *
-   * @param expression the expression that defines the roll
-   * @return the final score
+   * @param sides the number of the sides
+   * @throws IllegalArgumentException in case of a unexpected number of sides
    */
-  int roll(String expression);
+  public SimpleDice(int sides) {
+    if (!Arrays.asList(4, 6, 8, 10, 12, 20).contains(sides)) {
+      throw new IllegalArgumentException("I don't have a d" + sides);
+    }
+    this.sides = sides;
+  }
+
+  @Override
+  public int sides() {
+    return sides;
+  }
+
+  @Override
+  public int roll() {
+    return (int) (1 + (Math.random() * sides));
+  }
 
 }

@@ -24,21 +24,25 @@
 
 package tools.devnull.boteco.plugins.diceroll;
 
-import java.util.Arrays;
+/**
+ * Interface that defines a dice.
+ */
+public interface Dice {
 
-public class Dice{
+  /**
+   * Returns how much sides this dice has.
+   *
+   * @return how much sides this dice has.
+   */
+  int sides();
 
-  private final int sides;
-
-  public Dice(int sides) {
-    if (!Arrays.asList(4, 6, 8, 10, 12, 20).contains(sides)) {
-      throw new IllegalArgumentException("I don't have a d" + sides);
-    }
-    this.sides = sides;
-  }
-
-  public int roll() {
-    return (int) (1 + (Math.random() * sides));
-  }
+  /**
+   * Rolls this dice and return the value.
+   * <p>
+   * The value will always be in the interval [1, {@link #sides()}].
+   *
+   * @return the value of the roll
+   */
+  int roll();
 
 }

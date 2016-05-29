@@ -41,6 +41,7 @@
 
   <properties>
     <boteco-base.version>1.0.0</boteco-base.version>
+    <boteco-test.version>1.0.0</boteco-test.version>
   </properties>
 
   <dependencyManagement>
@@ -70,6 +71,13 @@
     <dependency>
       <groupId>org.osgi</groupId>
       <artifactId>org.osgi.core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>tools.devnull</groupId>
+      <artifactId>boteco-test</artifactId>
+      <version>${boteco-test.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

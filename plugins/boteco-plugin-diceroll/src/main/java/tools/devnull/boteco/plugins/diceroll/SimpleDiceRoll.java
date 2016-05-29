@@ -24,30 +24,50 @@
 
 package tools.devnull.boteco.plugins.diceroll;
 
-/**
- * Interface that represents a dice roll.
- * <p>
- * A dice roll may use a set of different dices and also has a fixed
- * increment to the total value.
- */
-public interface DiceRoll {
+import java.util.Arrays;
+import java.util.function.Function;
 
-  /**
-   * Rolls the dices specified by the given expression.
-   * <p>
-   * A dice roll is represented by the following expression:
-   * <p>
-   * {@code n}d{@code s} (+ {@code n}d{@code s})* (+ {@code v})?
-   * <p>
-   * Where 'n' is the number of dices (optional in case of '1'), 's' is the number
-   * of sides and 'v' is a static increment to the final value.
-   * <p>
-   * Example: 2d4 + d8 + 3 will roll 2 dices of 4 sides, one dice of 8 sides and add
-   * 3 to the final score.
-   *
-   * @param expression the expression that defines the roll
-   * @return the final score
-   */
-  int roll(String expression);
+public class SimpleDiceRoll implements DiceRoll {
+
+  private final Function<Integer, Dice> diceFunction;
+
+  public SimpleDiceRoll(Function<Integer, Dice> diceFunction) {
+    this.diceFunction = diceFunction;
+  }
+
+  @Override
+  public int roll(String expression) {
+    String[] rolls = expression.split("\\s*[+]\\s*");
+    if (rolls.length > 1) {
+      return Arrays.stream(rolls)
+          .mapToInt(this::roll)
+          .reduce(0, (left, right) -> left + right);
+    } else {
+      return _roll(expression);
+    }
+  }
+
+  private int _roll(String expression) {
+    int total = 0;
+    int dices = 0;
+    int sides = 0;
+
+    if (expression.startsWith("d")) {
+      dices = 1;
+      sides = Integer.parseInt(expression.substring(1));
+    } else if(expression.matches("\\d+")) {
+      total = Integer.parseInt(expression);
+    } else {
+      String[] split = expression.split("d");
+      dices = Integer.parseInt(split[0]);
+      sides = Integer.parseInt(split[1]);
+    }
+
+    for (int i = 0; i < dices; i++) {
+      total += diceFunction.apply(sides).roll();
+    }
+
+    return total;
+  }
 
 }
