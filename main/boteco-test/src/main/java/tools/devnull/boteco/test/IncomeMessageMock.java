@@ -74,8 +74,11 @@ public class IncomeMessageMock {
     StringBuilder arg = new StringBuilder();
     Arrays.stream(args).forEach(s -> arg.append(s).append(" "));
     when(command.name()).thenReturn(name);
-    when(command.args()).thenReturn(Arrays.asList(args));
-    when(command.arg()).thenReturn(arg.toString().trim());
+    if (args.length > 0) {
+      when(command.args()).thenReturn(Arrays.asList(args));
+      when(command.arg()).thenReturn(arg.toString().trim());
+      when(command.hasArgs()).thenReturn(true);
+    }
     when(mock.command()).thenReturn(command);
     when(mock.hasCommand()).thenReturn(true);
     return this;
