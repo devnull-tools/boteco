@@ -43,6 +43,7 @@
     <module>misc/boteco-features</module>
     <!-- main projects -->
     <module>main/boteco-base</module>
+    <module>main/boteco-test</module>
     <module>main/boteco-message-formatter</module>
     <module>main/boteco-message-processor</module>
     <module>main/boteco-rest-api</module>
