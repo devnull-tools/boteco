@@ -32,6 +32,12 @@ import static tools.devnull.boteco.message.MessageChecker.check;
 
 public class DiceRollMessageProcessor implements MessageProcessor {
 
+  private final DiceRoll diceRoll;
+
+  public DiceRollMessageProcessor(DiceRoll diceRoll) {
+    this.diceRoll = diceRoll;
+  }
+
   @Override
   public String id() {
     return "diceroll";
@@ -44,9 +50,8 @@ public class DiceRollMessageProcessor implements MessageProcessor {
 
   @Override
   public void process(IncomeMessage message) {
-    DiceRoll diceRoll = new DiceRoll(message.command().arg());
-    int points = diceRoll.roll();
-    message.reply("[m]%s[/m], you got [v]%s[/v] points!", message.sender(), points);
+    int points = diceRoll.roll(message.command().arg());
+    message.reply("[m]%s[/m], you got [v]%s[/v] points!", message.sender().mention(), points);
   }
 
 }
