@@ -61,6 +61,7 @@ public class ExpressionCommandExtractorTest {
   public void testCheck() {
     TestScenario.given(extractor)
         .it(should(accept("command foo")))
+        .it(should(accept("Command Foo")))
         .it(should(reject("not a command foo")));
   }
 
