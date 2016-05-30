@@ -24,24 +24,35 @@
 
 package tools.devnull.boteco.channel.pushover;
 
+import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
 import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.message.FormatExpressionParser;
+import tools.devnull.boteco.message.OutcomeMessage;
 
-/**
- * A class to parse the messages that arrives for delivering
- */
-public class ContentParser {
+public class PushoverOutcomeProcessor implements Processor {
 
   private final FormatExpressionParser parser;
   private final ContentFormatter formatter;
+  private final String token;
 
-  public ContentParser(FormatExpressionParser parser, ContentFormatter formatter) {
+  public PushoverOutcomeProcessor(FormatExpressionParser parser,
+                                  ContentFormatter formatter,
+                                  String token) {
     this.parser = parser;
     this.formatter = formatter;
+    this.token = token;
   }
 
-  public String parse(String content) {
-    return parser.parse(formatter, content);
+  @Override
+  public void process(Exchange exchange) throws Exception {
+    OutcomeMessage out = exchange.getIn().getBody(OutcomeMessage.class);
+    String query = "token=" + token +
+        "&user=" + out.getTarget() +
+        "&message=" + parser.parse(formatter, out.getContent());
+    exchange.getOut().setHeader("CamelHttpQuery", query);
+    exchange.getOut().setHeader("CamelHttpMethod", "POST");
+    exchange.getOut().setBody(null);
   }
 
 }
