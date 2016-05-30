@@ -35,6 +35,10 @@ public class SimpleDiceRoll implements DiceRoll {
     this.diceFunction = diceFunction;
   }
 
+  public SimpleDiceRoll() {
+    this(SimpleDice::new);
+  }
+
   @Override
   public int roll(String expression) {
     String[] rolls = expression.split("\\s*[+]\\s*");

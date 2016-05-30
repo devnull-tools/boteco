@@ -35,7 +35,11 @@
   <reference id="mongo-database" interface="com.mongodb.client.MongoDatabase"/>
 
   <service id="diceroll-plugin" interface="tools.devnull.boteco.message.MessageProcessor">
-    <bean class="tools.devnull.boteco.plugins.diceroll.DiceRollMessageProcessor"/>
+    <bean class="tools.devnull.boteco.plugins.diceroll.DiceRollMessageProcessor">
+      <argument>
+        <bean class="tools.devnull.boteco.plugins.diceroll.SimpleDiceRoll"/>
+      </argument>
+    </bean>
   </service>
 
 </blueprint>
