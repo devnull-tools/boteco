@@ -59,6 +59,7 @@ public class CommandPredicateTest {
   public void test() {
     TestScenario.given(Predicates.command("ping"))
         .it(should(accept(newCommand("ping"))))
+        .it(should(accept(newCommand("PING"))))
         .it(should(notAccept(newMessage("ping"))))
         .it(should(notAccept(newCommand("pong"))));
   }

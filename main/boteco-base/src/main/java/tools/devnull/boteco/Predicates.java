@@ -56,7 +56,7 @@ public class Predicates {
 
   public static CommandPredicate command(String commandName) {
     return message -> hasCommand()
-        .and(new AcceptedValuePredicate<>(commandName, m -> m.command().name()))
+        .and(new AcceptedValuePredicate<>(commandName.toLowerCase(), m -> m.command().name().toLowerCase()))
         .test(message);
   }
 
