@@ -91,6 +91,10 @@
     <bean class="tools.devnull.boteco.channel.telegram.TelegramChannel"/>
   </service>
 
+  <service interface="tools.devnull.boteco.message.MessageProcessor">
+    <bean class="tools.devnull.boteco.channel.telegram.TelegramIDMessageProcessor"/>
+  </service>
+
   <camelContext id="boteco-channel-telegram"
                 xmlns="http://camel.apache.org/schema/blueprint">
 
