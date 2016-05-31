@@ -77,9 +77,7 @@ public class StocksMessageProcessor implements MessageProcessor {
           .extract(json())
           .to(StockResult.class)
           .and(stock -> stock.reply(message))
-          .orElse(() -> message.reply("%s: I didn't find results for [a]%s[/a]",
-              message.sender(),
-              query
+          .orElse(() -> message.reply("I didn't find results for [a]%s[/a]", query
           ));
     } catch (IOException e) {
       logger.error(e.getMessage(), e);
