@@ -27,6 +27,7 @@ package tools.devnull.boteco.extractors;
 import tools.devnull.boteco.Command;
 import tools.devnull.boteco.CommandExtractor;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -53,7 +54,7 @@ class ExtractedCommand implements Command {
   public List<String> args() {
     return rawArguments.isEmpty() ?
         Collections.emptyList() :
-        Arrays.asList(rawArguments.split("\\s+"));
+        new ArrayList<>(Arrays.asList(rawArguments.split("\\s+")));
   }
 
   @Override
