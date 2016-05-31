@@ -90,11 +90,15 @@ class TelegramIncomeMessage implements IncomeMessage {
 
   @Override
   public void reply(String content) {
-    replyMessage(String.valueOf(message.getChat().getId()), content);
+    if (isPrivate()) {
+      replyMessage(String.valueOf(message.getChat().getId()), content);
+    } else {
+      replyMessage(String.valueOf(message.getChat().getId()), sender().mention() + ": " + content);
+    }
   }
 
   @Override
-  public void replySender(String content) {
+  public void sendBack(String content) {
     replyMessage(message.getFrom().id(), content);
   }
 

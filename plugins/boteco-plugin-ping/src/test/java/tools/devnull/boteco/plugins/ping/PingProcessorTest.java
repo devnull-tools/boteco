@@ -65,8 +65,7 @@ public class PingProcessorTest {
   public void testProcessing() {
     TestScenario.given(new PingMessageProcessor())
         .when(processor -> processor.process(pingMessage))
-        .the(pingMessage, should(receive(IncomeMessage::sender)))
-        .the(pingMessage, should(receive(reply("[m]%s[/m]: pong", "someone"))));
+        .the(pingMessage, should(receive(reply("pong"))));
   }
 
 }

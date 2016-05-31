@@ -98,9 +98,4 @@ public class IrcContentFormatter implements ContentFormatter {
     return String.format("[%s]", colorize(content, Color.ORANGE));
   }
 
-  @Override
-  public String mention(String user) {
-    return user;
-  }
-
 }

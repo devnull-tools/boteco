@@ -72,7 +72,7 @@ public class DiceRollMessageProcessorTest {
         .when(process(message))
         .the(message, should(receive(IncomeMessage::command)))
         .the(message, should(receive(IncomeMessage::sender)))
-        .the(message, should(receive(reply("[m]%s[/m], you got [v]%s[/v] points!", sender, expectedScore))));
+        .the(message, should(receive(reply("you got [v]%s[/v] points!", expectedScore))));
   }
 
 }

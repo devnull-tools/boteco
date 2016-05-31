@@ -41,12 +41,12 @@ public class IncomeMessageConsumers {
     return message -> message.reply(content);
   }
 
-  public static Consumer<IncomeMessage> replySender(String content, Object... args) {
-    return message -> message.replySender(content, args);
+  public static Consumer<IncomeMessage> sendBack(String content, Object... args) {
+    return message -> message.sendBack(content, args);
   }
 
-  public static Consumer<IncomeMessage> replySender(String content) {
-    return message -> message.replySender(content);
+  public static Consumer<IncomeMessage> sendBack(String content) {
+    return message -> message.sendBack(content);
   }
 
 }

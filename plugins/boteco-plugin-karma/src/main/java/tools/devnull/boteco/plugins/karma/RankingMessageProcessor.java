@@ -58,7 +58,7 @@ public class RankingMessageProcessor implements MessageProcessor {
     } else {
       result.forEach(karma -> {
             String tag = karma.value() < 0 ? "n" : "p";
-            message.reply("[a]%s[/a] ([%s]%d[/%s])",
+            message.sendBack("[a]%s[/a] ([%s]%d[/%s])",
                 karma.name(),
                 tag,
                 karma.value(),

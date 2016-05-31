@@ -87,7 +87,7 @@ public class KarmaMessageProcessor implements MessageProcessor {
     content = content.replace("%n", String.format("[%s]%d[/%s]", tag, value, tag));
     content = content.replace("%u", properties.getProperty(key + ".unit", "points"));
     content = content.replace("%k", properties.getProperty(key + ".karma", "karma"));
-    message.reply(content);
+    message.sendBack(content);
   }
 
   private int operateKarma(String term, Consumer<Karma> operation) {

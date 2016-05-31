@@ -51,7 +51,7 @@ public class StockResult {
   private double variationPer;
 
   public void reply(IncomeMessage message) {
-    message.reply(String.format(
+    message.sendBack(String.format(
         "[a]%s[/a] as of [aa]%s[/aa]: Opened at [v]%s[/v]. Last traded at [v]%s[/v]. Varied %.2f (%.2f%%)",
         name + ":" + exchange,
         date,

@@ -105,12 +105,4 @@ public interface ContentFormatter {
    */
   String tag(String content);
 
-  /**
-   * Formats a mention to the given user
-   *
-   * @param user the user to mention
-   * @return the formatted content
-   */
-  String mention(String user);
-
 }

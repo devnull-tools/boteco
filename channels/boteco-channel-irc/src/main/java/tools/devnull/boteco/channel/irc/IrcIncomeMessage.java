@@ -99,15 +99,15 @@ public class IrcIncomeMessage implements IncomeMessage {
   @Override
   public void reply(String content) {
     if (isPrivate()) {
-      replySender(content);
+      send(sender.mention(), content);
     } else {
-      send(target(), content);
+      send(target(), sender.mention() + ": " + content);
     }
   }
 
   @Override
-  public void replySender(String content) {
-    send(sender.mention(), content);
+  public void sendBack(String content) {
+    send(target(), content);
   }
 
   private void send(String target, String content) {

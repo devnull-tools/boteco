@@ -51,7 +51,7 @@ public class DiceRollMessageProcessor implements MessageProcessor {
   @Override
   public void process(IncomeMessage message) {
     int points = diceRoll.roll(message.command().arg());
-    message.reply("[m]%s[/m], you got [v]%s[/v] points!", message.sender().mention(), points);
+    message.reply("you got [v]%s[/v] points!", points);
   }
 
 }

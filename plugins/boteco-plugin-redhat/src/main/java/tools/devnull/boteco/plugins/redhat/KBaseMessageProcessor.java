@@ -90,7 +90,7 @@ public class KBaseMessageProcessor implements MessageProcessor {
           .orElse(null);
 
       if (document != null) {
-        message.reply("[t]%s[/t] [l]%s<%s>[/l] ([v]%s[/v] links)",
+        message.sendBack("[t]%s[/t] [l]%s<%s>[/l] ([v]%s[/v] links)",
             document.getDocumentKind(),
             document.getTitle(),
             document.getViewUri(),

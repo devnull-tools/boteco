@@ -93,17 +93,20 @@ public interface IncomeMessage extends Serializable {
   /**
    * Replies this message by sending the given content through the same
    * {@link #channel() channel} that this message was received.
+   * <p>
+   * The message will also have a mention to the sender.
    *
    * @param content the content of the message
    */
   void reply(String content);
 
   /**
-   * Replies directly to the sender of this message.
+   * Sends back a message with the given content through the same
+   * {@link #channel() channel} that this message was received.
    *
    * @param content the content of the message
    */
-  void replySender(String content);
+  void sendBack(String content);
 
   /**
    * Formats the message using the given format and arguments and then
@@ -118,13 +121,13 @@ public interface IncomeMessage extends Serializable {
 
   /**
    * Formats the message using the given format and arguments and then
-   * uses the produced content as the {@link #replySender(String) reply to sender}.
+   * uses the produced content as the {@link #sendBack(String) reply to sender}.
    *
    * @param format the format of the message
    * @param args   the arguments to format the message
    */
-  default void replySender(String format, Object... args) {
-    replySender(String.format(format, args));
+  default void sendBack(String format, Object... args) {
+    sendBack(String.format(format, args));
   }
 
 }

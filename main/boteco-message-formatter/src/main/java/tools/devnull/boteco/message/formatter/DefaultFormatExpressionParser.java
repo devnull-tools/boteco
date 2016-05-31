@@ -44,7 +44,6 @@ public class DefaultFormatExpressionParser implements FormatExpressionParser {
     map.put("n", formatter::negative);
     map.put("t", formatter::tag);
     map.put("e", formatter::error);
-    map.put("m", formatter::mention);
     map.put("l", formatter::link);
 
     StringBuilder result = new StringBuilder(expression);

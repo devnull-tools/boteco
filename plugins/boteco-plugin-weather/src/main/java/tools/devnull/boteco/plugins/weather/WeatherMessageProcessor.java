@@ -59,9 +59,9 @@ public class WeatherMessageProcessor implements MessageProcessor {
     try {
       Weather weather = search(message.command().arg());
       if (weather != null) {
-        message.reply(buildResponse(weather));
+        message.sendBack(buildResponse(weather));
       } else {
-        message.reply("[e]Could not find any weather for " + message.command().arg() + "[/e]");
+        message.sendBack("[e]Could not find any weather for " + message.command().arg() + "[/e]");
       }
     } catch (Exception e) {
       logger.error("Error while fetching weather", e);

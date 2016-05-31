@@ -48,7 +48,7 @@ public class PingMessageProcessor implements MessageProcessor {
 
   @Override
   public void process(IncomeMessage message) {
-    message.reply("[m]%s[/m]: pong", message.sender().mention());
+    message.reply("pong");
   }
 
 }

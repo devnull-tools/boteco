@@ -53,11 +53,9 @@ public class FormatExpressionParserTest {
     when(formatter.alternativeAccent("value")).thenReturn("alternative_accent: value");
     when(formatter.error("value")).thenReturn("error: value");
     when(formatter.link("title <url>")).thenReturn("link: title - url");
-    when(formatter.mention("user")).thenReturn("mention: user");
     when(formatter.negative("value")).thenReturn("negative: value");
     when(formatter.positive("value")).thenReturn("positive: value");
     when(formatter.tag("value")).thenReturn("tag: value");
-    when(formatter.mention("value")).thenReturn("mention: value");
     when(formatter.value("value")).thenReturn("value: value");
   }
 
@@ -74,7 +72,6 @@ public class FormatExpressionParserTest {
         .the(expression("[n]value[/n]"), should(be("negative: value")))
         .the(expression("[t]value[/t]"), should(be("tag: value")))
         .the(expression("[e]value[/e]"), should(be("error: value")))
-        .the(expression("[m]value[/m]"), should(be("mention: value")))
         .the(expression("[l]title <url>[/l]"), should(be("link: title - url")))
 
         .the(expression("[t]value[/a]"), should(be("[t]value[/a]")));
@@ -85,7 +82,6 @@ public class FormatExpressionParserTest {
     verify(formatter, times(1)).positive("value");
     verify(formatter, times(1)).negative("value");
     verify(formatter, times(1)).tag("value");
-    verify(formatter, times(1)).mention("value");
     verify(formatter, times(1)).error("value");
     verify(formatter, times(1)).link("title <url>");
   }
