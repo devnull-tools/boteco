@@ -107,7 +107,7 @@ public class IrcIncomeMessage implements IncomeMessage {
 
   @Override
   public void replySender(String content) {
-    send(sender.username(), content);
+    send(sender.mention(), content);
   }
 
   private void send(String target, String content) {
