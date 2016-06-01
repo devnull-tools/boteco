@@ -80,8 +80,15 @@
       <reference interface="tools.devnull.boteco.message.FormatExpressionParser"/>
     </argument>
     <argument>
+      <bean class="tools.devnull.boteco.channel.telegram.TelegramContentFormatter"/>
+    </argument>
+    <argument>
       <bean class="tools.devnull.boteco.DefaultContentFormatter"/>
     </argument>
+    <argument>
+      <reference interface="tools.devnull.boteco.client.rest.RestClient"/>
+    </argument>
+    <argument value="{{bot.token}}"/>
   </bean>
 
   <service id="telegram-channel" interface="tools.devnull.boteco.Channel">
@@ -120,7 +127,6 @@
            loggingLevel="DEBUG"
            message="sending message to telegram"/>
       <process ref="telegram-outcome-processor"/>
-      <to uri="https4:api.telegram.org:443/bot{{bot.token}}/sendMessage"/>
     </route>
 
   </camelContext>

@@ -26,10 +26,13 @@ package tools.devnull.boteco.channel.telegram;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import org.apache.camel.impl.DefaultMessage;
+import org.apache.http.client.utils.URIBuilder;
 import tools.devnull.boteco.ContentFormatter;
+import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.message.FormatExpressionParser;
 import tools.devnull.boteco.message.OutcomeMessage;
+
+import java.net.URI;
 
 /**
  * A processor that receives an outcome telegram message and sends it as a bot message.
@@ -37,22 +40,44 @@ import tools.devnull.boteco.message.OutcomeMessage;
 public class TelegramOutcomeProcessor implements Processor {
 
   private final FormatExpressionParser parser;
-  private final ContentFormatter contentFormatter;
+  private final ContentFormatter markdownContentFormatter;
+  private final ContentFormatter defaultContentFormatter;
+  private final RestClient client;
+  private final String token;
 
-  public TelegramOutcomeProcessor(FormatExpressionParser parser, ContentFormatter contentFormatter) {
+  public TelegramOutcomeProcessor(FormatExpressionParser parser,
+                                  ContentFormatter markdownContentFormatter,
+                                  ContentFormatter defaultContentFormatter,
+                                  RestClient client,
+                                  String token) {
     this.parser = parser;
-    this.contentFormatter = contentFormatter;
+    this.markdownContentFormatter = markdownContentFormatter;
+    this.defaultContentFormatter = defaultContentFormatter;
+    this.client = client;
+    this.token = token;
   }
 
   @Override
   public void process(Exchange exchange) throws Exception {
     OutcomeMessage message = exchange.getIn().getBody(OutcomeMessage.class);
     if (message != null) {
-      DefaultMessage out = new DefaultMessage();
-      String queryString = String.format("chat_id=%s&text=%s",
-          message.getTarget(), parser.parse(contentFormatter, message.getContent()));
-      out.setHeader(Exchange.HTTP_QUERY, queryString);
-      exchange.setOut(out);
+      URIBuilder builder = new URIBuilder("https://api.telegram.org")
+          .setPath("/bot" + token + "/sendMessage");
+      // avoids conflicts with the markdown syntax
+      String content = message.getContent();
+      ContentFormatter formatter;
+      if (!(content.contains("*") || content.contains("_") || content.contains("`"))) {
+        formatter = markdownContentFormatter;
+        builder.addParameter("parse_mode", "Markdown");
+      } else {
+        formatter = defaultContentFormatter;
+      }
+      content = parser.parse(formatter, content);
+      URI uri = builder
+          .addParameter("chat_id", message.getTarget())
+          .addParameter("text", content)
+          .build();
+      client.post(uri).execute();
     }
   }
 }
