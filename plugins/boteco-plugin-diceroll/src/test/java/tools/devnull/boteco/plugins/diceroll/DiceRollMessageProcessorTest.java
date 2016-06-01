@@ -71,7 +71,6 @@ public class DiceRollMessageProcessorTest {
     TestScenario.given(new DiceRollMessageProcessor(diceRoll))
         .when(process(message))
         .the(message, should(receive(IncomeMessage::command)))
-        .the(message, should(receive(IncomeMessage::sender)))
         .the(message, should(receive(reply("you got [v]%s[/v] points!", expectedScore))));
   }
 
