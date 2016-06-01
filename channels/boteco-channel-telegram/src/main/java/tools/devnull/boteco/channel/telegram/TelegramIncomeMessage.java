@@ -91,7 +91,7 @@ class TelegramIncomeMessage implements IncomeMessage {
   @Override
   public void reply(String content) {
     if (isPrivate()) {
-      replyMessage(String.valueOf(message.getChat().getId()), content);
+      replyMessage(String.valueOf(message.getFrom().id()), content);
     } else {
       replyMessage(String.valueOf(message.getChat().getId()), sender().mention() + ": " + content);
     }
@@ -99,7 +99,7 @@ class TelegramIncomeMessage implements IncomeMessage {
 
   @Override
   public void sendBack(String content) {
-    replyMessage(message.getFrom().id(), content);
+    replyMessage(String.valueOf(message.getChat().getId()), content);
   }
 
   private void replyMessage(String id, String content) {
