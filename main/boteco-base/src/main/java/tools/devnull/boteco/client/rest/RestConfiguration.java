@@ -26,7 +26,9 @@ package tools.devnull.boteco.client.rest;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Interface that defines a rest configuration.
@@ -34,6 +36,91 @@ import java.util.function.Function;
  * @see RestClient
  */
 public interface RestConfiguration {
+
+  /**
+   * Executes an action if the response matches the given predicate.
+   *
+   * @param predicate the predicate to test
+   * @param action    the action to execute
+   * @return an instance of this class
+   */
+  RestConfiguration on(Predicate<RestResponse> predicate, Consumer<RestResponse> action);
+
+  /**
+   * Executes the given action if the status code equals the given one
+   *
+   * @param statusCode the status code to match
+   * @param action     the action to execute
+   * @return an instance of this class
+   */
+  default RestConfiguration on(int statusCode, Consumer<RestResponse> action) {
+    return on(response -> response.status() == statusCode, action);
+  }
+
+  /**
+   * Executes the given action if the status code is of type Informational [100..199]
+   *
+   * @param action the action to execute
+   * @return an instance of this class
+   */
+  default RestConfiguration onInformational(Consumer<RestResponse> action) {
+    return on(response -> {
+      int statusCode = response.status();
+      return statusCode >= 100 && statusCode <= 199;
+    }, action);
+  }
+
+  /**
+   * Executes the given action if the status code is of type Success [200..299]
+   *
+   * @param action the action to execute
+   * @return an instance of this class
+   */
+  default RestConfiguration onSuccess(Consumer<RestResponse> action) {
+    return on(response -> {
+      int statusCode = response.status();
+      return statusCode >= 200 && statusCode <= 299;
+    }, action);
+  }
+
+  /**
+   * Executes the given action if the status code is of type Redirection [300..399]
+   *
+   * @param action the action to execute
+   * @return an instance of this class
+   */
+  default RestConfiguration onRedirection(Consumer<RestResponse> action) {
+    return on(response -> {
+      int statusCode = response.status();
+      return statusCode >= 300 && statusCode <= 399;
+    }, action);
+  }
+
+  /**
+   * Executes the given action if the status code is of type Client Error [400..499]
+   *
+   * @param action the action to execute
+   * @return an instance of this class
+   */
+  default RestConfiguration onClientError(Consumer<RestResponse> action) {
+    return on(response -> {
+      int statusCode = response.status();
+      return statusCode >= 400 && statusCode <= 499;
+    }, action);
+  }
+
+  /**
+   * Executes the given action if the status code is of type Server Error [500..599]
+   *
+   * @param action the action to execute
+   * @return an instance of this class
+   */
+  default RestConfiguration onServerError(Consumer<RestResponse> action) {
+    return on(response -> {
+      int statusCode = response.status();
+      return statusCode >= 500 && statusCode <= 599;
+    }, action);
+  }
 
   /**
    * Adds the given header to invocation
