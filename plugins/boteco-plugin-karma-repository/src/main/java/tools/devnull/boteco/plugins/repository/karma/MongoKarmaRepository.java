@@ -53,7 +53,7 @@ public class MongoKarmaRepository implements KarmaRepository {
   @Override
   public Karma find(String term) {
     BasicDBObject query = new BasicDBObject();
-    query.put("_id", term);
+    query.put("_id", term.toLowerCase());
     Document result = karmas.find(query).first();
     if (result == null) {
       Karma newKarma = new Karma(term);
@@ -80,6 +80,7 @@ public class MongoKarmaRepository implements KarmaRepository {
     int order = DESC;
     List<Karma> result = new ArrayList<>();
     BasicDBObject query = new BasicDBObject();
+    queryString = queryString.toLowerCase();
     if (queryString.startsWith("!")) {
       queryString = queryString.substring(1);
       order = ASC;
