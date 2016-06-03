@@ -56,4 +56,13 @@ public class Karma implements Serializable {
     value--;
   }
 
+  public void set(int value) {
+    this.value = value;
+  }
+
+  public String describe() {
+    String tag = value < 0 ? "n" : "p";
+    return String.format("[a]%s[/a] ([%s]%d[/%s])", name, tag, value, tag);
+  }
+
 }

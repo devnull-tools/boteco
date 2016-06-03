@@ -56,15 +56,7 @@ public class RankingMessageProcessor implements MessageProcessor {
     if (result.isEmpty()) {
       message.reply("[e]No karmas found[/e]");
     } else {
-      result.forEach(karma -> {
-            String tag = karma.value() < 0 ? "n" : "p";
-            message.sendBack("[a]%s[/a] ([%s]%d[/%s])",
-                karma.name(),
-                tag,
-                karma.value(),
-                tag);
-          }
-      );
+      result.forEach(karma -> message.sendBack(karma.describe()));
     }
   }
 
