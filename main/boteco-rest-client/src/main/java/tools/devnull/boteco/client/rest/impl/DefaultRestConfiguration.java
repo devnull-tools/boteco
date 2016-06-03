@@ -26,21 +26,22 @@ package tools.devnull.boteco.client.rest.impl;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.client.rest.RestConfiguration;
+import tools.devnull.boteco.client.rest.RestResponse;
 import tools.devnull.boteco.client.rest.RestResult;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class DefaultRestConfiguration implements RestConfiguration {
 
@@ -50,6 +51,7 @@ public class DefaultRestConfiguration implements RestConfiguration {
   private final HttpContext context;
   private final HttpUriRequest request;
   private final GsonBuilder gsonBuilder;
+  private final Map<Predicate<RestResponse>, Consumer<RestResponse>> actionsMap;
   private Function<String, String> function = (string) -> string;
 
   public DefaultRestConfiguration(CloseableHttpClient client, HttpContext context, HttpUriRequest request) {
@@ -57,6 +59,13 @@ public class DefaultRestConfiguration implements RestConfiguration {
     this.context = context;
     this.request = request;
     this.gsonBuilder = new GsonBuilder();
+    this.actionsMap = new HashMap<>();
+  }
+
+  @Override
+  public RestConfiguration on(Predicate<RestResponse> predicate, Consumer<RestResponse> action) {
+    this.actionsMap.put(predicate, action);
+    return this;
   }
 
   @Override
@@ -79,16 +88,13 @@ public class DefaultRestConfiguration implements RestConfiguration {
 
   @Override
   public String rawBody() throws IOException {
-    CloseableHttpResponse response = client.execute(request, context);
-    HttpEntity entity = response.getEntity();
-    String content = entity == null ? "" : IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
-    response.close();
-    return function.apply(content);
+    RestResponse response = getResponse();
+    return function.apply(response.content());
   }
 
   @Override
   public void execute() throws IOException {
-    client.execute(request, context).close();
+    getResponse();
   }
 
   @Override
@@ -109,6 +115,15 @@ public class DefaultRestConfiguration implements RestConfiguration {
       logger.error("Error while parsing JSON", e);
       return new DefaultRestResult<>(null);
     }
+  }
+
+  private RestResponse getResponse() throws IOException {
+    DefaultRestResponse response = new DefaultRestResponse(client.execute(request, context));
+    this.actionsMap.entrySet().stream()
+        .filter(entry -> entry.getKey().test(response))
+        .findFirst()
+        .ifPresent(entry -> entry.getValue().accept(response));
+    return response;
   }
 
 }
