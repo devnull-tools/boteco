@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.client.rest;
 
+import java.io.IOException;
+
 /**
  * Interface that defines a response of a rest invocation.
  */
@@ -33,6 +35,6 @@ public interface RestResponse {
 
   String reason();
 
-  String content();
+  String content() throws IOException;
 
 }
