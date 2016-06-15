@@ -37,6 +37,8 @@ import tools.devnull.boteco.client.rest.RestResult;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -82,7 +84,13 @@ public class DefaultRestConfiguration implements RestConfiguration {
 
   @Override
   public RestConfiguration withDateFormat(String pattern) {
-    this.gsonBuilder.setDateFormat(pattern).create();
+    this.gsonBuilder.setDateFormat(pattern);
+    return this;
+  }
+
+  @Override
+  public RestConfiguration withDateFormat(DateFormat dateFormat) {
+    this.gsonBuilder.registerTypeAdapter(Date.class, new DateTypeAdapter(dateFormat));
     return this;
   }
 

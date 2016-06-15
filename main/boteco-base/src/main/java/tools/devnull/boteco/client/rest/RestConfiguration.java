@@ -26,6 +26,7 @@ package tools.devnull.boteco.client.rest;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -146,6 +147,14 @@ public interface RestConfiguration {
    * @return an instance of this object
    */
   RestConfiguration withDateFormat(String pattern);
+
+  /**
+   * Sets the date format to use when parsing the object.
+   *
+   * @param dateFormat the date format to use
+   * @return an instance of this object
+   */
+  RestConfiguration withDateFormat(DateFormat dateFormat);
 
   /**
    * Invokes the rest url and parses the response into an object of the given class.
