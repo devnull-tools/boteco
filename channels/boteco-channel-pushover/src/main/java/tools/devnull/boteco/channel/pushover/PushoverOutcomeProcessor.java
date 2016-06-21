@@ -26,33 +26,40 @@ package tools.devnull.boteco.channel.pushover;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import org.apache.http.client.utils.URIBuilder;
 import tools.devnull.boteco.ContentFormatter;
+import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.message.FormatExpressionParser;
 import tools.devnull.boteco.message.OutcomeMessage;
+
+import java.net.URI;
 
 public class PushoverOutcomeProcessor implements Processor {
 
   private final FormatExpressionParser parser;
   private final ContentFormatter formatter;
+  private final RestClient client;
   private final String token;
 
   public PushoverOutcomeProcessor(FormatExpressionParser parser,
                                   ContentFormatter formatter,
+                                  RestClient client,
                                   String token) {
     this.parser = parser;
     this.formatter = formatter;
+    this.client = client;
     this.token = token;
   }
 
   @Override
   public void process(Exchange exchange) throws Exception {
     OutcomeMessage out = exchange.getIn().getBody(OutcomeMessage.class);
-    String query = "token=" + token +
-        "&user=" + out.getTarget() +
-        "&message=" + parser.parse(formatter, out.getContent());
-    exchange.getOut().setHeader("CamelHttpQuery", query);
-    exchange.getOut().setHeader("CamelHttpMethod", "POST");
-    exchange.getOut().setBody(null);
+    URI uri = new URIBuilder("https://api.pushover.net/1/messages.json")
+        .addParameter("token", token)
+        .addParameter("user", out.getTarget())
+        .addParameter("message", parser.parse(formatter, out.getContent()))
+        .build();
+    client.post(uri).execute();
   }
 
 }

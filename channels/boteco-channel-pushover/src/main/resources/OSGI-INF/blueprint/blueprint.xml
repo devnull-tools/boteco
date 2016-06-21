@@ -51,6 +51,9 @@
     <argument>
       <bean class="tools.devnull.boteco.DefaultContentFormatter"/>
     </argument>
+    <argument>
+      <reference interface="tools.devnull.boteco.client.rest.RestClient"/>
+    </argument>
     <argument value="{{pushover.token}}"/>
   </bean>
 
@@ -63,7 +66,6 @@
            loggingLevel="DEBUG"
            message="sending message to pushover"/>
       <process ref="processor"/>
-      <to uri="https4:api.pushover.net/1/messages.json"/>
     </route>
 
   </camelContext>
