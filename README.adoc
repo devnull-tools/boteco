@@ -90,10 +90,10 @@ $ mvn install
 === Pre Requisites
 
 If you want to run boteco with all bundled plugins, make sure you have at least a MongoDB running in localhost:27017 or
-create a configuration named `tools.devnull.boteco.plugins.mongodb.cfg` with the following properties:
+create a configuration named `tools.devnull.boteco.plugins.mongodb` with the following properties:
 
-db.url the mongodb url to connect to the mongodb instance
-db.database the mongodb database to retrieve collections
+- `db.url`: the mongodb url to connect to the mongodb instance
+- `db.database`: the mongodb database to retrieve collections
 
 === Running in JBoss Fuse
 
