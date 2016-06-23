@@ -69,7 +69,7 @@ public class TelegramContentFormatter implements ContentFormatter {
 
   @Override
   public String tag(String content) {
-    return String.format("[[%s]]", content);
+    return value("[[" + content + "]]");
   }
 
 }
