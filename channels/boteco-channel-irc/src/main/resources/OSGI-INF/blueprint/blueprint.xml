@@ -101,8 +101,8 @@
     <route id="boteco.message.to.irc">
       <from uri="activemq:queue:boteco.message.irc"/>
       <log logName="boteco-channel-irc"
-           loggingLevel="DEBUG"
-           message="sending message to irc"/>
+           loggingLevel="INFO"
+           message="sending message through irc"/>
       <process ref="irc-outcome-processor"/>
       <to uri="irc:{{irc.nick}}@{{irc.server}}:{{irc.port}}"/>
     </route>

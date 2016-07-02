@@ -124,8 +124,8 @@
     <route id="boteco.message.to.telegram">
       <from uri="activemq:queue:boteco.message.telegram"/>
       <log logName="boteco-channel-telegram"
-           loggingLevel="DEBUG"
-           message="sending message to telegram"/>
+           loggingLevel="INFO"
+           message="sending message through telegram"/>
       <process ref="telegram-outcome-processor"/>
     </route>
 

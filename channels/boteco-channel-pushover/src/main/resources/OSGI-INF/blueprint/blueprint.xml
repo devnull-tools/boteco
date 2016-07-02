@@ -63,8 +63,8 @@
     <route id="boteco.message.to.pushover">
       <from uri="activemq:queue:boteco.message.pushover"/>
       <log logName="boteco-channel-pushover"
-           loggingLevel="DEBUG"
-           message="sending message to pushover"/>
+           loggingLevel="INFO"
+           message="Sending message through pushover"/>
       <process ref="processor"/>
     </route>
 
