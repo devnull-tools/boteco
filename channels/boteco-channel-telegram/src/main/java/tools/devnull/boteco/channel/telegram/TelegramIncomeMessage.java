@@ -75,7 +75,7 @@ class TelegramIncomeMessage implements IncomeMessage {
 
   @Override
   public String target() {
-    return message.getChat().getId().toString();
+    return String.valueOf(message.getChat().getId());
   }
 
   @Override
