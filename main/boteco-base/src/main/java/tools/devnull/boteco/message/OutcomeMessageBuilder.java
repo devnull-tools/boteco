@@ -39,6 +39,17 @@ public interface OutcomeMessageBuilder {
   OutcomeMessageBuilder to(String target);
 
   /**
+   * Adds a header to this message.
+   * <p>
+   * Headers can be used to customize the message in different channels.
+   *
+   * @param headerName  the header name
+   * @param headerValue the header value
+   * @return a reference to this object
+   */
+  OutcomeMessageBuilder with(String headerName, Object headerValue);
+
+  /**
    * Sets the channel to send the message and sends the message
    *
    * @param channel the id of the channel to send the message

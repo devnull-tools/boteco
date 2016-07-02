@@ -25,6 +25,8 @@
 package tools.devnull.boteco.message;
 
 import java.io.Serializable;
+import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Interface that defines a message that can be delivered through a channel.
@@ -35,10 +37,12 @@ public class OutcomeMessage implements Serializable {
 
   private final String content;
   private final String target;
+  private final Map<String, Object> headers;
 
-  public OutcomeMessage(String target, String content) {
+  public OutcomeMessage(String target, String content, Map<String, Object> headers) {
     this.content = content;
     this.target = target;
+    this.headers = headers;
   }
 
   public String getContent() {
@@ -47,6 +51,10 @@ public class OutcomeMessage implements Serializable {
 
   public String getTarget() {
     return target;
+  }
+
+  public void eachHeader(Consumer<Map.Entry<String, Object>> consumer) {
+    this.headers.entrySet().stream().forEach(consumer);
   }
 
 }

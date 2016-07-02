@@ -28,6 +28,9 @@ import tools.devnull.boteco.message.OutcomeMessage;
 import tools.devnull.boteco.message.OutcomeMessageBuilder;
 import tools.devnull.boteco.client.jms.JmsClient;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static tools.devnull.boteco.client.jms.Destinations.queue;
 
 public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
@@ -35,12 +38,14 @@ public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
   private final JmsClient client;
   private final String queueFormat;
   private final String content;
+  private final Map<String, Object> headers;
   private String target;
 
   public BotecoOutcomeMessageBuilder(JmsClient client, String queueFormat, String content) {
     this.client = client;
     this.queueFormat = queueFormat;
     this.content = content;
+    this.headers = new HashMap<>();
   }
 
   @Override
@@ -50,7 +55,14 @@ public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
   }
 
   @Override
-  public void through(String channel) {
-    client.send(new OutcomeMessage(target, content)).to(queue(String.format(queueFormat, channel)));
+  public OutcomeMessageBuilder with(String headerName, Object headerValue) {
+    this.headers.put(headerName, headerValue);
+    return this;
   }
+
+  @Override
+  public void through(String channel) {
+    client.send(new OutcomeMessage(target, content, headers)).to(queue(String.format(queueFormat, channel)));
+  }
+
 }
