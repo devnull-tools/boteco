@@ -47,6 +47,7 @@
         don't want to process older messages.
       -->
       <cm:property name="polling.initial-offset" value="0"/>
+      <cm:property name="delivery.consumers" value="5"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
@@ -122,7 +123,7 @@
     </route>
 
     <route id="boteco.message.to.telegram">
-      <from uri="activemq:queue:boteco.message.telegram"/>
+      <from uri="activemq:queue:boteco.message.telegram?concurrentConsumers={{delivery.consumers}}"/>
       <log logName="boteco-channel-telegram"
            loggingLevel="INFO"
            message="sending message through telegram"/>

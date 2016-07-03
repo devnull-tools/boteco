@@ -34,6 +34,7 @@
                            placeholder-suffix="}}">
     <cm:default-properties>
       <cm:property name="pushover.token" value=""/>
+      <cm:property name="delivery.consumers" value="5"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
@@ -61,7 +62,7 @@
                 xmlns="http://camel.apache.org/schema/blueprint">
 
     <route id="boteco.message.to.pushover">
-      <from uri="activemq:queue:boteco.message.pushover"/>
+      <from uri="activemq:queue:boteco.message.pushover?concurrentConsumers={{delivery.consumers}}"/>
       <log logName="boteco-channel-pushover"
            loggingLevel="INFO"
            message="Sending message through pushover"/>

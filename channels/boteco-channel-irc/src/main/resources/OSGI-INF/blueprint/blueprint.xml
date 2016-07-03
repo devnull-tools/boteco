@@ -44,6 +44,7 @@
       <!-- The options to apply to the irc component -->
       <cm:property name="irc.options"
                    value="onNick=false&amp;onQuit=false&amp;onJoin=false&amp;onKick=false&amp;onMode=false&amp;onPart=false&amp;onTopic=false"/>
+      <cm:property name="delivery.consumers" value="5"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
@@ -99,7 +100,7 @@
     </route>
 
     <route id="boteco.message.to.irc">
-      <from uri="activemq:queue:boteco.message.irc"/>
+      <from uri="activemq:queue:boteco.message.irc?concurrentConsumers=5"/>
       <log logName="boteco-channel-irc"
            loggingLevel="INFO"
            message="sending message through irc"/>
