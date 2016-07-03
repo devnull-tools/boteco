@@ -173,8 +173,10 @@ public class DefaultRestConfiguration implements RestConfiguration {
       return response;
     } catch (SocketTimeoutException e) {
       if (retries == 0) {
+        logger.info("Request timeout");
         return new DefaultRestResponse(null, HttpStatus.SC_REQUEST_TIMEOUT, null);
       } else {
+        logger.info("Request timeout, retrying...");
         return getResponse(retries - 1);
       }
     }
