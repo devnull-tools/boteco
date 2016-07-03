@@ -29,13 +29,14 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicAuthCache;
@@ -57,6 +58,7 @@ public class DefaultRestClient implements RestClient {
 
   private final CloseableHttpClient client;
   private final HttpClientContext context;
+  private final RequestConfig requestConfig;
 
   public DefaultRestClient(Properties configuration) {
     logger.info("Configuring client");
@@ -88,6 +90,13 @@ public class DefaultRestClient implements RestClient {
     this.context = HttpClientContext.create();
     this.context.setCredentialsProvider(provider);
     this.context.setAuthCache(authCache);
+
+    int timeout = Integer.parseInt(configuration.getProperty("connection.timeout", "15")) * 1000;
+    this.requestConfig = RequestConfig.custom()
+        .setConnectionRequestTimeout(timeout)
+        .setConnectTimeout(timeout)
+        .setSocketTimeout(timeout)
+        .build();
 
     this.client = HttpClients.custom()
         .setConnectionManager(cm)
@@ -154,7 +163,8 @@ public class DefaultRestClient implements RestClient {
     return execute(new HttpOptions(url));
   }
 
-  private RestConfiguration execute(HttpUriRequest request) {
+  private RestConfiguration execute(HttpRequestBase request) {
+    request.setConfig(this.requestConfig);
     return new DefaultRestConfiguration(client, context, request);
   }
 
