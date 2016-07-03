@@ -26,7 +26,12 @@ package tools.devnull.boteco.client.rest.impl;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
@@ -37,10 +42,13 @@ import tools.devnull.boteco.client.rest.RestResult;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.SocketTimeoutException;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -51,17 +59,39 @@ public class DefaultRestConfiguration implements RestConfiguration {
 
   private final CloseableHttpClient client;
   private final HttpContext context;
-  private final HttpUriRequest request;
+  private final HttpRequestBase request;
   private final GsonBuilder gsonBuilder;
   private final Map<Predicate<RestResponse>, Consumer<RestResponse>> actionsMap;
   private Function<String, String> function = (string) -> string;
+  private int timeoutRetries;
 
-  public DefaultRestConfiguration(CloseableHttpClient client, HttpContext context, HttpUriRequest request) {
+  public DefaultRestConfiguration(CloseableHttpClient client,
+                                  HttpContext context,
+                                  HttpRequestBase request,
+                                  int timeoutRetries) {
     this.client = client;
     this.context = context;
     this.request = request;
     this.gsonBuilder = new GsonBuilder();
     this.actionsMap = new HashMap<>();
+    this.timeoutRetries = timeoutRetries;
+  }
+
+  @Override
+  public RestConfiguration retryOnTimeout(int times) {
+    this.timeoutRetries = times;
+    return this;
+  }
+
+  @Override
+  public RestConfiguration timeoutIn(int amount, TimeUnit unit) {
+    int timeout = (int) unit.toMillis(amount);
+    this.request.setConfig(RequestConfig.custom()
+        .setConnectionRequestTimeout(timeout)
+        .setConnectTimeout(timeout)
+        .setSocketTimeout(timeout)
+        .build());
+    return this;
   }
 
   @Override
@@ -96,13 +126,13 @@ public class DefaultRestConfiguration implements RestConfiguration {
 
   @Override
   public String rawBody() throws IOException {
-    RestResponse response = getResponse();
+    RestResponse response = getResponse(timeoutRetries);
     return function.apply(response.content());
   }
 
   @Override
   public void execute() throws IOException {
-    getResponse();
+    getResponse(timeoutRetries);
   }
 
   @Override
@@ -125,13 +155,29 @@ public class DefaultRestConfiguration implements RestConfiguration {
     }
   }
 
-  private RestResponse getResponse() throws IOException {
-    DefaultRestResponse response = new DefaultRestResponse(client.execute(request, context));
-    this.actionsMap.entrySet().stream()
-        .filter(entry -> entry.getKey().test(response))
-        .findFirst()
-        .ifPresent(entry -> entry.getValue().accept(response));
-    return response;
+  private RestResponse getResponse(int retries) throws IOException {
+    try {
+      CloseableHttpResponse httpResponse = client.execute(request, context);
+
+      HttpEntity entity = httpResponse.getEntity();
+      String content = entity == null ? "" : IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
+      httpResponse.close();
+
+      DefaultRestResponse response = new DefaultRestResponse(content,
+          httpResponse.getStatusLine().getStatusCode(),
+          httpResponse.getStatusLine().getReasonPhrase());
+      this.actionsMap.entrySet().stream()
+          .filter(entry -> entry.getKey().test(response))
+          .findFirst()
+          .ifPresent(entry -> entry.getValue().accept(response));
+      return response;
+    } catch (SocketTimeoutException e) {
+      if (retries == 0) {
+        return new DefaultRestResponse(null, HttpStatus.SC_REQUEST_TIMEOUT, null);
+      } else {
+        return getResponse(retries - 1);
+      }
+    }
   }
 
 }

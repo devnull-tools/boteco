@@ -33,6 +33,7 @@ import tools.devnull.boteco.message.FormatExpressionParser;
 import tools.devnull.boteco.message.OutcomeMessage;
 
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A processor that receives an outcome telegram message and sends it as a bot message.
@@ -78,7 +79,8 @@ public class TelegramOutcomeProcessor implements Processor {
           .addParameter("chat_id", message.getTarget())
           .addParameter("text", content)
           .build();
-      client.post(uri).execute();
+      // TODO externalize timeout and retry
+      client.post(uri).timeoutIn(2, TimeUnit.SECONDS).retryOnTimeout(2).execute();
     }
   }
 }

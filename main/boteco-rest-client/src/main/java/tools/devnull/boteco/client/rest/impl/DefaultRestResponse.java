@@ -24,34 +24,30 @@
 
 package tools.devnull.boteco.client.rest.impl;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import tools.devnull.boteco.client.rest.RestResponse;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 public class DefaultRestResponse implements RestResponse {
 
-  private final CloseableHttpResponse response;
   private final String content;
+  private final int status;
+  private final String reason;
 
-  public DefaultRestResponse(CloseableHttpResponse response) throws IOException {
-    this.response = response;
-    HttpEntity entity = response.getEntity();
-    this.content = entity == null ? "" : IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
-    response.close();
+  public DefaultRestResponse(String content, int status, String reason) {
+    this.content = content;
+    this.status = status;
+    this.reason = reason;
   }
 
   @Override
   public int status() {
-    return response.getStatusLine().getStatusCode();
+    return status;
   }
 
   @Override
   public String reason() {
-    return response.getStatusLine().getReasonPhrase();
+    return reason;
   }
 
   @Override

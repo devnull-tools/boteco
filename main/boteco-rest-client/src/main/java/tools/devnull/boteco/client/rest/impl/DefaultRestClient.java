@@ -56,16 +56,29 @@ public class DefaultRestClient implements RestClient {
 
   private static final Logger logger = LoggerFactory.getLogger(DefaultRestClient.class);
 
-  private final CloseableHttpClient client;
-  private final HttpClientContext context;
-  private final RequestConfig requestConfig;
+  private CloseableHttpClient client;
+  private HttpClientContext context;
+  private RequestConfig requestConfig;
+  private int timeoutRetries;
 
   public DefaultRestClient(Properties configuration) {
+    configureAuth(configuration);
+    configureTimeout(configuration);
+    configureClient(configuration);
+  }
+
+  private void configureClient(Properties configuration) {
     logger.info("Configuring client");
     PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
     cm.setMaxTotal(Integer.parseInt(configuration.getProperty("client.max.total", "200")));
     cm.setDefaultMaxPerRoute(Integer.parseInt(configuration.getProperty("client.max.perRoute", "20")));
+    this.client = HttpClients.custom()
+        .setConnectionManager(cm)
+        .build();
+  }
 
+  private void configureAuth(Properties configuration) {
+    logger.info("Configuring auth");
     // Create AuthCache instance
     AuthCache authCache = new BasicAuthCache();
     // Generate BASIC scheme object and add it to the local auth cache
@@ -90,16 +103,16 @@ public class DefaultRestClient implements RestClient {
     this.context = HttpClientContext.create();
     this.context.setCredentialsProvider(provider);
     this.context.setAuthCache(authCache);
+  }
 
-    int timeout = Integer.parseInt(configuration.getProperty("connection.timeout", "15")) * 1000;
+  private void configureTimeout(Properties configuration) {
+    logger.info("Configuring timeout");
+    this.timeoutRetries = Integer.parseInt(configuration.getProperty("connection.timeout.retries", "0"));
+    int timeout = Integer.parseInt(configuration.getProperty("connection.timeout", "5")) * 1000;
     this.requestConfig = RequestConfig.custom()
         .setConnectionRequestTimeout(timeout)
         .setConnectTimeout(timeout)
         .setSocketTimeout(timeout)
-        .build();
-
-    this.client = HttpClients.custom()
-        .setConnectionManager(cm)
         .build();
   }
 
@@ -165,7 +178,7 @@ public class DefaultRestClient implements RestClient {
 
   private RestConfiguration execute(HttpRequestBase request) {
     request.setConfig(this.requestConfig);
-    return new DefaultRestConfiguration(client, context, request);
+    return new DefaultRestConfiguration(client, context, request, timeoutRetries);
   }
 
 }

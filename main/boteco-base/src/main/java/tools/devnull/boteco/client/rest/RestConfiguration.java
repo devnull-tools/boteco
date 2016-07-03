@@ -27,6 +27,7 @@ package tools.devnull.boteco.client.rest;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -37,6 +38,43 @@ import java.util.function.Predicate;
  * @see RestClient
  */
 public interface RestConfiguration {
+
+  /**
+   * Sets the timeout fot this invocation.
+   * <p>
+   * Calling this method may override the default timeout.
+   *
+   * @param amount the amount
+   * @param unit   the unit
+   * @return an instance of this class
+   */
+  RestConfiguration timeoutIn(int amount, TimeUnit unit);
+
+  /**
+   * Retries the request in case of a timeout error.
+   *
+   * @param times the amount of times to retry
+   * @return an instance of this class
+   */
+  RestConfiguration retryOnTimeout(int times);
+
+  /**
+   * Retries the request in case of a timeout error.
+   *
+   * @return an instance of this class
+   */
+  default RestConfiguration retryOnTimeout() {
+    return retryOnTimeout(1);
+  }
+
+  /**
+   * Do not retry the request in case of a timeout error.
+   *
+   * @return an instance of this class
+   */
+  default RestConfiguration dontRetryOnTimeout() {
+    return retryOnTimeout(0);
+  }
 
   /**
    * Executes an action if the response matches the given predicate.
