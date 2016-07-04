@@ -48,6 +48,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -64,22 +65,35 @@ public class DefaultRestConfiguration implements RestConfiguration {
   private final Map<Predicate<RestResponse>, Consumer<RestResponse>> actionsMap;
   private Function<String, String> function = (string) -> string;
   private int timeoutRetries;
+  private int retryInterval;
 
   public DefaultRestConfiguration(CloseableHttpClient client,
                                   HttpContext context,
                                   HttpRequestBase request,
-                                  int timeoutRetries) {
+                                  Properties configuration) {
     this.client = client;
     this.context = context;
     this.request = request;
     this.gsonBuilder = new GsonBuilder();
     this.actionsMap = new HashMap<>();
-    this.timeoutRetries = timeoutRetries;
+    this.configureTimeout(configuration);
+  }
+
+  private void configureTimeout(Properties configuration) {
+    this.retryOnTimeout(Integer.parseInt(configuration.getProperty("timeout.retries", "0")));
+    this.timeoutIn(Integer.parseInt(configuration.getProperty("timeout.value", "5000")), TimeUnit.MILLISECONDS);
+    this.waitAfterRetry(Integer.parseInt(configuration.getProperty("timeout.interval", "500")), TimeUnit.MILLISECONDS);
   }
 
   @Override
   public RestConfiguration retryOnTimeout(int times) {
     this.timeoutRetries = times;
+    return this;
+  }
+
+  @Override
+  public RestConfiguration waitAfterRetry(int amount, TimeUnit unit) {
+    this.retryInterval = (int) unit.toMillis(amount);
     return this;
   }
 
@@ -177,6 +191,13 @@ public class DefaultRestConfiguration implements RestConfiguration {
         return new DefaultRestResponse(null, HttpStatus.SC_REQUEST_TIMEOUT, null);
       } else {
         logger.info("Request timeout, retrying...");
+        if (retryInterval > 0) {
+          try {
+            Thread.sleep(retryInterval);
+          } catch (InterruptedException e1) {
+            logger.error("Error while waiting for retry", e);
+          }
+        }
         return getResponse(retries - 1);
       }
     }

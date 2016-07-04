@@ -42,13 +42,24 @@ public interface RestConfiguration {
   /**
    * Sets the timeout fot this invocation.
    * <p>
-   * Calling this method may override the default timeout.
+   * Calling this method will override the default timeout.
    *
    * @param amount the amount
    * @param unit   the unit
    * @return an instance of this class
    */
   RestConfiguration timeoutIn(int amount, TimeUnit unit);
+
+  /**
+   * Sets the waiting interval after retrying this invocation.
+   * <p>
+   * Calling this method will override the default interval.
+   *
+   * @param amount the amount
+   * @param unit   the unit
+   * @return an instance of this class
+   */
+  RestConfiguration waitAfterRetry(int amount, TimeUnit unit);
 
   /**
    * Retries the request in case of a timeout error.

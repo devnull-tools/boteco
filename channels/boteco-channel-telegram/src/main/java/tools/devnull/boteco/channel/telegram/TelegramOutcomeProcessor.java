@@ -80,7 +80,11 @@ public class TelegramOutcomeProcessor implements Processor {
           .addParameter("text", content)
           .build();
       // TODO externalize timeout and retry
-      client.post(uri).timeoutIn(2, TimeUnit.SECONDS).retryOnTimeout(2).execute();
+      client.post(uri)
+          .timeoutIn(2, TimeUnit.SECONDS)
+          .retryOnTimeout(2)
+          .waitAfterRetry(1, TimeUnit.SECONDS)
+          .execute();
     }
   }
 }

@@ -29,7 +29,6 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
@@ -58,12 +57,11 @@ public class DefaultRestClient implements RestClient {
 
   private CloseableHttpClient client;
   private HttpClientContext context;
-  private RequestConfig requestConfig;
-  private int timeoutRetries;
+  private Properties configuration;
 
   public DefaultRestClient(Properties configuration) {
+    this.configuration = configuration;
     configureAuth(configuration);
-    configureTimeout(configuration);
     configureClient(configuration);
   }
 
@@ -103,17 +101,6 @@ public class DefaultRestClient implements RestClient {
     this.context = HttpClientContext.create();
     this.context.setCredentialsProvider(provider);
     this.context.setAuthCache(authCache);
-  }
-
-  private void configureTimeout(Properties configuration) {
-    logger.info("Configuring timeout");
-    this.timeoutRetries = Integer.parseInt(configuration.getProperty("connection.timeout.retries", "0"));
-    int timeout = Integer.parseInt(configuration.getProperty("connection.timeout", "5")) * 1000;
-    this.requestConfig = RequestConfig.custom()
-        .setConnectionRequestTimeout(timeout)
-        .setConnectTimeout(timeout)
-        .setSocketTimeout(timeout)
-        .build();
   }
 
   @Override
@@ -177,8 +164,7 @@ public class DefaultRestClient implements RestClient {
   }
 
   private RestConfiguration execute(HttpRequestBase request) {
-    request.setConfig(this.requestConfig);
-    return new DefaultRestConfiguration(client, context, request, timeoutRetries);
+    return new DefaultRestConfiguration(client, context, request, configuration);
   }
 
 }
