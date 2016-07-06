@@ -39,7 +39,7 @@
   </cm:property-placeholder>
 
   <service id="mongo-database" interface="com.mongodb.client.MongoDatabase">
-    <bean class="tools.devnull.boteco.plugins.mongodb.MongoDatabaseFactory"
+    <bean class="tools.devnull.boteco.persistence.mongodb.MongoDatabaseFactory"
           factory-method="createDatabase">
       <argument value="{{db.url}}"/>
       <argument value="{{db.database}}"/>

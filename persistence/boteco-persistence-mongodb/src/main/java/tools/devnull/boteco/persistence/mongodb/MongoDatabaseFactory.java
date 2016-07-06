@@ -22,7 +22,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.mongodb;
+package tools.devnull.boteco.persistence.mongodb;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;

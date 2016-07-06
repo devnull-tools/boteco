@@ -36,7 +36,7 @@
     <relativePath>../../misc/boteco-parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>boteco-plugin-mongodb</artifactId>
+  <artifactId>boteco-persistence-mongodb</artifactId>
   <packaging>bundle</packaging>
 
   <properties>

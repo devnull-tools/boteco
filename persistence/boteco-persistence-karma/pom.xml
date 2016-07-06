@@ -36,7 +36,7 @@
     <relativePath>../../misc/boteco-parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>boteco-plugin-karma-repository</artifactId>
+  <artifactId>boteco-persistence-karma</artifactId>
   <packaging>bundle</packaging>
 
   <properties>

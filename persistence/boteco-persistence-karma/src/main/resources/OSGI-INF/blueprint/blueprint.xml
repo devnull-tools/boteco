@@ -33,7 +33,7 @@
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
   <service interface="tools.devnull.boteco.plugins.karma.KarmaRepository">
-    <bean class="tools.devnull.boteco.plugins.repository.karma.MongoKarmaRepository">
+    <bean class="tools.devnull.boteco.persistence.karma.MongoKarmaRepository">
       <argument>
         <reference interface="com.mongodb.client.MongoDatabase"/>
       </argument>
