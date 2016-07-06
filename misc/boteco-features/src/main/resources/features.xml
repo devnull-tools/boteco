@@ -49,31 +49,17 @@
     <bundle>mvn:${project.groupId}/boteco-plugin-weather-searcher/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-redhat/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-karma/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-plugin-karma-repository/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-plugin-mongodb/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-diceroll/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-stocks/${project.version}</bundle>
+
+    <!-- persistence bundles -->
+    <bundle>mvn:${project.groupId}/boteco-persistence-mongodb/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-persistence-karma/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-persistence-irc/${project.version}</bundle>
 
     <!-- channels -->
     <bundle>mvn:${project.groupId}/boteco-channel-irc/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-channel-pushover/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-channel-telegram/${project.version}</bundle>
-  </feature>
-
-  <feature version="${project.version}" name="boteco-base"
-           description="Contains base bundles">
-    <feature>camel-irc</feature>
-    <feature>activemq-camel</feature>
-    <feature>camel-http4</feature>
-    <feature>camel-gson</feature>
-    <feature>camel-jsonpath</feature>
-
-    <!-- main bundles -->
-    <bundle>mvn:${project.groupId}/boteco-base/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-message-formatter/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-rest-client/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-amq-client/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-message-processor/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-rest-api/${project.version}</bundle>
   </feature>
 </features>

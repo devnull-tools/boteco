@@ -29,42 +29,56 @@
                             http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>tools.devnull</groupId>
-  <artifactId>boteco</artifactId>
-  <version>1.0.0</version>
-  <packaging>pom</packaging>
-  <name>boteco: the multiplatform bot</name>
-  <description>Boteco is a bot that allows you to write platform agnostic plugins.</description>
-  <url>https://github.com/devnull-tools/boteco</url>
+  <parent>
+    <groupId>tools.devnull</groupId>
+    <artifactId>boteco-parent</artifactId>
+    <version>1.0.0</version>
+    <relativePath>../../misc/boteco-parent/pom.xml</relativePath>
+  </parent>
 
-  <modules>
-    <!-- miscellaneous projects -->
-    <module>misc/boteco-parent</module>
-    <module>misc/boteco-features</module>
-    <!-- main projects -->
-    <module>main/boteco-base</module>
-    <module>main/boteco-test</module>
-    <module>main/boteco-message-formatter</module>
-    <module>main/boteco-message-processor</module>
-    <module>main/boteco-rest-api</module>
-    <module>main/boteco-rest-client</module>
-    <module>main/boteco-amq-client</module>
-    <!-- channel implementations -->
-    <module>channels/boteco-channel-irc</module>
-    <module>channels/boteco-channel-pushover</module>
-    <module>channels/boteco-channel-telegram</module>
-    <!-- plugins -->
-    <module>plugins/boteco-plugin-ping</module>
-    <module>plugins/boteco-plugin-weather</module>
-    <module>plugins/boteco-plugin-weather-searcher</module>
-    <module>plugins/boteco-plugin-redhat</module>
-    <module>plugins/boteco-plugin-karma</module>
-    <module>plugins/boteco-plugin-diceroll</module>
-    <module>plugins/boteco-plugin-stocks</module>
-    <!-- persistence -->
-    <module>persistence/boteco-persistence-karma</module>
-    <module>persistence/boteco-persistence-mongodb</module>
-    <module>persistence/boteco-persistence-irc</module>
-  </modules>
+  <artifactId>boteco-persistence-irc</artifactId>
+  <packaging>bundle</packaging>
+
+  <properties>
+    <boteco-base.version>1.0.0</boteco-base.version>
+    <boteco-irc.version>1.0.0</boteco-irc.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.jboss.fuse.bom</groupId>
+        <artifactId>jboss-fuse-parent</artifactId>
+        <version>${fuse.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>tools.devnull</groupId>
+      <artifactId>boteco-base</artifactId>
+      <version>${boteco-base.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>tools.devnull</groupId>
+      <artifactId>boteco-channel-irc</artifactId>
+      <version>${boteco-irc.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongo-java-driver</artifactId>
+      <version>3.0.4</version>
+    </dependency>
+  </dependencies>
 
 </project>

@@ -35,7 +35,6 @@
     <cm:default-properties>
       <cm:property name="irc.nick" value="boteco"/>
       <cm:property name="irc.server" value="localhost"/>
-      <cm:property name="irc.channels" value="#boteco"/>
       <cm:property name="irc.port" value="6667"/>
       <!-- The irc nicknames the bot should ignore messages from -->
       <cm:property name="bot.ignorelist" value=""/>
@@ -88,11 +87,17 @@
     </argument>
   </bean>
 
+  <bean id="irc" class="tools.devnull.boteco.channel.irc.BotecoIrcComponent">
+    <argument>
+      <reference interface="tools.devnull.boteco.channel.irc.IrcChannelsRepository"/>
+    </argument>
+  </bean>
+
   <camelContext id="boteco-channel-irc"
                 xmlns="http://camel.apache.org/schema/blueprint">
 
     <route id="boteco.message.from.irc">
-      <from uri="irc:{{irc.nick}}@{{irc.server}}:{{irc.port}}?channels={{irc.channels}}&amp;{{irc.options}}"/>
+      <from uri="irc:{{irc.nick}}@{{irc.server}}:{{irc.port}}?{{irc.options}}"/>
       <log logName="boteco-channel-irc"
            loggingLevel="DEBUG"
            message="received message from irc"/>
