@@ -47,7 +47,7 @@
         don't want to process older messages.
       -->
       <cm:property name="polling.initial-offset" value="0"/>
-      <cm:property name="delivery.consumers" value="5"/>
+      <cm:property name="delivery.consumers" value="10"/>
     </cm:default-properties>
   </cm:property-placeholder>
 

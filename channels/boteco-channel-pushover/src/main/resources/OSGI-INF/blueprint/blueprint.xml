@@ -34,7 +34,7 @@
                            placeholder-suffix="}}">
     <cm:default-properties>
       <cm:property name="pushover.token" value=""/>
-      <cm:property name="delivery.consumers" value="5"/>
+      <cm:property name="delivery.consumers" value="10"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
