@@ -33,7 +33,7 @@
                            placeholder-prefix="{{"
                            placeholder-suffix="}}">
     <cm:default-properties>
-      <cm:property name="process.consumers" value="10"/>
+      <cm:property name="process.consumers" value="20"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
