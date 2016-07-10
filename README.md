@@ -8,7 +8,7 @@ Boteco is gladly built on top of JBoss Fuse.
 
 ### Pre Requisites
 
-Make sure you have [Apache Maven][https://maven.apache.org] installed and a profile in your `settings.xml` file to fetch
+Make sure you have [Apache Maven](https://maven.apache.org) installed and a profile in your `settings.xml` file to fetch
 JBoss Fuse artifacts.
 
 ~~~xml
