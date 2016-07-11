@@ -195,7 +195,7 @@ public class DefaultRestConfiguration implements RestConfiguration {
           try {
             Thread.sleep(retryInterval);
           } catch (InterruptedException e1) {
-            logger.error("Error while waiting for retry", e);
+            logger.error("Error while waiting for retry", e1);
           }
         }
         return getResponse(retries - 1);
