@@ -65,6 +65,8 @@
     <module>persistence/boteco-persistence-karma</module>
     <module>persistence/boteco-persistence-mongodb</module>
     <module>persistence/boteco-persistence-irc</module>
+    <module>main/boteco-event-processor</module>
+    <module>persistence/boteco-persistence-subscription</module>
   </modules>
 
 </project>

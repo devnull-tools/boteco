@@ -22,37 +22,19 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.process;
+package tools.devnull.boteco.event;
 
-import tools.devnull.boteco.Rule;
-import tools.devnull.boteco.ServiceLocator;
-import tools.devnull.boteco.client.jms.JmsClient;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageDispatcher;
+/**
+ * Interface to define the channel of a subscription removal.
+ */
+public interface SubscriptionRemovalChannelSelector {
 
-import java.util.List;
-
-import static tools.devnull.boteco.client.jms.Destinations.queue;
-
-public class BotecoMessageDispatcher implements MessageDispatcher {
-
-  private final JmsClient client;
-  private final ServiceLocator serviceLocator;
-  private final String queueName;
-
-  public BotecoMessageDispatcher(JmsClient client, ServiceLocator serviceLocator, String queueName) {
-    this.client = client;
-    this.serviceLocator = serviceLocator;
-    this.queueName = queueName;
-  }
-
-  @Override
-  public void dispatch(IncomeMessage incomeMessage) {
-    List<Rule> rules = serviceLocator.locateAll(Rule.class,
-        "(|(channel=all)(channel=%s))", incomeMessage.channel().id());
-    if (rules.isEmpty() || rules.stream().allMatch(rule -> rule.accept(incomeMessage))) {
-      client.send(incomeMessage).to(queue(queueName));
-    }
-  }
+  /**
+   * Defines the channel of the subscription removal.
+   *
+   * @param channel the channel of the subscription to remove.
+   * @return a component to define the event
+   */
+  SubscriptionRemovalEventSelector ofChannel(String channel);
 
 }

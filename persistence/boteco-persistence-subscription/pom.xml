@@ -36,8 +36,12 @@
     <relativePath>../../misc/boteco-parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>boteco-base</artifactId>
+  <artifactId>boteco-persistence-subscription</artifactId>
   <packaging>bundle</packaging>
+
+  <properties>
+    <boteco-base.version>1.0.0</boteco-base.version>
+  </properties>
 
   <dependencyManagement>
     <dependencies>
@@ -53,8 +57,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-blueprint</artifactId>
+      <groupId>tools.devnull</groupId>
+      <artifactId>boteco-base</artifactId>
+      <version>${boteco-base.version}</version>
     </dependency>
 
     <dependency>
@@ -63,38 +68,10 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-gson</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-camel</artifactId>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongo-java-driver</artifactId>
+      <version>3.0.4</version>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <instructions>
-            <Export-Package>
-              tools.devnull.boteco,
-              tools.devnull.boteco.message,
-              tools.devnull.boteco.event,
-              tools.devnull.boteco.storage,
-              tools.devnull.boteco.predicates,
-              tools.devnull.boteco.extractors,
-              tools.devnull.boteco.client.jms,
-              tools.devnull.boteco.client.rest,
-            </Export-Package>
-          </instructions>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
 </project>

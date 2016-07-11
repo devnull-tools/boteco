@@ -47,7 +47,7 @@
 
   <service id="message-sender"
            interface="tools.devnull.boteco.message.MessageSender">
-    <bean class="tools.devnull.boteco.process.BotecoMessageSender">
+    <bean class="tools.devnull.boteco.process.message.BotecoMessageSender">
       <argument ref="client"/>
       <argument value="boteco.message.%s"/>
     </bean>
@@ -55,18 +55,18 @@
 
   <service id="message-dispatcher"
            interface="tools.devnull.boteco.message.MessageDispatcher">
-    <bean class="tools.devnull.boteco.process.BotecoMessageDispatcher">
+    <bean class="tools.devnull.boteco.process.message.BotecoMessageDispatcher">
       <argument ref="client"/>
       <argument ref="service-locator"/>
       <argument value="boteco.process"/>
     </bean>
   </service>
 
-  <bean id="message-processor-finder" class="tools.devnull.boteco.process.BotecoMessageProcessorFinder">
+  <bean id="message-processor-finder" class="tools.devnull.boteco.process.message.BotecoMessageProcessorFinder">
     <argument ref="message-processors"/>
   </bean>
 
-  <bean id="message-processor-invoker" class="tools.devnull.boteco.process.BotecoMessageProcessorInvoker"/>
+  <bean id="message-processor-invoker" class="tools.devnull.boteco.process.message.BotecoMessageProcessorInvoker"/>
 
   <camelContext id="boteco-content-processing-strategy"
                 xmlns="http://camel.apache.org/schema/blueprint">

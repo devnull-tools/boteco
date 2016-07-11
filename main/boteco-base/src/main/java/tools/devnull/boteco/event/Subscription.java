@@ -22,40 +22,25 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.process;
+package tools.devnull.boteco.event;
 
-import org.apache.camel.Exchange;
-import org.apache.camel.Message;
-import org.apache.camel.Processor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
+/**
+ * Represents an association of a {@link Subscriber} and an {@link Event}.
+ */
+public interface Subscription {
 
-public class BotecoMessageProcessorInvoker implements Processor {
+  /**
+   * Returns the {@link Event#id() event id} of this subscription.
+   *
+   * @return the event id of this subscription.
+   */
+  String eventId();
 
-  private static final Logger logger = LoggerFactory.getLogger(BotecoMessageProcessorInvoker.class);
-
-  @Override
-  public void process(Exchange exchange) throws Exception {
-    Message income = exchange.getIn();
-    MessageProcessor messageProcessor = income.getBody(MessageProcessor.class);
-    IncomeMessage message = income.getHeader(BotecoMessageProcessorFinder.INCOME_MESSAGE, IncomeMessage.class);
-    log(messageProcessor, message);
-    try {
-      messageProcessor.process(message);
-    } catch (Throwable e) {
-      logger.error(e.getMessage(), e);
-    }
-  }
-
-  private void log(MessageProcessor messageProcessor, IncomeMessage message) {
-    logger.info(String.format("[%s] [%s@%s:%s] %s",
-        messageProcessor.id(),
-        message.sender().mention(),
-        message.channel().id(),
-        message.target(),
-        message.content()));
-  }
+  /**
+   * Returns the subscriber.
+   *
+   * @return the subscriber
+   */
+  Subscriber subscriber();
 
 }

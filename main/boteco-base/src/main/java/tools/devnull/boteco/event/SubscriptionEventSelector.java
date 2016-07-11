@@ -22,27 +22,29 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.process;
+package tools.devnull.boteco.event;
 
-import tools.devnull.boteco.message.MessageSender;
-import tools.devnull.boteco.message.OutcomeMessageBuilder;
-import tools.devnull.boteco.client.jms.JmsClient;
+/**
+ * Interface to define the event of the subscription.
+ */
+public interface SubscriptionEventSelector {
 
-public class BotecoMessageSender implements MessageSender {
+  /**
+   * Activates this subscription only when the subscriber confirms it.
+   * <p>
+   * Details about how to confirm the subscription will be send by the
+   * {@link SubscriptionManager} to the subscriber.
+   *
+   * @return the Subscription Manager to chain another operation.
+   */
+  SubscriptionEventSelector withConfirmation();
 
-  private static final long serialVersionUID = 8229143816118073058L;
-
-  private final JmsClient client;
-  private final String queueFormat;
-
-  public BotecoMessageSender(JmsClient client, String queueFormat) {
-    this.client = client;
-    this.queueFormat = queueFormat;
-  }
-
-  @Override
-  public OutcomeMessageBuilder send(String content) {
-    return new BotecoOutcomeMessageBuilder(client, queueFormat, content);
-  }
+  /**
+   * Defines the event of the subscription and closes and do the operation.
+   *
+   * @param eventId the event of the subscription.
+   * @return the Subscription Manager to chain another operation.
+   */
+  SubscriptionManager toEvent(String eventId);
 
 }

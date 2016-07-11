@@ -22,47 +22,19 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.process;
+package tools.devnull.boteco.event;
 
-import tools.devnull.boteco.message.OutcomeMessage;
-import tools.devnull.boteco.message.OutcomeMessageBuilder;
-import tools.devnull.boteco.client.jms.JmsClient;
+/**
+ * Interface to define the target of a subscription removal.
+ */
+public interface SubscriptionRemovalTargetSelector {
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static tools.devnull.boteco.client.jms.Destinations.queue;
-
-public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
-
-  private final JmsClient client;
-  private final String queueFormat;
-  private final String content;
-  private final Map<String, Object> headers;
-  private String target;
-
-  public BotecoOutcomeMessageBuilder(JmsClient client, String queueFormat, String content) {
-    this.client = client;
-    this.queueFormat = queueFormat;
-    this.content = content;
-    this.headers = new HashMap<>();
-  }
-
-  @Override
-  public OutcomeMessageBuilder to(String target) {
-    this.target = target;
-    return this;
-  }
-
-  @Override
-  public OutcomeMessageBuilder with(String headerName, Object headerValue) {
-    this.headers.put(headerName, headerValue);
-    return this;
-  }
-
-  @Override
-  public void through(String channel) {
-    client.send(new OutcomeMessage(target, content, headers)).to(queue(String.format(queueFormat, channel)));
-  }
+  /**
+   * Defines the target of the subscription to remove.
+   *
+   * @param target the target for the subscription to remove.
+   * @return a component to select the channel of the subscription removal.
+   */
+  SubscriptionRemovalChannelSelector target(String target);
 
 }

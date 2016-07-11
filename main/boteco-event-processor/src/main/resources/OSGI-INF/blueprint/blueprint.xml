@@ -32,48 +32,58 @@
                                http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
-  <cm:property-placeholder persistent-id="tools.devnull.boteco.rest"
-                           placeholder-prefix="{{"
-                           placeholder-suffix="}}">
-    <cm:default-properties>
-      <cm:property name="rest.message.path" value="/boteco"/>
-    </cm:default-properties>
-  </cm:property-placeholder>
+  <service id="bus" interface="tools.devnull.boteco.event.EventBus">
+    <bean class="tools.devnull.boteco.process.event.BotecoEventBus">
+      <argument>
+        <reference interface="tools.devnull.boteco.client.jms.JmsClient"/>
+      </argument>
+    </bean>
+  </service>
 
-  <bean id="service-locator" class="tools.devnull.boteco.OsgiServiceLocator"/>
+  <service id="event-notifier" interface="tools.devnull.boteco.event.EventListener">
+    <service-properties>
+      <entry key="event" value="all"/>
+    </service-properties>
+    <bean class="tools.devnull.boteco.process.event.BotecoEventNotifier">
+      <argument>
+        <reference interface="tools.devnull.boteco.event.SubscriptionManager"/>
+      </argument>
+      <argument>
+        <reference interface="tools.devnull.boteco.message.MessageSender"/>
+      </argument>
+    </bean>
+  </service>
 
-  <reference id="message-sender" interface="tools.devnull.boteco.message.MessageSender"/>
-  <reference id="event-bus" interface="tools.devnull.boteco.event.EventBus"/>
-  <reference id="subscription-manager" interface="tools.devnull.boteco.event.SubscriptionManager"/>
+  <service id="subscription-manager-processor" interface="tools.devnull.boteco.message.MessageProcessor">
+    <bean class="tools.devnull.boteco.process.event.SubscriptionManagerMessageProcessor">
+      <argument>
+        <reference interface="tools.devnull.boteco.event.SubscriptionManager"/>
+      </argument>
+    </bean>
+  </service>
 
-  <bean id="message-service" class="tools.devnull.boteco.rest.MessageService">
-    <argument ref="message-sender"/>
-    <argument ref="service-locator"/>
+  <bean id="listener-finder-processor" class="tools.devnull.boteco.process.event.EventBroadcastProcessor">
+    <argument>
+      <bean class="tools.devnull.boteco.OsgiServiceLocator"/>
+    </argument>
   </bean>
 
-  <bean id="event-service" class="tools.devnull.boteco.rest.EventService">
-    <argument ref="event-bus"/>
-  </bean>
+  <bean id="listener-invoker-processor" class="tools.devnull.boteco.process.event.ListenerInvokerProcessor"/>
 
-  <bean id="subscription-service" class="tools.devnull.boteco.rest.SubscriptionService">
-    <argument ref="subscription-manager"/>
-  </bean>
+  <camelContext id="boteco-channel-irc"
+                xmlns="http://camel.apache.org/schema/blueprint">
 
-  <jaxrs:server id="messageServer" address="{{rest.message.path}}">
-    <jaxrs:serviceBeans>
-      <ref component-id="message-service"/>
-      <ref component-id="event-service"/>
-      <ref component-id="subscription-service"/>
-    </jaxrs:serviceBeans>
-    <jaxrs:providers>
-      <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>
-    </jaxrs:providers>
-  </jaxrs:server>
+    <route id="boteco.route.event">
+      <from uri="activemq:topic:boteco.event"/>
+      <process ref="listener-finder-processor"/>
+      <split parallelProcessing="true">
+        <simple>${in.body}</simple>
+        <process ref="listener-invoker-processor"/>
+      </split>
+    </route>
 
-  <cxf:bus>
-    <cxf:features>
-      <cxf:logging/>
-    </cxf:features>
-  </cxf:bus>
+  </camelContext>
+
+  <reference id="activemq" interface="org.apache.camel.Component" filter="(component=activemq)"/>
 
 </blueprint>

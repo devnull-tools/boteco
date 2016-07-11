@@ -22,34 +22,25 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.process;
+package tools.devnull.boteco.event;
 
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
+/**
+ * Represents a subscriber.
+ */
+public interface Subscriber {
 
-import java.util.List;
-import java.util.stream.Collectors;
+  /**
+   * Returns the channel for notifying the subscriber.
+   *
+   * @return the channel of the subscriber
+   */
+  String channel();
 
-public class BotecoMessageProcessorFinder implements Processor {
-
-  public static String INCOME_MESSAGE = "incomeMessage";
-
-  private final List<MessageProcessor> messageProcessors;
-
-  public BotecoMessageProcessorFinder(List<MessageProcessor> messageProcessors) {
-    this.messageProcessors = messageProcessors;
-  }
-
-  @Override
-  public void process(Exchange exchange) throws Exception {
-    IncomeMessage message = exchange.getIn().getBody(IncomeMessage.class);
-    List<MessageProcessor> processors = messageProcessors.stream()
-        .filter(processor -> processor.canProcess(message))
-        .collect(Collectors.toList());
-    exchange.getOut().setBody(processors);
-    exchange.getOut().setHeader(INCOME_MESSAGE, message);
-  }
+  /**
+   * Returns the target for notifying the subscriber.
+   *
+   * @return the target of the subscriber.
+   */
+  String target();
 
 }
