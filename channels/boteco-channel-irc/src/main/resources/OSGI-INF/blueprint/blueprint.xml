@@ -110,7 +110,10 @@
            loggingLevel="INFO"
            message="sending message through irc"/>
       <process ref="irc-outcome-processor"/>
-      <to uri="irc:{{irc.nick}}@{{irc.server}}:{{irc.port}}"/>
+      <split>
+        <tokenize token="\n"/>
+        <to uri="irc:{{irc.nick}}@{{irc.server}}:{{irc.port}}"/>
+      </split>
     </route>
 
   </camelContext>
