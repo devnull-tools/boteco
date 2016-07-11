@@ -55,47 +55,38 @@ public class SubscriptionManagerMessageProcessor implements MessageProcessor {
   public void process(IncomeMessage message) {
     List<String> args = message.command().args();
     String operation = args.get(0);
-    String target;
-    String channel;
-    String event;
     switch (operation) {
       case "add":
         if (args.size() == 4) {
-          event = args.get(1);
-          target = args.get(2);
-          channel = args.get(3);
-          // TODO generates a token, send to the given subscriber and ask for a confirmation through any channel
-        } else {
-          event = args.get(1);
-          target = message.target();
-          channel = message.channel().id();
-
           this.subscriptionManager.subscribe()
-              .target(target)
-              .ofChannel(channel)
-              .toEvent(event);
+              .target(args.get(2))
+              .ofChannel(args.get(1))
+              .withConfirmation()
+              .toEvent(args.get(3));
+        } else {
+          this.subscriptionManager.subscribe()
+              .target(message.target())
+              .ofChannel(message.channel().id())
+              .toEvent(args.get(1));
           message.reply("Subscription added!");
         }
         break;
       case "remove":
         if (args.size() == 4) {
-          event = args.get(1);
-          target = args.get(2);
-          channel = args.get(3);
-          // TODO ask for a confirmation
-        } else {
-          event = args.get(1);
-          target = message.target();
-          channel = message.channel().id();
           this.subscriptionManager.unsubscribe()
-              .target(target)
-              .ofChannel(channel)
-              .fromEvent(event);
-          message.reply("Subscription removed!");
+              .target(args.get(2))
+              .ofChannel(args.get(1))
+              .withConfirmation()
+              .fromEvent(args.get(3));
+        } else {
+          this.subscriptionManager.unsubscribe()
+              .target(message.target())
+              .ofChannel(message.channel().id())
+              .fromEvent(args.get(1));
+          message.reply("Subscription added!");
         }
-        break;
       case "confirm":
-        //TODO get the uuid and compare with the one stored
+        this.subscriptionManager.confirm(args.get(1));
         break;
     }
   }
