@@ -62,7 +62,7 @@
     </bean>
   </service>
 
-  <bean id="listener-finder-processor" class="tools.devnull.boteco.process.event.EventBroadcastProcessor">
+  <bean id="listener-finder-processor" class="tools.devnull.boteco.process.event.ListenerFinderProcessor">
     <argument>
       <bean class="tools.devnull.boteco.OsgiServiceLocator"/>
     </argument>
@@ -74,7 +74,7 @@
                 xmlns="http://camel.apache.org/schema/blueprint">
 
     <route id="boteco.route.event">
-      <from uri="activemq:topic:boteco.event"/>
+      <from uri="activemq:topic:boteco.event.*"/>
       <process ref="listener-finder-processor"/>
       <split parallelProcessing="true">
         <simple>${in.body}</simple>

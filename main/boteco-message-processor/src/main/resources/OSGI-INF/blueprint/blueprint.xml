@@ -71,7 +71,7 @@
   <camelContext id="boteco-content-processing-strategy"
                 xmlns="http://camel.apache.org/schema/blueprint">
     <route id="boteco.message.process">
-      <from uri="activemq:queue:boteco.process?concurrentConsumers={{process.consumers}}"/>
+      <from uri="activemq:queue:boteco.process.*?concurrentConsumers={{process.consumers}}"/>
       <!-- Finds the message processors for this income message -->
       <process ref="message-processor-finder"/>
       <split parallelProcessing="true">

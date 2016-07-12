@@ -34,15 +34,15 @@ import tools.devnull.boteco.event.EventListener;
 
 import java.util.List;
 
-public class EventBroadcastProcessor implements Processor {
+public class ListenerFinderProcessor implements Processor {
 
   public static String EVENT = "event";
 
-  private static final Logger logger = LoggerFactory.getLogger(EventBroadcastProcessor.class);
+  private static final Logger logger = LoggerFactory.getLogger(ListenerFinderProcessor.class);
 
   private final ServiceLocator serviceLocator;
 
-  public EventBroadcastProcessor(ServiceLocator serviceLocator) {
+  public ListenerFinderProcessor(ServiceLocator serviceLocator) {
     this.serviceLocator = serviceLocator;
   }
 

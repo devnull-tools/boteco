@@ -51,7 +51,7 @@ public class BotecoMessageDispatcher implements MessageDispatcher {
     List<Rule> rules = serviceLocator.locateAll(Rule.class,
         "(|(channel=all)(channel=%s))", incomeMessage.channel().id());
     if (rules.isEmpty() || rules.stream().allMatch(rule -> rule.accept(incomeMessage))) {
-      client.send(incomeMessage).to(queue(queueName));
+      client.send(incomeMessage).to(queue(queueName + "." + incomeMessage.channel().id()));
     }
   }
 

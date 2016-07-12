@@ -38,7 +38,7 @@ public class ListenerInvokerProcessor implements Processor {
   @Override
   public void process(Exchange exchange) throws Exception {
     EventListener listener = exchange.getIn().getBody(EventListener.class);
-    Event event = exchange.getIn().getHeader(EventBroadcastProcessor.EVENT, Event.class);
+    Event event = exchange.getIn().getHeader(ListenerFinderProcessor.EVENT, Event.class);
 
     try {
       listener.onEvent(event);

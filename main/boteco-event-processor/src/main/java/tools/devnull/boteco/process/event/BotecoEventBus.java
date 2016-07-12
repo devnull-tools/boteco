@@ -41,7 +41,7 @@ public class BotecoEventBus implements EventBus {
 
   @Override
   public EventSelector broadcast(Notifiable object) {
-    return id -> client.send(new BotecoEvent(id, object)).to(topic("boteco.event"));
+    return id -> client.send(new BotecoEvent(id, object)).to(topic("boteco.event." + id));
   }
 
 }
