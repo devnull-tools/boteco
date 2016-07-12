@@ -64,8 +64,9 @@ public class SubscriptionManagerMessageProcessor implements MessageProcessor {
               .withConfirmation()
               .toEvent(args.get(3));
         } else {
+          String target = message.isGroup() ? message.target() : message.sender().id();
           this.subscriptionManager.subscribe()
-              .target(message.target())
+              .target(target)
               .ofChannel(message.channel().id())
               .toEvent(args.get(1));
           message.reply("Subscription added!");
@@ -79,8 +80,9 @@ public class SubscriptionManagerMessageProcessor implements MessageProcessor {
               .withConfirmation()
               .fromEvent(args.get(3));
         } else {
+          String target = message.isGroup() ? message.target() : message.sender().id();
           this.subscriptionManager.unsubscribe()
-              .target(message.target())
+              .target(target)
               .ofChannel(message.channel().id())
               .fromEvent(args.get(1));
           message.reply("Subscription added!");
