@@ -70,11 +70,11 @@
 
   <bean id="listener-invoker-processor" class="tools.devnull.boteco.process.event.ListenerInvokerProcessor"/>
 
-  <camelContext id="boteco-channel-irc"
+  <camelContext id="boteco-event-processing"
                 xmlns="http://camel.apache.org/schema/blueprint">
 
     <route id="boteco.route.event">
-      <from uri="activemq:topic:boteco.event.*"/>
+      <from uri="activemq:topic:boteco.event.>"/>
       <process ref="listener-finder-processor"/>
       <split parallelProcessing="true">
         <simple>${in.body}</simple>
