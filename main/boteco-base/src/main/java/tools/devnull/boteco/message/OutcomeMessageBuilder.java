@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.message;
 
+import tools.devnull.boteco.event.Subscriber;
+
 /**
  * Interface that defines a component for building
  * outcome messages to be sent.
@@ -55,5 +57,14 @@ public interface OutcomeMessageBuilder {
    * @param channel the id of the channel to send the message
    */
   void through(String channel);
+
+  /**
+   * Sends the message to the given subscriber.
+   *
+   * @param subscriber the subscriber that should receive the message.
+   */
+  default void to(Subscriber subscriber) {
+    to(subscriber.target()).through(subscriber.channel());
+  }
 
 }
