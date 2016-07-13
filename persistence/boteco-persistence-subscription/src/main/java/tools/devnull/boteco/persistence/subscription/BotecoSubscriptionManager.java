@@ -39,7 +39,9 @@ import tools.devnull.boteco.event.SubscriptionTargetSelector;
 import tools.devnull.boteco.message.MessageSender;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class BotecoSubscriptionManager implements SubscriptionManager {
@@ -48,12 +50,31 @@ public class BotecoSubscriptionManager implements SubscriptionManager {
   private final MongoCollection<Document> requests;
   private final MessageSender messageSender;
   private final Gson gson;
+  private final Map<String, Consumer<BotecoSubscriptionRequest>> actionMap;
 
   public BotecoSubscriptionManager(MongoDatabase database, MessageSender messageSender) {
     this.subscriptions = database.getCollection("subscriptions");
     this.requests = database.getCollection("subscriptionRequests");
     this.messageSender = messageSender;
     this.gson = new Gson();
+    this.actionMap = new HashMap<>();
+  }
+
+  private void initialize() {
+    this.actionMap.put("insert", this::confirmInsert);
+    this.actionMap.put("delete", this::confirmDelete);
+  }
+
+  private void confirmInsert(BotecoSubscriptionRequest request) {
+    this.subscriptions.insertOne(Document.parse(gson.toJson(request.subscription())));
+    this.messageSender.send("Your subscription for the event " + request.subscription().eventId() + " was " +
+        "confirmed!").to(request.subscription().subscriber());
+  }
+
+  private void confirmDelete(BotecoSubscriptionRequest request) {
+    this.subscriptions.deleteOne(Document.parse(gson.toJson(request.subscription())));
+    this.messageSender.send("Your subscription for the event " + request.subscription().eventId() + " was " +
+        "removed!").to(request.subscription().subscriber());
   }
 
   @Override
@@ -77,19 +98,10 @@ public class BotecoSubscriptionManager implements SubscriptionManager {
     if (document != null) {
       BotecoSubscriptionRequest request = this.gson.fromJson(document.toJson(), BotecoSubscriptionRequest.class);
       if (request.confirmationToken().equals(token)) {
-        switch (request.operation()) {
-          case "insert":
-            this.subscriptions.insertOne(Document.parse(gson.toJson(request.subscription())));
-            this.requests.deleteOne(document);
-            this.messageSender.send("Your subscription for the event " + request.subscription().eventId() + " was " +
-                "confirmed!").to(request.subscription().subscriber());
-            break;
-          case "delete":
-            this.subscriptions.deleteOne(Document.parse(gson.toJson(request.subscription())));
-            this.requests.deleteOne(document);
-            this.messageSender.send("Your subscription for the event " + request.subscription().eventId() + " was " +
-                "removed!").to(request.subscription().subscriber());
-            break;
+        Consumer<BotecoSubscriptionRequest> action = actionMap.get(request.operation());
+        if (action != null) {
+          action.accept(request);
+          this.requests.deleteOne(document);
         }
       }
     }
