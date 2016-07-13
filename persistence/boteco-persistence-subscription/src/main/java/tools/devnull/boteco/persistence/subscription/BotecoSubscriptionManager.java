@@ -81,10 +81,14 @@ public class BotecoSubscriptionManager implements SubscriptionManager {
           case "insert":
             this.subscriptions.insertOne(Document.parse(gson.toJson(request.subscription())));
             this.requests.deleteOne(document);
+            this.messageSender.send("Your subscription for the event " + request.subscription().eventId() + " was " +
+                "confirmed!").to(request.subscription().subscriber());
             break;
           case "delete":
             this.subscriptions.deleteOne(Document.parse(gson.toJson(request.subscription())));
             this.requests.deleteOne(document);
+            this.messageSender.send("Your subscription for the event " + request.subscription().eventId() + " was " +
+                "removed!").to(request.subscription().subscriber());
             break;
         }
       }
