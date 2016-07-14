@@ -24,12 +24,16 @@
 
 package tools.devnull.boteco.process.event;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.event.Event;
 import tools.devnull.boteco.event.EventListener;
 import tools.devnull.boteco.event.SubscriptionManager;
 import tools.devnull.boteco.message.MessageSender;
 
 public class BotecoEventNotifier implements EventListener {
+
+  private static final Logger logger = LoggerFactory.getLogger(BotecoEventNotifier.class);
 
   private final SubscriptionManager subscriptionManager;
   private final MessageSender messageSender;
@@ -42,9 +46,15 @@ public class BotecoEventNotifier implements EventListener {
   @Override
   public void onEvent(Event event) {
     this.subscriptionManager.subscriptions(event.id())
-        .forEach(subscription -> messageSender.send(event.object().message())
-            .to(subscription.subscriber().target())
-            .through(subscription.subscriber().channel()));
+        .forEach(subscription -> {
+          logger.info(String.format("Notifying %s@%s about %s",
+              subscription.subscriber().target(),
+              subscription.subscriber().channel(),
+              event.id()));
+          messageSender.send(event.object().message())
+              .to(subscription.subscriber().target())
+              .through(subscription.subscriber().channel());
+        });
   }
 
 }
