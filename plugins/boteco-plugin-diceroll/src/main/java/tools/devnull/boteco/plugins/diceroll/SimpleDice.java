@@ -40,7 +40,7 @@ public class SimpleDice implements Dice {
    */
   public SimpleDice(int sides) {
     if (!Arrays.asList(4, 6, 8, 10, 12, 20).contains(sides)) {
-      throw new IllegalArgumentException("I don't have a d" + sides + ". I only have d4, d6, d8, d10, d12 and d20");
+      throw new IllegalArgumentException("I only have these: d4, d6, d8, d10, d12 and d20");
     }
     this.sides = sides;
   }
