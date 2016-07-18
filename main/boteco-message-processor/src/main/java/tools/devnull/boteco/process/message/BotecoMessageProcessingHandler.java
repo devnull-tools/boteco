@@ -22,29 +22,23 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.process.event;
+package tools.devnull.boteco.process.message;
 
 import tools.devnull.boteco.event.Event;
-import tools.devnull.boteco.event.Notifiable;
+import tools.devnull.boteco.event.EventListener;
+import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessingError;
+import tools.devnull.boteco.message.MessageProcessingException;
 
-public class BotecoEvent implements Event {
-
-  private final String id;
-  private final Notifiable object;
-
-  public BotecoEvent(String id, Notifiable object) {
-    this.id = id;
-    this.object = object;
-  }
+public class BotecoMessageProcessingHandler implements EventListener<MessageProcessingError> {
 
   @Override
-  public String id() {
-    return id;
-  }
+  public void onEvent(Event<MessageProcessingError> event) {
+    MessageProcessingError error = event.object();
+    IncomeMessage incomeMessage = error.incomeMessage();
+    MessageProcessingException exception = error.exception();
 
-  @Override
-  public Notifiable object() {
-    return object;
+    incomeMessage.reply("[t]ERROR[/t] [e]%s[/e]", exception.getMessage());
   }
 
 }

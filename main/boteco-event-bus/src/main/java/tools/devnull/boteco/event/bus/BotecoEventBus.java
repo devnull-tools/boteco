@@ -22,7 +22,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.process.event;
+package tools.devnull.boteco.event.bus;
 
 import tools.devnull.boteco.client.jms.JmsClient;
 import tools.devnull.boteco.event.EventBus;

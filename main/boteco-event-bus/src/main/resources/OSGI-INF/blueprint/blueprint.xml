@@ -32,50 +32,12 @@
                                http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
-  <service id="event-notifier" interface="tools.devnull.boteco.event.EventListener">
-    <service-properties>
-      <entry key="event" value="all"/>
-    </service-properties>
-    <bean class="tools.devnull.boteco.process.event.BotecoEventNotifier">
+  <service id="bus" interface="tools.devnull.boteco.event.EventBus">
+    <bean class="tools.devnull.boteco.event.bus.BotecoEventBus">
       <argument>
-        <reference interface="tools.devnull.boteco.event.SubscriptionManager"/>
-      </argument>
-      <argument>
-        <reference interface="tools.devnull.boteco.message.MessageSender"/>
+        <reference interface="tools.devnull.boteco.client.jms.JmsClient"/>
       </argument>
     </bean>
   </service>
-
-  <service id="subscription-manager-processor" interface="tools.devnull.boteco.message.MessageProcessor">
-    <bean class="tools.devnull.boteco.process.event.SubscriptionManagerMessageProcessor">
-      <argument>
-        <reference interface="tools.devnull.boteco.event.SubscriptionManager"/>
-      </argument>
-    </bean>
-  </service>
-
-  <bean id="listener-finder-processor" class="tools.devnull.boteco.process.event.ListenerFinderProcessor">
-    <argument>
-      <bean class="tools.devnull.boteco.OsgiServiceLocator"/>
-    </argument>
-  </bean>
-
-  <bean id="listener-invoker-processor" class="tools.devnull.boteco.process.event.ListenerInvokerProcessor"/>
-
-  <camelContext id="boteco-event-processing"
-                xmlns="http://camel.apache.org/schema/blueprint">
-
-    <route id="boteco.route.event">
-      <from uri="activemq:topic:boteco.event.>"/>
-      <process ref="listener-finder-processor"/>
-      <split parallelProcessing="true">
-        <simple>${in.body}</simple>
-        <process ref="listener-invoker-processor"/>
-      </split>
-    </route>
-
-  </camelContext>
-
-  <reference id="activemq" interface="org.apache.camel.Component" filter="(component=activemq)"/>
 
 </blueprint>

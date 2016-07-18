@@ -31,30 +31,23 @@ import tools.devnull.boteco.BotException;
  */
 public class MessageProcessingException extends BotException {
 
-  private final IncomeMessage incomeMessage;
-
-  public MessageProcessingException(IncomeMessage incomeMessage) {
-    this.incomeMessage = incomeMessage;
+  public MessageProcessingException() {
   }
 
-  public MessageProcessingException(String message, IncomeMessage incomeMessage) {
+  public MessageProcessingException(String message) {
     super(message);
-    this.incomeMessage = incomeMessage;
   }
 
-  public MessageProcessingException(String message, Throwable cause, IncomeMessage incomeMessage) {
+  public MessageProcessingException(String message, Throwable cause) {
     super(message, cause);
-    this.incomeMessage = incomeMessage;
   }
 
-  public MessageProcessingException(Throwable cause, IncomeMessage incomeMessage) {
+  public MessageProcessingException(Throwable cause) {
     super(cause);
-    this.incomeMessage = incomeMessage;
   }
 
-  public MessageProcessingException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, IncomeMessage incomeMessage) {
+  public MessageProcessingException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
     super(message, cause, enableSuppression, writableStackTrace);
-    this.incomeMessage = incomeMessage;
   }
 
 }

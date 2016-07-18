@@ -29,7 +29,9 @@ import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.devnull.boteco.event.EventBus;
 import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessingError;
 import tools.devnull.boteco.message.MessageProcessingException;
 import tools.devnull.boteco.message.MessageProcessor;
 
@@ -37,28 +39,32 @@ public class BotecoMessageProcessorInvoker implements Processor {
 
   private static final Logger logger = LoggerFactory.getLogger(BotecoMessageProcessorInvoker.class);
 
+  private final EventBus eventBus;
+
+  public BotecoMessageProcessorInvoker(EventBus eventBus) {
+    this.eventBus = eventBus;
+  }
+
   @Override
   public void process(Exchange exchange) throws Exception {
     Message income = exchange.getIn();
     MessageProcessor messageProcessor = income.getBody(MessageProcessor.class);
     IncomeMessage message = income.getHeader(BotecoMessageProcessorFinder.INCOME_MESSAGE, IncomeMessage.class);
-    log(messageProcessor, message);
-    try {
-      messageProcessor.process(message);
-    } catch (MessageProcessingException e) {
-      message.reply("[t]ERROR[/t] [e]%s[/e]", e.getMessage());
-    } catch (Throwable e) {
-      logger.error(e.getMessage(), e);
-    }
-  }
 
-  private void log(MessageProcessor messageProcessor, IncomeMessage message) {
     logger.info(String.format("[%s] [%s@%s:%s] %s",
         messageProcessor.id(),
         message.sender().mention(),
         message.channel().id(),
         message.target(),
         message.content()));
+
+    try {
+      messageProcessor.process(message);
+    } catch (MessageProcessingException e) {
+      eventBus.broadcast(new MessageProcessingError(message, messageProcessor, e)).as("error.message-processor");
+    } catch (Throwable e) {
+      logger.error(e.getMessage(), e);
+    }
   }
 
 }

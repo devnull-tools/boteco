@@ -49,6 +49,8 @@
     <module>main/boteco-rest-api</module>
     <module>main/boteco-rest-client</module>
     <module>main/boteco-amq-client</module>
+    <module>main/boteco-event-bus</module>
+    <module>main/boteco-event-processor</module>
     <!-- channel implementations -->
     <module>channels/boteco-channel-irc</module>
     <module>channels/boteco-channel-pushover</module>
@@ -65,7 +67,6 @@
     <module>persistence/boteco-persistence-karma</module>
     <module>persistence/boteco-persistence-mongodb</module>
     <module>persistence/boteco-persistence-irc</module>
-    <module>main/boteco-event-processor</module>
     <module>persistence/boteco-persistence-subscription</module>
   </modules>
 

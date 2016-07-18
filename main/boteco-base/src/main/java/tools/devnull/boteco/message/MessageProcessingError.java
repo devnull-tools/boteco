@@ -22,41 +22,48 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.diceroll;
+package tools.devnull.boteco.message;
 
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessingException;
-import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.event.Notifiable;
 
-import static tools.devnull.boteco.Predicates.command;
-import static tools.devnull.boteco.message.MessageChecker.check;
+/**
+ * A class that represents an error while processing a message.
+ */
+public class MessageProcessingError implements Notifiable {
 
-public class DiceRollMessageProcessor implements MessageProcessor {
+  private static final long serialVersionUID = -9080804000347525917L;
 
-  private final DiceRoll diceRoll;
+  private final IncomeMessage incomeMessage;
+  private final String messageProcessorId;
+  private final MessageProcessingException exception;
 
-  public DiceRollMessageProcessor(DiceRoll diceRoll) {
-    this.diceRoll = diceRoll;
+  public MessageProcessingError(IncomeMessage incomeMessage,
+                                MessageProcessor messageProcessor,
+                                MessageProcessingException exception) {
+    this.incomeMessage = incomeMessage;
+    this.messageProcessorId = messageProcessor.id();
+    this.exception = exception;
+  }
+
+  public IncomeMessage incomeMessage() {
+    return this.incomeMessage;
+  }
+
+  public String messageProcessorId() {
+    return messageProcessorId;
+  }
+
+  public MessageProcessingException exception() {
+    return exception;
   }
 
   @Override
-  public String id() {
-    return "diceroll";
-  }
-
-  @Override
-  public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("roll").withArgs());
-  }
-
-  @Override
-  public void process(IncomeMessage message) {
-    try {
-      int points = diceRoll.roll(message.command().arg());
-      message.reply("you got [v]%s[/v] points!", points);
-    } catch (IllegalArgumentException e) {
-      throw new MessageProcessingException(e.getMessage(), e);
-    }
+  public String message() {
+    return String.format("[%s] [%s@%s] %s",
+        messageProcessorId,
+        incomeMessage.sender(),
+        incomeMessage.channel().id(),
+        exception.getMessage());
   }
 
 }

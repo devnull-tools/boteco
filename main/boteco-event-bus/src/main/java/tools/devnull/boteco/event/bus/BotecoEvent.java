@@ -22,41 +22,29 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.diceroll;
+package tools.devnull.boteco.event.bus;
 
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessingException;
-import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.event.Event;
+import tools.devnull.boteco.event.Notifiable;
 
-import static tools.devnull.boteco.Predicates.command;
-import static tools.devnull.boteco.message.MessageChecker.check;
+public class BotecoEvent implements Event {
 
-public class DiceRollMessageProcessor implements MessageProcessor {
+  private final String id;
+  private final Notifiable object;
 
-  private final DiceRoll diceRoll;
-
-  public DiceRollMessageProcessor(DiceRoll diceRoll) {
-    this.diceRoll = diceRoll;
+  public BotecoEvent(String id, Notifiable object) {
+    this.id = id;
+    this.object = object;
   }
 
   @Override
   public String id() {
-    return "diceroll";
+    return id;
   }
 
   @Override
-  public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("roll").withArgs());
-  }
-
-  @Override
-  public void process(IncomeMessage message) {
-    try {
-      int points = diceRoll.roll(message.command().arg());
-      message.reply("you got [v]%s[/v] points!", points);
-    } catch (IllegalArgumentException e) {
-      throw new MessageProcessingException(e.getMessage(), e);
-    }
+  public Notifiable object() {
+    return object;
   }
 
 }
