@@ -30,6 +30,7 @@ import org.apache.camel.Processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessingException;
 import tools.devnull.boteco.message.MessageProcessor;
 
 public class BotecoMessageProcessorInvoker implements Processor {
@@ -44,6 +45,8 @@ public class BotecoMessageProcessorInvoker implements Processor {
     log(messageProcessor, message);
     try {
       messageProcessor.process(message);
+    } catch (MessageProcessingException e) {
+      message.reply("[t]ERROR[/t] [e]%s[/e]", e.getMessage());
     } catch (Throwable e) {
       logger.error(e.getMessage(), e);
     }

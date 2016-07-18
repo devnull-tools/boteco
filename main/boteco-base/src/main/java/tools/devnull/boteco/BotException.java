@@ -22,37 +22,30 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.diceroll;
+package tools.devnull.boteco;
 
-import java.util.Arrays;
+/**
+ * An exception thrown if any error occurs with the bot processing.
+ */
+public class BotException extends RuntimeException {
 
-public class SimpleDice implements Dice {
-
-  private final int sides;
-
-  /**
-   * Creates a new dice with the given number of sides.
-   * <p>
-   * Only dices with 4, 6, 8, 10, 12 or 20 sides can be created.
-   *
-   * @param sides the number of the sides
-   * @throws IllegalArgumentException in case of a unexpected number of sides
-   */
-  public SimpleDice(int sides) {
-    if (!Arrays.asList(4, 6, 8, 10, 12, 20).contains(sides)) {
-      throw new IllegalArgumentException("I don't have a d" + sides + ". I only have d4, d6, d8, d10, d12 and d20");
-    }
-    this.sides = sides;
+  public BotException() {
   }
 
-  @Override
-  public int sides() {
-    return sides;
+  public BotException(String message) {
+    super(message);
   }
 
-  @Override
-  public int roll() {
-    return (int) (1 + (Math.random() * sides));
+  public BotException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  public BotException(Throwable cause) {
+    super(cause);
+  }
+
+  public BotException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    super(message, cause, enableSuppression, writableStackTrace);
   }
 
 }

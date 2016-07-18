@@ -25,6 +25,7 @@
 package tools.devnull.boteco.plugins.diceroll;
 
 import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessingException;
 import tools.devnull.boteco.message.MessageProcessor;
 
 import static tools.devnull.boteco.Predicates.command;
@@ -50,8 +51,12 @@ public class DiceRollMessageProcessor implements MessageProcessor {
 
   @Override
   public void process(IncomeMessage message) {
-    int points = diceRoll.roll(message.command().arg());
-    message.reply("you got [v]%s[/v] points!", points);
+    try {
+      int points = diceRoll.roll(message.command().arg());
+      message.reply("you got [v]%s[/v] points!", points);
+    } catch (IllegalArgumentException e) {
+      throw new MessageProcessingException(e.getMessage(), e, message);
+    }
   }
 
 }

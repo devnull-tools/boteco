@@ -22,37 +22,39 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.diceroll;
+package tools.devnull.boteco.message;
 
-import java.util.Arrays;
+import tools.devnull.boteco.BotException;
 
-public class SimpleDice implements Dice {
+/**
+ * An exception thrown if an error occurs while processing a message regarding the domain.
+ */
+public class MessageProcessingException extends BotException {
 
-  private final int sides;
+  private final IncomeMessage incomeMessage;
 
-  /**
-   * Creates a new dice with the given number of sides.
-   * <p>
-   * Only dices with 4, 6, 8, 10, 12 or 20 sides can be created.
-   *
-   * @param sides the number of the sides
-   * @throws IllegalArgumentException in case of a unexpected number of sides
-   */
-  public SimpleDice(int sides) {
-    if (!Arrays.asList(4, 6, 8, 10, 12, 20).contains(sides)) {
-      throw new IllegalArgumentException("I don't have a d" + sides + ". I only have d4, d6, d8, d10, d12 and d20");
-    }
-    this.sides = sides;
+  public MessageProcessingException(IncomeMessage incomeMessage) {
+    this.incomeMessage = incomeMessage;
   }
 
-  @Override
-  public int sides() {
-    return sides;
+  public MessageProcessingException(String message, IncomeMessage incomeMessage) {
+    super(message);
+    this.incomeMessage = incomeMessage;
   }
 
-  @Override
-  public int roll() {
-    return (int) (1 + (Math.random() * sides));
+  public MessageProcessingException(String message, Throwable cause, IncomeMessage incomeMessage) {
+    super(message, cause);
+    this.incomeMessage = incomeMessage;
+  }
+
+  public MessageProcessingException(Throwable cause, IncomeMessage incomeMessage) {
+    super(cause);
+    this.incomeMessage = incomeMessage;
+  }
+
+  public MessageProcessingException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, IncomeMessage incomeMessage) {
+    super(message, cause, enableSuppression, writableStackTrace);
+    this.incomeMessage = incomeMessage;
   }
 
 }
