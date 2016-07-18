@@ -85,7 +85,7 @@ public class SubscriptionManagerMessageProcessor implements MessageProcessor {
               .target(target)
               .ofChannel(message.channel().id())
               .fromEvent(args.get(1));
-          message.reply("Subscription added!");
+          message.reply("Subscription removed!");
         }
       case "confirm":
         this.subscriptionManager.confirm(args.get(1));
