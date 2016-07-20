@@ -86,7 +86,7 @@ create a configuration named `tools.devnull.boteco.plugins.mongodb` with the fol
 - `db.url`: the mongodb url to connect to the mongodb instance
 - `db.database`: the mongodb database to retrieve collections
 
-=== Running in JBoss Fuse
+### Running in JBoss Fuse
 
 It's easier than fall of a bike! From your Fuse console, do the following commands:
 
@@ -109,7 +109,7 @@ Boteco consists basically on the following components:
 
 The flow is pretty simple: a content arrives through a channel, is passed to a processor and the response is send back through the same channel. The figure bellow illustrates the flow:
 
-![Overview]./assets/overview.png
+![Overview](./assets/overview.png)
 
 But how messages from different channels can be processed by the same processor? Let's find out!
 
