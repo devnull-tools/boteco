@@ -87,6 +87,7 @@ public class SubscriptionManagerMessageProcessor implements MessageProcessor {
               .fromEvent(args.get(1));
           message.reply("Subscription removed!");
         }
+        break;
       case "confirm":
         this.subscriptionManager.confirm(args.get(1));
         break;
