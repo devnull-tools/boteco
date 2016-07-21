@@ -1,6 +1,6 @@
 # Boteco
 
-What if you could write a bot that works on every chat platform? Boteco is a set of abstractions that allows you to write a bot that have the same behaviour across different platforms.
+What if you could write a bot that works on every chat platform? Boteco is a set of abstractions that allows you to write a bot that has the same behaviour across different platforms.
 
 Boteco is gladly built on top of JBoss Fuse.
 
