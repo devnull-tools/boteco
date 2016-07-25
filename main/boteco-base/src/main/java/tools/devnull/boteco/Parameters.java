@@ -22,44 +22,16 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.extractors;
+package tools.devnull.boteco;
 
-import tools.devnull.boteco.Command;
-import tools.devnull.boteco.CommandExtractor;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+@Retention(RetentionPolicy.RUNTIME)
+@Inherited
+public @interface Parameters {
 
-/**
- * A default implementation of a command extracted by a {@link CommandExtractor}.
- */
-class ExtractedCommand implements Command {
-
-  private final String name;
-  private final String rawArguments;
-
-  ExtractedCommand(String name, String rawArguments) {
-    this.name = name;
-    this.rawArguments = rawArguments;
-  }
-
-  @Override
-  public String name() {
-    return name;
-  }
-
-  @Override
-  public List<String> args() {
-    return rawArguments.isEmpty() ?
-        Collections.emptyList() :
-        new ArrayList<>(Arrays.asList(rawArguments.split("\\s+")));
-  }
-
-  @Override
-  public String arg() {
-    return rawArguments;
-  }
+  String[] value();
 
 }

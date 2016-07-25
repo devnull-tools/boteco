@@ -25,8 +25,8 @@
 package tools.devnull.boteco.channel.telegram;
 
 import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.Command;
-import tools.devnull.boteco.CommandExtractor;
+import tools.devnull.boteco.message.MessageCommand;
+import tools.devnull.boteco.message.CommandExtractor;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.message.MessageSender;
@@ -84,7 +84,7 @@ class TelegramIncomeMessage implements IncomeMessage {
   }
 
   @Override
-  public Command command() {
+  public MessageCommand command() {
     return extractor.extract(this);
   }
 

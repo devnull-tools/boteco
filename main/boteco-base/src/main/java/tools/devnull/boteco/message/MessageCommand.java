@@ -22,33 +22,20 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.ping;
-
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
-
-import static tools.devnull.boteco.Predicates.command;
-import static tools.devnull.boteco.message.MessageChecker.check;
+package tools.devnull.boteco.message;
 
 /**
- * A simple processor that responds to a "ping" command with a
- * "pong" response.
+ * Interface that defines a command sent in a message.
  */
-public class PingMessageProcessor implements MessageProcessor {
+public interface MessageCommand {
 
-  @Override
-  public String id() {
-    return "ping";
-  }
+  /**
+   * Returns the command name
+   *
+   * @return the command name
+   */
+  String name();
 
-  @Override
-  public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("ping"));
-  }
-
-  @Override
-  public void process(IncomeMessage message) {
-    message.reply("pong");
-  }
+  <E> E as(Class<E> target);
 
 }

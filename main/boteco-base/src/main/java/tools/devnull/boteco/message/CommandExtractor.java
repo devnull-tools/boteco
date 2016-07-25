@@ -22,43 +22,27 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco;
-
-import tools.devnull.boteco.message.IncomeMessage;
-
-import java.util.function.Predicate;
+package tools.devnull.boteco.message;
 
 /**
- * Interface that can create predicates for {@link Command} objects.
+ * Interface that defines a component capable of extracting a command from a message.
  */
-public interface CommandPredicate extends Predicate<IncomeMessage> {
+public interface CommandExtractor {
 
   /**
-   * Returns a new predicate that accepts any arguments
+   * Extracts a command from the given message.
    *
-   * @return a new predicate that accepts any arguments
+   * @param message the message
+   * @return the extracted command.
    */
-  default Predicate<IncomeMessage> withArgs() {
-    return this.and(message -> message.command().hasArgs());
-  }
+  MessageCommand extract(IncomeMessage message);
 
   /**
-   * Returns a new predicate that accepts arguments that matches the given filter
+   * Checks if the given string is a command.
    *
-   * @param predicate the filter to test
-   * @return a new predicate that accepts arguments that matches the given filter
+   * @param message the message to check
+   * @return <code>true</code> if the given content is a command.
    */
-  default Predicate<IncomeMessage> withArgs(Predicate<String> predicate) {
-    return this.and(message -> message.command().args().stream().allMatch(predicate));
-  }
-
-  /**
-   * Returns a new predicate that rejects any arguments
-   *
-   * @return a new predicate that rejects any arguments
-   */
-  default Predicate<IncomeMessage> withoutArgs() {
-    return this.and(message -> !message.command().hasArgs());
-  }
+  boolean isCommand(IncomeMessage message);
 
 }

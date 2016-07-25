@@ -46,13 +46,13 @@ public class DiceRollMessageProcessor implements MessageProcessor {
 
   @Override
   public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("roll").withArgs());
+    return check(message).accept(command("roll"));
   }
 
   @Override
   public void process(IncomeMessage message) {
     try {
-      int points = diceRoll.roll(message.command().arg());
+      int points = diceRoll.roll(message.command().as(String.class));
       message.reply("you got [v]%s[/v] points!", points);
     } catch (IllegalArgumentException e) {
       throw new MessageProcessingException(e.getMessage(), e);

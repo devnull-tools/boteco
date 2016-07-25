@@ -64,7 +64,25 @@
     <url>https://github.com/devnull-tools/boteco</url>
   </scm>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.jboss.fuse.bom</groupId>
+        <artifactId>jboss-fuse-parent</artifactId>
+        <version>${fuse.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
+    <dependency>
+      <groupId>tools.devnull</groupId>
+      <artifactId>trugger</artifactId>
+      <version>5.1.1</version>
+    </dependency>
+
     <dependency>
       <groupId>tools.devnull</groupId>
       <artifactId>kodo</artifactId>
@@ -100,6 +118,10 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven-compiler-plugin-version}</version>
+        <configuration>
+          <!-- ASM still broke when this option is used so leave it commented by now -->
+          <!--<compilerArgument>-parameters</compilerArgument>-->
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

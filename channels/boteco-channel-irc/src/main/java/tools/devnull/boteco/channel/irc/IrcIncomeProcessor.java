@@ -27,7 +27,7 @@ package tools.devnull.boteco.channel.irc;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.component.irc.IrcMessage;
-import tools.devnull.boteco.CommandExtractor;
+import tools.devnull.boteco.message.CommandExtractor;
 import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.message.MessageDispatcher;
 

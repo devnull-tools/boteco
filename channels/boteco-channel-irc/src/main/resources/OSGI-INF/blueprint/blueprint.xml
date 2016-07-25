@@ -64,7 +64,7 @@
   </service>
 
   <bean id="irc-command-extractor"
-        class="tools.devnull.boteco.extractors.ExpressionCommandExtractor">
+        class="tools.devnull.boteco.message.ExpressionCommandExtractor">
     <argument value="^boteco[,:]?\s+"/>
   </bean>
 

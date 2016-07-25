@@ -22,46 +22,40 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco;
+package tools.devnull.boteco.message;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.regex.Pattern;
 
 /**
- * Interface that defines a command sent in a message.
+ * A command extractor that uses an expression to check if the message is a command.
  */
-public interface Command {
+public class ExpressionCommandExtractor implements CommandExtractor, Serializable {
 
-  /**
-   * Returns the command name
-   *
-   * @return the command name
-   */
-  String name();
+  private static final long serialVersionUID = 3153909150938096646L;
+  private final Pattern pattern;
 
-  /**
-   * Returns the arguments list assuming that the arguments are separated by spaces.
-   * <p>
-   * If you need another implementation, just call {@link #arg()} and the entire string
-   * will be returned.
-   *
-   * @return the arguments list
-   */
-  List<String> args();
+  public ExpressionCommandExtractor(String expression) {
+    pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+  }
 
-  /**
-   * Returns the argument string
-   *
-   * @return the argument
-   */
-  String arg();
+  @Override
+  public boolean isCommand(IncomeMessage message) {
+    return message.isPrivate() || pattern.matcher(message.content()).find();
+  }
 
-  /**
-   * Returns {@code true} if this command has arguments
-   *
-   * @return {@code true} if this command has arguments
-   */
-  default boolean hasArgs() {
-    return arg() != null && !arg().isEmpty();
+  public MessageCommand extract(IncomeMessage message) {
+    StringBuilder command = new StringBuilder(
+        pattern.matcher(message.content()).replaceFirst("").trim()
+    );
+    int firstSpace = command.indexOf(" ");
+    if (firstSpace < 0) { // no arguments
+      return new ExtractedCommand(message, command.toString(), "");
+    } else {
+      return new ExtractedCommand(message, command.substring(0, firstSpace),
+          command.substring(firstSpace, command.length()).trim()
+      );
+    }
   }
 
 }

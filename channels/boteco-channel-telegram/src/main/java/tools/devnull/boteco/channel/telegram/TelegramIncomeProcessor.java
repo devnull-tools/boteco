@@ -26,7 +26,7 @@ package tools.devnull.boteco.channel.telegram;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import tools.devnull.boteco.CommandExtractor;
+import tools.devnull.boteco.message.CommandExtractor;
 import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.message.MessageDispatcher;
 

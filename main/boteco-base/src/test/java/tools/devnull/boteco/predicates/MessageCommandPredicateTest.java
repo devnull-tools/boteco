@@ -25,7 +25,7 @@
 package tools.devnull.boteco.predicates;
 
 import org.junit.Test;
-import tools.devnull.boteco.Command;
+import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.Predicates;
 import tools.devnull.kodo.TestScenario;
@@ -36,7 +36,7 @@ import static tools.devnull.boteco.TestHelper.accept;
 import static tools.devnull.boteco.TestHelper.notAccept;
 import static tools.devnull.kodo.Spec.should;
 
-public class CommandPredicateTest {
+public class MessageCommandPredicateTest {
 
   private IncomeMessage newMessage(String content) {
     IncomeMessage message = mock(IncomeMessage.class);
@@ -47,7 +47,7 @@ public class CommandPredicateTest {
 
   private IncomeMessage newCommand(String name) {
     IncomeMessage message = mock(IncomeMessage.class);
-    Command command = mock(Command.class);
+    MessageCommand command = mock(MessageCommand.class);
     when(command.name()).thenReturn(name);
     when(message.content()).thenReturn(name);
     when(message.hasCommand()).thenReturn(true);

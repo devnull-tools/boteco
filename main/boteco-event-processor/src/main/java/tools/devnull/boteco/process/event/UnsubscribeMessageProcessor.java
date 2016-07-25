@@ -28,69 +28,47 @@ import tools.devnull.boteco.event.SubscriptionManager;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 
-import java.util.List;
-
 import static tools.devnull.boteco.Predicates.command;
 import static tools.devnull.boteco.message.MessageChecker.check;
 
-public class SubscriptionManagerMessageProcessor implements MessageProcessor {
+public class UnsubscribeMessageProcessor implements MessageProcessor {
 
   private final SubscriptionManager subscriptionManager;
 
-  public SubscriptionManagerMessageProcessor(SubscriptionManager subscriptionManager) {
+  public UnsubscribeMessageProcessor(SubscriptionManager subscriptionManager) {
     this.subscriptionManager = subscriptionManager;
   }
 
   @Override
   public String id() {
-    return "subscription-manager";
+    return "unsubscribe";
   }
 
   @Override
   public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("subscription").withArgs());
+    return check(message).accept(command("unsubscribe"));
   }
 
   @Override
   public void process(IncomeMessage message) {
-    List<String> args = message.command().args();
-    String operation = args.get(0);
-    switch (operation) {
-      case "add":
-        if (args.size() == 4) {
-          this.subscriptionManager.subscribe()
-              .target(args.get(2))
-              .ofChannel(args.get(1))
-              .withConfirmation()
-              .toEvent(args.get(3));
-        } else {
-          String target = message.isGroup() ? message.target() : message.sender().id();
-          this.subscriptionManager.subscribe()
-              .target(target)
-              .ofChannel(message.channel().id())
-              .toEvent(args.get(1));
-          message.reply("Subscription added!");
-        }
-        break;
-      case "remove":
-        if (args.size() == 4) {
-          this.subscriptionManager.unsubscribe()
-              .target(args.get(2))
-              .ofChannel(args.get(1))
-              .withConfirmation()
-              .fromEvent(args.get(3));
-        } else {
-          String target = message.isGroup() ? message.target() : message.sender().id();
-          this.subscriptionManager.unsubscribe()
-              .target(target)
-              .ofChannel(message.channel().id())
-              .fromEvent(args.get(1));
-          message.reply("Subscription removed!");
-        }
-        break;
-      case "confirm":
-        this.subscriptionManager.confirm(args.get(1));
-        break;
+    SubscriptionParameters parameters = message.command()
+        .as(SubscriptionParameters.class);
+
+    if (parameters.shouldRequestConfirmation()) {
+      this.subscriptionManager
+          .unsubscribe()
+          .target(parameters.target())
+          .ofChannel(parameters.channel())
+          .withConfirmation()
+          .fromEvent(parameters.event());
+      message.reply("The subscription will be removed after confirmation!");
+    } else {
+      this.subscriptionManager
+          .unsubscribe()
+          .target(parameters.target())
+          .ofChannel(parameters.channel())
+          .fromEvent(parameters.event());
+      message.reply("Subscription removed!");
     }
   }
 

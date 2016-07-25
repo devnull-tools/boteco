@@ -24,27 +24,12 @@
 
 package tools.devnull.boteco;
 
-import tools.devnull.boteco.message.IncomeMessage;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-/**
- * Interface that defines a component capable of extracting a command from a message.
- */
-public interface CommandExtractor {
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Param {
 
-  /**
-   * Extracts a command from the given message.
-   *
-   * @param message the message
-   * @return the extracted command.
-   */
-  Command extract(IncomeMessage message);
-
-  /**
-   * Checks if the given string is a command.
-   *
-   * @param message the message to check
-   * @return <code>true</code> if the given content is a command.
-   */
-  boolean isCommand(IncomeMessage message);
+  String value();
 
 }

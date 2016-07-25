@@ -52,7 +52,7 @@
   </cm:property-placeholder>
 
   <bean id="telegram-command-extractor"
-        class="tools.devnull.boteco.extractors.ExpressionCommandExtractor">
+        class="tools.devnull.boteco.message.ExpressionCommandExtractor">
     <argument value="{{bot.command.expression}}"/>
   </bean>
 

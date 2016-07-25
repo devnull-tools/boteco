@@ -47,12 +47,12 @@ public class RankingMessageProcessor implements MessageProcessor {
 
   @Override
   public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("rank").withArgs());
+    return check(message).accept(command("rank"));
   }
 
   @Override
   public void process(IncomeMessage message) {
-    List<Karma> result = repository.search(message.command().arg());
+    List<Karma> result = repository.search(message.command().as(String.class));
     if (result.isEmpty()) {
       message.reply("[e]No karmas found[/e]");
     } else {

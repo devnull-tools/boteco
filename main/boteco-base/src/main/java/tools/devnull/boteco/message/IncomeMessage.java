@@ -25,7 +25,6 @@
 package tools.devnull.boteco.message;
 
 import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.Command;
 
 import java.io.Serializable;
 
@@ -88,7 +87,7 @@ public interface IncomeMessage extends Serializable {
    *
    * @return the command if this message is a {@link #hasCommand() command}
    */
-  Command command();
+  MessageCommand command();
 
   /**
    * Replies this message by sending the given content through the same

@@ -34,6 +34,7 @@
     <feature>camel-jsonpath</feature>
 
     <bundle>mvn:org.mongodb/mongo-java-driver/3.0.4</bundle>
+    <bundle>wrap:mvn:tools.devnull/trugger/5.1.1</bundle>
 
     <!-- main bundles -->
     <bundle>mvn:${project.groupId}/boteco-base/${project.version}</bundle>

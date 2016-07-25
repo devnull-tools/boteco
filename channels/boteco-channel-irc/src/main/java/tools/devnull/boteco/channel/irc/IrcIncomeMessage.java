@@ -27,8 +27,8 @@ package tools.devnull.boteco.channel.irc;
 import org.apache.camel.component.irc.IrcMessage;
 import org.schwering.irc.lib.IRCUser;
 import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.Command;
-import tools.devnull.boteco.CommandExtractor;
+import tools.devnull.boteco.message.MessageCommand;
+import tools.devnull.boteco.message.CommandExtractor;
 import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageSender;
@@ -92,7 +92,7 @@ public class IrcIncomeMessage implements IncomeMessage {
   }
 
   @Override
-  public Command command() {
+  public MessageCommand command() {
     return commandExtractor.extract(this);
   }
 

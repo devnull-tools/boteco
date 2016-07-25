@@ -56,15 +56,13 @@ public class StocksMessageProcessor implements MessageProcessor {
 
   @Override
   public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(
-        command("stock").withArgs()
-            .or(command("stocks").withArgs())
+    return check(message).accept(command("stock").or(command("stocks"))
     );
   }
 
   @Override
   public void process(IncomeMessage message) {
-    String arg = message.command().arg();
+    String arg = message.command().as(String.class);
     String query;
     if (!arg.contains(":") && configuration.containsKey("query.defaults.exchange")) {
       query = configuration.getProperty("query.defaults.exchange") + ":" + arg;

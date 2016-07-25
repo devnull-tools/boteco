@@ -22,45 +22,54 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.extractors;
+package tools.devnull.boteco.process.event;
 
-import tools.devnull.boteco.Command;
-import tools.devnull.boteco.CommandExtractor;
+import tools.devnull.boteco.Param;
+import tools.devnull.boteco.Parameters;
 import tools.devnull.boteco.message.IncomeMessage;
 
-import java.io.Serializable;
-import java.util.regex.Pattern;
+@Parameters({
+    "event",
+    "event channel target"
+})
+public class SubscriptionParameters {
 
-/**
- * A command extractor that uses an expression to check if the message is a command.
- */
-public class ExpressionCommandExtractor implements CommandExtractor, Serializable {
+  private final String event;
+  private final String channel;
+  private final String target;
+  private final boolean requestConfirmation;
 
-  private static final long serialVersionUID = 3153909150938096646L;
-  private final Pattern pattern;
-
-  public ExpressionCommandExtractor(String expression) {
-    pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+  public SubscriptionParameters(IncomeMessage message,
+                                @Param("event") String event) {
+    this.target = message.isGroup() ? message.target() : message.sender().id();
+    this.channel = message.channel().id();
+    this.event = event;
+    this.requestConfirmation = false;
   }
 
-  @Override
-  public boolean isCommand(IncomeMessage message) {
-    return message.isPrivate() || pattern.matcher(message.content()).find();
+  public SubscriptionParameters(@Param("event") String event,
+                                @Param("target") String target,
+                                @Param("channel") String channel) {
+    this.event = event;
+    this.target = target;
+    this.channel = channel;
+    this.requestConfirmation = true;
   }
 
-  public Command extract(IncomeMessage message) {
-    StringBuilder command = new StringBuilder(
-        pattern.matcher(message.content()).replaceFirst("").trim()
-    );
-    int firstSpace = command.indexOf(" ");
-    if (firstSpace < 0) { // no arguments
-      return new ExtractedCommand(command.toString(), "");
-    } else {
-      return new ExtractedCommand(
-          command.substring(0, firstSpace),
-          command.substring(firstSpace, command.length()).trim()
-      );
-    }
+  public String event() {
+    return event;
+  }
+
+  public String channel() {
+    return channel;
+  }
+
+  public String target() {
+    return target;
+  }
+
+  public boolean shouldRequestConfirmation() {
+    return requestConfirmation;
   }
 
 }

@@ -39,18 +39,6 @@
   <artifactId>boteco-base</artifactId>
   <packaging>bundle</packaging>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.jboss.fuse.bom</groupId>
-        <artifactId>jboss-fuse-parent</artifactId>
-        <version>${fuse.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <dependencies>
     <dependency>
       <groupId>org.apache.camel</groupId>
@@ -87,7 +75,6 @@
               tools.devnull.boteco.event,
               tools.devnull.boteco.storage,
               tools.devnull.boteco.predicates,
-              tools.devnull.boteco.extractors,
               tools.devnull.boteco.client.jms,
               tools.devnull.boteco.client.rest,
             </Export-Package>

@@ -22,28 +22,28 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco;
+package tools.devnull.boteco.extractors;
 
 import org.junit.Before;
 import org.junit.Test;
-import tools.devnull.boteco.extractors.ExpressionCommandExtractor;
+import tools.devnull.boteco.message.CommandExtractor;
+import tools.devnull.boteco.message.ExpressionCommandExtractor;
 import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.kodo.TestScenario;
 
-import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static tools.devnull.kodo.Spec.EMPTY;
 import static tools.devnull.kodo.Spec.be;
 import static tools.devnull.kodo.Spec.should;
 
-public class ExpressionCommandExtractorTest {
+public class ExpressionMessageCommandExtractorTest {
 
   private CommandExtractor extractor;
-  private Command command;
+  private MessageCommand command;
 
   private IncomeMessage message(String content) {
     IncomeMessage message = mock(IncomeMessage.class);
@@ -68,33 +68,18 @@ public class ExpressionCommandExtractorTest {
   @Test
   public void testExtraction() {
     TestScenario.given(extractor.extract(message("command foo")))
-        .the(name, should(be("foo")))
-        .the(args, should(be(EMPTY)));
+        .the(name, should(be("foo")));
 
     TestScenario.given(extractor.extract(message("command bar")))
-        .the(name, should(be("bar")))
-        .the(args, should(be(EMPTY)));
+        .the(name, should(be("bar")));
 
     TestScenario.given(command)
         .the(name, should(be("foo")))
         .the(arg, should(be("arg0 arg1")));
   }
 
-  @Test
-  public void testArgumentList() {
-    TestScenario.given(command.args())
-        .the(List::size, should(be(2)))
-        .the(item(0), should(be("arg0")))
-        .the(item(1), should(be("arg1")));
-  }
-
-  private Function<Command, String> name = command -> command.name();
-  private Function<Command, List<String>> args = command -> command.args();
-  private Function<Command, String> arg = command -> command.arg();
-
-  private Function<List<String>, Object> item(int index) {
-    return l -> l.get(index);
-  }
+  private Function<MessageCommand, String> name = command -> command.name();
+  private Function<MessageCommand, String> arg = command -> command.as(String.class);
 
   private Predicate<CommandExtractor> accept(String string) {
     return commandExtractor -> commandExtractor.isCommand(message(string));

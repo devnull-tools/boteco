@@ -44,18 +44,6 @@
     <boteco-test.version>1.0.0</boteco-test.version>
   </properties>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.jboss.fuse.bom</groupId>
-        <artifactId>jboss-fuse-parent</artifactId>
-        <version>${fuse.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <dependencies>
     <dependency>
       <groupId>tools.devnull</groupId>

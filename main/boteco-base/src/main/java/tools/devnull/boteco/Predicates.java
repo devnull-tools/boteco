@@ -54,7 +54,7 @@ public class Predicates {
     return IncomeMessage::hasCommand;
   }
 
-  public static CommandPredicate command(String commandName) {
+  public static Predicate<IncomeMessage> command(String commandName) {
     return message -> hasCommand()
         .and(new AcceptedValuePredicate<>(commandName.toLowerCase(), m -> m.command().name().toLowerCase()))
         .test(message);

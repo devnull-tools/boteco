@@ -35,7 +35,6 @@ import static tools.devnull.boteco.test.Consumers.process;
 import static tools.devnull.boteco.test.IncomeMessageConsumers.reply;
 import static tools.devnull.boteco.test.IncomeMessageMock.message;
 import static tools.devnull.boteco.test.Predicates.accept;
-import static tools.devnull.boteco.test.Predicates.notAccept;
 import static tools.devnull.boteco.test.Predicates.receive;
 import static tools.devnull.kodo.Spec.should;
 
@@ -62,7 +61,6 @@ public class DiceRollMessageProcessorTest {
   @Test
   public void testAcceptance() {
     TestScenario.given(new DiceRollMessageProcessor(diceRoll))
-        .it(should(notAccept(message("roll", msg -> msg.withCommand("roll")))))
         .it(should(accept(message)));
   }
 

@@ -22,75 +22,60 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.weather;
+package tools.devnull.boteco.process.event;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import tools.devnull.boteco.event.SubscriptionManager;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
-
-import java.util.List;
 
 import static tools.devnull.boteco.Predicates.command;
 import static tools.devnull.boteco.message.MessageChecker.check;
 
-public class WeatherMessageProcessor implements MessageProcessor {
+public class SubscribeMessageProcessor implements MessageProcessor {
 
-  private static final Logger logger = LoggerFactory.getLogger(WeatherMessageProcessor.class);
+  private final SubscriptionManager subscriptionManager;
 
-  private final List<WeatherSearcher> searchers;
-
-  public WeatherMessageProcessor(List<WeatherSearcher> searchers) {
-    this.searchers = searchers;
+  public SubscribeMessageProcessor(SubscriptionManager subscriptionManager) {
+    this.subscriptionManager = subscriptionManager;
   }
 
   @Override
   public String id() {
-    return "weather";
+    return "subscribe";
   }
 
   @Override
   public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("weather"));
+    return check(message).accept(command("subscribe"));
   }
 
   @Override
   public void process(IncomeMessage message) {
-    String query = message.command().as(String.class);
-    Weather weather = search(query);
-    if (weather != null) {
-      message.reply(buildResponse(weather));
+    SubscriptionParameters parameters = message.command()
+        .as(SubscriptionParameters.class);
+    boolean alreadyRegistered = this.subscriptionManager.subscriptions(parameters.event()).stream()
+        .anyMatch(subscription -> subscription.subscriber().channel().equals(parameters.channel()) &&
+            subscription.subscriber().target().equals(parameters.target()));
+    if (alreadyRegistered) {
+      message.reply("Subscriber has already subscribed to this event!");
     } else {
-      message.reply("Your query didn't return any results.");
-    }
-  }
-
-  private Weather search(String query) {
-    Weather weather;
-    for (WeatherSearcher searcher : searchers) {
-      weather = searcher.search(query);
-      if (weather != null) {
-        return weather;
+      if (parameters.shouldRequestConfirmation()) {
+        this.subscriptionManager
+            .subscribe()
+            .target(parameters.target())
+            .ofChannel(parameters.channel())
+            .withConfirmation()
+            .toEvent(parameters.event());
+        message.reply("The subscription will be added after confirmation!");
+      } else {
+        this.subscriptionManager
+            .subscribe()
+            .target(parameters.target())
+            .ofChannel(parameters.channel())
+            .toEvent(parameters.event());
+        message.reply("Subscription added!");
       }
     }
-    return null;
-  }
-
-  private String buildResponse(Weather weather) {
-    StringBuilder response = new StringBuilder();
-    if (weather.text() != null) {
-      response.append("[a]").append(weather.text()).append("[/a]");
-    }
-    if (weather.condition() != null) {
-      response.append(": [aa]").append(weather.condition()).append("[/aa]");
-    }
-    if (weather.temperature() != null) {
-      response.append(" - [v]")
-          .append(String.valueOf((int) weather.temperature().celsius())).append("\u00BAC").append("[/v]")
-          .append(" / [v]").append(String.valueOf((int) weather.temperature().fahrenheits())).append("\u00BAF")
-          .append("[/v]");
-    }
-    return response.toString();
   }
 
 }
