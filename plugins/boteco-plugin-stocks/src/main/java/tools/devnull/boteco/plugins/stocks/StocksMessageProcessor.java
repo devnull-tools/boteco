@@ -24,8 +24,7 @@
 
 package tools.devnull.boteco.plugins.stocks;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import tools.devnull.boteco.BotException;
 import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
@@ -38,8 +37,6 @@ import static tools.devnull.boteco.Predicates.command;
 import static tools.devnull.boteco.message.MessageChecker.check;
 
 public class StocksMessageProcessor implements MessageProcessor {
-
-  private static final Logger logger = LoggerFactory.getLogger(StocksMessageProcessor.class);
 
   private final RestClient restClient;
   private final Properties configuration;
@@ -78,7 +75,7 @@ public class StocksMessageProcessor implements MessageProcessor {
           .orElse(() -> message.reply("I didn't find results for [a]%s[/a]", query
           ));
     } catch (IOException e) {
-      logger.error(e.getMessage(), e);
+      throw new BotException(e.getMessage(), e);
     }
   }
 

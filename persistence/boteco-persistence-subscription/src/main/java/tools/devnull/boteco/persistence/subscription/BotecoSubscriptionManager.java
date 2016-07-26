@@ -93,7 +93,7 @@ public class BotecoSubscriptionManager implements SubscriptionManager {
   }
 
   @Override
-  public void confirm(String token) {
+  public boolean confirm(String token) {
     Document document = this.requests.find(new BasicDBObject("token", token)).first();
     if (document != null) {
       BotecoSubscriptionRequest request = this.gson.fromJson(document.toJson(), BotecoSubscriptionRequest.class);
@@ -102,9 +102,11 @@ public class BotecoSubscriptionManager implements SubscriptionManager {
         if (action != null) {
           action.accept(request);
           this.requests.deleteOne(document);
+          return true;
         }
       }
     }
+    return false;
   }
 
   @Override

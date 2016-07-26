@@ -30,7 +30,7 @@ package tools.devnull.boteco.event;
 public interface SubscriptionRemovalEventSelector {
 
   /**
-   * Removes the subscription only when the subscriber confirms the removal.
+   * Removes the subscription only on the subscriber confirms the removal.
    * <p>
    * Details about how to confirm the subscription removal will be send by the
    * {@link SubscriptionManager} to the subscriber.

@@ -58,7 +58,7 @@ public class MessageService {
         .to(message.getTarget())
         .through(channelId);
     // if the channel is present, then the message will be delivered as soon as the channel can process it
-    // otherwise, the message will be delivered when channel bundle starts
+    // otherwise, the message will be delivered on channel bundle starts
     return channel != null ? Response.ok().build() : Response.accepted().build();
   }
 

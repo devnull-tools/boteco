@@ -47,15 +47,7 @@
   </service>
 
   <service interface="tools.devnull.boteco.message.MessageProcessor">
-    <bean class="tools.devnull.boteco.process.event.SubscribeMessageProcessor">
-      <argument>
-        <reference interface="tools.devnull.boteco.event.SubscriptionManager"/>
-      </argument>
-    </bean>
-  </service>
-
-  <service interface="tools.devnull.boteco.message.MessageProcessor">
-    <bean class="tools.devnull.boteco.process.event.UnsubscribeMessageProcessor">
+    <bean class="tools.devnull.boteco.process.event.SubscriptionMessageProcessor">
       <argument>
         <reference interface="tools.devnull.boteco.event.SubscriptionManager"/>
       </argument>

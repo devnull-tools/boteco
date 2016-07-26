@@ -56,11 +56,12 @@ public interface SubscriptionManager {
   SubscriptionRemovalTargetSelector unsubscribe();
 
   /**
-   * Confirms an operation by giving the token received when a
+   * Confirms an operation by giving the token received on a
    * {@link SubscriptionEventSelector#withConfirmation() confirmation} is needed.
    *
    * @param token the received token
+   * @return {@code true} if the subscription was confirmed
    */
-  void confirm(String token);
+  boolean confirm(String token);
 
 }

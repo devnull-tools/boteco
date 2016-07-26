@@ -30,7 +30,7 @@ package tools.devnull.boteco.event;
 public interface SubscriptionEventSelector {
 
   /**
-   * Activates this subscription only when the subscriber confirms it.
+   * Activates this subscription only on the subscriber confirms it.
    * <p>
    * Details about how to confirm the subscription will be send by the
    * {@link SubscriptionManager} to the subscriber.

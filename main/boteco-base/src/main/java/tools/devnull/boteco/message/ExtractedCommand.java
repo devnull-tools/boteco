@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -41,12 +42,14 @@ public class ExtractedCommand implements MessageCommand {
   private final String name;
   private final String rawArguments;
   private final Map<Class<?>, Function<String, ?>> functions;
+  private final Map<String, Runnable> actions;
 
   public ExtractedCommand(IncomeMessage incomeMessage, String name, String rawArguments) {
     this.incomeMessage = incomeMessage;
     this.name = name;
     this.rawArguments = rawArguments;
     this.functions = new HashMap<>();
+    this.actions = new HashMap<>();
 
     this.functions.put(String.class, Function.identity());
     this.functions.put(Integer.class, Integer::parseInt);
@@ -67,12 +70,42 @@ public class ExtractedCommand implements MessageCommand {
   }
 
   @Override
-  public <E> E as(Class<E> type) {
+  public <T> T as(Class<T> type) {
+    return convert(rawArguments, type);
+  }
+
+  private <T> T convert(String string, Class<T> type) {
     Function<String, ?> function = functions.get(type);
     if (function == null) {
       function = new MessageCommandConverter<>(this.incomeMessage, type);
     }
-    return (E) function.apply(rawArguments);
+    return (T) function.apply(string);
+  }
+
+  @Override
+  public <T> MessageCommand on(String actionName, Class<T> parameterType, Consumer<T> consumer) {
+    this.actions.put(actionName,
+        () -> consumer.accept(convert(rawArguments.replaceFirst("\\S+\\S", ""), parameterType)));
+    return this;
+  }
+
+  @Override
+  public MessageCommand on(String actionName, Consumer<String> action) {
+    return on(actionName, String.class, action);
+  }
+
+  @Override
+  public MessageCommand on(String actionName, Runnable action) {
+    this.actions.put(actionName, action);
+    return this;
+  }
+
+  @Override
+  public void execute() {
+    String actionName = rawArguments.split("\\s+")[0];
+    if (this.actions.containsKey(actionName)) {
+      this.actions.get(actionName).run();
+    }
   }
 
 }

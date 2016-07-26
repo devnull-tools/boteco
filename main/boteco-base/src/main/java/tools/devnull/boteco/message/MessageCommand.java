@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.message;
 
+import java.util.function.Consumer;
+
 /**
  * Interface that defines a command sent in a message.
  */
@@ -37,5 +39,13 @@ public interface MessageCommand {
   String name();
 
   <E> E as(Class<E> target);
+
+  <T> MessageCommand on(String actionName, Class<T> parameterType, Consumer<T> action);
+
+  MessageCommand on(String actionName, Consumer<String> action);
+
+  MessageCommand on(String actionName, Runnable action);
+
+  void execute();
 
 }
