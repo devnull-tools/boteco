@@ -31,6 +31,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * This is the default expression parser for boteco. It uses the pattern {@link [tag]content[/tag]}
+ * to denote a format.
+ * <p>
+ * The following tags are supported:
+ * <ul>
+ * <li>a: applies {@link ContentFormatter#accent(String)} </li>
+ * <li>aa: applies {@link ContentFormatter#alternativeAccent(String)} </li>
+ * <li>v: applies {@link ContentFormatter#value(String)} </li>
+ * <li>p: applies {@link ContentFormatter#positive(String)} </li>
+ * <li>n: applies {@link ContentFormatter#negative(String)} </li>
+ * <li>t: applies {@link ContentFormatter#tag(String)} </li>
+ * <li>e: applies {@link ContentFormatter#error(String)} </li>
+ * <li>l: applies {@link ContentFormatter#link(String)} </li>
+ * </ul>
+ */
 public class DefaultFormatExpressionParser implements FormatExpressionParser {
 
   @Override

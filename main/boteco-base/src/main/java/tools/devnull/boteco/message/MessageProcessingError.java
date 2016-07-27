@@ -45,6 +45,9 @@ public class MessageProcessingError implements Notifiable {
     this.exception = exception;
   }
 
+  /**
+   * @return the income
+   */
   public IncomeMessage incomeMessage() {
     return this.incomeMessage;
   }

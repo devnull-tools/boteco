@@ -41,10 +41,22 @@ public class MessageChecker {
     this.message = message;
   }
 
+  /**
+   * Accepts messages that are accepted by the given predicate.
+   *
+   * @param predicate the predicate to test the message
+   * @return {@code true} if the message is accepted by the given predicate
+   */
   public boolean accept(Predicate<IncomeMessage> predicate) {
     return predicate.test(message);
   }
 
+  /**
+   * Accepts messages that are rejected by the given predicate.
+   *
+   * @param predicate the predicate to test the message
+   * @return {@code true} if the message is rejected by the given predicate
+   */
   public boolean reject(Predicate<IncomeMessage> predicate) {
     return !predicate.test(message);
   }

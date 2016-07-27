@@ -24,12 +24,27 @@
 
 package tools.devnull.boteco.client.jms;
 
+/**
+ * An utility class to create {@link JmsDestination jms destinations}.
+ */
 public class Destinations {
 
+  /**
+   * Creates a queue destination based on the given queue name.
+   *
+   * @param name the queue name
+   * @return a queue destination
+   */
   public static JmsDestination queue(String name) {
     return session -> session.createQueue(name);
   }
 
+  /**
+   * Creates a topic destination based on the given topic name.
+   *
+   * @param name the topic name
+   * @return a topic destination
+   */
   public static JmsDestination topic(String name) {
     return session -> session.createTopic(name);
   }

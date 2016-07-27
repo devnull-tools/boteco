@@ -31,6 +31,12 @@ import tools.devnull.boteco.message.IncomeMessage;
  */
 public interface Rule {
 
+  /**
+   * Checks if the given message should be processed.
+   *
+   * @param message the income message
+   * @return {@code true} if the given message should be processed.
+   */
   boolean accept(IncomeMessage message);
 
 }

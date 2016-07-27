@@ -24,8 +24,18 @@
 
 package tools.devnull.boteco.event;
 
+/**
+ * Interface that represents a listener for specific events.
+ *
+ * @param <E> the type of the event object that this listener should receive
+ */
 public interface EventListener<E extends Notifiable> {
 
+  /**
+   * Called when an {@link Event} occurs.
+   *
+   * @param event the event that has occurred
+   */
   void onEvent(Event<E> event);
 
 }

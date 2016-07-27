@@ -38,14 +38,58 @@ public interface MessageCommand {
    */
   String name();
 
+  /**
+   * Converts the input parameters to an object of the given class.
+   *
+   * @param target the type of the object that should be created.
+   * @return an object that represents the input parameters of this command.
+   */
   <E> E as(Class<E> target);
 
+  /**
+   * Maps an action to execute when {@link #execute()} method is called. The parameters
+   * will be converted to the given type and passed to the given action.
+   *
+   * @param actionName    the action name to map
+   * @param parameterType the parameter type of the action parameters
+   * @param action        the action to execute
+   * @return a reference to this object
+   * @see #execute()
+   */
   <T> MessageCommand on(String actionName, Class<T> parameterType, Consumer<T> action);
 
+  /**
+   * Maps an action to execute when {@link #execute()} method is called. This method
+   * assumes that the parameter of the given action is a {@code String}.
+   *
+   * @param actionName the action name to map
+   * @param action     the action to execute
+   * @return a reference to this object
+   * @see #execute()
+   */
   MessageCommand on(String actionName, Consumer<String> action);
 
+  /**
+   * Maps an action to execute when {@link #execute()} method is called. This method
+   * assumes that no parameters are used by this action.
+   *
+   * @param actionName the action name to map
+   * @param action     the action to execute
+   * @return a reference to this object
+   * @see #execute()
+   */
   MessageCommand on(String actionName, Runnable action);
 
+  /**
+   * Treats the first parameter of this command as an action and the remaining as parameters of
+   * this action.
+   * <p>
+   * Depending on the action name, a code will be executed based on mappings from the {@code on} methods.
+   *
+   * @see #on(String, Class, Consumer)
+   * @see #on(String, Consumer)
+   * @see #on(String, Runnable)
+   */
   void execute();
 
 }

@@ -28,8 +28,17 @@ import tools.devnull.boteco.TargetSelector;
 
 import java.io.Serializable;
 
+/**
+ * A common interface for sending messages to a JMS broker.
+ */
 public interface JmsClient {
 
+  /**
+   * Sends the given object to a {@lik JmsDestination destination}.
+   *
+   * @param object the object to send
+   * @return a component for defining the destination.
+   */
   TargetSelector<JmsDestination> send(Serializable object);
 
 }

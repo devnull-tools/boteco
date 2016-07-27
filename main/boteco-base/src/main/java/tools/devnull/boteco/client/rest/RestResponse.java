@@ -31,10 +31,26 @@ import java.io.IOException;
  */
 public interface RestResponse {
 
+  /**
+   * Returns the status code of the invocation.
+   *
+   * @return the status code of the invocation.
+   */
   int status();
 
+  /**
+   * Returns the reason phrase of the invocation.
+   *
+   * @return the reason phrase of the invocation.
+   */
   String reason();
 
+  /**
+   * Returns the content of the invocation.
+   *
+   * @return the content of the invocation.
+   * @throws IOException if an error occurs while reading the result stream.
+   */
   String content() throws IOException;
 
 }

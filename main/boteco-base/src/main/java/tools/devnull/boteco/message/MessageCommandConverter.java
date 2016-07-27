@@ -24,7 +24,6 @@
 
 package tools.devnull.boteco.message;
 
-import tools.devnull.boteco.BotException;
 import tools.devnull.boteco.Param;
 import tools.devnull.boteco.Parameters;
 import tools.devnull.trugger.util.factory.Context;
@@ -39,6 +38,12 @@ import static tools.devnull.trugger.reflection.ParameterPredicates.annotatedWith
 import static tools.devnull.trugger.reflection.ParameterPredicates.named;
 import static tools.devnull.trugger.reflection.ParameterPredicates.type;
 
+/**
+ * A function responsible for converting an input string into an object that represents
+ * the parameters.
+ *
+ * @param <E> the type of the parameter object
+ */
 public class MessageCommandConverter<E> implements Function<String, E> {
 
   private final IncomeMessage message;

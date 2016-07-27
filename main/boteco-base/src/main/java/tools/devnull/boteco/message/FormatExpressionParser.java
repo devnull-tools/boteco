@@ -27,10 +27,21 @@ package tools.devnull.boteco.message;
 import tools.devnull.boteco.ContentFormatter;
 
 /**
- * Interface that parse expressions that denotes formats.
+ * Interface that connects patterns to {@link ContentFormatter} in order to allow
+ * default patterns to format a message for different channels.
+ * <p>
+ * With this approach, a message may contain a format which can be translated into a
+ * specific format for some channel (like the colors in IRC or Markdown in Telegram).
  */
 public interface FormatExpressionParser {
 
+  /**
+   * Parses the expression using the given formatter.
+   *
+   * @param formatter  the content formatter to use
+   * @param expression the expression to parse
+   * @return the expression formatted with the given content formatter
+   */
   String parse(ContentFormatter formatter, String expression);
 
 }

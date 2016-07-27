@@ -28,8 +28,20 @@ import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Session;
 
+/**
+ * Interface that defines a destination of an object in a JMS Broker.
+ *
+ * @see Destinations
+ */
 public interface JmsDestination {
 
+  /**
+   * Creates the destination based on the given session.
+   *
+   * @param session the session to create the destination
+   * @return the created destination
+   * @throws JMSException if an error occurs while creating the destination
+   */
   Destination createDestination(Session session) throws JMSException;
 
 }

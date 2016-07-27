@@ -24,12 +24,23 @@
 
 package tools.devnull.boteco;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
+/**
+ * Indicates the command parameter that should be passed to the annotated parameter.
+ * <p>
+ * This annotation is neede in case you don't have the "-parameter" compiler flag activated.
+ */
+@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Param {
 
+  /**
+   * @return the command parameter that should be passed
+   */
   String value();
 
 }

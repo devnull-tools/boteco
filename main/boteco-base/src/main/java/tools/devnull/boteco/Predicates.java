@@ -54,6 +54,12 @@ public class Predicates {
     return IncomeMessage::hasCommand;
   }
 
+  /**
+   * Returns a predicate that allows commands that have the given name.
+   *
+   * @param commandName the allowed name
+   * @return a predicate that allows commands that have the given name.
+   */
   public static Predicate<IncomeMessage> command(String commandName) {
     return message -> hasCommand()
         .and(new AcceptedValuePredicate<>(commandName.toLowerCase(), m -> m.command().name().toLowerCase()))

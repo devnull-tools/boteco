@@ -24,14 +24,25 @@
 
 package tools.devnull.boteco;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-@Retention(RetentionPolicy.RUNTIME)
+/**
+ * Indicates the possible parameters of a {@link tools.devnull.boteco.message.MessageCommand command}.
+ * <p>
+ * A command may have one or more formats. Each format is represented by a string containing the parameter
+ * names separated by an {@code " "} (example: "code format").
+ */
 @Inherited
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
 public @interface Parameters {
 
+  /**
+   * @return the format of the possible parameters
+   */
   String[] value();
 
 }
