@@ -72,12 +72,15 @@ public class TelegramContentFormatter implements ContentFormatter {
     Matcher matcher = Pattern.compile("^(?<title>.+)<(?<url>.+)>$").matcher(content);
     if (matcher.find()) {
       String urlString = matcher.group("url");
+      String urlTitle = matcher.group("title").trim();
       try {
         URL url = new URL(urlString);
         // checks if the hostname includes at least a dot and two letters because Telegram will only convert it to a
         // link if it follows that pattern
         if (url.getHost().matches(".+\\.\\w{2,}$")) {
-          return String.format("[%s](%s)", matcher.group("title").trim(), urlString);
+          return String.format("[%s](%s)", urlTitle, urlString);
+        } else {
+          return String.format("%s <%s>", urlTitle, urlString);
         }
       } catch (MalformedURLException e) {
         logger.error("Error while formatting a link", e);
