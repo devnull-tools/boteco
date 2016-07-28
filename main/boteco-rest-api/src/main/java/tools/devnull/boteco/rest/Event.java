@@ -24,29 +24,23 @@
 
 package tools.devnull.boteco.rest;
 
-import tools.devnull.boteco.event.EventBus;
+import tools.devnull.boteco.event.Notifiable;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Response;
+public class Event implements Notifiable {
 
-@Path("/event")
-public class EventService {
+  private String text;
 
-  private final EventBus eventBus;
-
-  public EventService(EventBus eventBus) {
-    this.eventBus = eventBus;
+  public String getText() {
+    return text;
   }
 
-  @POST
-  @Path("/{event}")
-  @Consumes("application/json")
-  public Response broadcast(@PathParam("event") String eventId, Event event) {
-    eventBus.broadcast(event).as(eventId);
-    return Response.ok().build();
+  public void setText(String text) {
+    this.text = text;
+  }
+
+  @Override
+  public String message() {
+    return this.text;
   }
 
 }
