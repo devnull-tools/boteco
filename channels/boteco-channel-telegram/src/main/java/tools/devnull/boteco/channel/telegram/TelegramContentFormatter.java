@@ -80,7 +80,8 @@ public class TelegramContentFormatter implements ContentFormatter {
         if (url.getHost().matches(".+\\.\\w{2,}$")) {
           return String.format("[%s](%s)", urlTitle, urlString);
         } else {
-          return String.format("%s %s", urlTitle, urlString);
+          // the link will not be parsed by Telegram but will be visible
+          return String.format("%s <%s>", urlTitle, urlString);
         }
       } catch (MalformedURLException e) {
         logger.error("Error while formatting a link", e);
