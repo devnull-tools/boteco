@@ -24,12 +24,18 @@
 
 package tools.devnull.boteco.channel.telegram;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.ContentFormatter;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TelegramContentFormatter implements ContentFormatter {
+
+  private static final Logger logger = LoggerFactory.getLogger(TelegramContentFormatter.class);
 
   @Override
   public String accent(String content) {
@@ -63,8 +69,21 @@ public class TelegramContentFormatter implements ContentFormatter {
 
   @Override
   public String link(String content) {
-    Matcher matcher = Pattern.compile("^(?<title>.+)\\s*<(?<url>.+)>$").matcher(content);
-    return matcher.find() ? String.format("[%s](%s)", matcher.group("title").trim(), matcher.group("url")) : content;
+    Matcher matcher = Pattern.compile("^(?<title>.+)<(?<url>.+)>$").matcher(content);
+    if (matcher.find()) {
+      String urlString = matcher.group("url");
+      try {
+        URL url = new URL(urlString);
+        // checks if the hostname includes at least a dot and two letters because Telegram will only convert it to a
+        // link if it follows that pattern
+        if (url.getHost().matches(".+\\.\\w{2,}$")) {
+          return String.format("[%s](%s)", matcher.group("title").trim(), urlString);
+        }
+      } catch (MalformedURLException e) {
+        logger.error("Error while formatting a link", e);
+      }
+    }
+    return content;
   }
 
   @Override
