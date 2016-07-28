@@ -85,7 +85,7 @@ public class ExtractedCommand implements MessageCommand {
   @Override
   public <T> MessageCommand on(String actionName, Class<T> parameterType, Consumer<T> consumer) {
     this.actions.put(actionName,
-        () -> consumer.accept(convert(rawArguments.replaceFirst("\\S+\\S", ""), parameterType)));
+        () -> consumer.accept(convert(rawArguments.replaceFirst("\\S+\\s", "").trim(), parameterType)));
     return this;
   }
 
