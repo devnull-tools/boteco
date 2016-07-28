@@ -43,7 +43,7 @@ public class EventService {
 
   @POST
   @Path("/{event}")
-  @Consumes({"application/json", "application/x-www-form-urlencoded"})
+  @Consumes("application/json")
   public Response broadcast(@PathParam("event") String eventId, Event event) {
     eventBus.broadcast(event).as(eventId);
     return Response.ok().build();
