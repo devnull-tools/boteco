@@ -41,6 +41,10 @@
     <maven-compiler-plugin-version>3.3</maven-compiler-plugin-version>
     <maven-resources-plugin-version>2.5</maven-resources-plugin-version>
     <maven-bundle-plugin-version>2.5.4</maven-bundle-plugin-version>
+    <trugger.version>5.1.1</trugger.version>
+    <kodo.version>1.0.1</kodo.version>
+    <junit.version>4.11</junit.version>
+    <mockito.version>1.10.19</mockito.version>
   </properties>
 
   <licenses>
@@ -80,33 +84,32 @@
     <dependency>
       <groupId>tools.devnull</groupId>
       <artifactId>trugger</artifactId>
-      <version>5.1.1</version>
+      <version>${trugger.version}</version>
     </dependency>
 
     <dependency>
       <groupId>tools.devnull</groupId>
       <artifactId>kodo</artifactId>
-      <version>1.0.1</version>
+      <version>${kodo.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-all</artifactId>
-      <version>1.10.19</version>
+      <version>${mockito.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
 
   <build>
-
     <plugins>
       <plugin>
         <groupId>org.apache.felix</groupId>
