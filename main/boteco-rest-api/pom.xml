@@ -33,7 +33,7 @@
     <groupId>tools.devnull</groupId>
     <artifactId>boteco-bundle-parent</artifactId>
     <version>1.0.0</version>
-    <relativePath>../../misc/boteco-parent/pom.xml</relativePath>
+    <relativePath>../../misc/boteco-bundle-parent/pom.xml</relativePath>
   </parent>
 
   <artifactId>boteco-rest-api</artifactId>
