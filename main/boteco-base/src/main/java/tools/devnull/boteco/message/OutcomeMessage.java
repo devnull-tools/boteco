@@ -54,7 +54,7 @@ public class OutcomeMessage implements Serializable {
   }
 
   public void eachHeader(Consumer<Map.Entry<String, Object>> consumer) {
-    this.headers.entrySet().stream().forEach(consumer);
+    this.headers.entrySet().forEach(consumer);
   }
 
 }
