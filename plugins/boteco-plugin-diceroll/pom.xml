@@ -31,37 +31,12 @@
 
   <parent>
     <groupId>tools.devnull</groupId>
-    <artifactId>boteco-parent</artifactId>
+    <artifactId>boteco-bundle-parent</artifactId>
     <version>1.0.0</version>
-    <relativePath>../../misc/boteco-parent/pom.xml</relativePath>
+    <relativePath>../../misc/boteco-bundle-parent/pom.xml</relativePath>
   </parent>
 
   <artifactId>boteco-plugin-diceroll</artifactId>
   <packaging>bundle</packaging>
-
-  <dependencies>
-    <dependency>
-      <groupId>tools.devnull</groupId>
-      <artifactId>boteco-base</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-blueprint</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.osgi</groupId>
-      <artifactId>org.osgi.core</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>tools.devnull</groupId>
-      <artifactId>boteco-test</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
 
 </project>

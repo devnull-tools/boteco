@@ -25,25 +25,34 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                            http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>boteco-parent</artifactId>
+    <groupId>tools.devnull</groupId>
+    <version>1.0.0</version>
+    <relativePath>../boteco-parent/pom.xml</relativePath>
+  </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>tools.devnull</groupId>
-    <artifactId>boteco-bundle-parent</artifactId>
-    <version>1.0.0</version>
-    <relativePath>../../misc/boteco-parent/pom.xml</relativePath>
-  </parent>
+  <artifactId>boteco-bundle-parent</artifactId>
+  <packaging>pom</packaging>
 
-  <artifactId>boteco-channel-pushover</artifactId>
-  <packaging>bundle</packaging>
+  <properties>
+    <osgi.export.packages></osgi.export.packages>
+  </properties>
 
   <dependencies>
     <dependency>
       <groupId>tools.devnull</groupId>
       <artifactId>boteco-base</artifactId>
       <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>tools.devnull</groupId>
+      <artifactId>boteco-test</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -57,15 +66,26 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-http4</artifactId>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-camel</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-gson</artifactId>
-    </dependency>
-
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Export-Package>
+              ${osgi.export.packages}
+            </Export-Package>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

@@ -31,9 +31,9 @@
 
   <parent>
     <groupId>tools.devnull</groupId>
-    <artifactId>boteco-parent</artifactId>
+    <artifactId>boteco-bundle-parent</artifactId>
     <version>1.0.0</version>
-    <relativePath>../../misc/boteco-parent/pom.xml</relativePath>
+    <relativePath>../../misc/boteco-bundle-parent/pom.xml</relativePath>
   </parent>
 
   <artifactId>boteco-plugin-weather-searcher</artifactId>
@@ -42,31 +42,9 @@
   <dependencies>
     <dependency>
       <groupId>tools.devnull</groupId>
-      <artifactId>boteco-base</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>tools.devnull</groupId>
       <artifactId>boteco-plugin-weather</artifactId>
       <version>${project.version}</version>
     </dependency>
-
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-blueprint</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient-osgi</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.osgi</groupId>
-      <artifactId>org.osgi.core</artifactId>
-    </dependency>
-
   </dependencies>
 
 </project>

@@ -27,10 +27,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <artifactId>boteco-parent</artifactId>
+    <artifactId>boteco-bundle-parent</artifactId>
     <groupId>tools.devnull</groupId>
     <version>1.0.0</version>
-    <relativePath>../../misc/boteco-parent/pom.xml</relativePath>
+    <relativePath>../../misc/boteco-bundle-parent/pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -38,27 +38,6 @@
   <packaging>bundle</packaging>
 
   <dependencies>
-    <dependency>
-      <groupId>tools.devnull</groupId>
-      <artifactId>boteco-base</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-blueprint</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-camel</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-core</artifactId>
-    </dependency>
-
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-mail</artifactId>

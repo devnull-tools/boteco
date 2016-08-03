@@ -41,6 +41,7 @@
     <!-- miscellaneous projects -->
     <module>misc/boteco-parent</module>
     <module>misc/boteco-features</module>
+    <module>misc/boteco-bundle-parent</module>
     <!-- main projects -->
     <module>main/boteco-base</module>
     <module>main/boteco-test</module>
@@ -55,6 +56,7 @@
     <module>channels/boteco-channel-irc</module>
     <module>channels/boteco-channel-pushover</module>
     <module>channels/boteco-channel-telegram</module>
+    <module>channels/boteco-channel-email</module>
     <!-- plugins -->
     <module>plugins/boteco-plugin-ping</module>
     <module>plugins/boteco-plugin-weather</module>
@@ -68,7 +70,6 @@
     <module>persistence/boteco-persistence-mongodb</module>
     <module>persistence/boteco-persistence-irc</module>
     <module>persistence/boteco-persistence-subscription</module>
-    <module>channels/boteco-channel-email</module>
   </modules>
 
 </project>
