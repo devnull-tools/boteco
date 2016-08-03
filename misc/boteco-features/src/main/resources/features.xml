@@ -27,11 +27,12 @@
           xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
   <feature version="${project.version}" name="boteco"
            description="Contains base bundles, channels and plugins">
-    <feature>camel-irc</feature>
     <feature>activemq-camel</feature>
+    <feature>camel-irc</feature>
     <feature>camel-http4</feature>
     <feature>camel-gson</feature>
     <feature>camel-jsonpath</feature>
+    <feature>camel-mail</feature>
 
     <bundle>mvn:org.mongodb/mongo-java-driver/3.0.4</bundle>
     <bundle>wrap:mvn:tools.devnull/trugger/5.1.1</bundle>
@@ -65,5 +66,6 @@
     <bundle>mvn:${project.groupId}/boteco-channel-irc/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-channel-pushover/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-channel-telegram/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-channel-email/${project.version}</bundle>
   </feature>
 </features>

@@ -68,6 +68,7 @@
     <module>persistence/boteco-persistence-mongodb</module>
     <module>persistence/boteco-persistence-irc</module>
     <module>persistence/boteco-persistence-subscription</module>
+    <module>channels/boteco-channel-email</module>
   </modules>
 
 </project>

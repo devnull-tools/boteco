@@ -1,0 +1,94 @@
+<!--
+  ~ The MIT License
+  ~
+  ~ Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+  ~
+  ~ Permission  is hereby granted, free of charge, to any person obtaining
+  ~ a  copy  of  this  software  and  associated  documentation files (the
+  ~ "Software"),  to  deal  in the Software without restriction, including
+  ~ without  limitation  the  rights to use, copy, modify, merge, publish,
+  ~ distribute,  sublicense,  and/or  sell  copies of the Software, and to
+  ~ permit  persons to whom the Software is furnished to do so, subject to
+  ~ the following conditions:
+  ~ The  above  copyright  notice  and  this  permission  notice  shall be
+  ~ included  in  all  copies  or  substantial  portions  of the Software.
+  ~
+  ~ THE  SOFTWARE  IS  PROVIDED  "AS  IS",  WITHOUT  WARRANTY OF ANY KIND,
+  ~ EXPRESS  OR  IMPLIED,  INCLUDING  BUT NOT LIMITED TO THE WARRANTIES OF
+  ~ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+  ~ IN  NO  EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+  ~ CLAIM,  DAMAGES  OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+  ~ TORT  OR  OTHERWISE,  ARISING  FROM,  OUT OF OR IN CONNECTION WITH THE
+  ~ SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
+  -->
+
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
+           xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
+           xmlns:cxf="http://cxf.apache.org/blueprint/core"
+           xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
+                               http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+                               http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
+                               http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
+
+  <cm:property-placeholder id="email.properties"
+                           persistent-id="tools.devnull.boteco.channel.email"
+                           placeholder-prefix="{{"
+                           placeholder-suffix="}}">
+    <cm:default-properties>
+      <cm:property name="income.protocol" value="imap"/>
+      <cm:property name="income.host" value="localhost"/>
+      <cm:property name="income.options" value=""/>
+
+      <cm:property name="outcome.protocol" value="smtp"/>
+      <cm:property name="outcome.host" value="localhost"/>
+      <cm:property name="outcome.options" value=""/>
+      <cm:property name="outcome.from" value=""/>
+
+      <cm:property name="delivery.consumers" value="10"/>
+    </cm:default-properties>
+  </cm:property-placeholder>
+
+  <service id="email-channel" interface="tools.devnull.boteco.Channel">
+    <service-properties>
+      <entry key="id" value="email"/>
+    </service-properties>
+    <bean class="tools.devnull.boteco.channel.email.EmailChannel"/>
+  </service>
+
+  <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>
+  <bean id="service-locator" class="tools.devnull.boteco.OsgiServiceLocator"/>
+
+  <bean id="income-processor" class="tools.devnull.boteco.channel.email.EmailIncomeProcessor">
+    <argument ref="message-dispatcher"/>
+    <argument ref="service-locator"/>
+  </bean>
+
+  <bean id="outcome-processor" class="tools.devnull.boteco.channel.email.EmailOutcomeProcessor">
+    <argument>
+      <reference interface="tools.devnull.boteco.message.FormatExpressionParser"/>
+    </argument>
+  </bean>
+
+  <camelContext id="boteco-channel-email"
+                xmlns="http://camel.apache.org/schema/blueprint">
+    <route id="boteco.message.from.email">
+      <from uri="{{income.protocol}}://{{income.host}}?{{income.options}}"/>
+      <process ref="income-processor"/>
+    </route>
+
+    <route id="boteco.message.to.email">
+      <from uri="activemq:queue:boteco.message.email?concurrentConsumers={{delivery.consumers}}"/>
+      <log logName="boteco-channel-email"
+           loggingLevel="INFO"
+           message="sending message through email"/>
+      <process ref="outcome-processor"/>
+      <to uri="{{outcome.protocol}}://{{outcome.host}}?{{outcome.options}}&amp;contentType=text/html&amp;from={{outcome.from}}&amp;replyTo={{outcome.from}}"/>
+    </route>
+
+  </camelContext>
+
+  <reference id="activemq" interface="org.apache.camel.Component" filter="(component=activemq)"/>
+
+</blueprint>

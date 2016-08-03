@@ -22,48 +22,33 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.process.message;
+package tools.devnull.boteco.channel.email;
 
 import org.apache.camel.Exchange;
-import org.apache.camel.Message;
 import org.apache.camel.Processor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import tools.devnull.boteco.event.EventBus;
+import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessingError;
-import tools.devnull.boteco.message.MessageProcessingException;
-import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.message.MessageDispatcher;
 
-public class BotecoMessageProcessorInvoker implements Processor {
+public class EmailIncomeProcessor implements Processor {
 
-  private static final Logger logger = LoggerFactory.getLogger(BotecoMessageProcessorInvoker.class);
+  private final MessageDispatcher dispatcher;
+  private final ServiceLocator serviceLocator;
 
-  private final EventBus eventBus;
-
-  public BotecoMessageProcessorInvoker(EventBus eventBus) {
-    this.eventBus = eventBus;
+  public EmailIncomeProcessor(MessageDispatcher dispatcher, ServiceLocator serviceLocator) {
+    this.dispatcher = dispatcher;
+    this.serviceLocator = serviceLocator;
   }
 
   @Override
   public void process(Exchange exchange) throws Exception {
-    Message income = exchange.getIn();
-    MessageProcessor messageProcessor = income.getBody(MessageProcessor.class);
-    IncomeMessage message = income.getHeader(BotecoMessageProcessorFinder.INCOME_MESSAGE, IncomeMessage.class);
+    String content = exchange.getIn().getBody(String.class).trim();
+    String sender = exchange.getIn().getHeader("From").toString();
+    String target = exchange.getIn().getHeader("To").toString();
 
-    logger.info(String.format("[%s] [%s] [%s > %s] %s",
-        messageProcessor.id(),
-        message.channel().id(),
-        message.sender().mention(),
-        message.target(),
-        message.content()));
-
-    try {
-      messageProcessor.process(message);
-    } catch (MessageProcessingException e) {
-      eventBus.broadcast(new MessageProcessingError(message, messageProcessor, e)).as("error.message-processor");
-    } catch (Throwable e) {
-      logger.error(e.getMessage(), e);
+    if (!content.isEmpty()) {
+      IncomeMessage message = new EmailIncomeMessage(this.serviceLocator, content, sender, target);
+      this.dispatcher.dispatch(message);
     }
   }
 

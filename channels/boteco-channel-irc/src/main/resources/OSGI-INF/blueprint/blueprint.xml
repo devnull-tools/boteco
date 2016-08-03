@@ -105,7 +105,7 @@
     </route>
 
     <route id="boteco.message.to.irc">
-      <from uri="activemq:queue:boteco.message.irc?concurrentConsumers=5"/>
+      <from uri="activemq:queue:boteco.message.irc?concurrentConsumers={{delivery.consumers}}"/>
       <log logName="boteco-channel-irc"
            loggingLevel="INFO"
            message="sending message through irc"/>
