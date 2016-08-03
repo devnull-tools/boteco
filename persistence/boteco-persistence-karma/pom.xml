@@ -39,22 +39,17 @@
   <artifactId>boteco-persistence-karma</artifactId>
   <packaging>bundle</packaging>
 
-  <properties>
-    <boteco-base.version>1.0.0</boteco-base.version>
-    <boteco-karma.version>1.0.0</boteco-karma.version>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>tools.devnull</groupId>
       <artifactId>boteco-base</artifactId>
-      <version>${boteco-base.version}</version>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>
       <groupId>tools.devnull</groupId>
       <artifactId>boteco-plugin-karma</artifactId>
-      <version>${boteco-karma.version}</version>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>

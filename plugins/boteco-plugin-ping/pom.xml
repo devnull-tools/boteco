@@ -39,16 +39,11 @@
   <artifactId>boteco-plugin-ping</artifactId>
   <packaging>bundle</packaging>
 
-  <properties>
-    <boteco-base.version>1.0.0</boteco-base.version>
-    <boteco-test.version>1.0.0</boteco-test.version>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>tools.devnull</groupId>
       <artifactId>boteco-base</artifactId>
-      <version>${boteco-base.version}</version>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>
@@ -64,7 +59,7 @@
     <dependency>
       <groupId>tools.devnull</groupId>
       <artifactId>boteco-test</artifactId>
-      <version>${boteco-test.version}</version>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

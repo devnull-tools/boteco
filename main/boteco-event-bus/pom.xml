@@ -39,15 +39,11 @@
   <artifactId>boteco-event-bus</artifactId>
   <packaging>bundle</packaging>
 
-  <properties>
-    <boteco-base.version>1.0.0</boteco-base.version>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>tools.devnull</groupId>
       <artifactId>boteco-base</artifactId>
-      <version>${boteco-base.version}</version>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>

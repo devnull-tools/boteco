@@ -39,22 +39,17 @@
   <artifactId>boteco-persistence-irc</artifactId>
   <packaging>bundle</packaging>
 
-  <properties>
-    <boteco-base.version>1.0.0</boteco-base.version>
-    <boteco-irc.version>1.0.0</boteco-irc.version>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>tools.devnull</groupId>
       <artifactId>boteco-base</artifactId>
-      <version>${boteco-base.version}</version>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>
       <groupId>tools.devnull</groupId>
       <artifactId>boteco-channel-irc</artifactId>
-      <version>${boteco-irc.version}</version>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>
