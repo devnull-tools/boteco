@@ -41,6 +41,7 @@
     <maven-compiler-plugin-version>3.3</maven-compiler-plugin-version>
     <maven-resources-plugin-version>2.5</maven-resources-plugin-version>
     <maven-bundle-plugin-version>2.5.4</maven-bundle-plugin-version>
+    <maven-surefire-plugin-version>2.19.1</maven-surefire-plugin-version>
     <trugger.version>5.1.1</trugger.version>
     <kodo.version>1.0.1</kodo.version>
     <junit.version>4.11</junit.version>
@@ -130,6 +131,11 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
         <version>${maven-resources-plugin-version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire-plugin-version}</version>
       </plugin>
     </plugins>
   </build>
