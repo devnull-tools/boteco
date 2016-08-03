@@ -63,9 +63,9 @@
     <bundle>mvn:${project.groupId}/boteco-persistence-subscription/${project.version}</bundle>
 
     <!-- channels -->
-    <bundle>mvn:${project.groupId}/boteco-channel-irc/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-channel-pushover/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-channel-telegram/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-channel-email/${project.version}</bundle>
+    <bundle start="false">mvn:${project.groupId}/boteco-channel-irc/${project.version}</bundle>
+    <bundle start="false">mvn:${project.groupId}/boteco-channel-pushover/${project.version}</bundle>
+    <bundle start="false">mvn:${project.groupId}/boteco-channel-telegram/${project.version}</bundle>
+    <bundle start="false">mvn:${project.groupId}/boteco-channel-email/${project.version}</bundle>
   </feature>
 </features>
