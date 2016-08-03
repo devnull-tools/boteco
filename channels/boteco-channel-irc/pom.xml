@@ -39,49 +39,15 @@
   <artifactId>boteco-channel-irc</artifactId>
   <packaging>bundle</packaging>
 
+  <properties>
+    <osgi.export.packages>tools.devnull.boteco.channel.irc</osgi.export.packages>
+  </properties>
+
   <dependencies>
-    <dependency>
-      <groupId>tools.devnull</groupId>
-      <artifactId>boteco-base</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-blueprint</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-camel</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-core</artifactId>
-    </dependency>
-
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-irc</artifactId>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <instructions>
-            <Export-Package>
-              tools.devnull.boteco.channel.irc
-            </Export-Package>
-          </instructions>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
 </project>
