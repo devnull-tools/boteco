@@ -42,7 +42,10 @@ public class EmailIncomeProcessor implements Processor {
 
   @Override
   public void process(Exchange exchange) throws Exception {
-    String content = exchange.getIn().getBody(String.class).trim();
+    String content = exchange.getIn().getHeader("Subject").toString().trim();
+    if (content.isEmpty()) {
+      content = exchange.getIn().getBody(String.class).trim();
+    }
     String sender = exchange.getIn().getHeader("From").toString();
     String target = exchange.getIn().getHeader("To").toString();
 
