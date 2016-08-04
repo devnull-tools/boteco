@@ -37,12 +37,12 @@ public class OutcomeMessage implements Serializable {
 
   private final String content;
   private final String target;
-  private final Map<String, Object> headers;
+  private final Map<String, Object> metadata;
 
-  public OutcomeMessage(String target, String content, Map<String, Object> headers) {
+  public OutcomeMessage(String target, String content, Map<String, Object> metadata) {
     this.content = content;
     this.target = target;
-    this.headers = headers;
+    this.metadata = metadata;
   }
 
   public String getContent() {
@@ -53,8 +53,8 @@ public class OutcomeMessage implements Serializable {
     return target;
   }
 
-  public void eachHeader(Consumer<Map.Entry<String, Object>> consumer) {
-    this.headers.entrySet().forEach(consumer);
+  public void eachMetadata(Consumer<Map.Entry<String, Object>> consumer) {
+    this.metadata.entrySet().forEach(consumer);
   }
 
 }

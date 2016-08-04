@@ -40,13 +40,12 @@ public class EmailOutcomeProcessor implements Processor {
     this.contentFormatter = new EmailContentFormatter();
   }
 
-
   @Override
   public void process(Exchange exchange) throws Exception {
     OutcomeMessage message = exchange.getIn().getBody(OutcomeMessage.class);
     if (message != null) {
+      message.eachMetadata(entry -> exchange.getOut().setHeader(entry.getKey(), entry.getValue()));
       exchange.getOut().setHeader("To", message.getTarget());
-      message.eachHeader(entry -> exchange.getOut().setHeader(entry.getKey(), entry.getValue()));
       exchange.getOut().setBody(parser.parse(contentFormatter, message.getContent()).replaceAll("\\n", "<br>"));
     }
   }

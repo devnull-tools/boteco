@@ -27,6 +27,7 @@ package tools.devnull.boteco.rest;
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.message.MessageSender;
+import tools.devnull.boteco.message.OutcomeMessageBuilder;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -54,8 +55,9 @@ public class MessageService {
   @Path("/{channel}")
   public Response sendMessage(@PathParam("channel") String channelId, Message message) {
     Channel channel = serviceLocator.locate(Channel.class, String.format("(id=%s)", channelId));
-    messageSender.send(message.getContent())
-        .to(message.getTarget())
+    OutcomeMessageBuilder builder = messageSender.send(message.getContent());
+    message.getMetadata().entrySet().forEach(entry -> builder.with(entry.getKey(), entry.getValue()));
+    builder.to(message.getTarget())
         .through(channelId);
     // if the channel is present, then the message will be delivered as soon as the channel can process it
     // otherwise, the message will be delivered on channel bundle starts

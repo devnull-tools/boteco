@@ -73,7 +73,7 @@ public class TelegramOutcomeProcessor implements Processor {
       } else {
         formatter = defaultContentFormatter;
       }
-      message.eachHeader(header -> builder.addParameter(header.getKey(), String.valueOf(header.getValue())));
+      message.eachMetadata(header -> builder.addParameter(header.getKey(), String.valueOf(header.getValue())));
       content = parser.parse(formatter, content);
       URI uri = builder
           .addParameter("chat_id", message.getTarget())

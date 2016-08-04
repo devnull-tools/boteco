@@ -24,10 +24,25 @@
 
 package tools.devnull.boteco.rest;
 
+import java.util.Collections;
+import java.util.Map;
+
 public class Message {
 
   private String content;
   private String target;
+  private Map<String, String> metadata;
+
+  public Map<String, String> getMetadata() {
+    if (metadata == null) {
+      return Collections.emptyMap();
+    }
+    return metadata;
+  }
+
+  public void setMetadata(Map<String, String> metadata) {
+    this.metadata = metadata;
+  }
 
   public String getContent() {
     return content;
