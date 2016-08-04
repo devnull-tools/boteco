@@ -58,9 +58,7 @@ public class BotecoSubscriptionManager implements SubscriptionManager {
     this.messageSender = messageSender;
     this.gson = new Gson();
     this.actionMap = new HashMap<>();
-  }
 
-  private void initialize() {
     this.actionMap.put("insert", this::confirmInsert);
     this.actionMap.put("delete", this::confirmDelete);
   }
