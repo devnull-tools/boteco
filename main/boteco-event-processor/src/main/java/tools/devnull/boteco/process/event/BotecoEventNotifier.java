@@ -47,9 +47,9 @@ public class BotecoEventNotifier implements EventListener {
   public void onEvent(Event event) {
     this.subscriptionManager.subscriptions(event.id())
         .forEach(subscription -> {
-          logger.info(String.format("Notifying %s@%s about %s",
-              subscription.subscriber().target(),
+          logger.info(String.format("Notifying %s:%s about %s",
               subscription.subscriber().channel(),
+              subscription.subscriber().target(),
               event.id()));
           messageSender.send(event.object().message())
               .to(subscription.subscriber().target())
