@@ -30,6 +30,8 @@ import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageDispatcher;
 
+import javax.mail.internet.MimeUtility;
+
 public class EmailIncomeProcessor implements Processor {
 
   private final MessageDispatcher dispatcher;
@@ -42,7 +44,7 @@ public class EmailIncomeProcessor implements Processor {
 
   @Override
   public void process(Exchange exchange) throws Exception {
-    String content = exchange.getIn().getHeader("Subject").toString().trim();
+    String content = MimeUtility.decodeText(exchange.getIn().getHeader("Subject").toString().trim());
     if (content.isEmpty()) {
       content = exchange.getIn().getBody(String.class).trim();
     }
