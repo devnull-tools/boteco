@@ -22,7 +22,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.process.event;
+package tools.devnull.boteco.plugins.subscription;
 
 import tools.devnull.boteco.Param;
 import tools.devnull.boteco.Parameters;

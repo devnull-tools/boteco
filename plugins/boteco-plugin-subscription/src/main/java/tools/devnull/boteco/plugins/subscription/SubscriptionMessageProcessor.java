@@ -22,7 +22,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.process.event;
+package tools.devnull.boteco.plugins.subscription;
 
 import tools.devnull.boteco.event.SubscriptionManager;
 import tools.devnull.boteco.message.IncomeMessage;
@@ -52,7 +52,7 @@ public class SubscriptionMessageProcessor implements MessageProcessor {
   @Override
   public void process(IncomeMessage message) {
     message.command()
-        .on("add", SubscriptionParameters.class, parameters ->{
+        .on("add", SubscriptionParameters.class, parameters -> {
           boolean alreadyRegistered = this.subscriptionManager.subscriptions(parameters.event()).stream()
               .anyMatch(subscription -> subscription.subscriber().channel().equals(parameters.channel()) &&
                   subscription.subscriber().target().equals(parameters.target()));
@@ -77,7 +77,7 @@ public class SubscriptionMessageProcessor implements MessageProcessor {
             }
           }
         })
-        .on("remove", SubscriptionParameters.class, parameters ->{
+        .on("remove", SubscriptionParameters.class, parameters -> {
           if (parameters.shouldRequestConfirmation()) {
             this.subscriptionManager
                 .unsubscribe()

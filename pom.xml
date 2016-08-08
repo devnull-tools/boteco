@@ -65,6 +65,7 @@
     <module>plugins/boteco-plugin-karma</module>
     <module>plugins/boteco-plugin-diceroll</module>
     <module>plugins/boteco-plugin-stocks</module>
+    <module>plugins/boteco-plugin-subscription</module>
     <!-- persistence -->
     <module>persistence/boteco-persistence-karma</module>
     <module>persistence/boteco-persistence-mongodb</module>
