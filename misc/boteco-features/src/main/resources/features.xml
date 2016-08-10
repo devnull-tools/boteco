@@ -22,11 +22,10 @@
   ~ TORT  OR  OTHERWISE,  ARISING  FROM,  OUT OF OR IN CONNECTION WITH THE
   ~ SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
   -->
-
 <features name="tools.devnull.boteco"
           xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
   <feature version="${project.version}" name="boteco"
-           description="Contains base bundles, channels and plugins">
+           description="Contains base bundles and plugins">
     <feature>activemq-camel</feature>
     <feature>camel-irc</feature>
     <feature>camel-http4</feature>
@@ -61,11 +60,36 @@
     <bundle>mvn:${project.groupId}/boteco-persistence-karma/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-persistence-irc/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-persistence-subscription/${project.version}</bundle>
+  </feature>
 
-    <!-- channels -->
+  <feature version="${project.version}" name="boteco-irc"
+           description="IRC Channel for boteco">
+    <feature>boteco</feature>
     <bundle>mvn:${project.groupId}/boteco-channel-irc/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-pushover"
+           description="Pushover Channel for boteco">
+    <feature>boteco</feature>
     <bundle>mvn:${project.groupId}/boteco-channel-pushover/${project.version}</bundle>
+  </feature>
+  <feature version="${project.version}" name="boteco-telegram"
+           description="Telegram Channel for boteco">
+    <feature>boteco</feature>
     <bundle>mvn:${project.groupId}/boteco-channel-telegram/${project.version}</bundle>
+  </feature>
+  <feature version="${project.version}" name="boteco-email"
+           description="Email Channel for boteco">
+    <feature>boteco</feature>
     <bundle>mvn:${project.groupId}/boteco-channel-email/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-all"
+           description="IRC Channel for boteco">
+    <feature>boteco</feature>
+    <feature>boteco-irc</feature>
+    <feature>boteco-pushover</feature>
+    <feature>boteco-telegram</feature>
+    <feature>boteco-email</feature>
   </feature>
 </features>
