@@ -26,37 +26,43 @@ package tools.devnull.boteco.plugins.subscription;
 
 import tools.devnull.boteco.event.SubscriptionManager;
 import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
 
-import static tools.devnull.boteco.Predicates.command;
-import static tools.devnull.boteco.message.MessageChecker.check;
+import java.util.function.Consumer;
 
-public class SubscriptionMessageProcessor implements MessageProcessor {
+public class SubscriptionAdd implements Consumer<SubscriptionParameters> {
 
   private final SubscriptionManager subscriptionManager;
+  private final IncomeMessage message;
 
-  public SubscriptionMessageProcessor(SubscriptionManager subscriptionManager) {
+  public SubscriptionAdd(SubscriptionManager subscriptionManager, IncomeMessage message) {
     this.subscriptionManager = subscriptionManager;
+    this.message = message;
   }
 
   @Override
-  public String id() {
-    return "subscription";
+  public void accept(SubscriptionParameters parameters) {
+    boolean alreadyRegistered = this.subscriptionManager.subscriptions(parameters.event()).stream()
+        .anyMatch(subscription -> subscription.subscriber().channel().equals(parameters.channel()) &&
+            subscription.subscriber().target().equals(parameters.target()));
+    if (alreadyRegistered) {
+      message.reply("Subscriber has already subscribed to this event!");
+    } else {
+      if (parameters.shouldRequestConfirmation()) {
+        this.subscriptionManager
+            .subscribe()
+            .target(parameters.target())
+            .ofChannel(parameters.channel())
+            .withConfirmation()
+            .toEvent(parameters.event());
+        message.reply("The subscription will be added after confirmation!");
+      } else {
+        this.subscriptionManager
+            .subscribe()
+            .target(parameters.target())
+            .ofChannel(parameters.channel())
+            .toEvent(parameters.event());
+        message.reply("Subscription added!");
+      }
+    }
   }
-
-  @Override
-  public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("subscription"));
-  }
-
-  @Override
-  public void process(IncomeMessage message) {
-    message.command()
-        .on("add", SubscriptionParameters.class, new SubscriptionAdd(subscriptionManager, message))
-        .on("remove", SubscriptionParameters.class, new SubscriptionRemove(subscriptionManager, message))
-        .on("list", SubscriptionListParameters.class, new SubscriptionList(subscriptionManager, message))
-        .on("confirm", String.class, new SubscriptionConfirm(subscriptionManager, message))
-        .execute();
-  }
-
 }

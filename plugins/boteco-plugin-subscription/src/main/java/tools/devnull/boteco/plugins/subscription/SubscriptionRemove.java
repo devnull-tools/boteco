@@ -26,37 +26,37 @@ package tools.devnull.boteco.plugins.subscription;
 
 import tools.devnull.boteco.event.SubscriptionManager;
 import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
 
-import static tools.devnull.boteco.Predicates.command;
-import static tools.devnull.boteco.message.MessageChecker.check;
+import java.util.function.Consumer;
 
-public class SubscriptionMessageProcessor implements MessageProcessor {
+public class SubscriptionRemove implements Consumer<SubscriptionParameters> {
 
   private final SubscriptionManager subscriptionManager;
+  private final IncomeMessage message;
 
-  public SubscriptionMessageProcessor(SubscriptionManager subscriptionManager) {
+  public SubscriptionRemove(SubscriptionManager subscriptionManager, IncomeMessage message) {
     this.subscriptionManager = subscriptionManager;
+    this.message = message;
   }
 
   @Override
-  public String id() {
-    return "subscription";
-  }
-
-  @Override
-  public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("subscription"));
-  }
-
-  @Override
-  public void process(IncomeMessage message) {
-    message.command()
-        .on("add", SubscriptionParameters.class, new SubscriptionAdd(subscriptionManager, message))
-        .on("remove", SubscriptionParameters.class, new SubscriptionRemove(subscriptionManager, message))
-        .on("list", SubscriptionListParameters.class, new SubscriptionList(subscriptionManager, message))
-        .on("confirm", String.class, new SubscriptionConfirm(subscriptionManager, message))
-        .execute();
+  public void accept(SubscriptionParameters parameters) {
+    if (parameters.shouldRequestConfirmation()) {
+      this.subscriptionManager
+          .unsubscribe()
+          .target(parameters.target())
+          .ofChannel(parameters.channel())
+          .withConfirmation()
+          .fromEvent(parameters.event());
+      message.reply("The subscription will be removed after confirmation!");
+    } else {
+      this.subscriptionManager
+          .unsubscribe()
+          .target(parameters.target())
+          .ofChannel(parameters.channel())
+          .fromEvent(parameters.event());
+      message.reply("Subscription removed!");
+    }
   }
 
 }

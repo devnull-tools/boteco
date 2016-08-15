@@ -24,39 +24,36 @@
 
 package tools.devnull.boteco.plugins.subscription;
 
-import tools.devnull.boteco.event.SubscriptionManager;
+import tools.devnull.boteco.Param;
+import tools.devnull.boteco.Parameters;
 import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
 
-import static tools.devnull.boteco.Predicates.command;
-import static tools.devnull.boteco.message.MessageChecker.check;
+@Parameters({
+    "",
+    "channel target"
+})
+public class SubscriptionListParameters {
 
-public class SubscriptionMessageProcessor implements MessageProcessor {
+  private final String channel;
+  private final String target;
 
-  private final SubscriptionManager subscriptionManager;
-
-  public SubscriptionMessageProcessor(SubscriptionManager subscriptionManager) {
-    this.subscriptionManager = subscriptionManager;
+  public SubscriptionListParameters(IncomeMessage message) {
+    this.target = message.isGroup() ? message.target() : message.sender().id();
+    this.channel = message.channel().id();
   }
 
-  @Override
-  public String id() {
-    return "subscription";
+  public SubscriptionListParameters(@Param("target") String target,
+                                    @Param("channel") String channel) {
+    this.target = target;
+    this.channel = channel;
   }
 
-  @Override
-  public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("subscription"));
+  public String channel() {
+    return channel;
   }
 
-  @Override
-  public void process(IncomeMessage message) {
-    message.command()
-        .on("add", SubscriptionParameters.class, new SubscriptionAdd(subscriptionManager, message))
-        .on("remove", SubscriptionParameters.class, new SubscriptionRemove(subscriptionManager, message))
-        .on("list", SubscriptionListParameters.class, new SubscriptionList(subscriptionManager, message))
-        .on("confirm", String.class, new SubscriptionConfirm(subscriptionManager, message))
-        .execute();
+  public String target() {
+    return target;
   }
 
 }

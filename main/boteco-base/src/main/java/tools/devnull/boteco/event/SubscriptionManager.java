@@ -32,12 +32,21 @@ import java.util.List;
 public interface SubscriptionManager {
 
   /**
-   * List all subscriptions for the given event id.
+   * Lists all subscriptions for the given event id.
    *
    * @param eventId the event's id
    * @return a list containing all subscriptions for the given event.
    */
   List<Subscription> subscriptions(String eventId);
+
+  /**
+   * Lists all subscriptions for the given channel and target
+   *
+   * @param channel the channel
+   * @param target  the target
+   * @return a list containing all subscriptions for the given channel and target
+   */
+  List<Subscription> subscriptions(String channel, String target);
 
   /**
    * Creates a subscription. A subscription contains a subscriber (target and channel)

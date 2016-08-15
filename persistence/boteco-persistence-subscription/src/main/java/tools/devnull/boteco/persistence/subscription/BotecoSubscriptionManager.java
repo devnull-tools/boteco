@@ -86,6 +86,20 @@ public class BotecoSubscriptionManager implements SubscriptionManager {
   }
 
   @Override
+  public List<Subscription> subscriptions(String channel, String target) {
+    List<Subscription> result = new ArrayList<>();
+    FindIterable<Document> documents = this.subscriptions.find(
+        new BasicDBObject("$and", new BasicDBObject[]{
+            new BasicDBObject("subscriber.channel", channel),
+            new BasicDBObject("subscriber.target", target)
+        }));
+    documents.forEach(
+        (Consumer<Document>) document -> result.add(gson.fromJson(document.toJson(), BotecoSubscription.class))
+    );
+    return result;
+  }
+
+  @Override
   public SubscriptionTargetSelector subscribe() {
     return target -> channel -> new _SubscriptionEventSelector(target, channel);
   }

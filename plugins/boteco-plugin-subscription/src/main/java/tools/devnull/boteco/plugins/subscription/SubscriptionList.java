@@ -26,37 +26,31 @@ package tools.devnull.boteco.plugins.subscription;
 
 import tools.devnull.boteco.event.SubscriptionManager;
 import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
 
-import static tools.devnull.boteco.Predicates.command;
-import static tools.devnull.boteco.message.MessageChecker.check;
+import java.util.function.Consumer;
 
-public class SubscriptionMessageProcessor implements MessageProcessor {
+public class SubscriptionList implements Consumer<SubscriptionListParameters> {
 
   private final SubscriptionManager subscriptionManager;
+  private final IncomeMessage message;
 
-  public SubscriptionMessageProcessor(SubscriptionManager subscriptionManager) {
+  public SubscriptionList(SubscriptionManager subscriptionManager, IncomeMessage message) {
     this.subscriptionManager = subscriptionManager;
+    this.message = message;
   }
 
   @Override
-  public String id() {
-    return "subscription";
-  }
-
-  @Override
-  public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("subscription"));
-  }
-
-  @Override
-  public void process(IncomeMessage message) {
-    message.command()
-        .on("add", SubscriptionParameters.class, new SubscriptionAdd(subscriptionManager, message))
-        .on("remove", SubscriptionParameters.class, new SubscriptionRemove(subscriptionManager, message))
-        .on("list", SubscriptionListParameters.class, new SubscriptionList(subscriptionManager, message))
-        .on("confirm", String.class, new SubscriptionConfirm(subscriptionManager, message))
-        .execute();
+  public void accept(SubscriptionListParameters parameters) {
+    String channel = parameters.channel();
+    String target = parameters.target();
+    StringBuilder response = new StringBuilder();
+    this.subscriptionManager.subscriptions(channel, target)
+        .forEach(subscription -> response.append(subscription.eventId()).append("\n"));
+    if (response.length() > 0) {
+      message.reply(response.toString());
+    } else {
+      message.reply("No subscriptions");
+    }
   }
 
 }
