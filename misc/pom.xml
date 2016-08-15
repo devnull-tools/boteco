@@ -25,24 +25,22 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                            http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>boteco-parent</artifactId>
+    <groupId>tools.devnull</groupId>
+    <version>1.0.0</version>
+    <relativePath>../misc/boteco-parent/pom.xml</relativePath>
+  </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>tools.devnull</groupId>
-  <artifactId>boteco</artifactId>
-  <version>1.0.0</version>
+  <artifactId>boteco-misc</artifactId>
   <packaging>pom</packaging>
-  <name>boteco: the multiplatform bot</name>
-  <description>Boteco is a bot that allows you to write platform agnostic plugins.</description>
-  <url>https://github.com/devnull-tools/boteco</url>
 
   <modules>
-    <module>misc</module>
-    <module>main</module>
-    <module>channels</module>
-    <module>plugins</module>
-    <module>persistence</module>
+    <module>boteco-parent</module>
+    <module>boteco-features</module>
+    <module>boteco-bundle-parent</module>
   </modules>
 
 </project>
