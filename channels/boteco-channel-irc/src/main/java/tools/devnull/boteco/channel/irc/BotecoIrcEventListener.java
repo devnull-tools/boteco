@@ -69,8 +69,10 @@ public class BotecoIrcEventListener implements IRCEventListener {
     BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
     try {
       Bundle bundle = bundleContext.getBundle();
-      bundle.stop();
-      bundle.start();
+      if (bundle.getState() == Bundle.ACTIVE) {
+        bundle.stop();
+        bundle.start();
+      }
     } catch (Exception e) {
       logger.error(e.getMessage());
     }
