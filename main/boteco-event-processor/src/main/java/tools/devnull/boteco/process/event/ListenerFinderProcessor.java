@@ -49,9 +49,9 @@ public class ListenerFinderProcessor implements Processor {
   @Override
   public void process(Exchange exchange) throws Exception {
     Event event = exchange.getIn().getBody(Event.class);
-    logger.info(event.object().message());
     List<EventListener> listeners = this.serviceLocator
         .locateAll(EventListener.class, "(|(event=all)(event=%s))", event.id());
+    logger.info("Found " + listeners.size() + " listeners for event " + event.id());
     exchange.getOut().setBody(listeners);
     exchange.getOut().setHeader(EVENT, event);
   }
