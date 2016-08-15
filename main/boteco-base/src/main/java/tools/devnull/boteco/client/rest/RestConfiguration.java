@@ -62,29 +62,20 @@ public interface RestConfiguration {
   RestConfiguration waitAfterRetry(int amount, TimeUnit unit);
 
   /**
-   * Retries the request in case of a timeout error.
+   * Retries the request in case of a connection error.
    *
    * @param times the amount of times to retry
    * @return an instance of this class
    */
-  RestConfiguration retryOnTimeout(int times);
+  RestConfiguration retryOnConnectionError(int times);
 
   /**
-   * Retries the request in case of a timeout error.
+   * Retries the request in case of a connection error.
    *
    * @return an instance of this class
    */
-  default RestConfiguration retryOnTimeout() {
-    return retryOnTimeout(1);
-  }
-
-  /**
-   * Do not retry the request in case of a timeout error.
-   *
-   * @return an instance of this class
-   */
-  default RestConfiguration dontRetryOnTimeout() {
-    return retryOnTimeout(0);
+  default RestConfiguration retryOnConnectionError() {
+    return retryOnConnectionError(1);
   }
 
   /**

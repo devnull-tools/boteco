@@ -43,6 +43,7 @@ import tools.devnull.boteco.client.rest.RestResult;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.util.Date;
@@ -64,7 +65,7 @@ public class DefaultRestConfiguration implements RestConfiguration {
   private final GsonBuilder gsonBuilder;
   private final Map<Predicate<RestResponse>, Consumer<RestResponse>> actionsMap;
   private Function<String, String> function = (string) -> string;
-  private int timeoutRetries;
+  private int errorRetries;
   private int retryInterval;
 
   public DefaultRestConfiguration(CloseableHttpClient client,
@@ -80,14 +81,14 @@ public class DefaultRestConfiguration implements RestConfiguration {
   }
 
   private void configureTimeout(Properties configuration) {
-    this.retryOnTimeout(Integer.parseInt(configuration.getProperty("timeout.retries", "0")));
+    this.retryOnConnectionError(Integer.parseInt(configuration.getProperty("error.retries", "0")));
     this.timeoutIn(Integer.parseInt(configuration.getProperty("timeout.value", "10000")), TimeUnit.MILLISECONDS);
     this.waitAfterRetry(Integer.parseInt(configuration.getProperty("timeout.interval", "500")), TimeUnit.MILLISECONDS);
   }
 
   @Override
-  public RestConfiguration retryOnTimeout(int times) {
-    this.timeoutRetries = times;
+  public RestConfiguration retryOnConnectionError(int times) {
+    this.errorRetries = times;
     return this;
   }
 
@@ -140,13 +141,13 @@ public class DefaultRestConfiguration implements RestConfiguration {
 
   @Override
   public String rawBody() throws IOException {
-    RestResponse response = getResponse(timeoutRetries);
+    RestResponse response = getResponse(errorRetries);
     return function.apply(response.content());
   }
 
   @Override
   public void execute() throws IOException {
-    getResponse(timeoutRetries);
+    getResponse(errorRetries);
   }
 
   @Override
@@ -185,12 +186,12 @@ public class DefaultRestConfiguration implements RestConfiguration {
           .findFirst()
           .ifPresent(entry -> entry.getValue().accept(response));
       return response;
-    } catch (SocketTimeoutException e) {
+    } catch (SocketTimeoutException | UnknownHostException e) {
       if (retries == 0) {
-        logger.info("Request timeout");
+        logger.error("Request error: " + e.getMessage());
         return new DefaultRestResponse(null, HttpStatus.SC_REQUEST_TIMEOUT, null);
       } else {
-        logger.info("Request timeout, retrying...");
+        logger.error("Request error: " + e.getMessage());
         if (retryInterval > 0) {
           try {
             Thread.sleep(retryInterval);

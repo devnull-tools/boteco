@@ -33,6 +33,7 @@ import tools.devnull.boteco.message.FormatExpressionParser;
 import tools.devnull.boteco.message.OutcomeMessage;
 
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
 
 public class PushoverOutcomeProcessor implements Processor {
 
@@ -59,7 +60,10 @@ public class PushoverOutcomeProcessor implements Processor {
         .addParameter("user", out.getTarget())
         .addParameter("message", parser.parse(formatter, out.getContent()))
         .build();
-    client.post(uri).execute();
+    client.post(uri)
+        .retryOnConnectionError(5)
+        .waitAfterRetry(1, TimeUnit.SECONDS)
+        .execute();
   }
 
 }
