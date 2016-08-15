@@ -25,6 +25,9 @@
 package tools.devnull.boteco.channel.irc;
 
 import org.apache.camel.component.irc.IrcConfiguration;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 import org.schwering.irc.lib.IRCConnection;
 import org.schwering.irc.lib.IRCEventListener;
 import org.schwering.irc.lib.IRCModeParser;
@@ -55,12 +58,22 @@ public class BotecoIrcEventListener implements IRCEventListener {
 
   @Override
   public void onRegistered() {
-    this.repository.channels().stream().forEach(this::joinChannel);
+    this.repository.channels().forEach(this::joinChannel);
   }
 
   @Override
   public void onDisconnected() {
-
+    this.connection.doQuit();
+    this.connection.close();
+    // TODO use a different approach to reconnect to irc in case of failures
+    BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
+    try {
+      Bundle bundle = bundleContext.getBundle();
+      bundle.stop();
+      bundle.start();
+    } catch (Exception e) {
+      logger.error(e.getMessage());
+    }
   }
 
   @Override
