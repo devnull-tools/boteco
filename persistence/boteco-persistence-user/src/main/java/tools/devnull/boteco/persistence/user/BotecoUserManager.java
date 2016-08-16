@@ -57,7 +57,7 @@ public class BotecoUserManager implements UserManager {
 
   @Override
   public User find(String userId) {
-    Document document = this.users.find(new BasicDBObject("id", userId)).iterator().next();
+    Document document = this.users.find(new BasicDBObject("_id", userId)).iterator().next();
     if (document != null) {
       return gson.fromJson(document.toJson(), BotecoUser.class);
     }
