@@ -31,6 +31,8 @@ import tools.devnull.boteco.BotException;
  */
 public class MessageProcessingException extends BotException {
 
+  private static final long serialVersionUID = -699383205497253639L;
+
   public MessageProcessingException() {
   }
 
