@@ -24,9 +24,9 @@
 
 package tools.devnull.boteco.persistence.subscription;
 
-import tools.devnull.boteco.event.Subscriber;
+import tools.devnull.boteco.MessageDestination;
 
-public class BotecoSubscriber implements Subscriber {
+public class BotecoSubscriber implements MessageDestination {
 
   private final String target;
   private final String channel;

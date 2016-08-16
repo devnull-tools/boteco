@@ -33,6 +33,8 @@ public class TelegramChannel implements Channel {
 
   private static final long serialVersionUID = -774477127136914325L;
 
+  public static final String ID = "telegram";
+
   @Override
   public String name() {
     return "Telegram";
@@ -40,7 +42,7 @@ public class TelegramChannel implements Channel {
 
   @Override
   public String id() {
-    return "telegram";
+    return ID;
   }
 
 }

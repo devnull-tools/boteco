@@ -25,6 +25,7 @@
 package tools.devnull.boteco.message;
 
 import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.User;
 
 import java.io.Serializable;
 
@@ -53,6 +54,13 @@ public interface IncomeMessage extends Serializable {
    * @return the sender of this message.
    */
   Sender sender();
+
+  /**
+   * Returns the recognized user associated with this message
+   *
+   * @return the user that sent this message
+   */
+  User user();
 
   /**
    * Returns the target of this message.

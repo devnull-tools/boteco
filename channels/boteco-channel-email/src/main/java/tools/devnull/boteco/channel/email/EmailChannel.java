@@ -30,6 +30,8 @@ public class EmailChannel implements Channel {
 
   private static final long serialVersionUID = 7784534005436706880L;
 
+  public static String ID = "email";
+
   @Override
   public String name() {
     return "Email";
@@ -37,7 +39,7 @@ public class EmailChannel implements Channel {
 
   @Override
   public String id() {
-    return "email";
+    return ID;
   }
 
 }

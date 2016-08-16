@@ -26,7 +26,10 @@ package tools.devnull.boteco.channel.email;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.ServiceLocator;
+import tools.devnull.boteco.User;
+import tools.devnull.boteco.UserManager;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageDispatcher;
 
@@ -36,10 +39,12 @@ public class EmailIncomeProcessor implements Processor {
 
   private final MessageDispatcher dispatcher;
   private final ServiceLocator serviceLocator;
+  private final UserManager userManager;
 
-  public EmailIncomeProcessor(MessageDispatcher dispatcher, ServiceLocator serviceLocator) {
+  public EmailIncomeProcessor(MessageDispatcher dispatcher, ServiceLocator serviceLocator, UserManager userManager) {
     this.dispatcher = dispatcher;
     this.serviceLocator = serviceLocator;
+    this.userManager = userManager;
   }
 
   @Override
@@ -52,7 +57,9 @@ public class EmailIncomeProcessor implements Processor {
     String target = exchange.getIn().getHeader("To").toString();
 
     if (!content.isEmpty()) {
-      IncomeMessage message = new EmailIncomeMessage(this.serviceLocator, content, sender, target);
+      EmailSender emailSender = new EmailSender(sender);
+      User user = this.userManager.find(Destination.channel(EmailChannel.ID).to(emailSender.id()));
+      IncomeMessage message = new EmailIncomeMessage(this.serviceLocator, content, emailSender, target, user);
       this.dispatcher.dispatch(message);
     }
   }

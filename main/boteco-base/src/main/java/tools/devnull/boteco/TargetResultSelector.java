@@ -22,37 +22,19 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.process.message;
+package tools.devnull.boteco;
 
-import tools.devnull.boteco.Rule;
-import tools.devnull.boteco.ServiceLocator;
-import tools.devnull.boteco.client.jms.JmsClient;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageDispatcher;
+/**
+ * Interface to select the target of an operation.
+ */
+public interface TargetResultSelector<T, R> {
 
-import java.util.List;
-
-import static tools.devnull.boteco.Destination.queue;
-
-public class BotecoMessageDispatcher implements MessageDispatcher {
-
-  private final JmsClient client;
-  private final ServiceLocator serviceLocator;
-  private final String queueName;
-
-  public BotecoMessageDispatcher(JmsClient client, ServiceLocator serviceLocator, String queueName) {
-    this.client = client;
-    this.serviceLocator = serviceLocator;
-    this.queueName = queueName;
-  }
-
-  @Override
-  public void dispatch(IncomeMessage incomeMessage) {
-    List<Rule> rules = serviceLocator.locateAll(Rule.class,
-        "(|(channel=all)(channel=%s))", incomeMessage.channel().id());
-    if (rules.isEmpty() || rules.stream().allMatch(rule -> rule.accept(incomeMessage))) {
-      client.send(incomeMessage).to(queue(queueName + "." + incomeMessage.channel().id()));
-    }
-  }
+  /**
+   * Selects the target and then do the operation specified.
+   *
+   * @param target the target of the operation.
+   * @return the result of the operation
+   */
+  R to(T target);
 
 }

@@ -60,6 +60,7 @@
     <bundle>mvn:${project.groupId}/boteco-persistence-mongodb/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-persistence-karma/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-persistence-subscription/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-persistence-user/${project.version}</bundle>
   </feature>
 
   <feature version="${project.version}" name="boteco-irc"
@@ -89,12 +90,20 @@
     <bundle>mvn:${project.groupId}/boteco-channel-email/${project.version}</bundle>
   </feature>
 
+  <feature version="${project.version}" name="boteco-user"
+           description="User Channel for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-channel-user/${project.version}</bundle>
+  </feature>
+
   <feature version="${project.version}" name="boteco-all"
-           description="IRC Channel for boteco">
+           description="boteco with all plugins and channels">
     <feature>boteco</feature>
     <feature>boteco-irc</feature>
     <feature>boteco-pushover</feature>
     <feature>boteco-telegram</feature>
     <feature>boteco-email</feature>
+    <feature>boteco-user</feature>
   </feature>
 </features>

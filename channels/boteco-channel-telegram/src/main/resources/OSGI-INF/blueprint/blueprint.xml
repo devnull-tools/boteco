@@ -64,11 +64,14 @@
 
   <bean id="service-locator" class="tools.devnull.boteco.OsgiServiceLocator"/>
 
+  <reference id="user-manager" interface="tools.devnull.boteco.UserManager"/>
+
   <bean id="telegram-income-processor" class="tools.devnull.boteco.channel.telegram.TelegramIncomeProcessor">
     <argument ref="telegram-command-extractor"/>
     <argument ref="offset-manager"/>
     <argument ref="message-dispatcher"/>
     <argument ref="service-locator"/>
+    <argument ref="user-manager"/>
   </bean>
 
   <bean id="telegram-message-json" class="org.apache.camel.component.gson.GsonDataFormat">

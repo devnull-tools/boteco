@@ -31,7 +31,7 @@ import tools.devnull.boteco.client.jms.JmsClient;
 import java.util.HashMap;
 import java.util.Map;
 
-import static tools.devnull.boteco.client.jms.Destinations.queue;
+import static tools.devnull.boteco.Destination.queue;
 
 public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
 

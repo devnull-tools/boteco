@@ -27,6 +27,7 @@ package tools.devnull.boteco.channel.irc;
 import org.apache.camel.component.irc.IrcMessage;
 import org.schwering.irc.lib.IRCUser;
 import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.User;
 import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.boteco.message.CommandExtractor;
 import tools.devnull.boteco.ServiceLocator;
@@ -44,16 +45,26 @@ public class IrcIncomeMessage implements IncomeMessage {
   private final Channel channel = new IrcChannel();
   private final CommandExtractor commandExtractor;
   private final ServiceLocator serviceLocator;
+  private final User user;
   private final String message;
   private final Sender sender;
   private final String target;
 
-  public IrcIncomeMessage(IrcMessage income, CommandExtractor commandExtractor, ServiceLocator serviceLocator) {
+  public IrcIncomeMessage(IrcMessage income,
+                          CommandExtractor commandExtractor,
+                          ServiceLocator serviceLocator,
+                          User user) {
     this.commandExtractor = commandExtractor;
     this.message = income.getMessage();
     this.sender = new IrcSender(income.getUser());
     this.target = income.getTarget();
     this.serviceLocator = serviceLocator;
+    this.user = user;
+  }
+
+  @Override
+  public User user() {
+    return this.user;
   }
 
   @Override

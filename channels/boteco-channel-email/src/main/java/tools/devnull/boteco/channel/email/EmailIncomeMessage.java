@@ -26,6 +26,7 @@ package tools.devnull.boteco.channel.email;
 
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.ServiceLocator;
+import tools.devnull.boteco.User;
 import tools.devnull.boteco.message.CommandExtractor;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageCommand;
@@ -38,18 +39,25 @@ public class EmailIncomeMessage implements IncomeMessage {
   private static final long serialVersionUID = 8180521354784182482L;
 
   private final ServiceLocator serviceLocator;
+  private final User user;
   private final CommandExtractor extractor;
   private final Channel channel = new EmailChannel();
   private final String content;
   private final Sender sender;
   private final String target;
 
-  public EmailIncomeMessage(ServiceLocator serviceLocator, String content, String sender, String target) {
+  public EmailIncomeMessage(ServiceLocator serviceLocator, String content, EmailSender sender, String target, User user) {
     this.content = content;
-    this.sender = new EmailSender(sender);
+    this.sender = sender;
     this.target = target;
     this.serviceLocator = serviceLocator;
+    this.user = user;
     this.extractor = new SimpleCommandExtractor();
+  }
+
+  @Override
+  public User user() {
+    return this.user;
   }
 
   @Override

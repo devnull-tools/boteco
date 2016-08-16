@@ -22,37 +22,54 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.process.message;
+package tools.devnull.boteco;
 
-import tools.devnull.boteco.Rule;
-import tools.devnull.boteco.ServiceLocator;
-import tools.devnull.boteco.client.jms.JmsClient;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageDispatcher;
+import tools.devnull.boteco.client.jms.JmsDestination;
 
-import java.util.List;
+/**
+ * An utility class to create destinations.
+ */
+public class Destination {
 
-import static tools.devnull.boteco.Destination.queue;
-
-public class BotecoMessageDispatcher implements MessageDispatcher {
-
-  private final JmsClient client;
-  private final ServiceLocator serviceLocator;
-  private final String queueName;
-
-  public BotecoMessageDispatcher(JmsClient client, ServiceLocator serviceLocator, String queueName) {
-    this.client = client;
-    this.serviceLocator = serviceLocator;
-    this.queueName = queueName;
+  /**
+   * Creates a queue destination based on the given queue name.
+   *
+   * @param name the queue name
+   * @return a queue destination
+   */
+  public static JmsDestination queue(String name) {
+    return session -> session.createQueue(name);
   }
 
-  @Override
-  public void dispatch(IncomeMessage incomeMessage) {
-    List<Rule> rules = serviceLocator.locateAll(Rule.class,
-        "(|(channel=all)(channel=%s))", incomeMessage.channel().id());
-    if (rules.isEmpty() || rules.stream().allMatch(rule -> rule.accept(incomeMessage))) {
-      client.send(incomeMessage).to(queue(queueName + "." + incomeMessage.channel().id()));
-    }
+  /**
+   * Creates a topic destination based on the given topic name.
+   *
+   * @param name the topic name
+   * @return a topic destination
+   */
+  public static JmsDestination topic(String name) {
+    return session -> session.createTopic(name);
+  }
+
+  /**
+   * Creates a message destination based on the given channel id and target.
+   *
+   * @param channelId the channel id of the destination
+   * @return a component to select the target of the destination
+   */
+  public static TargetResultSelector<String, MessageDestination> channel(String channelId) {
+    return target -> new MessageDestination() {
+
+      @Override
+      public String channel() {
+        return channelId;
+      }
+
+      @Override
+      public String target() {
+        return target;
+      }
+    };
   }
 
 }

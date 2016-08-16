@@ -28,6 +28,8 @@ import tools.devnull.boteco.Channel;
 
 public class IrcChannel implements Channel {
 
+  public static final String ID = "irc";
+
   @Override
   public String name() {
     return "IRC";
@@ -35,7 +37,7 @@ public class IrcChannel implements Channel {
 
   @Override
   public String id() {
-    return "irc";
+    return ID;
   }
 
 }

@@ -24,7 +24,7 @@
 
 package tools.devnull.boteco.persistence.subscription;
 
-import tools.devnull.boteco.event.Subscriber;
+import tools.devnull.boteco.MessageDestination;
 import tools.devnull.boteco.event.Subscription;
 
 public class BotecoSubscription implements Subscription {
@@ -43,7 +43,7 @@ public class BotecoSubscription implements Subscription {
   }
 
   @Override
-  public Subscriber subscriber() {
+  public MessageDestination subscriber() {
     return subscriber;
   }
 

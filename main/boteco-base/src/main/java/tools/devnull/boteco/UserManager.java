@@ -22,37 +22,18 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.process.message;
+package tools.devnull.boteco;
 
-import tools.devnull.boteco.Rule;
-import tools.devnull.boteco.ServiceLocator;
-import tools.devnull.boteco.client.jms.JmsClient;
 import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageDispatcher;
 
-import java.util.List;
+public interface UserManager {
 
-import static tools.devnull.boteco.Destination.queue;
+  User find(MessageDestination destination);
 
-public class BotecoMessageDispatcher implements MessageDispatcher {
+  User find(String userId);
 
-  private final JmsClient client;
-  private final ServiceLocator serviceLocator;
-  private final String queueName;
+  void create(String userId, IncomeMessage message);
 
-  public BotecoMessageDispatcher(JmsClient client, ServiceLocator serviceLocator, String queueName) {
-    this.client = client;
-    this.serviceLocator = serviceLocator;
-    this.queueName = queueName;
-  }
-
-  @Override
-  public void dispatch(IncomeMessage incomeMessage) {
-    List<Rule> rules = serviceLocator.locateAll(Rule.class,
-        "(|(channel=all)(channel=%s))", incomeMessage.channel().id());
-    if (rules.isEmpty() || rules.stream().allMatch(rule -> rule.accept(incomeMessage))) {
-      client.send(incomeMessage).to(queue(queueName + "." + incomeMessage.channel().id()));
-    }
-  }
+  void link(String userId, IncomeMessage message);
 
 }

@@ -42,6 +42,7 @@
     <module>boteco-channel-pushover</module>
     <module>boteco-channel-telegram</module>
     <module>boteco-channel-email</module>
+    <module>boteco-channel-user</module>
   </modules>
 
 </project>

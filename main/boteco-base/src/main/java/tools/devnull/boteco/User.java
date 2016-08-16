@@ -22,25 +22,21 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.event;
+package tools.devnull.boteco;
+
+import java.util.List;
 
 /**
- * Represents a subscriber.
+ * Interface that defines a user
  */
-public interface Subscriber {
+public interface User {
 
-  /**
-   * Returns the channel for notifying the subscriber.
-   *
-   * @return the channel of the subscriber
-   */
-  String channel();
+  String id();
 
-  /**
-   * Returns the target for notifying the subscriber.
-   *
-   * @return the target of the subscriber.
-   */
-  String target();
+  List<MessageDestination> channels();
+
+  String target(String channelId);
+
+  MessageDestination defaultDestination();
 
 }

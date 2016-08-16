@@ -24,14 +24,15 @@
 
 package tools.devnull.boteco.client.jms;
 
-import javax.jms.Destination;
+import tools.devnull.boteco.Destination;
+
 import javax.jms.JMSException;
 import javax.jms.Session;
 
 /**
  * Interface that defines a destination of an object in a JMS Broker.
  *
- * @see Destinations
+ * @see Destination
  */
 public interface JmsDestination {
 
@@ -42,6 +43,6 @@ public interface JmsDestination {
    * @return the created destination
    * @throws JMSException if an error occurs while creating the destination
    */
-  Destination createDestination(Session session) throws JMSException;
+  javax.jms.Destination createDestination(Session session) throws JMSException;
 
 }

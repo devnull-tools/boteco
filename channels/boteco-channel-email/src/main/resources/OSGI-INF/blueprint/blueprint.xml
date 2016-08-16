@@ -60,9 +60,12 @@
   <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>
   <bean id="service-locator" class="tools.devnull.boteco.OsgiServiceLocator"/>
 
+  <reference id="user-manager" interface="tools.devnull.boteco.UserManager"/>
+
   <bean id="income-processor" class="tools.devnull.boteco.channel.email.EmailIncomeProcessor">
     <argument ref="message-dispatcher"/>
     <argument ref="service-locator"/>
+    <argument ref="user-manager"/>
   </bean>
 
   <bean id="outcome-processor" class="tools.devnull.boteco.channel.email.EmailOutcomeProcessor">

@@ -22,31 +22,25 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.client.jms;
+package tools.devnull.boteco;
 
 /**
- * An utility class to create {@link JmsDestination jms destinations}.
+ * Interface that defines a destination for a message.
  */
-public class Destinations {
+public interface MessageDestination {
 
   /**
-   * Creates a queue destination based on the given queue name.
+   * Returns the channel of this destination.
    *
-   * @param name the queue name
-   * @return a queue destination
+   * @return the channel of this destination.
    */
-  public static JmsDestination queue(String name) {
-    return session -> session.createQueue(name);
-  }
+  String channel();
 
   /**
-   * Creates a topic destination based on the given topic name.
+   * Returns the target of this destination.
    *
-   * @param name the topic name
-   * @return a topic destination
+   * @return the target of this destination.
    */
-  public static JmsDestination topic(String name) {
-    return session -> session.createTopic(name);
-  }
+  String target();
 
 }

@@ -24,8 +24,10 @@
 
 package tools.devnull.boteco.event;
 
+import tools.devnull.boteco.MessageDestination;
+
 /**
- * Represents an association of a {@link Subscriber} and an {@link Event}.
+ * Represents an association of a {@link MessageDestination} and an {@link Event}.
  */
 public interface Subscription {
 
@@ -41,6 +43,6 @@ public interface Subscription {
    *
    * @return the subscriber
    */
-  Subscriber subscriber();
+  MessageDestination subscriber();
 
 }

@@ -29,7 +29,7 @@ import tools.devnull.boteco.event.EventBus;
 import tools.devnull.boteco.event.EventSelector;
 import tools.devnull.boteco.event.Notifiable;
 
-import static tools.devnull.boteco.client.jms.Destinations.topic;
+import static tools.devnull.boteco.Destination.topic;
 
 public class BotecoEventBus implements EventBus {
 

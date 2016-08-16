@@ -71,10 +71,13 @@
 
   <bean id="service-locator" class="tools.devnull.boteco.OsgiServiceLocator"/>
 
+  <reference id="user-manager" interface="tools.devnull.boteco.UserManager"/>
+
   <bean id="irc-income-processor" class="tools.devnull.boteco.channel.irc.IrcIncomeProcessor">
     <argument ref="irc-command-extractor"/>
     <argument ref="message-dispatcher"/>
     <argument ref="service-locator"/>
+    <argument ref="user-manager"/>
   </bean>
 
   <bean id="irc-outcome-processor" class="tools.devnull.boteco.channel.irc.IrcOutcomeProcessor">

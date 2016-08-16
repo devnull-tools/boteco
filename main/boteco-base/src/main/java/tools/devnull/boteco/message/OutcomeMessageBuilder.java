@@ -24,7 +24,7 @@
 
 package tools.devnull.boteco.message;
 
-import tools.devnull.boteco.event.Subscriber;
+import tools.devnull.boteco.MessageDestination;
 
 /**
  * Interface that defines a component for building
@@ -59,12 +59,12 @@ public interface OutcomeMessageBuilder {
   void through(String channel);
 
   /**
-   * Sends the message to the given subscriber.
+   * Sends the message to the given destination.
    *
-   * @param subscriber the subscriber that should receive the message.
+   * @param destination the destination that should receive the message.
    */
-  default void to(Subscriber subscriber) {
-    to(subscriber.target()).through(subscriber.channel());
+  default void to(MessageDestination destination) {
+    to(destination.target()).through(destination.channel());
   }
 
 }

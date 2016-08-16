@@ -27,6 +27,9 @@ package tools.devnull.boteco.channel.irc;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.component.irc.IrcMessage;
+import tools.devnull.boteco.Destination;
+import tools.devnull.boteco.User;
+import tools.devnull.boteco.UserManager;
 import tools.devnull.boteco.message.CommandExtractor;
 import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.message.MessageDispatcher;
@@ -36,18 +39,24 @@ public class IrcIncomeProcessor implements Processor {
   private final CommandExtractor extractor;
   private final MessageDispatcher dispatcher;
   private final ServiceLocator serviceLocator;
+  private final UserManager userManager;
 
-  public IrcIncomeProcessor(CommandExtractor extractor, MessageDispatcher dispatcher, ServiceLocator serviceLocator) {
+  public IrcIncomeProcessor(CommandExtractor extractor,
+                            MessageDispatcher dispatcher,
+                            ServiceLocator serviceLocator,
+                            UserManager userManager) {
     this.extractor = extractor;
     this.dispatcher = dispatcher;
     this.serviceLocator = serviceLocator;
+    this.userManager = userManager;
   }
 
   @Override
   public void process(Exchange exchange) throws Exception {
     IrcMessage income = exchange.getIn(IrcMessage.class);
     if (income.getMessage() != null && !income.getMessage().isEmpty()) {
-      dispatcher.dispatch(new IrcIncomeMessage(income, extractor, serviceLocator));
+      User user = this.userManager.find(Destination.channel(IrcChannel.ID).to(income.getUser().getNick()));
+      dispatcher.dispatch(new IrcIncomeMessage(income, extractor, serviceLocator, user));
     }
   }
 
