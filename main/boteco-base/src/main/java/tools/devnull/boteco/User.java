@@ -33,9 +33,7 @@ public interface User {
 
   String id();
 
-  List<MessageDestination> channels();
-
-  String target(String channelId);
+  List<MessageDestination> destinations();
 
   MessageDestination defaultDestination();
 

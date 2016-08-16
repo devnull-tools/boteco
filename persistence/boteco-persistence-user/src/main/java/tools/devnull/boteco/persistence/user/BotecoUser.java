@@ -22,20 +22,48 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco;
+package tools.devnull.boteco.persistence.user;
 
-import tools.devnull.boteco.message.IncomeMessage;
+import com.google.gson.annotations.SerializedName;
+import tools.devnull.boteco.Destination;
+import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.User;
 
-public interface UserManager {
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-  User find(MessageDestination destination);
+public class BotecoUser implements User {
 
-  User find(String userId);
+  @SerializedName("_id")
+  private final String id;
 
-  void create(String userId, IncomeMessage message);
+  @SerializedName("default_destination")
+  private final String defaultDestination;
 
-  void link(String userId, IncomeMessage message);
+  private final Map<String, String> destinations;
 
-  void update(User user);
+  public BotecoUser(String id, String defaultDestination, Map<String, String> destinations) {
+    this.id = id;
+    this.defaultDestination = defaultDestination;
+    this.destinations = destinations;
+  }
+
+  @Override
+  public String id() {
+    return this.id;
+  }
+
+  @Override
+  public List<MessageDestination> destinations() {
+    return this.destinations.entrySet().stream()
+        .map(entry -> Destination.channel(entry.getKey()).to(entry.getValue()))
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public MessageDestination defaultDestination() {
+    return Destination.channel(this.defaultDestination).to(this.destinations.get(this.defaultDestination));
+  }
 
 }
