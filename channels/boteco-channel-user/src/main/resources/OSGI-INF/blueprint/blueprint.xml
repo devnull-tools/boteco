@@ -50,12 +50,17 @@
   <reference id="user-manager" interface="tools.devnull.boteco.UserManager"/>
   <reference id="message-sender" interface="tools.devnull.boteco.message.MessageSender"/>
 
+  <bean id="outcome-processor" class="tools.devnull.boteco.channel.user.UserOutcomeProcessor">
+    <argument ref="user-manager"/>
+    <argument ref="message-sender"/>
+  </bean>
+
   <camelContext id="user.channel"
                 xmlns="http://camel.apache.org/schema/blueprint">
 
     <route id="message.to.user">
       <from uri="activemq:queue:boteco.message.user?concurrentConsumers={{delivery.consumers}}"/>
-
+      <process ref="outcome-processor"/>
     </route>
 
   </camelContext>
