@@ -24,12 +24,13 @@
 
 package tools.devnull.boteco;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Interface that defines a user
  */
-public interface User {
+public interface User extends Serializable {
 
   String id();
 

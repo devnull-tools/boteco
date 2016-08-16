@@ -35,6 +35,8 @@ import java.util.stream.Collectors;
 
 public class BotecoUser implements User {
 
+  private static final long serialVersionUID = 7185963234889976203L;
+
   @SerializedName("_id")
   private final String id;
 
