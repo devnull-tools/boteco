@@ -46,6 +46,7 @@
     <module>boteco-plugin-diceroll</module>
     <module>boteco-plugin-stocks</module>
     <module>boteco-plugin-subscription</module>
+    <module>boteco-plugin-subscription-manager</module>
   </modules>
 
 </project>

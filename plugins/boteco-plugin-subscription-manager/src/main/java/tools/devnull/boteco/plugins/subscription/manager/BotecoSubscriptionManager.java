@@ -22,14 +22,8 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.persistence.subscription;
+package tools.devnull.boteco.plugins.subscription.manager;
 
-import com.google.gson.Gson;
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
 import tools.devnull.boteco.event.Subscription;
 import tools.devnull.boteco.event.SubscriptionEventSelector;
 import tools.devnull.boteco.event.SubscriptionManager;
@@ -38,65 +32,26 @@ import tools.devnull.boteco.event.SubscriptionRemovalTargetSelector;
 import tools.devnull.boteco.event.SubscriptionTargetSelector;
 import tools.devnull.boteco.message.MessageSender;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
 
 public class BotecoSubscriptionManager implements SubscriptionManager {
 
-  private final MongoCollection<Document> subscriptions;
-  private final MongoCollection<Document> requests;
   private final MessageSender messageSender;
-  private final Gson gson;
-  private final Map<String, Consumer<BotecoSubscriptionRequest>> actionMap;
+  private final SubscriptionRepository repository;
 
-  public BotecoSubscriptionManager(MongoDatabase database, MessageSender messageSender) {
-    this.subscriptions = database.getCollection("subscriptions");
-    this.requests = database.getCollection("subscriptionRequests");
+  public BotecoSubscriptionManager(SubscriptionRepository repository, MessageSender messageSender) {
     this.messageSender = messageSender;
-    this.gson = new Gson();
-    this.actionMap = new HashMap<>();
-
-    this.actionMap.put("insert", this::confirmInsert);
-    this.actionMap.put("delete", this::confirmDelete);
-  }
-
-  private void confirmInsert(BotecoSubscriptionRequest request) {
-    this.subscriptions.insertOne(Document.parse(gson.toJson(request.subscription())));
-    this.messageSender.send("Your subscription for the event " + request.subscription().eventId() + " was " +
-        "confirmed!").to(request.subscription().subscriber());
-  }
-
-  private void confirmDelete(BotecoSubscriptionRequest request) {
-    this.subscriptions.deleteOne(Document.parse(gson.toJson(request.subscription())));
-    this.messageSender.send("Your subscription for the event " + request.subscription().eventId() + " was " +
-        "removed!").to(request.subscription().subscriber());
+    this.repository = repository;
   }
 
   @Override
   public List<Subscription> subscriptions(String eventId) {
-    List<Subscription> result = new ArrayList<>();
-    FindIterable<Document> documents = this.subscriptions.find(new BasicDBObject("eventId", eventId));
-    documents.forEach(
-        (Consumer<Document>) document -> result.add(gson.fromJson(document.toJson(), BotecoSubscription.class))
-    );
-    return result;
+    return repository.find(eventId);
   }
 
   @Override
   public List<Subscription> subscriptions(String channel, String target) {
-    List<Subscription> result = new ArrayList<>();
-    FindIterable<Document> documents = this.subscriptions.find(
-        new BasicDBObject("$and", new BasicDBObject[]{
-            new BasicDBObject("subscriber.channel", channel),
-            new BasicDBObject("subscriber.target", target)
-        }));
-    documents.forEach(
-        (Consumer<Document>) document -> result.add(gson.fromJson(document.toJson(), BotecoSubscription.class))
-    );
-    return result;
+    return repository.find(channel, target);
   }
 
   @Override
@@ -106,19 +61,7 @@ public class BotecoSubscriptionManager implements SubscriptionManager {
 
   @Override
   public boolean confirm(String token) {
-    Document document = this.requests.find(new BasicDBObject("token", token)).first();
-    if (document != null) {
-      BotecoSubscriptionRequest request = this.gson.fromJson(document.toJson(), BotecoSubscriptionRequest.class);
-      if (request.confirmationToken().equals(token)) {
-        Consumer<BotecoSubscriptionRequest> action = actionMap.get(request.operation());
-        if (action != null) {
-          action.accept(request);
-          this.requests.deleteOne(document);
-          return true;
-        }
-      }
-    }
-    return false;
+    return repository.confirm(token);
   }
 
   @Override
@@ -147,12 +90,9 @@ public class BotecoSubscriptionManager implements SubscriptionManager {
 
         @Override
         public SubscriptionManager toEvent(String eventId) {
-          BotecoSubscriptionRequest request = new BotecoSubscriptionRequest(
-              new BotecoSubscription(eventId, new BotecoSubscriber(target, channel)), "insert"
-          );
-          requests.insertOne(Document.parse(gson.toJson(request)));
+          String token = repository.requestInsert(eventId, channel, target);
           messageSender.send(String.format("To confirm your subscription to %s, use any channel to send " +
-              "a 'subscription confirm' command with this token: %s", eventId, request.confirmationToken()))
+              "a 'subscription confirm' command with this token: %s", eventId, token))
               .to(target)
               .through(channel);
           return BotecoSubscriptionManager.this;
@@ -163,8 +103,7 @@ public class BotecoSubscriptionManager implements SubscriptionManager {
 
     @Override
     public SubscriptionManager toEvent(String eventId) {
-      Subscription subscription = new BotecoSubscription(eventId, new BotecoSubscriber(target, channel));
-      subscriptions.insertOne(Document.parse(gson.toJson(subscription)));
+      repository.insert(eventId, channel, target);
       return BotecoSubscriptionManager.this;
     }
 
@@ -191,12 +130,9 @@ public class BotecoSubscriptionManager implements SubscriptionManager {
 
         @Override
         public SubscriptionManager fromEvent(String eventId) {
-          BotecoSubscriptionRequest request = new BotecoSubscriptionRequest(
-              new BotecoSubscription(eventId, new BotecoSubscriber(target, channel)), "delete"
-          );
-          requests.insertOne(Document.parse(gson.toJson(request)));
+          String token = repository.requestDelete(eventId, channel, target);
           messageSender.send(String.format("To confirm your subscription removal from %s, use any channel to send " +
-              "a 'confirm' command with this token: %s", eventId, request.confirmationToken()))
+              "a 'confirm' command with this token: %s", eventId, token))
               .to(target)
               .through(channel);
           return BotecoSubscriptionManager.this;
@@ -207,8 +143,7 @@ public class BotecoSubscriptionManager implements SubscriptionManager {
 
     @Override
     public SubscriptionManager fromEvent(String eventId) {
-      Subscription subscription = new BotecoSubscription(eventId, new BotecoSubscriber(target, channel));
-      subscriptions.deleteOne(Document.parse(gson.toJson(subscription)));
+      repository.delete(eventId, channel, target);
       return BotecoSubscriptionManager.this;
     }
 

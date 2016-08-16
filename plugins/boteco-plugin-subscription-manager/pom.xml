@@ -25,32 +25,20 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                            http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <groupId>tools.devnull</groupId>
     <artifactId>boteco-bundle-parent</artifactId>
+    <groupId>tools.devnull</groupId>
     <version>1.0.0</version>
     <relativePath>../../misc/boteco-bundle-parent/pom.xml</relativePath>
   </parent>
+  <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>boteco-persistence-subscription</artifactId>
+  <artifactId>boteco-plugin-subscription-manager</artifactId>
   <packaging>bundle</packaging>
 
-  <dependencies>
-    <dependency>
-      <groupId>tools.devnull</groupId>
-      <artifactId>boteco-plugin-subscription-manager</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mongodb</groupId>
-      <artifactId>mongo-java-driver</artifactId>
-      <version>3.0.4</version>
-    </dependency>
-  </dependencies>
+  <properties>
+    <osgi.export.packages>tools.devnull.boteco.plugins.subscription.manager</osgi.export.packages>
+  </properties>
 
 </project>

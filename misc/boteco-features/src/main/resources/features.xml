@@ -54,6 +54,7 @@
     <bundle>mvn:${project.groupId}/boteco-plugin-karma/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-diceroll/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-subscription/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-subscription-manager/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-stocks/${project.version}</bundle>
 
     <!-- persistence bundles -->
