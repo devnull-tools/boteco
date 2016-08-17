@@ -34,8 +34,8 @@
 
   <reference id="database" interface="com.mongodb.client.MongoDatabase"/>
 
-  <service interface="tools.devnull.boteco.UserManager">
-    <bean class="tools.devnull.boteco.persistence.user.BotecoUserManager">
+  <service interface="tools.devnull.boteco.plugins.user.manager.UserRepository">
+    <bean class="tools.devnull.boteco.persistence.user.MongoUserRepository">
       <argument ref="database"/>
     </bean>
   </service>

@@ -34,11 +34,11 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>boteco-plugin-subscription-manager</artifactId>
+  <artifactId>boteco-plugin-user</artifactId>
   <packaging>bundle</packaging>
 
   <properties>
-    <osgi.export.packages>tools.devnull.boteco.plugins.subscription.manager</osgi.export.packages>
+    <osgi.export.packages>tools.devnull.boteco.plugins.user.manager</osgi.export.packages>
   </properties>
 
 </project>

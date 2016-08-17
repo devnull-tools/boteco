@@ -42,7 +42,7 @@
   <dependencies>
     <dependency>
       <groupId>tools.devnull</groupId>
-      <artifactId>boteco-plugin-subscription-manager</artifactId>
+      <artifactId>boteco-plugin-subscription</artifactId>
       <version>${project.version}</version>
     </dependency>
 

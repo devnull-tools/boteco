@@ -29,6 +29,7 @@ import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.MessageDestination;
 import tools.devnull.boteco.User;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,15 +41,15 @@ public class BotecoUser implements User {
   @SerializedName("_id")
   private final String id;
 
-  @SerializedName("default_destination")
   private final String defaultDestination;
 
   private final Map<String, String> destinations;
 
-  public BotecoUser(String id, String defaultDestination, Map<String, String> destinations) {
+  public BotecoUser(String id, MessageDestination defaultDestination) {
     this.id = id;
-    this.defaultDestination = defaultDestination;
-    this.destinations = destinations;
+    this.defaultDestination = defaultDestination.channel();
+    this.destinations = new HashMap<>();
+    this.destinations.put(defaultDestination.channel(), defaultDestination.target());
   }
 
   @Override
@@ -66,6 +67,11 @@ public class BotecoUser implements User {
   @Override
   public MessageDestination defaultDestination() {
     return Destination.channel(this.defaultDestination).to(this.destinations.get(this.defaultDestination));
+  }
+
+  @Override
+  public void addDestination(MessageDestination destination) {
+    this.destinations.put(destination.channel(), destination.target());
   }
 
 }

@@ -24,20 +24,31 @@
 
 package tools.devnull.boteco;
 
-import java.io.Serializable;
-import java.util.List;
-
 /**
- * Interface that defines a user
+ * Exception thrown when an attempt of creating a user that already exists
+ * in the database is made.
  */
-public interface User extends Serializable {
+public class UserAlreadyExistException extends BotException {
 
-  String id();
+  private static final long serialVersionUID = -4974903789647860060L;
 
-  List<MessageDestination> destinations();
+  public UserAlreadyExistException() {
+  }
 
-  MessageDestination defaultDestination();
+  public UserAlreadyExistException(String message) {
+    super(message);
+  }
 
-  void addDestination(MessageDestination destination);
+  public UserAlreadyExistException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  public UserAlreadyExistException(Throwable cause) {
+    super(cause);
+  }
+
+  public UserAlreadyExistException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    super(message, cause, enableSuppression, writableStackTrace);
+  }
 
 }

@@ -22,51 +22,37 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.persistence.user;
+package tools.devnull.boteco.plugins.user.manager;
 
-import com.google.gson.Gson;
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
 import tools.devnull.boteco.MessageDestination;
 import tools.devnull.boteco.User;
 import tools.devnull.boteco.UserManager;
 import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageSender;
 
 public class BotecoUserManager implements UserManager {
 
-  private final MongoCollection<Document> users;
-  private final Gson gson;
+  private final UserRepository repository;
+  private final MessageSender messageSender;
 
-  public BotecoUserManager(MongoDatabase database) {
-    this.users = database.getCollection("users");
-    this.gson = new Gson();
+  public BotecoUserManager(UserRepository repository, MessageSender messageSender) {
+    this.repository = repository;
+    this.messageSender = messageSender;
   }
 
   @Override
   public User find(MessageDestination destination) {
-    Document document = this.users.find(
-        new BasicDBObject("destinations." + destination.channel(), destination.target())
-    ).iterator().next();
-    if (document != null) {
-      return gson.fromJson(document.toJson(), BotecoUser.class);
-    }
-    return null;
+    return repository.find(destination);
   }
 
   @Override
   public User find(String userId) {
-    Document document = this.users.find(new BasicDBObject("_id", userId)).iterator().next();
-    if (document != null) {
-      return gson.fromJson(document.toJson(), BotecoUser.class);
-    }
-    return null;
+    return repository.find(userId);
   }
 
   @Override
   public void create(String userId, IncomeMessage message) {
-
+    repository.create(userId, message);
   }
 
   @Override

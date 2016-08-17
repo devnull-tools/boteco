@@ -31,8 +31,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import tools.devnull.boteco.event.Subscription;
-import tools.devnull.boteco.message.MessageSender;
-import tools.devnull.boteco.plugins.subscription.manager.SubscriptionRepository;
+import tools.devnull.boteco.plugins.subscription.SubscriptionRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;

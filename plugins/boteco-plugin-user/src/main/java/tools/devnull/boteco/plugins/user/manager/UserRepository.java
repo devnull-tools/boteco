@@ -22,22 +22,20 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco;
+package tools.devnull.boteco.plugins.user.manager;
 
-import java.io.Serializable;
-import java.util.List;
+import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.User;
+import tools.devnull.boteco.message.IncomeMessage;
 
-/**
- * Interface that defines a user
- */
-public interface User extends Serializable {
+public interface UserRepository {
 
-  String id();
+  User find(MessageDestination destination);
 
-  List<MessageDestination> destinations();
+  User find(String userId);
 
-  MessageDestination defaultDestination();
+  void create(String userId, IncomeMessage message);
 
-  void addDestination(MessageDestination destination);
+  void update(User user);
 
 }

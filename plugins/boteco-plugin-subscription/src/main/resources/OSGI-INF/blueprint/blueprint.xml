@@ -32,11 +32,19 @@
                                http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
+  <reference id="repository" interface="tools.devnull.boteco.plugins.subscription.SubscriptionRepository"/>
+  <reference id="message-sender" interface="tools.devnull.boteco.message.MessageSender"/>
+
+  <bean id="manager" class="tools.devnull.boteco.plugins.subscription.BotecoSubscriptionManager">
+    <argument ref="repository"/>
+    <argument ref="message-sender"/>
+  </bean>
+
+  <service interface="tools.devnull.boteco.event.SubscriptionManager" ref="manager"/>
+
   <service interface="tools.devnull.boteco.message.MessageProcessor">
     <bean class="tools.devnull.boteco.plugins.subscription.SubscriptionMessageProcessor">
-      <argument>
-        <reference interface="tools.devnull.boteco.event.SubscriptionManager"/>
-      </argument>
+      <argument ref="manager"/>
     </bean>
   </service>
 

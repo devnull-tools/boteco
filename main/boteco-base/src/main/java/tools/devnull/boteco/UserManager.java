@@ -32,9 +32,11 @@ public interface UserManager {
 
   User find(String userId);
 
-  void create(String userId, IncomeMessage message);
+  void create(String userId, IncomeMessage message) throws UserAlreadyExistException;
 
   void link(String userId, IncomeMessage message);
+
+  void unlink(String userId, IncomeMessage message);
 
   void update(User user);
 

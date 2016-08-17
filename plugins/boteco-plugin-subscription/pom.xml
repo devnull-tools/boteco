@@ -37,4 +37,8 @@
   <artifactId>boteco-plugin-subscription</artifactId>
   <packaging>bundle</packaging>
 
+  <properties>
+    <osgi.export.packages>tools.devnull.boteco.plugins.subscription</osgi.export.packages>
+  </properties>
+
 </project>
