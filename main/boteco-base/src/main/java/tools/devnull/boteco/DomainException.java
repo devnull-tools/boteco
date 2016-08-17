@@ -25,29 +25,28 @@
 package tools.devnull.boteco;
 
 /**
- * Exception thrown when an attempt of creating a user that already exists
- * in the database is made.
+ * Exception that indicates unexpected things regarding the domain
  */
-public class UserAlreadyExistException extends BotException {
+public class DomainException extends BotException {
 
-  private static final long serialVersionUID = -4974903789647860060L;
+  private static final long serialVersionUID = 76045232198896578L;
 
-  public UserAlreadyExistException() {
+  public DomainException() {
   }
 
-  public UserAlreadyExistException(String message) {
+  public DomainException(String message) {
     super(message);
   }
 
-  public UserAlreadyExistException(String message, Throwable cause) {
+  public DomainException(String message, Throwable cause) {
     super(message, cause);
   }
 
-  public UserAlreadyExistException(Throwable cause) {
+  public DomainException(Throwable cause) {
     super(cause);
   }
 
-  public UserAlreadyExistException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+  public DomainException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
     super(message, cause, enableSuppression, writableStackTrace);
   }
 

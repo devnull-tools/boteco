@@ -22,55 +22,58 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.persistence.user;
+package tools.devnull.boteco.plugins.user;
 
-import com.google.gson.Gson;
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
 import tools.devnull.boteco.MessageDestination;
 import tools.devnull.boteco.user.User;
-import tools.devnull.boteco.user.UserAlreadyExistException;
-import tools.devnull.boteco.plugins.user.UserRepository;
+import tools.devnull.boteco.user.UserManager;
+import tools.devnull.boteco.user.UserNotFoundException;
+import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageSender;
 
-public class MongoUserRepository implements UserRepository {
+public class BotecoUserManager implements UserManager {
 
-  private final MongoCollection<Document> users;
-  private final Gson gson;
+  private final UserRepository repository;
+  private final MessageSender messageSender;
 
-  public MongoUserRepository(MongoDatabase database) {
-    this.users = database.getCollection("users");
-    this.gson = new Gson();
+  public BotecoUserManager(UserRepository repository, MessageSender messageSender) {
+    this.repository = repository;
+    this.messageSender = messageSender;
   }
 
   @Override
   public User find(MessageDestination destination) {
-    Document document = this.users.find(
-        new BasicDBObject("destinations." + destination.channel(), destination.target())
-    ).iterator().next();
-    if (document != null) {
-      return gson.fromJson(document.toJson(), BotecoUser.class);
-    }
-    return null;
+    return repository.find(destination);
   }
 
   @Override
   public User find(String userId) {
-    Document document = this.users.find(new BasicDBObject("_id", userId)).iterator().next();
-    if (document != null) {
-      return gson.fromJson(document.toJson(), BotecoUser.class);
-    }
-    return null;
+    return repository.find(userId);
   }
 
   @Override
-  public User create(String userId, MessageDestination defaultDestination) {
-    if (find(userId) != null) {
-      throw new UserAlreadyExistException();
+  public User create(String userId, IncomeMessage message) {
+    return repository.create(userId, message.destination());
+  }
+
+  @Override
+  public User link(String userId, IncomeMessage message) {
+    User user = find(userId);
+    if (user == null) {
+      return create(userId, message);
     }
-    User user = new BotecoUser(userId, defaultDestination);
-    this.users.insertOne(Document.parse(this.gson.toJson(user)));
+    user.addDestination(message.destination());
+    update(user);
+    return user;
+  }
+
+  @Override
+  public User unlink(String userId, IncomeMessage message) {
+    User user = find(userId);
+    if (user == null) {
+      throw new UserNotFoundException();
+    }
+    user.removeDestination(message.destination());
     return user;
   }
 

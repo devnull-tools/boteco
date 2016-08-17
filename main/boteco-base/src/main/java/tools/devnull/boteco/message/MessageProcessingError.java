@@ -35,14 +35,14 @@ public class MessageProcessingError implements Notifiable {
 
   private final IncomeMessage incomeMessage;
   private final String messageProcessorId;
-  private final MessageProcessingException exception;
+  private final Throwable cause;
 
   public MessageProcessingError(IncomeMessage incomeMessage,
                                 MessageProcessor messageProcessor,
-                                MessageProcessingException exception) {
+                                Throwable cause) {
     this.incomeMessage = incomeMessage;
     this.messageProcessorId = messageProcessor.id();
-    this.exception = exception;
+    this.cause = cause;
   }
 
   /**
@@ -56,8 +56,8 @@ public class MessageProcessingError implements Notifiable {
     return messageProcessorId;
   }
 
-  public MessageProcessingException exception() {
-    return exception;
+  public Throwable cause() {
+    return this.cause;
   }
 
   @Override
@@ -66,7 +66,7 @@ public class MessageProcessingError implements Notifiable {
         messageProcessorId,
         incomeMessage.sender(),
         incomeMessage.channel().id(),
-        exception.getMessage());
+        cause.getMessage());
   }
 
 }

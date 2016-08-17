@@ -22,22 +22,28 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco;
+package tools.devnull.boteco.user;
 
-import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.MessageDestination;
 
-public interface UserManager {
+import java.io.Serializable;
+import java.util.List;
 
-  User find(MessageDestination destination);
+/**
+ * Interface that defines a user
+ */
+public interface User extends Serializable {
 
-  User find(String userId);
+  String id();
 
-  void create(String userId, IncomeMessage message) throws UserAlreadyExistException;
+  List<MessageDestination> destinations();
 
-  void link(String userId, IncomeMessage message);
+  MessageDestination defaultDestination();
 
-  void unlink(String userId, IncomeMessage message);
+  void setDefaultDestination(MessageDestination defaultDestination);
 
-  void update(User user);
+  void addDestination(MessageDestination destination);
+
+  void removeDestination(MessageDestination destination);
 
 }

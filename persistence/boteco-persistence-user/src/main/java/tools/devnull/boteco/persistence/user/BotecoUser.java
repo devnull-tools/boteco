@@ -26,8 +26,9 @@ package tools.devnull.boteco.persistence.user;
 
 import com.google.gson.annotations.SerializedName;
 import tools.devnull.boteco.Destination;
+import tools.devnull.boteco.InvalidDestinationException;
 import tools.devnull.boteco.MessageDestination;
-import tools.devnull.boteco.User;
+import tools.devnull.boteco.user.User;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,10 +41,8 @@ public class BotecoUser implements User {
 
   @SerializedName("_id")
   private final String id;
-
-  private final String defaultDestination;
-
   private final Map<String, String> destinations;
+  private String defaultDestination;
 
   public BotecoUser(String id, MessageDestination defaultDestination) {
     this.id = id;
@@ -72,6 +71,20 @@ public class BotecoUser implements User {
   @Override
   public void addDestination(MessageDestination destination) {
     this.destinations.put(destination.channel(), destination.target());
+  }
+
+  @Override
+  public void removeDestination(MessageDestination destination) {
+    if (destination.channel().equals(this.defaultDestination)) {
+      throw new InvalidDestinationException("Can't remove default destination");
+    }
+    this.destinations.remove(destination.channel());
+  }
+
+  @Override
+  public void setDefaultDestination(MessageDestination defaultDestination) {
+    addDestination(defaultDestination);
+    this.defaultDestination = defaultDestination.channel();
   }
 
 }

@@ -25,7 +25,7 @@
 package tools.devnull.boteco.channel.telegram;
 
 import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.User;
+import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.boteco.message.CommandExtractor;
 import tools.devnull.boteco.message.IncomeMessage;

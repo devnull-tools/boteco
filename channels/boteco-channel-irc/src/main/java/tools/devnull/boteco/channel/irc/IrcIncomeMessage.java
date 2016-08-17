@@ -27,7 +27,7 @@ package tools.devnull.boteco.channel.irc;
 import org.apache.camel.component.irc.IrcMessage;
 import org.schwering.irc.lib.IRCUser;
 import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.User;
+import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.boteco.message.CommandExtractor;
 import tools.devnull.boteco.ServiceLocator;

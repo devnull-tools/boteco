@@ -28,8 +28,8 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.ServiceLocator;
-import tools.devnull.boteco.User;
-import tools.devnull.boteco.UserManager;
+import tools.devnull.boteco.user.User;
+import tools.devnull.boteco.user.UserManager;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageDispatcher;
 

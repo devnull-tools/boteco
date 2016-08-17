@@ -22,23 +22,23 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.process.message;
+package tools.devnull.boteco.user;
 
-import tools.devnull.boteco.event.Event;
-import tools.devnull.boteco.event.EventListener;
+import tools.devnull.boteco.MessageDestination;
 import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessingError;
-import tools.devnull.boteco.message.MessageProcessingException;
 
-public class BotecoMessageProcessingHandler implements EventListener<MessageProcessingError> {
+public interface UserManager {
 
-  @Override
-  public void onEvent(Event<MessageProcessingError> event) {
-    MessageProcessingError error = event.object();
-    IncomeMessage incomeMessage = error.incomeMessage();
-    Throwable cause = error.cause();
+  User find(MessageDestination destination);
 
-    incomeMessage.reply("[t]ERROR[/t] [e]%s[/e]", cause.getMessage());
-  }
+  User find(String userId);
+
+  User create(String userId, IncomeMessage message) throws UserAlreadyExistException;
+
+  User link(String userId, IncomeMessage message);
+
+  User unlink(String userId, IncomeMessage message);
+
+  void update(User user);
 
 }

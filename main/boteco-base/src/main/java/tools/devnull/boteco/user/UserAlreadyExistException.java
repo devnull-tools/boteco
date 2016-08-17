@@ -22,20 +22,35 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.user.manager;
+package tools.devnull.boteco.user;
 
-import tools.devnull.boteco.MessageDestination;
-import tools.devnull.boteco.User;
-import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.BotException;
 
-public interface UserRepository {
+/**
+ * Exception thrown when an attempt of creating a user that already exists
+ * in the database is made.
+ */
+public class UserAlreadyExistException extends BotException {
 
-  User find(MessageDestination destination);
+  private static final long serialVersionUID = -4974903789647860060L;
 
-  User find(String userId);
+  public UserAlreadyExistException() {
+  }
 
-  void create(String userId, IncomeMessage message);
+  public UserAlreadyExistException(String message) {
+    super(message);
+  }
 
-  void update(User user);
+  public UserAlreadyExistException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  public UserAlreadyExistException(Throwable cause) {
+    super(cause);
+  }
+
+  public UserAlreadyExistException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    super(message, cause, enableSuppression, writableStackTrace);
+  }
 
 }

@@ -64,7 +64,7 @@
 
   <bean id="service-locator" class="tools.devnull.boteco.OsgiServiceLocator"/>
 
-  <reference id="user-manager" interface="tools.devnull.boteco.UserManager"/>
+  <reference id="user-manager" interface="tools.devnull.boteco.user.UserManager"/>
 
   <bean id="telegram-income-processor" class="tools.devnull.boteco.channel.telegram.TelegramIncomeProcessor">
     <argument ref="telegram-command-extractor"/>

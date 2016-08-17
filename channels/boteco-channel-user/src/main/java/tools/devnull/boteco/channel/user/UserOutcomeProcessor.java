@@ -26,8 +26,8 @@ package tools.devnull.boteco.channel.user;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import tools.devnull.boteco.User;
-import tools.devnull.boteco.UserManager;
+import tools.devnull.boteco.user.User;
+import tools.devnull.boteco.user.UserManager;
 import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.message.OutcomeMessage;
 

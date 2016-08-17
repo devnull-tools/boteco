@@ -32,39 +32,12 @@
                                http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
-  <cm:property-placeholder persistent-id="tools.devnull.boteco.channel.user"
-                           placeholder-prefix="{{"
-                           placeholder-suffix="}}">
-    <cm:default-properties>
-      <cm:property name="delivery.consumers" value="10"/>
-    </cm:default-properties>
-  </cm:property-placeholder>
-
-  <service interface="tools.devnull.boteco.Channel">
-    <service-properties>
-      <entry key="id" value="user"/>
-    </service-properties>
-    <bean class="tools.devnull.boteco.channel.user.UserChannel"/>
-  </service>
-
-  <reference id="user-manager" interface="tools.devnull.boteco.user.UserManager"/>
   <reference id="message-sender" interface="tools.devnull.boteco.message.MessageSender"/>
+  <reference id="repository" interface="tools.devnull.boteco.plugins.user.UserRepository"/>
 
-  <bean id="outcome-processor" class="tools.devnull.boteco.channel.user.UserOutcomeProcessor">
-    <argument ref="user-manager"/>
+  <bean id="user-manager" class="tools.devnull.boteco.plugins.user.BotecoUserManager">
+    <argument ref="repository"/>
     <argument ref="message-sender"/>
   </bean>
-
-  <camelContext id="user.channel"
-                xmlns="http://camel.apache.org/schema/blueprint">
-
-    <route id="message.to.user">
-      <from uri="activemq:queue:boteco.message.user?concurrentConsumers={{delivery.consumers}}"/>
-      <process ref="outcome-processor"/>
-    </route>
-
-  </camelContext>
-
-  <reference id="activemq" interface="org.apache.camel.Component" filter="(component=activemq)"/>
 
 </blueprint>

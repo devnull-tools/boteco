@@ -26,7 +26,7 @@ package tools.devnull.boteco.channel.email;
 
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.ServiceLocator;
-import tools.devnull.boteco.User;
+import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.message.CommandExtractor;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageCommand;

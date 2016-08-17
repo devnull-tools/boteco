@@ -22,23 +22,32 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.process.message;
+package tools.devnull.boteco;
 
-import tools.devnull.boteco.event.Event;
-import tools.devnull.boteco.event.EventListener;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessingError;
-import tools.devnull.boteco.message.MessageProcessingException;
+/**
+ * Exception thrown when an attempt to use an invalid destination is made.
+ */
+public class InvalidDestinationException extends DomainException {
 
-public class BotecoMessageProcessingHandler implements EventListener<MessageProcessingError> {
+  private static final long serialVersionUID = 5242315721428489436L;
 
-  @Override
-  public void onEvent(Event<MessageProcessingError> event) {
-    MessageProcessingError error = event.object();
-    IncomeMessage incomeMessage = error.incomeMessage();
-    Throwable cause = error.cause();
+  public InvalidDestinationException() {
+  }
 
-    incomeMessage.reply("[t]ERROR[/t] [e]%s[/e]", cause.getMessage());
+  public InvalidDestinationException(String message) {
+    super(message);
+  }
+
+  public InvalidDestinationException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  public InvalidDestinationException(Throwable cause) {
+    super(cause);
+  }
+
+  public InvalidDestinationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    super(message, cause, enableSuppression, writableStackTrace);
   }
 
 }

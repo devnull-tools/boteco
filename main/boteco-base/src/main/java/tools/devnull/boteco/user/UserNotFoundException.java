@@ -22,47 +22,35 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.user.manager;
+package tools.devnull.boteco.user;
 
-import tools.devnull.boteco.MessageDestination;
-import tools.devnull.boteco.User;
-import tools.devnull.boteco.UserManager;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageSender;
+import tools.devnull.boteco.BotException;
 
-public class BotecoUserManager implements UserManager {
+/**
+ * Exception thrown when an attempt of retrieving a user that doesn't exist
+ * in the database is made.
+ */
+public class UserNotFoundException extends BotException {
 
-  private final UserRepository repository;
-  private final MessageSender messageSender;
+  private static final long serialVersionUID = -4974903789647860060L;
 
-  public BotecoUserManager(UserRepository repository, MessageSender messageSender) {
-    this.repository = repository;
-    this.messageSender = messageSender;
+  public UserNotFoundException() {
   }
 
-  @Override
-  public User find(MessageDestination destination) {
-    return repository.find(destination);
+  public UserNotFoundException(String message) {
+    super(message);
   }
 
-  @Override
-  public User find(String userId) {
-    return repository.find(userId);
+  public UserNotFoundException(String message, Throwable cause) {
+    super(message, cause);
   }
 
-  @Override
-  public void create(String userId, IncomeMessage message) {
-    repository.create(userId, message);
+  public UserNotFoundException(Throwable cause) {
+    super(cause);
   }
 
-  @Override
-  public void link(String userId, IncomeMessage message) {
-
-  }
-
-  @Override
-  public void update(User user) {
-
+  public UserNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    super(message, cause, enableSuppression, writableStackTrace);
   }
 
 }
