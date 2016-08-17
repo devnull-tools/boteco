@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.user;
 
+import tools.devnull.boteco.InvalidDestinationException;
 import tools.devnull.boteco.MessageDestination;
 
 import java.io.Serializable;
@@ -44,6 +45,6 @@ public interface User extends Serializable {
 
   void addDestination(MessageDestination destination);
 
-  void removeDestination(MessageDestination destination);
+  void removeDestination(MessageDestination destination) throws InvalidDestinationException;
 
 }
