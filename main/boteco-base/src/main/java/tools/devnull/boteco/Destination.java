@@ -61,6 +61,20 @@ public class Destination {
     return target -> new MessageDestination() {
 
       @Override
+      public int hashCode() {
+        return (channelId + target).hashCode();
+      }
+
+      @Override
+      public boolean equals(Object obj) {
+        if (obj instanceof MessageDestination) {
+          return channelId.equals(((MessageDestination) obj).channel())
+              && target.equals(((MessageDestination) obj).target());
+        }
+        return false;
+      }
+
+      @Override
       public String channel() {
         return channelId;
       }
