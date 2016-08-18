@@ -27,7 +27,6 @@ package tools.devnull.boteco.persistence.request;
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
 import org.bson.Document;
@@ -64,10 +63,7 @@ public class MongoRequestRepository implements RequestRepository {
 
   @Override
   public <T> T find(String token, Class<T> objectType) {
-    return operate(token, objectType, query -> {
-      MongoCursor<Document> cursor = this.requests.find(query).iterator();
-      return cursor.hasNext() ? cursor.next() : null;
-    });
+    return operate(token, objectType, query -> this.requests.find(query).first());
   }
 
   @Override

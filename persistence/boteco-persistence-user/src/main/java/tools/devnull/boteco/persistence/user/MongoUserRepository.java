@@ -49,7 +49,7 @@ public class MongoUserRepository implements UserRepository {
   public User find(MessageDestination destination) {
     Document document = this.users.find(
         new BasicDBObject("destinations." + destination.channel(), destination.target())
-    ).iterator().next();
+    ).first();
     if (document != null) {
       return gson.fromJson(document.toJson(), BotecoUser.class);
     }
@@ -58,9 +58,8 @@ public class MongoUserRepository implements UserRepository {
 
   @Override
   public User find(String userId) {
-    MongoCursor<Document> cursor = this.users.find(new BasicDBObject("_id", userId)).iterator();
-    if (cursor.hasNext()) {
-      Document document = cursor.next();
+    Document document = this.users.find(new BasicDBObject("_id", userId)).first();
+    if (document != null) {
       return gson.fromJson(document.toJson(), BotecoUser.class);
     }
     return null;
