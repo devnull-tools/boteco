@@ -86,7 +86,7 @@ public class FormatExpressionParserTest {
     verify(formatter, times(1)).link("title <url>");
   }
 
-  private Function<FormatExpressionParser, ?> expression(String expression) {
+  private Function<FormatExpressionParser, String> expression(String expression) {
     return f -> f.parse(formatter, expression);
   }
 
