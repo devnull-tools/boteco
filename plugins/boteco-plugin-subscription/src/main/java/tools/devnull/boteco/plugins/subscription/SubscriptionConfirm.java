@@ -41,7 +41,9 @@ public class SubscriptionConfirm implements Consumer<String> {
 
   @Override
   public void accept(String token) {
-    if (!this.subscriptionManager.confirm(token)) {
+    if (this.subscriptionManager.confirm(token)) {
+      message.reply("Subscription confirmed!");
+    } else {
       message.reply("Invalid token");
     }
   }
