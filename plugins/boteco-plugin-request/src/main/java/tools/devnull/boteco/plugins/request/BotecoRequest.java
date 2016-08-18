@@ -22,26 +22,33 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.persistence.subscription;
+package tools.devnull.boteco.plugins.request;
 
-import tools.devnull.boteco.event.Subscription;
+import tools.devnull.boteco.Request;
 
-public class BotecoSubscriptionRequest {
+import java.util.UUID;
 
-  private final BotecoSubscription subscription;
-  private final String operation;
+/**
+ * Default Request implementation
+ */
+public class BotecoRequest implements Request {
 
-  public BotecoSubscriptionRequest(BotecoSubscription subscription, String operation) {
-    this.subscription = subscription;
-    this.operation = operation;
+  private final String token;
+  private final Object object;
+
+  public BotecoRequest(Object object) {
+    this.object = object;
+    this.token = UUID.randomUUID().toString();
   }
 
-  public Subscription subscription() {
-    return this.subscription;
+  @Override
+  public String token() {
+    return this.token;
   }
 
-  public String operation() {
-    return this.operation;
+  @Override
+  public Object object() {
+    return this.object;
   }
 
 }

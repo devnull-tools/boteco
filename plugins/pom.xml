@@ -47,6 +47,7 @@
     <module>boteco-plugin-stocks</module>
     <module>boteco-plugin-subscription</module>
     <module>boteco-plugin-user</module>
+    <module>boteco-plugin-request</module>
   </modules>
 
 </project>

@@ -22,26 +22,27 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.persistence.subscription;
+package tools.devnull.boteco;
 
-import tools.devnull.boteco.event.Subscription;
+/**
+ * Interface that represents a request that needs to be verified.
+ *
+ * @param <T> the type of the object requested.
+ */
+public interface Request<T> {
 
-public class BotecoSubscriptionRequest {
+  /**
+   * Returns the token that validates this request.
+   *
+   * @return the token that validates this request.
+   */
+  String token();
 
-  private final BotecoSubscription subscription;
-  private final String operation;
-
-  public BotecoSubscriptionRequest(BotecoSubscription subscription, String operation) {
-    this.subscription = subscription;
-    this.operation = operation;
-  }
-
-  public Subscription subscription() {
-    return this.subscription;
-  }
-
-  public String operation() {
-    return this.operation;
-  }
+  /**
+   * Returns the requested object.
+   *
+   * @return the requested object.
+   */
+  T object();
 
 }

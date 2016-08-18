@@ -30,6 +30,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import tools.devnull.boteco.RequestManager;
 import tools.devnull.boteco.event.Subscription;
 import tools.devnull.boteco.plugins.subscription.SubscriptionRepository;
 
@@ -41,15 +42,15 @@ import java.util.function.Consumer;
 
 public class MongoSubscriptionRepository implements SubscriptionRepository {
 
+  private final RequestManager requestManager;
   private final MongoCollection<Document> subscriptions;
-  private final MongoCollection<Document> requests;
   private final Gson gson;
 
   private final Map<String, Consumer<BotecoSubscriptionRequest>> actionMap;
 
-  public MongoSubscriptionRepository(MongoDatabase database) {
+  public MongoSubscriptionRepository(MongoDatabase database, RequestManager requestManager) {
     this.subscriptions = database.getCollection("subscriptions");
-    this.requests = database.getCollection("subscriptionRequests");
+    this.requestManager = requestManager;
     this.gson = new Gson();
 
     this.actionMap = new HashMap<>();
@@ -92,16 +93,12 @@ public class MongoSubscriptionRepository implements SubscriptionRepository {
 
   @Override
   public boolean confirm(String token) {
-    Document document = this.requests.find(new BasicDBObject("token", token)).first();
-    if (document != null) {
-      BotecoSubscriptionRequest request = this.gson.fromJson(document.toJson(), BotecoSubscriptionRequest.class);
-      if (request.confirmationToken().equals(token)) {
-        Consumer<BotecoSubscriptionRequest> action = actionMap.get(request.operation());
-        if (action != null) {
-          action.accept(request);
-          this.requests.deleteOne(document);
-          return true;
-        }
+    BotecoSubscriptionRequest request = this.requestManager.pull(token, BotecoSubscriptionRequest.class);
+    if (request != null) {
+      Consumer<BotecoSubscriptionRequest> action = actionMap.get(request.operation());
+      if (action != null) {
+        action.accept(request);
+        return true;
       }
     }
     return false;
@@ -118,11 +115,10 @@ public class MongoSubscriptionRepository implements SubscriptionRepository {
   }
 
   private String createRequest(String eventId, String channel, String target, String operation) {
-    BotecoSubscriptionRequest request = new BotecoSubscriptionRequest(
+    BotecoSubscriptionRequest subscription = new BotecoSubscriptionRequest(
         new BotecoSubscription(eventId, new BotecoSubscriber(target, channel)), operation
     );
-    requests.insertOne(Document.parse(gson.toJson(request)));
-    return request.confirmationToken();
+    return requestManager.request(subscription).token();
   }
 
   @Override

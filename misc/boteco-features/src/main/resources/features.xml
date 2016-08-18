@@ -56,12 +56,14 @@
     <bundle>mvn:${project.groupId}/boteco-plugin-subscription/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-user/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-stocks/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-request/${project.version}</bundle>
 
     <!-- persistence bundles -->
     <bundle>mvn:${project.groupId}/boteco-persistence-mongodb/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-persistence-karma/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-persistence-subscription/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-persistence-user/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-persistence-request/${project.version}</bundle>
   </feature>
 
   <feature version="${project.version}" name="boteco-irc"

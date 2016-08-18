@@ -22,26 +22,39 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.persistence.subscription;
+package tools.devnull.boteco.plugins.request;
 
-import tools.devnull.boteco.event.Subscription;
+import tools.devnull.boteco.Request;
+import tools.devnull.boteco.RequestManager;
 
-public class BotecoSubscriptionRequest {
+/**
+ * The default implementation for a {@link RequestManager}.
+ * <p>
+ * This class uses a repository to persist requests.
+ */
+public class BotecoRequestManager implements RequestManager {
 
-  private final BotecoSubscription subscription;
-  private final String operation;
+  private final RequestRepository repository;
 
-  public BotecoSubscriptionRequest(BotecoSubscription subscription, String operation) {
-    this.subscription = subscription;
-    this.operation = operation;
+  public BotecoRequestManager(RequestRepository repository) {
+    this.repository = repository;
   }
 
-  public Subscription subscription() {
-    return this.subscription;
+  @Override
+  public <T> Request<T> request(T target) {
+    Request request = new BotecoRequest(target);
+    this.repository.save(request);
+    return request;
   }
 
-  public String operation() {
-    return this.operation;
+  @Override
+  public <T> T find(String token, Class<T> objectType) {
+    return this.repository.find(token, objectType);
+  }
+
+  @Override
+  public <T> T pull(String token, Class<T> objectType) {
+    return this.repository.delete(token, objectType);
   }
 
 }

@@ -32,11 +32,13 @@
                                http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
+  <reference id="database" interface="com.mongodb.client.MongoDatabase"/>
+  <reference id="request-manager" interface="tools.devnull.boteco.RequestManager"/>
+
   <service interface="tools.devnull.boteco.plugins.subscription.SubscriptionRepository">
     <bean class="tools.devnull.boteco.persistence.subscription.MongoSubscriptionRepository">
-      <argument>
-        <reference interface="com.mongodb.client.MongoDatabase"/>
-      </argument>
+      <argument ref="database"/>
+      <argument ref="request-manager"/>
     </bean>
   </service>
 

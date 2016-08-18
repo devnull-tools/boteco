@@ -43,6 +43,7 @@
     <module>boteco-persistence-irc</module>
     <module>boteco-persistence-subscription</module>
     <module>boteco-persistence-user</module>
+    <module>boteco-persistence-request</module>
   </modules>
 
 </project>

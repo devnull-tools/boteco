@@ -22,26 +22,39 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.persistence.subscription;
+package tools.devnull.boteco;
 
-import tools.devnull.boteco.event.Subscription;
+/**
+ * Interface that defines a component capable of managing {@link Request requests}.
+ */
+public interface RequestManager {
 
-public class BotecoSubscriptionRequest {
+  /**
+   * Creates a request for the given target
+   *
+   * @param target the target of the request
+   * @param <T>    the type of the target
+   * @return the request for the given target
+   */
+  <T> Request<T> request(T target);
 
-  private final BotecoSubscription subscription;
-  private final String operation;
+  /**
+   * Finds a request for the given token.
+   *
+   * @param token      the token that validates the request
+   * @param objectType the type of the requested object
+   * @return the object of the request that matches the given token.
+   */
+  <T> T find(String token, Class<T> objectType);
 
-  public BotecoSubscriptionRequest(BotecoSubscription subscription, String operation) {
-    this.subscription = subscription;
-    this.operation = operation;
-  }
-
-  public Subscription subscription() {
-    return this.subscription;
-  }
-
-  public String operation() {
-    return this.operation;
-  }
+  /**
+   * Similar to {@link #find(String, Class)}, but removes the request
+   * from the backend.
+   *
+   * @param token the token that validates the request
+   * @param objectType the type of the requested object
+   * @return the object of the request that matches the given token.
+   */
+  <T> T pull(String token, Class<T> objectType);
 
 }

@@ -22,26 +22,19 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.persistence.subscription;
+package tools.devnull.boteco.plugins.request;
 
-import tools.devnull.boteco.event.Subscription;
+import tools.devnull.boteco.Request;
 
-public class BotecoSubscriptionRequest {
+/**
+ * Interface that defines a repository for storing {@link Request requests}.
+ */
+public interface RequestRepository {
 
-  private final BotecoSubscription subscription;
-  private final String operation;
+  void save(Request request);
 
-  public BotecoSubscriptionRequest(BotecoSubscription subscription, String operation) {
-    this.subscription = subscription;
-    this.operation = operation;
-  }
+  <T> T find(String token, Class<T> objectType);
 
-  public Subscription subscription() {
-    return this.subscription;
-  }
-
-  public String operation() {
-    return this.operation;
-  }
+  <T> T delete(String token, Class<T> objectType);
 
 }
