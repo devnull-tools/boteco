@@ -76,7 +76,11 @@ public class MongoUserRepository implements UserRepository {
 
   @Override
   public void update(User user) {
-
+    BasicDBObject query = new BasicDBObject();
+    query.put("_id", user.id());
+    Document update = Document.parse(this.gson.toJson(user));
+    update.remove("_id");
+    this.users.updateOne(query, new Document("$set", update));
   }
 
 }
