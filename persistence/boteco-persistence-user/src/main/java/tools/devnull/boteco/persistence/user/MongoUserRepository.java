@@ -27,6 +27,7 @@ package tools.devnull.boteco.persistence.user;
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import tools.devnull.boteco.MessageDestination;
@@ -57,8 +58,9 @@ public class MongoUserRepository implements UserRepository {
 
   @Override
   public User find(String userId) {
-    Document document = this.users.find(new BasicDBObject("_id", userId)).iterator().next();
-    if (document != null) {
+    MongoCursor<Document> cursor = this.users.find(new BasicDBObject("_id", userId)).iterator();
+    if (cursor.hasNext()) {
+      Document document = cursor.next();
       return gson.fromJson(document.toJson(), BotecoUser.class);
     }
     return null;
