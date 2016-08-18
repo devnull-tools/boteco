@@ -47,7 +47,6 @@ public class MongoRequestRepository implements RequestRepository {
 
   public MongoRequestRepository(MongoDatabase database, Long minutesToExpire) {
     this.requests = database.getCollection("requests");
-    this.requests.dropIndex("createdAt");
     this.requests.createIndex(new Document("createdAt", 1),
         new IndexOptions().expireAfter(minutesToExpire, TimeUnit.MINUTES));
     this.gson = new Gson();
