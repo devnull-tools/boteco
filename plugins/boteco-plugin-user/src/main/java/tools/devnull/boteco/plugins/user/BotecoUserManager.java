@@ -74,12 +74,13 @@ public class BotecoUserManager implements UserManager {
       throw new UserNotFoundException();
     }
     user.removeDestination(message.destination());
+    update(user);
     return user;
   }
 
   @Override
   public void update(User user) {
-
+    this.repository.update(user);
   }
 
 }
