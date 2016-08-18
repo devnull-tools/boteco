@@ -28,11 +28,13 @@ import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.IndexOptions;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import tools.devnull.boteco.Request;
 import tools.devnull.boteco.plugins.request.RequestRepository;
 
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 /**
@@ -43,14 +45,18 @@ public class MongoRequestRepository implements RequestRepository {
   private final MongoCollection<Document> requests;
   private final Gson gson;
 
-  public MongoRequestRepository(MongoDatabase database) {
+  public MongoRequestRepository(MongoDatabase database, Long minutesToExpire) {
     this.requests = database.getCollection("requests");
+    this.requests.dropIndex("createdAt");
+    this.requests.createIndex(new Document("createdAt", 1),
+        new IndexOptions().expireAfter(minutesToExpire, TimeUnit.MINUTES));
     this.gson = new Gson();
   }
 
   @Override
   public void save(Request request) {
     Document document = new Document("token", request.token());
+    document.put("createdAt", request.createdAt());
     document.put("type", request.object().getClass().toString());
     document.put("object", Document.parse(this.gson.toJson(request.object())));
     this.requests.insertOne(document);

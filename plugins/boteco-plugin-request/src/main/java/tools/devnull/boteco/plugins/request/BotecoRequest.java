@@ -26,6 +26,7 @@ package tools.devnull.boteco.plugins.request;
 
 import tools.devnull.boteco.Request;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -35,10 +36,12 @@ public class BotecoRequest implements Request {
 
   private final String token;
   private final Object object;
+  private final Date createdAt;
 
   public BotecoRequest(Object object) {
     this.object = object;
     this.token = UUID.randomUUID().toString();
+    this.createdAt = new Date();
   }
 
   @Override
@@ -49,6 +52,11 @@ public class BotecoRequest implements Request {
   @Override
   public Object object() {
     return this.object;
+  }
+
+  @Override
+  public Date createdAt() {
+    return this.createdAt;
   }
 
 }

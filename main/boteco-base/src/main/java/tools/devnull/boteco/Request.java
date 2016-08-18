@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco;
 
+import java.util.Date;
+
 /**
  * Interface that represents a request that needs to be verified.
  *
@@ -44,5 +46,12 @@ public interface Request<T> {
    * @return the requested object.
    */
   T object();
+
+  /**
+   * Returns the time when this request was created.
+   *
+   * @return the time when this request was created.
+   */
+  Date createdAt();
 
 }

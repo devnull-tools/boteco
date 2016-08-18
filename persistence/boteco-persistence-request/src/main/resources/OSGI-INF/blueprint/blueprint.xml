@@ -32,11 +32,21 @@
                                http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
+  <cm:property-placeholder id="request.properties"
+                           persistent-id="tools.devnull.boteco.persistence.request"
+                           placeholder-prefix="{{"
+                           placeholder-suffix="}}">
+    <cm:default-properties>
+      <cm:property name="token.expire" value="120"/>
+    </cm:default-properties>
+  </cm:property-placeholder>
+
   <reference id="database" interface="com.mongodb.client.MongoDatabase"/>
 
   <service interface="tools.devnull.boteco.plugins.request.RequestRepository">
     <bean class="tools.devnull.boteco.persistence.request.MongoRequestRepository">
       <argument ref="database"/>
+      <argument type="java.lang.Long" value="{{token.expire}}"/>
     </bean>
   </service>
 
