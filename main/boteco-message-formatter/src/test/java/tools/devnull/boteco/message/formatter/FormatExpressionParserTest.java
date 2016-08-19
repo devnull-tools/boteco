@@ -36,7 +36,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static tools.devnull.kodo.Spec.be;
 import static tools.devnull.kodo.Spec.should;
 
 public class FormatExpressionParserTest {
@@ -62,19 +61,19 @@ public class FormatExpressionParserTest {
   @Test
   public void testExpressionBuild() {
     TestScenario.given(parser)
-        .the(expression("[a]value[/a]"), should(be("accent: value")))
-        .the(expression("lorem ipsum [a]value[/a] dolor [/a]"), should(be("lorem ipsum accent: value dolor [/a]")))
+        .then(expression("[a]value[/a]"), should().be("accent: value"))
+        .then(expression("lorem ipsum [a]value[/a] dolor [/a]"), should().be("lorem ipsum accent: value dolor [/a]"))
 
-        .the(expression("[aa]value[/aa]"), should(be("alternative_accent: value")))
+        .then(expression("[aa]value[/aa]"), should().be("alternative_accent: value"))
 
-        .the(expression("[v]value[/v]"), should(be("value: value")))
-        .the(expression("[p]value[/p]"), should(be("positive: value")))
-        .the(expression("[n]value[/n]"), should(be("negative: value")))
-        .the(expression("[t]value[/t]"), should(be("tag: value")))
-        .the(expression("[e]value[/e]"), should(be("error: value")))
-        .the(expression("[l]title <url>[/l]"), should(be("link: title - url")))
+        .then(expression("[v]value[/v]"), should().be("value: value"))
+        .then(expression("[p]value[/p]"), should().be("positive: value"))
+        .then(expression("[n]value[/n]"), should().be("negative: value"))
+        .then(expression("[t]value[/t]"), should().be("tag: value"))
+        .then(expression("[e]value[/e]"), should().be("error: value"))
+        .then(expression("[l]title <url>[/l]"), should().be("link: title - url"))
 
-        .the(expression("[t]value[/a]"), should(be("[t]value[/a]")));
+        .then(expression("[t]value[/a]"), should().be("[t]value[/a]"));
 
     verify(formatter, times(2)).accent("value");
     verify(formatter, times(1)).alternativeAccent("value");

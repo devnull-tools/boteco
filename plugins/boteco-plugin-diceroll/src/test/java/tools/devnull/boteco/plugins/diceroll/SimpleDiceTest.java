@@ -31,7 +31,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import static tools.devnull.kodo.Spec.raise;
 import static tools.devnull.kodo.Spec.should;
 
 public class SimpleDiceTest {
@@ -48,7 +47,7 @@ public class SimpleDiceTest {
   public void testInvalidSides() {
     for (int i : new int[]{1, 2, 3, 5, 7, 9, 11, 13, 14, 15, 16, 17, 18, 19}) {
       TestScenario.given(i)
-          .then(SimpleDice::new, should(raise(IllegalArgumentException.class)));
+          .then(SimpleDice::new, should().raise(IllegalArgumentException.class));
     }
   }
 

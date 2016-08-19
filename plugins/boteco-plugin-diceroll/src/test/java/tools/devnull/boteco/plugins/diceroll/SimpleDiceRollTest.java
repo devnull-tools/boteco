@@ -32,7 +32,6 @@ import java.util.function.Function;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static tools.devnull.kodo.Spec.be;
 import static tools.devnull.kodo.Spec.should;
 
 public class SimpleDiceRollTest {
@@ -54,17 +53,17 @@ public class SimpleDiceRollTest {
   @Test
   public void testExpressions() {
     TestScenario.given(new SimpleDiceRoll(function))
-        .the(resultOf("d4"), should(be(4)))
-        .the(resultOf("2d4"), should(be(8)))
-        .the(resultOf("3d4"), should(be(12)))
-        .the(resultOf("d4 + 3"), should(be(7)))
+        .then(resultOf("d4"), should().be(4))
+        .then(resultOf("2d4"), should().be(8))
+        .then(resultOf("3d4"), should().be(12))
+        .then(resultOf("d4 + 3"), should().be(7))
 
-        .the(resultOf("d6"), should(be(6)))
-        .the(resultOf("2d6"), should(be(12)))
-        .the(resultOf("3d6"), should(be(18)))
-        .the(resultOf("d6 + 3"), should(be(9)))
-        .the(resultOf("d4 + d6"), should(be(10)))
-        .the(resultOf("d4 + d6 + 1"), should(be(11)));
+        .then(resultOf("d6"), should().be(6))
+        .then(resultOf("2d6"), should().be(12))
+        .then(resultOf("3d6"), should().be(18))
+        .then(resultOf("d6 + 3"), should().be(9))
+        .then(resultOf("d4 + d6"), should().be(10))
+        .then(resultOf("d4 + d6 + 1"), should().be(11));
   }
 
   private Function<SimpleDiceRoll, Integer> resultOf(String expression) {

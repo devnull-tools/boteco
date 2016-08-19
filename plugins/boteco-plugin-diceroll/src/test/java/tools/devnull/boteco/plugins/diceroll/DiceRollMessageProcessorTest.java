@@ -37,6 +37,7 @@ import static tools.devnull.boteco.test.IncomeMessageMock.message;
 import static tools.devnull.boteco.test.Predicates.accept;
 import static tools.devnull.boteco.test.Predicates.receive;
 import static tools.devnull.kodo.Spec.should;
+import static tools.devnull.kodo.Spec.to;
 
 public class DiceRollMessageProcessorTest {
 
@@ -68,8 +69,8 @@ public class DiceRollMessageProcessorTest {
   public void testProcess() {
     TestScenario.given(new DiceRollMessageProcessor(diceRoll))
         .when(process(message))
-        .the(message, should(receive(IncomeMessage::command)))
-        .the(message, should(receive(reply("you got [v]%s[/v] points!", expectedScore))));
+        .expect(message, to(receive(IncomeMessage::command)))
+        .expect(message, to(receive(reply("you got [v]%s[/v] points!", expectedScore))));
   }
 
 }

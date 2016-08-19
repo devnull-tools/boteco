@@ -32,12 +32,10 @@ import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.kodo.TestScenario;
 
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static tools.devnull.kodo.Spec.be;
 import static tools.devnull.kodo.Spec.should;
 
 public class ExpressionMessageCommandExtractorTest {
@@ -68,18 +66,15 @@ public class ExpressionMessageCommandExtractorTest {
   @Test
   public void testExtraction() {
     TestScenario.given(extractor.extract(message("command foo")))
-        .the(name, should(be("foo")));
+        .then(MessageCommand::name, should().be("foo"));
 
     TestScenario.given(extractor.extract(message("command bar")))
-        .the(name, should(be("bar")));
+        .then(MessageCommand::name, should().be("bar"));
 
     TestScenario.given(command)
-        .the(name, should(be("foo")))
-        .the(arg, should(be("arg0 arg1")));
+        .then(MessageCommand::name, should().be("foo"))
+        .then(command -> command.as(String.class), should().be("arg0 arg1"));
   }
-
-  private Function<MessageCommand, String> name = command -> command.name();
-  private Function<MessageCommand, String> arg = command -> command.as(String.class);
 
   private Predicate<CommandExtractor> accept(String string) {
     return commandExtractor -> commandExtractor.isCommand(message(string));

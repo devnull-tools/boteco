@@ -36,11 +36,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import static tools.devnull.kodo.Spec.be;
-import static tools.devnull.kodo.Spec.have;
-import static tools.devnull.kodo.Spec.raise;
 import static tools.devnull.kodo.Spec.should;
-import static tools.devnull.kodo.Spec.succeed;
 
 public class BotecoUserTest {
 
@@ -59,36 +55,36 @@ public class BotecoUserTest {
   @Test
   public void testConstructor() {
     TestScenario.given(user)
-        .the(User::id, should(be("user")))
-        .the(User::defaultDestination, should(be(defaultDestination)))
-        .the(User::destinations, should(have(twoElements())));
+        .then(User::id, should().be("user"))
+        .then(User::defaultDestination, should().be(defaultDestination))
+        .then(User::destinations, should().have(twoElements()));
   }
 
   @Test
   public void testRemoveDestination() {
     TestScenario.given(user)
-        .then(removing(defaultDestination), should(raise(InvalidDestinationException.class)))
+        .then(removing(defaultDestination), should().raise(InvalidDestinationException.class))
 
         .when(removing(secondaryDestination))
-        .the(User::destinations, should(have(oneElement())));
+        .then(User::destinations, should().have(oneElement()));
   }
 
   @Test
   public void testChangeDefaultDestination() {
     TestScenario.given(user)
         .when(defaultDestinationIsSetTo(secondaryDestination))
-        .the(User::defaultDestination, should(be(secondaryDestination)))
+        .then(User::defaultDestination, should().be(secondaryDestination))
 
-        .then(removing(defaultDestination), should(succeed()))
+        .then(removing(defaultDestination), should().succeed())
 
-        .the(User::destinations, should(have(oneElement())))
+        .then(User::destinations, should().have(oneElement()))
 
-        .then(removing(secondaryDestination), should(raise(InvalidDestinationException.class)))
+        .then(removing(secondaryDestination), should().raise(InvalidDestinationException.class))
 
         .when(defaultDestinationIsSetTo(defaultDestination))
 
-        .the(User::destinations, should(have(twoElements())))
-        .the(User::defaultDestination, should(be(defaultDestination)));
+        .then(User::destinations, should().have(twoElements()))
+        .then(User::defaultDestination, should().be(defaultDestination));
   }
 
   private Consumer<User> defaultDestinationIsSetTo(MessageDestination destination) {

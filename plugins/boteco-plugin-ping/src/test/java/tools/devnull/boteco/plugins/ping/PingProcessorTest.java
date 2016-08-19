@@ -35,6 +35,7 @@ import static tools.devnull.boteco.test.Predicates.accept;
 import static tools.devnull.boteco.test.Predicates.notAccept;
 import static tools.devnull.boteco.test.Predicates.receive;
 import static tools.devnull.kodo.Spec.should;
+import static tools.devnull.kodo.Spec.to;
 
 public class PingProcessorTest {
 
@@ -65,7 +66,7 @@ public class PingProcessorTest {
   public void testProcessing() {
     TestScenario.given(new PingMessageProcessor())
         .when(processor -> processor.process(pingMessage))
-        .the(pingMessage, should(receive(reply("pong"))));
+        .expect(pingMessage, to(receive(reply("pong"))));
   }
 
 }
