@@ -41,7 +41,7 @@
   <service id="weather-plugin"
            interface="tools.devnull.boteco.message.MessageProcessor">
     <bean class="tools.devnull.boteco.plugins.weather.WeatherMessageProcessor">
-
+      <argument ref="searcher"/>
     </bean>
   </service>
 
