@@ -24,13 +24,13 @@
 
 package tools.devnull.boteco.user;
 
-import tools.devnull.boteco.BotException;
+import tools.devnull.boteco.DomainException;
 
 /**
  * Exception thrown when an attempt of creating a user that already exists
  * in the database is made.
  */
-public class UserAlreadyExistException extends BotException {
+public class UserAlreadyExistException extends DomainException {
 
   private static final long serialVersionUID = -4974903789647860060L;
 

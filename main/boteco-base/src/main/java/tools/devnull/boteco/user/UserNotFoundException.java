@@ -24,13 +24,13 @@
 
 package tools.devnull.boteco.user;
 
-import tools.devnull.boteco.BotException;
+import tools.devnull.boteco.DomainException;
 
 /**
  * Exception thrown when an attempt of retrieving a user that doesn't exist
  * in the database is made.
  */
-public class UserNotFoundException extends BotException {
+public class UserNotFoundException extends DomainException {
 
   private static final long serialVersionUID = -4974903789647860060L;
 
