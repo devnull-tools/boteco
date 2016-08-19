@@ -49,7 +49,6 @@
     <!-- plugins -->
     <bundle>mvn:${project.groupId}/boteco-plugin-ping/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-weather/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-plugin-weather-searcher/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-redhat/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-karma/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-diceroll/${project.version}</bundle>

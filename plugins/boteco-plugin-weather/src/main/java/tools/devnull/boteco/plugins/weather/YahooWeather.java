@@ -22,13 +22,12 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.weather.searcher.yahoo;
+package tools.devnull.boteco.plugins.weather;
 
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.client.rest.RestClient;
-import tools.devnull.boteco.plugins.weather.WeatherSearcher;
 
 import java.net.URI;
 

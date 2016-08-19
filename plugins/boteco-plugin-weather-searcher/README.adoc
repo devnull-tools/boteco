@@ -1,4 +1,0 @@
-= Weather Searcher Plugin
-
-This is a plugin that queries https://developer.yahoo.com/weather[Yahoo! Weather API]. It provides the service used
-by the weather plugin.

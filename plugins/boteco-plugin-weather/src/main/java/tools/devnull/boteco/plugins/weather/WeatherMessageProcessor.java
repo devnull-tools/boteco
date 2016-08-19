@@ -24,24 +24,18 @@
 
 package tools.devnull.boteco.plugins.weather;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
-
-import java.util.List;
 
 import static tools.devnull.boteco.Predicates.command;
 import static tools.devnull.boteco.message.MessageChecker.check;
 
 public class WeatherMessageProcessor implements MessageProcessor {
 
-  private static final Logger logger = LoggerFactory.getLogger(WeatherMessageProcessor.class);
+  private final WeatherSearcher searcher;
 
-  private final List<WeatherSearcher> searchers;
-
-  public WeatherMessageProcessor(List<WeatherSearcher> searchers) {
-    this.searchers = searchers;
+  public WeatherMessageProcessor(WeatherSearcher searcher) {
+    this.searcher = searcher;
   }
 
   @Override
@@ -57,23 +51,12 @@ public class WeatherMessageProcessor implements MessageProcessor {
   @Override
   public void process(IncomeMessage message) {
     String query = message.command().as(String.class);
-    Weather weather = search(query);
+    Weather weather = searcher.search(query);
     if (weather != null) {
       message.reply(buildResponse(weather));
     } else {
       message.reply("Your query didn't return any results.");
     }
-  }
-
-  private Weather search(String query) {
-    Weather weather;
-    for (WeatherSearcher searcher : searchers) {
-      weather = searcher.search(query);
-      if (weather != null) {
-        return weather;
-      }
-    }
-    return null;
   }
 
   private String buildResponse(Weather weather) {
@@ -85,7 +68,7 @@ public class WeatherMessageProcessor implements MessageProcessor {
       response.append(": [aa]").append(weather.condition()).append("[/aa]");
     }
     if (weather.temperature() != null) {
-      response.append(" - [v]")
+      response.append(", [v]")
           .append(String.valueOf((int) weather.temperature().celsius())).append("\u00BAC").append("[/v]")
           .append(" / [v]").append(String.valueOf((int) weather.temperature().fahrenheits())).append("\u00BAF")
           .append("[/v]");

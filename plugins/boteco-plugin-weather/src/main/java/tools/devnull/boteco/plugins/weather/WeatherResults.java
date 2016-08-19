@@ -22,7 +22,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.weather.searcher.yahoo;
+package tools.devnull.boteco.plugins.weather;
 
 import com.google.gson.annotations.SerializedName;
 import tools.devnull.boteco.plugins.weather.Temperature;

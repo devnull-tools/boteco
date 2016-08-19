@@ -1,7 +1,6 @@
 = Weather Plugin
 
-This is a plugin that queries weathers based on the `weather` command. This plugin requires a searcher service to
-function (see `boteco-plugin-weather-searcher` for a default implementation).
+This is a plugin that queries weathers based on the `weather` command.
 
 For example, if you send the message `boteco weather QUERY`, boteco will show results for the given query in the
 channel.

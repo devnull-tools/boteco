@@ -40,7 +40,6 @@
   <modules>
     <module>boteco-plugin-ping</module>
     <module>boteco-plugin-weather</module>
-    <module>boteco-plugin-weather-searcher</module>
     <module>boteco-plugin-redhat</module>
     <module>boteco-plugin-karma</module>
     <module>boteco-plugin-diceroll</module>
