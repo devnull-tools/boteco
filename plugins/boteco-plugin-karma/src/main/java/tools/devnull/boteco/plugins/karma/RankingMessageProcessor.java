@@ -28,6 +28,7 @@ import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static tools.devnull.boteco.Predicates.command;
 import static tools.devnull.boteco.message.MessageChecker.check;
@@ -56,7 +57,9 @@ public class RankingMessageProcessor implements MessageProcessor {
     if (result.isEmpty()) {
       message.reply("[e]No karmas found[/e]");
     } else {
-      result.forEach(karma -> message.sendBack(karma.describe()));
+      message.reply(result.stream()
+          .map(Karma::describe)
+          .collect(Collectors.joining("\n")));
     }
   }
 
