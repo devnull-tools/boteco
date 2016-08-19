@@ -32,13 +32,16 @@
                                http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
-  <reference-list id="searchers"
-                  interface="tools.devnull.boteco.plugins.weather.WeatherSearcher"/>
+  <reference id="rest-client" interface="tools.devnull.boteco.client.rest.RestClient"/>
+
+  <bean id="searcher" class="tools.devnull.boteco.plugins.weather.YahooWeather">
+    <argument ref="rest-client"/>
+  </bean>
 
   <service id="weather-plugin"
            interface="tools.devnull.boteco.message.MessageProcessor">
     <bean class="tools.devnull.boteco.plugins.weather.WeatherMessageProcessor">
-      <argument ref="searchers"/>
+
     </bean>
   </service>
 
