@@ -24,41 +24,41 @@
 
 package tools.devnull.boteco;
 
-import tools.devnull.boteco.client.jms.JmsDestination;
-
 /**
- * An utility class to create destinations.
+ * A default implementation of a Message Destination
  */
-public class Destination {
+public class UserMessageDestination implements MessageDestination {
 
-  /**
-   * Creates a queue destination based on the given queue name.
-   *
-   * @param name the queue name
-   * @return a queue destination
-   */
-  public static JmsDestination queue(String name) {
-    return session -> session.createQueue(name);
+  private final String channel;
+  private final String target;
+
+  public UserMessageDestination(String channel, String target) {
+    this.channel = channel;
+    this.target = target;
   }
 
-  /**
-   * Creates a topic destination based on the given topic name.
-   *
-   * @param name the topic name
-   * @return a topic destination
-   */
-  public static JmsDestination topic(String name) {
-    return session -> session.createTopic(name);
+  @Override
+  public int hashCode() {
+    return (channel + target).hashCode();
   }
 
-  /**
-   * Creates a message destination based on the given channel id and target.
-   *
-   * @param channelId the channel id of the destination
-   * @return a component to select the target of the destination
-   */
-  public static TargetResultSelector<String, MessageDestination> channel(String channelId) {
-    return target -> new UserMessageDestination(channelId, target);
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof MessageDestination) {
+      return channel.equals(((MessageDestination) obj).channel())
+          && target.equals(((MessageDestination) obj).target());
+    }
+    return false;
+  }
+
+  @Override
+  public String channel() {
+    return channel;
+  }
+
+  @Override
+  public String target() {
+    return target;
   }
 
 }
