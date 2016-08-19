@@ -71,7 +71,7 @@ public class BotecoUserManager implements UserManager {
   public User unlink(String userId, IncomeMessage message) {
     User user = find(userId);
     if (user == null) {
-      throw new UserNotFoundException();
+      throw new UserNotFoundException("Couldn't find user with the id " + userId);
     }
     user.removeDestination(message.destination());
     update(user);

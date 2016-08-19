@@ -68,7 +68,7 @@ public class MongoUserRepository implements UserRepository {
   @Override
   public User create(String userId, MessageDestination defaultDestination) {
     if (find(userId) != null) {
-      throw new UserAlreadyExistException();
+      throw new UserAlreadyExistException("User " + userId + " already exists");
     }
     User user = new BotecoUser(userId, defaultDestination);
     this.users.insertOne(Document.parse(this.gson.toJson(user)));
