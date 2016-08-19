@@ -146,7 +146,7 @@ public interface IncomeMessage extends Serializable {
    * @return the message destination for sending messages to the sender
    */
   default MessageDestination destination() {
-    return Destination.channel(channel().id()).to(target());
+    return Destination.channel(channel().id()).to(sender().id());
   }
 
 }
