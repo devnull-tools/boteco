@@ -63,13 +63,13 @@ public class UserMessageProcessor implements MessageProcessor {
           userManager.link(request.linkDestination())
               .to(request.user())
               .sendingTokenTo(request.tokenDestination());
-          message.reply("Link requested");
+          message.reply("Link requested and will be effective after confirmation.");
         })
         .on("unlink", LinkRequest.class, request -> {
           userManager.unlink(request.linkDestination())
               .from(request.user())
               .sendingTokenTo(request.tokenDestination());
-          message.reply("Unlink requested.");
+          message.reply("Unlink requested and will be effective after confirmation.");
         })
         .execute();
   }
