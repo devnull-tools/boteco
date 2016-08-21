@@ -61,12 +61,16 @@ public class RequestMessageProcessor implements MessageProcessor {
   public void process(IncomeMessage message) {
     String token = message.command().as(String.class);
     Request request = this.repository.pull(token);
-    RequestListener listener = serviceLocator.locate(RequestListener.class, "(request=%s)", request.type());
-    if (listener != null) {
-      listener.onConfirm(request);
-      message.reply("Confirmation OK!");
+    if (request != null) {
+      RequestListener listener = serviceLocator.locate(RequestListener.class, "(request=%s)", request.type());
+      if (listener != null) {
+        listener.onConfirm(request);
+        message.reply("Confirmation OK!");
+      } else {
+        message.reply("Couldn't handle your confirmation!");
+      }
     } else {
-      message.reply("Couldn't handle your confirmation!");
+      message.reply("[e]Invalid token[/e]");
     }
   }
 }
