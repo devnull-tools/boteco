@@ -43,7 +43,7 @@ public class UserUnlinkRequestListener implements RequestListener<UserRequest> {
     String userId = userRequest.getUser();
     User user = this.repository.find(userId);
     if (user == null) {
-      throw new UserNotFoundException("Couldn't find user with id " + userId);
+      throw new UserNotFoundException("User " + userId + " doesn't exist!");
     }
     user.removeDestination(userRequest.targetDestination());
     this.repository.update(user);
