@@ -24,50 +24,29 @@
 
 package tools.devnull.boteco.plugins.user;
 
+import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.MessageDestination;
-import tools.devnull.boteco.Param;
-import tools.devnull.boteco.Parameters;
-import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.request.Verifiable;
 
-/**
- * A class that represents a request to link/unlink a destination
- * to an user.
- */
-@Parameters({
-    "user channel target",
-    "user"
-})
-public class LinkRequest {
+public class UserRequest implements Verifiable {
 
   private final String user;
   private final String channel;
   private final String target;
 
-  public LinkRequest(@Param("user") String user,
-                     @Param("channel") String channel,
-                     @Param("target") String target) {
-    this.user = user;
-    this.channel = channel;
-    this.target = target;
-  }
-
-  public LinkRequest(String user, IncomeMessage message) {
-    MessageDestination destination = message.destination();
+  public UserRequest(String user, MessageDestination destination) {
     this.user = user;
     this.channel = destination.channel();
     this.target = destination.target();
   }
 
-  public String user() {
+  public String getUser() {
     return user;
   }
 
-  public String channel() {
-    return channel;
-  }
-
-  public String target() {
-    return target;
+  @Override
+  public MessageDestination targetDestination() {
+    return Destination.channel(this.channel).to(this.target);
   }
 
 }

@@ -25,19 +25,18 @@
 package tools.devnull.boteco.plugins.user;
 
 import tools.devnull.boteco.MessageDestination;
-import tools.devnull.boteco.message.MessageSender;
+import tools.devnull.boteco.request.RequestManager;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.user.UserManager;
-import tools.devnull.boteco.user.UserNotFoundException;
 
 public class BotecoUserManager implements UserManager {
 
   private final UserRepository repository;
-  private final MessageSender messageSender;
+  private final RequestManager requestManager;
 
-  public BotecoUserManager(UserRepository repository, MessageSender messageSender) {
+  public BotecoUserManager(UserRepository repository, RequestManager requestManager) {
     this.repository = repository;
-    this.messageSender = messageSender;
+    this.requestManager = requestManager;
   }
 
   @Override
@@ -56,54 +55,17 @@ public class BotecoUserManager implements UserManager {
   }
 
   @Override
-  public User link(String userId, MessageDestination destination) {
-    User user = find(userId);
-    if (user == null) {
-      return create(userId, destination);
-    }
-    user.addDestination(destination);
-    update(user);
-    return user;
+  public void link(String userId, MessageDestination destination) {
+      this.requestManager.create(new UserRequest(userId, destination),
+          "user.link",
+          "link this account");
   }
 
   @Override
-  public User unlink(String userId, MessageDestination destination) {
-    User user = find(userId);
-    if (user == null) {
-      throw new UserNotFoundException("Couldn't find user with the id " + userId);
-    }
-    user.removeDestination(destination);
-    update(user);
-    return user;
+  public void unlink(String userId, MessageDestination destination) {
+    this.requestManager.create(new UserRequest(userId, destination),
+        "user.unlink",
+        "unlink this account");
   }
 
-  @Override
-  public void update(User user) {
-    this.repository.update(user);
-  }
-
-  @Override
-  public void delete(User user) {
-
-  }
-
-  @Override
-  public String requestLink(String userId, MessageDestination destination) {
-    return null;
-  }
-
-  @Override
-  public String requestUnlink(String userId, MessageDestination destination) {
-    return null;
-  }
-
-  @Override
-  public boolean confirmLink(String token) {
-    return false;
-  }
-
-  @Override
-  public boolean confirmUnlink(String token) {
-    return false;
-  }
 }

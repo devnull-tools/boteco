@@ -34,20 +34,8 @@ public interface UserManager {
 
   User create(String userId, MessageDestination primaryDestination) throws UserAlreadyExistException;
 
-  void update(User user);
+  void link(String userId, MessageDestination destination);
 
-  void delete(User user);
-
-  User link(String userId, MessageDestination destination);
-
-  User unlink(String userId, MessageDestination destination);
-
-  String requestLink(String userId, MessageDestination destination);
-
-  String requestUnlink(String userId, MessageDestination destination);
-
-  boolean confirmLink(String token);
-
-  boolean confirmUnlink(String token);
+  void unlink(String userId, MessageDestination destination);
 
 }

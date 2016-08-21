@@ -32,12 +32,12 @@
                                http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
-  <reference id="message-sender" interface="tools.devnull.boteco.message.MessageSender"/>
   <reference id="repository" interface="tools.devnull.boteco.plugins.user.UserRepository"/>
+  <reference id="request-manager" interface="tools.devnull.boteco.request.RequestManager"/>
 
   <bean id="user-manager" class="tools.devnull.boteco.plugins.user.BotecoUserManager">
     <argument ref="repository"/>
-    <argument ref="message-sender"/>
+    <argument ref="request-manager"/>
   </bean>
 
   <service interface="tools.devnull.boteco.user.UserManager" ref="user-manager"/>
@@ -45,6 +45,24 @@
   <service interface="tools.devnull.boteco.message.MessageProcessor">
     <bean class="tools.devnull.boteco.plugins.user.UserMessageProcessor">
       <argument ref="user-manager"/>
+    </bean>
+  </service>
+
+  <service interface="tools.devnull.boteco.request.RequestListener">
+    <service-properties>
+      <entry key="request" value="user.link"/>
+    </service-properties>
+    <bean class="tools.devnull.boteco.plugins.user.UserLinkRequestListener">
+      <argument ref="repository"/>
+    </bean>
+  </service>
+
+  <service interface="tools.devnull.boteco.request.RequestListener">
+    <service-properties>
+      <entry key="request" value="user.unlink"/>
+    </service-properties>
+    <bean class="tools.devnull.boteco.plugins.user.UserUnlinkRequestListener">
+      <argument ref="repository"/>
     </bean>
   </service>
 

@@ -24,50 +24,29 @@
 
 package tools.devnull.boteco.plugins.user;
 
-import tools.devnull.boteco.MessageDestination;
-import tools.devnull.boteco.Param;
-import tools.devnull.boteco.Parameters;
-import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.request.Request;
+import tools.devnull.boteco.request.RequestListener;
+import tools.devnull.boteco.user.User;
+import tools.devnull.boteco.user.UserNotFoundException;
 
-/**
- * A class that represents a request to link/unlink a destination
- * to an user.
- */
-@Parameters({
-    "user channel target",
-    "user"
-})
-public class LinkRequest {
+public class UserUnlinkRequestListener implements RequestListener<UserRequest> {
 
-  private final String user;
-  private final String channel;
-  private final String target;
+  private final UserRepository repository;
 
-  public LinkRequest(@Param("user") String user,
-                     @Param("channel") String channel,
-                     @Param("target") String target) {
-    this.user = user;
-    this.channel = channel;
-    this.target = target;
+  public UserUnlinkRequestListener(UserRepository repository) {
+    this.repository = repository;
   }
 
-  public LinkRequest(String user, IncomeMessage message) {
-    MessageDestination destination = message.destination();
-    this.user = user;
-    this.channel = destination.channel();
-    this.target = destination.target();
-  }
-
-  public String user() {
-    return user;
-  }
-
-  public String channel() {
-    return channel;
-  }
-
-  public String target() {
-    return target;
+  @Override
+  public void onConfirm(Request<UserRequest> request) {
+    UserRequest userRequest = request.object(UserRequest.class);
+    String userId = userRequest.getUser();
+    User user = this.repository.find(userId);
+    if (user == null) {
+      throw new UserNotFoundException("Couldn't find user with id " + userId);
+    }
+    user.removeDestination(userRequest.targetDestination());
+    this.repository.update(user);
   }
 
 }

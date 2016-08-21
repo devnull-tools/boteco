@@ -61,8 +61,12 @@ public class UserMessageProcessor implements MessageProcessor {
           message.reply("User created");
         })
         .on("link", LinkRequest.class, request -> {
-          userManager.requestLink(request.user(), Destination.channel(request.channel()).to(request.target()));
+          userManager.link(request.user(), Destination.channel(request.channel()).to(request.target()));
           message.reply("Link requested, check your primary destination for instructions.");
+        })
+        .on("unlink", LinkRequest.class, request -> {
+          userManager.unlink(request.user(), Destination.channel(request.channel()).to(request.target()));
+          message.reply("Unlink requested, check your primary destination for instructions.");
         })
         .execute();
   }
