@@ -82,4 +82,28 @@ public class BotecoUserManager implements UserManager {
     this.repository.update(user);
   }
 
+  @Override
+  public void delete(User user) {
+
+  }
+
+  @Override
+  public String requestLink(String userId, MessageDestination destination) {
+    return null;
+  }
+
+  @Override
+  public String requestUnlink(String userId, MessageDestination destination) {
+    return null;
+  }
+
+  @Override
+  public boolean confirmLink(String token) {
+    return false;
+  }
+
+  @Override
+  public boolean confirmUnlink(String token) {
+    return false;
+  }
 }
