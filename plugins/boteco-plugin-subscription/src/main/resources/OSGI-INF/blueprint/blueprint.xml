@@ -34,17 +34,39 @@
 
   <reference id="repository" interface="tools.devnull.boteco.plugins.subscription.SubscriptionRepository"/>
   <reference id="message-sender" interface="tools.devnull.boteco.message.MessageSender"/>
+  <reference id="request-manager" interface="tools.devnull.boteco.request.RequestManager"/>
 
-  <bean id="manager" class="tools.devnull.boteco.plugins.subscription.BotecoSubscriptionManager">
+  <bean id="subscription-manager" class="tools.devnull.boteco.plugins.subscription.BotecoSubscriptionManager">
     <argument ref="repository"/>
     <argument ref="message-sender"/>
+    <argument ref="request-manager"/>
   </bean>
 
-  <service interface="tools.devnull.boteco.event.SubscriptionManager" ref="manager"/>
+  <service interface="tools.devnull.boteco.event.SubscriptionManager" ref="subscription-manager"/>
 
   <service interface="tools.devnull.boteco.message.MessageProcessor">
     <bean class="tools.devnull.boteco.plugins.subscription.SubscriptionMessageProcessor">
-      <argument ref="manager"/>
+      <argument ref="subscription-manager"/>
+    </bean>
+  </service>
+
+  <service interface="tools.devnull.boteco.request.RequestListener">
+    <service-properties>
+      <entry key="request" value="subscription.add"/>
+    </service-properties>
+    <bean class="tools.devnull.boteco.plugins.subscription.SubscriptionAddRequestListener">
+      <argument ref="repository"/>
+      <argument ref="message-sender"/>
+    </bean>
+  </service>
+
+  <service interface="tools.devnull.boteco.request.RequestListener">
+    <service-properties>
+      <entry key="request" value="subscription.remove"/>
+    </service-properties>
+    <bean class="tools.devnull.boteco.plugins.subscription.SubscriptionRemoveRequestListener">
+      <argument ref="repository"/>
+      <argument ref="message-sender"/>
     </bean>
   </service>
 

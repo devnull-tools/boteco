@@ -22,41 +22,18 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.request;
-
-import tools.devnull.boteco.request.Request;
-
-import java.util.Date;
-import java.util.UUID;
+package tools.devnull.boteco.request;
 
 /**
- * Default Request implementation
+ * Interface that defines a processor of a request that has been confirmed.
  */
-public class BotecoRequest implements Request {
+public interface RequestListener<T> {
 
-  private final String token;
-  private final Object object;
-  private final Date createdAt;
-
-  public BotecoRequest(Object object) {
-    this.object = object;
-    this.token = UUID.randomUUID().toString();
-    this.createdAt = new Date();
-  }
-
-  @Override
-  public String token() {
-    return this.token;
-  }
-
-  @Override
-  public Object object() {
-    return this.object;
-  }
-
-  @Override
-  public Date createdAt() {
-    return this.createdAt;
-  }
+  /**
+   * Executes an action when the given request is confirmed
+   *
+   * @param request the confirmed request
+   */
+  void onConfirm(Request<T> request);
 
 }

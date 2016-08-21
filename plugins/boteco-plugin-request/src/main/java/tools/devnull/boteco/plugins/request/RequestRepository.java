@@ -31,10 +31,8 @@ import tools.devnull.boteco.request.Request;
  */
 public interface RequestRepository {
 
-  void save(Request request);
+  String create(Object target, String type);
 
-  <T> T find(String token, Class<T> objectType);
-
-  <T> T delete(String token, Class<T> objectType);
+  <T> Request<T> pull(String token);
 
 }

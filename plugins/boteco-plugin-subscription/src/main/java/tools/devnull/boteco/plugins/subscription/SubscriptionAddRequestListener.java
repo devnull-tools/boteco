@@ -22,26 +22,33 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.persistence.subscription;
+package tools.devnull.boteco.plugins.subscription;
 
-import tools.devnull.boteco.event.Subscription;
+import tools.devnull.boteco.message.MessageSender;
+import tools.devnull.boteco.request.Request;
+import tools.devnull.boteco.request.RequestListener;
 
-public class BotecoSubscriptionRequest {
+/**
+ * A class that process confirmations of subscription addition.
+ */
+public class SubscriptionAddRequestListener implements RequestListener<SubscriptionRequest> {
 
-  private final BotecoSubscription subscription;
-  private final String operation;
+  private final SubscriptionRepository repository;
+  private final MessageSender messageSender;
 
-  public BotecoSubscriptionRequest(BotecoSubscription subscription, String operation) {
-    this.subscription = subscription;
-    this.operation = operation;
+  public SubscriptionAddRequestListener(SubscriptionRepository repository, MessageSender messageSender) {
+    this.repository = repository;
+    this.messageSender = messageSender;
   }
 
-  public Subscription subscription() {
-    return this.subscription;
-  }
-
-  public String operation() {
-    return this.operation;
+  @Override
+  public void onConfirm(Request<SubscriptionRequest> request) {
+    SubscriptionRequest subscriptionRequest = request.object(SubscriptionRequest.class);
+    repository.insert(subscriptionRequest.getEvent(),
+        subscriptionRequest.getChannel(),
+        subscriptionRequest.getTarget());
+    messageSender.send("Your subscription for event [a]" + subscriptionRequest.getEvent() + "[/a] was confirmed!")
+        .to(subscriptionRequest.destination());
   }
 
 }

@@ -22,28 +22,40 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.persistence.subscription;
+package tools.devnull.boteco.plugins.subscription;
 
+import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.MessageDestination;
 
-public class BotecoSubscriber implements MessageDestination {
+/**
+ * A class that represents a subscription request (for both add or remove)
+ */
+public class SubscriptionRequest {
 
-  private final String target;
+  private final String event;
   private final String channel;
+  private final String target;
 
-  public BotecoSubscriber(String target, String channel) {
-    this.target = target;
+  public SubscriptionRequest(String event, String channel, String target) {
+    this.event = event;
     this.channel = channel;
+    this.target = target;
   }
 
-  @Override
-  public String channel() {
+  public String getEvent() {
+    return event;
+  }
+
+  public String getChannel() {
     return channel;
   }
 
-  @Override
-  public String target() {
+  public String getTarget() {
     return target;
+  }
+
+  public MessageDestination destination() {
+    return Destination.channel(channel).to(target);
   }
 
 }

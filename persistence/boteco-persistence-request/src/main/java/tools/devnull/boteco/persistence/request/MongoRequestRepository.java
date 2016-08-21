@@ -30,12 +30,12 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
 import org.bson.Document;
-import org.bson.conversions.Bson;
-import tools.devnull.boteco.request.Request;
 import tools.devnull.boteco.plugins.request.RequestRepository;
+import tools.devnull.boteco.request.Request;
 
+import java.util.Date;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 
 /**
  * A repository for requests that persists information in a MongoDB
@@ -53,32 +53,21 @@ public class MongoRequestRepository implements RequestRepository {
   }
 
   @Override
-  public void save(Request request) {
-    Document document = new Document("token", request.token());
-    document.put("createdAt", request.createdAt());
-    document.put("type", request.object().getClass().toString());
-    document.put("object", Document.parse(this.gson.toJson(request.object())));
+  public String create(Object target, String type) {
+    String token = UUID.randomUUID().toString();
+    Document document = new Document("_id", token)
+        .append("createdAt", new Date())
+        .append("type", type)
+        .append("object", Document.parse(this.gson.toJson(target)));
     this.requests.insertOne(document);
+    return token;
   }
 
   @Override
-  public <T> T find(String token, Class<T> objectType) {
-    return operate(token, objectType, query -> this.requests.find(query).first());
-  }
-
-  @Override
-  public <T> T delete(String token, Class<T> objectType) {
-    return operate(token, objectType, this.requests::findOneAndDelete);
-  }
-
-  private <T> T operate(String token, Class<T> objectType, Function<Bson, Document> function) {
-    BasicDBObject query = new BasicDBObject("$and", new BasicDBObject[]{
-        new BasicDBObject("token", token),
-        new BasicDBObject("type", objectType.toString())
-    });
-    Document document = function.apply(query);
+  public <T> Request<T> pull(String token) {
+    Document document = this.requests.findOneAndDelete(new BasicDBObject("_id", token));
     if (document != null) {
-      return this.gson.fromJson(document.get("object", Document.class).toJson(), objectType);
+      return new BotecoRequest<>(document);
     }
     return null;
   }

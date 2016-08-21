@@ -30,31 +30,12 @@ package tools.devnull.boteco.request;
 public interface RequestManager {
 
   /**
-   * Creates a request for the given target
+   * Creates a request for the given target.
    *
    * @param target the target of the request
-   * @param <T>    the type of the target
-   * @return the request for the given target
+   * @param type   the type of the request
+   * @return the token that should be used to confirm the request.
    */
-  <T> Request<T> request(T target);
-
-  /**
-   * Finds a request for the given token.
-   *
-   * @param token      the token that validates the request
-   * @param objectType the type of the requested object
-   * @return the object of the request that matches the given token.
-   */
-  <T> T find(String token, Class<T> objectType);
-
-  /**
-   * Similar to {@link #find(String, Class)}, but removes the request
-   * from the backend.
-   *
-   * @param token the token that validates the request
-   * @param objectType the type of the requested object
-   * @return the object of the request that matches the given token.
-   */
-  <T> T pull(String token, Class<T> objectType);
+  String create(Object target, String type);
 
 }

@@ -24,7 +24,6 @@
 
 package tools.devnull.boteco.plugins.request;
 
-import tools.devnull.boteco.request.Request;
 import tools.devnull.boteco.request.RequestManager;
 
 /**
@@ -41,20 +40,7 @@ public class BotecoRequestManager implements RequestManager {
   }
 
   @Override
-  public <T> Request<T> request(T target) {
-    Request request = new BotecoRequest(target);
-    this.repository.save(request);
-    return request;
+  public String create(Object target, String type) {
+    return this.repository.create(target, type);
   }
-
-  @Override
-  public <T> T find(String token, Class<T> objectType) {
-    return this.repository.find(token, objectType);
-  }
-
-  @Override
-  public <T> T pull(String token, Class<T> objectType) {
-    return this.repository.delete(token, objectType);
-  }
-
 }

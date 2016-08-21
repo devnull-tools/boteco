@@ -22,30 +22,48 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.subscription;
+package tools.devnull.boteco.persistence.request;
 
-import tools.devnull.boteco.event.SubscriptionManager;
-import tools.devnull.boteco.message.IncomeMessage;
+import com.google.gson.Gson;
+import org.bson.Document;
+import tools.devnull.boteco.request.Request;
 
-import java.util.function.Consumer;
+import java.util.Date;
 
-public class SubscriptionConfirm implements Consumer<String> {
+public class BotecoRequest<T> implements Request<T> {
 
-  private final SubscriptionManager subscriptionManager;
-  private final IncomeMessage message;
+  private final String token;
+  private final Date createdAt;
+  private final String type;
+  private final Gson gson;
+  private final Document object;
 
-  public SubscriptionConfirm(SubscriptionManager subscriptionManager, IncomeMessage message) {
-    this.subscriptionManager = subscriptionManager;
-    this.message = message;
+  public BotecoRequest(Document document) {
+    this.token = document.getString("_id");
+    this.createdAt = document.getDate("createdAt");
+    this.type = document.getString("type");
+    this.gson = new Gson();
+    this.object = document.get("object", Document.class);
   }
 
   @Override
-  public void accept(String token) {
-    if (this.subscriptionManager.confirm(token)) {
-      message.reply("Subscription confirmed!");
-    } else {
-      message.reply("Invalid token");
-    }
+  public String token() {
+    return this.token;
+  }
+
+  @Override
+  public String type() {
+    return this.type;
+  }
+
+  @Override
+  public T object(Class<T> type) {
+    return this.gson.fromJson(object.toJson(), type);
+  }
+
+  @Override
+  public Date createdAt() {
+    return this.createdAt;
   }
 
 }

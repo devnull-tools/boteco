@@ -34,12 +34,6 @@ public interface SubscriptionRepository {
 
   List<Subscription> find(String channel, String target);
 
-  boolean confirm(String token);
-
-  String requestInsert(String eventId, String channel, String target);
-
-  String requestDelete(String eventId, String channel, String target);
-
   void insert(String eventId, String channel, String target);
 
   void delete(String eventId, String channel, String target);

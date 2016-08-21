@@ -41,11 +41,19 @@ public interface Request<T> {
   String token();
 
   /**
+   * Returns the type of the request.
+   *
+   * @return the type of the request.
+   */
+  String type();
+
+  /**
    * Returns the requested object.
    *
+   * @param type the object type
    * @return the requested object.
    */
-  T object();
+  T object(Class<T> type);
 
   /**
    * Returns the time when this request was created.

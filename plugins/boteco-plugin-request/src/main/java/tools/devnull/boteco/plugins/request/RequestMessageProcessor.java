@@ -22,40 +22,51 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.subscription;
+package tools.devnull.boteco.plugins.request;
 
-import tools.devnull.boteco.event.SubscriptionManager;
+import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.request.Request;
+import tools.devnull.boteco.request.RequestListener;
 
 import static tools.devnull.boteco.Predicates.command;
 import static tools.devnull.boteco.message.MessageChecker.check;
 
-public class SubscriptionMessageProcessor implements MessageProcessor {
+/**
+ * A message processor that confirms requests.
+ */
+public class RequestMessageProcessor implements MessageProcessor {
 
-  private final SubscriptionManager subscriptionManager;
+  private final ServiceLocator serviceLocator;
+  private final RequestRepository repository;
 
-  public SubscriptionMessageProcessor(SubscriptionManager subscriptionManager) {
-    this.subscriptionManager = subscriptionManager;
+  public RequestMessageProcessor(ServiceLocator serviceLocator,
+                                 RequestRepository repository) {
+    this.serviceLocator = serviceLocator;
+    this.repository = repository;
   }
 
   @Override
   public String id() {
-    return "subscription";
+    return "request";
   }
 
   @Override
   public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("subscription"));
+    return check(message).accept(command("confirm"));
   }
 
   @Override
   public void process(IncomeMessage message) {
-    message.command()
-        .on("add", SubscriptionParameters.class, new SubscriptionAdd(subscriptionManager, message))
-        .on("remove", SubscriptionParameters.class, new SubscriptionRemove(subscriptionManager, message))
-        .on("list", SubscriptionListParameters.class, new SubscriptionList(subscriptionManager, message))
-        .execute();
+    String token = message.command().as(String.class);
+    Request request = this.repository.pull(token);
+    RequestListener listener = serviceLocator.locate(RequestListener.class, "(request=%s)", request.type());
+    if (listener != null) {
+      listener.onConfirm(request);
+      message.reply("Confirmation OK!");
+    } else {
+      message.reply("Couldn't handle your confirmation!");
+    }
   }
-
 }

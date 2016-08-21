@@ -28,7 +28,6 @@ import tools.devnull.boteco.event.SubscriptionManager;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
@@ -41,13 +40,6 @@ public class SubscriptionService {
 
   public SubscriptionService(SubscriptionManager subscriptionManager) {
     this.subscriptionManager = subscriptionManager;
-  }
-
-  @PUT
-  @Path("/{token}")
-  public Response confirm(@PathParam("token") String token) {
-    subscriptionManager.confirm(token);
-    return Response.ok().build();
   }
 
   @POST

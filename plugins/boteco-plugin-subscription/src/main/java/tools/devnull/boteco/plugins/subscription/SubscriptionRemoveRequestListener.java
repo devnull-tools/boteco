@@ -22,14 +22,33 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.request;
+package tools.devnull.boteco.plugins.subscription;
+
+import tools.devnull.boteco.message.MessageSender;
+import tools.devnull.boteco.request.Request;
+import tools.devnull.boteco.request.RequestListener;
 
 /**
- * Interface that defines a processor of a request that has
- * confirmed.
+ * A class that process confirmations of subscription addition.
  */
-public interface RequestProcessor<T> {
+public class SubscriptionRemoveRequestListener implements RequestListener<SubscriptionRequest> {
 
-  void process(Request<T> request);
+  private final SubscriptionRepository repository;
+  private final MessageSender messageSender;
+
+  public SubscriptionRemoveRequestListener(SubscriptionRepository repository, MessageSender messageSender) {
+    this.repository = repository;
+    this.messageSender = messageSender;
+  }
+
+  @Override
+  public void onConfirm(Request<SubscriptionRequest> request) {
+    SubscriptionRequest subscriptionRequest = request.object(SubscriptionRequest.class);
+    repository.delete(subscriptionRequest.getEvent(),
+        subscriptionRequest.getChannel(),
+        subscriptionRequest.getTarget());
+    messageSender.send("Your subscription for event " + subscriptionRequest.getEvent() + " was canceled!")
+        .to(subscriptionRequest.destination());
+  }
 
 }

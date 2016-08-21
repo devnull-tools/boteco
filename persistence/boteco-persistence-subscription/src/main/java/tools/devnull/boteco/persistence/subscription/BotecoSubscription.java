@@ -25,14 +25,15 @@
 package tools.devnull.boteco.persistence.subscription;
 
 import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.UserMessageDestination;
 import tools.devnull.boteco.event.Subscription;
 
 public class BotecoSubscription implements Subscription {
 
   private final String eventId;
-  private final BotecoSubscriber subscriber;
+  private final UserMessageDestination subscriber;
 
-  public BotecoSubscription(String eventId, BotecoSubscriber subscriber) {
+  public BotecoSubscription(String eventId, UserMessageDestination subscriber) {
     this.eventId = eventId;
     this.subscriber = subscriber;
   }

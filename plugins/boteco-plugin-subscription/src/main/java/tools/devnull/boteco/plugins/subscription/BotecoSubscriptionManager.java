@@ -31,6 +31,7 @@ import tools.devnull.boteco.event.SubscriptionRemovalEventSelector;
 import tools.devnull.boteco.event.SubscriptionRemovalTargetSelector;
 import tools.devnull.boteco.event.SubscriptionTargetSelector;
 import tools.devnull.boteco.message.MessageSender;
+import tools.devnull.boteco.request.RequestManager;
 
 import java.util.List;
 
@@ -38,10 +39,14 @@ public class BotecoSubscriptionManager implements SubscriptionManager {
 
   private final MessageSender messageSender;
   private final SubscriptionRepository repository;
+  private final RequestManager requestManager;
 
-  public BotecoSubscriptionManager(SubscriptionRepository repository, MessageSender messageSender) {
+  public BotecoSubscriptionManager(SubscriptionRepository repository,
+                                   MessageSender messageSender,
+                                   RequestManager requestManager) {
     this.messageSender = messageSender;
     this.repository = repository;
+    this.requestManager = requestManager;
   }
 
   @Override
@@ -57,11 +62,6 @@ public class BotecoSubscriptionManager implements SubscriptionManager {
   @Override
   public SubscriptionTargetSelector subscribe() {
     return target -> channel -> new _SubscriptionEventSelector(target, channel);
-  }
-
-  @Override
-  public boolean confirm(String token) {
-    return repository.confirm(token);
   }
 
   @Override
@@ -90,9 +90,12 @@ public class BotecoSubscriptionManager implements SubscriptionManager {
 
         @Override
         public SubscriptionManager toEvent(String eventId) {
-          String token = repository.requestInsert(eventId, channel, target);
+          String token = requestManager.create(
+              new SubscriptionRequest(eventId, channel, target),
+              "subscription.add"
+          );
           messageSender.send(String.format("To confirm your subscription to %s, use any channel to send " +
-              "a 'subscription confirm' command with this token: %s", eventId, token))
+              "a 'confirm' command with this token: %s", eventId, token))
               .to(target)
               .through(channel);
           return BotecoSubscriptionManager.this;
@@ -130,7 +133,10 @@ public class BotecoSubscriptionManager implements SubscriptionManager {
 
         @Override
         public SubscriptionManager fromEvent(String eventId) {
-          String token = repository.requestDelete(eventId, channel, target);
+          String token = requestManager.create(
+              new SubscriptionRequest(eventId, channel, target),
+              "subscription.remove"
+          );
           messageSender.send(String.format("To confirm your subscription removal from %s, use any channel to send " +
               "a 'confirm' command with this token: %s", eventId, token))
               .to(target)

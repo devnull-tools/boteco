@@ -30,6 +30,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import tools.devnull.boteco.UserMessageDestination;
 import tools.devnull.boteco.request.RequestManager;
 import tools.devnull.boteco.event.Subscription;
 import tools.devnull.boteco.plugins.subscription.SubscriptionRepository;
@@ -42,29 +43,12 @@ import java.util.function.Consumer;
 
 public class MongoSubscriptionRepository implements SubscriptionRepository {
 
-  private final RequestManager requestManager;
   private final MongoCollection<Document> subscriptions;
   private final Gson gson;
 
-  private final Map<String, Consumer<BotecoSubscriptionRequest>> actionMap;
-
-  public MongoSubscriptionRepository(MongoDatabase database, RequestManager requestManager) {
+  public MongoSubscriptionRepository(MongoDatabase database) {
     this.subscriptions = database.getCollection("subscriptions");
-    this.requestManager = requestManager;
     this.gson = new Gson();
-
-    this.actionMap = new HashMap<>();
-
-    this.actionMap.put("insert", this::confirmInsert);
-    this.actionMap.put("delete", this::confirmDelete);
-  }
-
-  private void confirmInsert(BotecoSubscriptionRequest request) {
-    this.subscriptions.insertOne(Document.parse(gson.toJson(request.subscription())));
-  }
-
-  private void confirmDelete(BotecoSubscriptionRequest request) {
-    this.subscriptions.deleteOne(Document.parse(gson.toJson(request.subscription())));
   }
 
   @Override
@@ -92,44 +76,14 @@ public class MongoSubscriptionRepository implements SubscriptionRepository {
   }
 
   @Override
-  public boolean confirm(String token) {
-    BotecoSubscriptionRequest request = this.requestManager.pull(token, BotecoSubscriptionRequest.class);
-    if (request != null) {
-      Consumer<BotecoSubscriptionRequest> action = actionMap.get(request.operation());
-      if (action != null) {
-        action.accept(request);
-        return true;
-      }
-    }
-    return false;
-  }
-
-  @Override
-  public String requestInsert(String eventId, String channel, String target) {
-    return createRequest(eventId, channel, target, "insert");
-  }
-
-  @Override
-  public String requestDelete(String eventId, String channel, String target) {
-    return createRequest(eventId, channel, target, "delete");
-  }
-
-  private String createRequest(String eventId, String channel, String target, String operation) {
-    BotecoSubscriptionRequest subscription = new BotecoSubscriptionRequest(
-        new BotecoSubscription(eventId, new BotecoSubscriber(target, channel)), operation
-    );
-    return requestManager.request(subscription).token();
-  }
-
-  @Override
   public void insert(String eventId, String channel, String target) {
-    Subscription subscription = new BotecoSubscription(eventId, new BotecoSubscriber(target, channel));
+    Subscription subscription = new BotecoSubscription(eventId, new UserMessageDestination(target, channel));
     subscriptions.insertOne(Document.parse(gson.toJson(subscription)));
   }
 
   @Override
   public void delete(String eventId, String channel, String target) {
-    Subscription subscription = new BotecoSubscription(eventId, new BotecoSubscriber(target, channel));
+    Subscription subscription = new BotecoSubscription(eventId, new UserMessageDestination(target, channel));
     subscriptions.deleteOne(Document.parse(gson.toJson(subscription)));
   }
 
