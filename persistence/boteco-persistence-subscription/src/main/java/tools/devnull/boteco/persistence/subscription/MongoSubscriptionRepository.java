@@ -77,13 +77,13 @@ public class MongoSubscriptionRepository implements SubscriptionRepository {
 
   @Override
   public void insert(String eventId, String channel, String target) {
-    Subscription subscription = new BotecoSubscription(eventId, new UserMessageDestination(target, channel));
+    Subscription subscription = new BotecoSubscription(eventId, new UserMessageDestination(channel, target));
     subscriptions.insertOne(Document.parse(gson.toJson(subscription)));
   }
 
   @Override
   public void delete(String eventId, String channel, String target) {
-    Subscription subscription = new BotecoSubscription(eventId, new UserMessageDestination(target, channel));
+    Subscription subscription = new BotecoSubscription(eventId, new UserMessageDestination(channel, target));
     subscriptions.deleteOne(Document.parse(gson.toJson(subscription)));
   }
 
