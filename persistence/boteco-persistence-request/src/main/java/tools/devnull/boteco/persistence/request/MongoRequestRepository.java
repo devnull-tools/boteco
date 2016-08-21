@@ -26,10 +26,13 @@ package tools.devnull.boteco.persistence.request;
 
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
+import com.mongodb.MongoCommandException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.plugins.request.RequestRepository;
 import tools.devnull.boteco.request.Request;
 
@@ -42,11 +45,19 @@ import java.util.concurrent.TimeUnit;
  */
 public class MongoRequestRepository implements RequestRepository {
 
+  private static final Logger logger = LoggerFactory.getLogger(MongoRequestRepository.class);
+
   private final MongoCollection<Document> requests;
   private final Gson gson;
 
   public MongoRequestRepository(MongoDatabase database, Long minutesToExpire) {
     this.requests = database.getCollection("requests");
+    try {
+      this.requests.dropIndex("createdAt_1");
+      logger.info("Dropped index 'createdAt', creating a new one.");
+    } catch (MongoCommandException e) {
+      logger.info("Index for 'createdAt' doesn't exist, creating index.");
+    }
     this.requests.createIndex(new Document("createdAt", 1),
         new IndexOptions().expireAfter(minutesToExpire, TimeUnit.MINUTES));
     this.gson = new Gson();
