@@ -24,7 +24,9 @@
 
 package tools.devnull.boteco.plugins.request;
 
+import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.request.RequestManager;
+import tools.devnull.boteco.request.Verifiable;
 
 /**
  * The default implementation for a {@link RequestManager}.
@@ -34,13 +36,21 @@ import tools.devnull.boteco.request.RequestManager;
 public class BotecoRequestManager implements RequestManager {
 
   private final RequestRepository repository;
+  private final MessageSender messageSender;
 
-  public BotecoRequestManager(RequestRepository repository) {
+  public BotecoRequestManager(RequestRepository repository, MessageSender messageSender) {
     this.repository = repository;
+    this.messageSender = messageSender;
   }
 
   @Override
-  public String create(Object target, String type) {
-    return this.repository.create(target, type);
+  public String create(Verifiable object, String type, String description) {
+    String token = this.repository.create(object, type);
+    //TODO externalize this to allow customization of the text
+    messageSender.send("To confirm '[aa]" + description + "[/aa]' use the token '[a]" + token + "[/a]'.\n" +
+        "If you didn't request this, just ignore this message.")
+        .to(object.targetDestination());
+    return token;
   }
+
 }

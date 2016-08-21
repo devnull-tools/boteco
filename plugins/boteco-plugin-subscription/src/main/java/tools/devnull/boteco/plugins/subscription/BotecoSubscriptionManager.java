@@ -30,21 +30,17 @@ import tools.devnull.boteco.event.SubscriptionManager;
 import tools.devnull.boteco.event.SubscriptionRemovalEventSelector;
 import tools.devnull.boteco.event.SubscriptionRemovalTargetSelector;
 import tools.devnull.boteco.event.SubscriptionTargetSelector;
-import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.request.RequestManager;
 
 import java.util.List;
 
 public class BotecoSubscriptionManager implements SubscriptionManager {
 
-  private final MessageSender messageSender;
   private final SubscriptionRepository repository;
   private final RequestManager requestManager;
 
   public BotecoSubscriptionManager(SubscriptionRepository repository,
-                                   MessageSender messageSender,
                                    RequestManager requestManager) {
-    this.messageSender = messageSender;
     this.repository = repository;
     this.requestManager = requestManager;
   }
@@ -90,14 +86,11 @@ public class BotecoSubscriptionManager implements SubscriptionManager {
 
         @Override
         public SubscriptionManager toEvent(String eventId) {
-          String token = requestManager.create(
+          requestManager.create(
               new SubscriptionRequest(eventId, channel, target),
-              "subscription.add"
+              "subscription.add",
+              "subscribe to " + eventId
           );
-          messageSender.send(String.format("To confirm your subscription to %s, use any channel to send " +
-              "a 'confirm' command with this token: %s", eventId, token))
-              .to(target)
-              .through(channel);
           return BotecoSubscriptionManager.this;
         }
 
@@ -133,14 +126,11 @@ public class BotecoSubscriptionManager implements SubscriptionManager {
 
         @Override
         public SubscriptionManager fromEvent(String eventId) {
-          String token = requestManager.create(
+          requestManager.create(
               new SubscriptionRequest(eventId, channel, target),
-              "subscription.remove"
+              "subscription.remove",
+              "unsubscribe to" + eventId
           );
-          messageSender.send(String.format("To confirm your subscription removal from %s, use any channel to send " +
-              "a 'confirm' command with this token: %s", eventId, token))
-              .to(target)
-              .through(channel);
           return BotecoSubscriptionManager.this;
         }
 

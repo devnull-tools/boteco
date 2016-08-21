@@ -33,12 +33,10 @@
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
   <reference id="repository" interface="tools.devnull.boteco.plugins.subscription.SubscriptionRepository"/>
-  <reference id="message-sender" interface="tools.devnull.boteco.message.MessageSender"/>
   <reference id="request-manager" interface="tools.devnull.boteco.request.RequestManager"/>
 
   <bean id="subscription-manager" class="tools.devnull.boteco.plugins.subscription.BotecoSubscriptionManager">
     <argument ref="repository"/>
-    <argument ref="message-sender"/>
     <argument ref="request-manager"/>
   </bean>
 
@@ -56,7 +54,6 @@
     </service-properties>
     <bean class="tools.devnull.boteco.plugins.subscription.SubscriptionAddRequestListener">
       <argument ref="repository"/>
-      <argument ref="message-sender"/>
     </bean>
   </service>
 
@@ -66,7 +63,6 @@
     </service-properties>
     <bean class="tools.devnull.boteco.plugins.subscription.SubscriptionRemoveRequestListener">
       <argument ref="repository"/>
-      <argument ref="message-sender"/>
     </bean>
   </service>
 

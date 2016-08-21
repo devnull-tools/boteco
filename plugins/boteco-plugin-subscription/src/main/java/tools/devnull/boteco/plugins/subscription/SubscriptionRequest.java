@@ -26,11 +26,12 @@ package tools.devnull.boteco.plugins.subscription;
 
 import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.request.Verifiable;
 
 /**
  * A class that represents a subscription request (for both add or remove)
  */
-public class SubscriptionRequest {
+public class SubscriptionRequest implements Verifiable {
 
   private final String event;
   private final String channel;
@@ -54,7 +55,7 @@ public class SubscriptionRequest {
     return target;
   }
 
-  public MessageDestination destination() {
+  public MessageDestination targetDestination() {
     return Destination.channel(channel).to(target);
   }
 

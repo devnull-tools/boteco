@@ -27,7 +27,7 @@ package tools.devnull.boteco.request;
 /**
  * Interface that defines a processor of a request that has been confirmed.
  */
-public interface RequestListener<T> {
+public interface RequestListener<T extends Verifiable> {
 
   /**
    * Executes an action when the given request is confirmed

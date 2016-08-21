@@ -24,7 +24,6 @@
 
 package tools.devnull.boteco.plugins.subscription;
 
-import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.request.Request;
 import tools.devnull.boteco.request.RequestListener;
 
@@ -34,11 +33,9 @@ import tools.devnull.boteco.request.RequestListener;
 public class SubscriptionAddRequestListener implements RequestListener<SubscriptionRequest> {
 
   private final SubscriptionRepository repository;
-  private final MessageSender messageSender;
 
-  public SubscriptionAddRequestListener(SubscriptionRepository repository, MessageSender messageSender) {
+  public SubscriptionAddRequestListener(SubscriptionRepository repository) {
     this.repository = repository;
-    this.messageSender = messageSender;
   }
 
   @Override
@@ -47,8 +44,6 @@ public class SubscriptionAddRequestListener implements RequestListener<Subscript
     repository.insert(subscriptionRequest.getEvent(),
         subscriptionRequest.getChannel(),
         subscriptionRequest.getTarget());
-    messageSender.send("Your subscription for event [a]" + subscriptionRequest.getEvent() + "[/a] was confirmed!")
-        .to(subscriptionRequest.destination());
   }
 
 }

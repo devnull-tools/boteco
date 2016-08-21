@@ -34,10 +34,12 @@
 
   <bean id="service-locator" class="tools.devnull.boteco.OsgiServiceLocator"/>
   <reference id="repository" interface="tools.devnull.boteco.plugins.request.RequestRepository"/>
+  <reference id="message-sender" interface="tools.devnull.boteco.message.MessageSender"/>
 
   <service interface="tools.devnull.boteco.request.RequestManager">
     <bean class="tools.devnull.boteco.plugins.request.BotecoRequestManager">
       <argument ref="repository"/>
+      <argument ref="message-sender"/>
     </bean>
   </service>
 

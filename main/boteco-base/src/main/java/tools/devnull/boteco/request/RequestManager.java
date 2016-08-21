@@ -30,12 +30,14 @@ package tools.devnull.boteco.request;
 public interface RequestManager {
 
   /**
-   * Creates a request for the given target.
+   * Creates a request for the given object and sends instructions about how to verify
+   * the request.
    *
-   * @param target the target of the request
-   * @param type   the type of the request
+   * @param object      the target of the request
+   * @param type        the type of the request
+   * @param description the description of the request
    * @return the token that should be used to confirm the request.
    */
-  String create(Object target, String type);
+  String create(Verifiable object, String type, String description);
 
 }

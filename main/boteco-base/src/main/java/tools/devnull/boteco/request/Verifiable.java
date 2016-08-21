@@ -22,28 +22,20 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.subscription;
+package tools.devnull.boteco.request;
 
-import tools.devnull.boteco.request.Request;
-import tools.devnull.boteco.request.RequestListener;
+import tools.devnull.boteco.MessageDestination;
 
 /**
- * A class that process confirmations of subscription addition.
+ * Interface that defines an object that should be verified by a confirmation.
  */
-public class SubscriptionRemoveRequestListener implements RequestListener<SubscriptionRequest> {
+public interface Verifiable {
 
-  private final SubscriptionRepository repository;
-
-  public SubscriptionRemoveRequestListener(SubscriptionRepository repository) {
-    this.repository = repository;
-  }
-
-  @Override
-  public void onConfirm(Request<SubscriptionRequest> request) {
-    SubscriptionRequest subscriptionRequest = request.object(SubscriptionRequest.class);
-    repository.delete(subscriptionRequest.getEvent(),
-        subscriptionRequest.getChannel(),
-        subscriptionRequest.getTarget());
-  }
+  /**
+   * Returns the destination to send instructions about how to verify the request.
+   *
+   * @return the destination to send instructions.
+   */
+  MessageDestination targetDestination();
 
 }
