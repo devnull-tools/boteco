@@ -90,4 +90,13 @@ public class BotecoUser implements User {
     this.primaryDestination = primaryDestination.channel();
   }
 
+  @Override
+  public void setPrimaryDestination(String channel) {
+    if (this.destinations.containsKey("channel")) {
+      this.primaryDestination = channel;
+    } else {
+      throw new InvalidDestinationException("User don't have the channel " + channel + " linked");
+    }
+  }
+
 }

@@ -43,6 +43,8 @@ public interface User extends Serializable {
 
   void setPrimaryDestination(MessageDestination primaryDestination);
 
+  void setPrimaryDestination(String channel);
+
   void addDestination(MessageDestination destination);
 
   void removeDestination(MessageDestination destination) throws InvalidDestinationException;

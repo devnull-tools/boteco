@@ -66,4 +66,13 @@
     </bean>
   </service>
 
+  <service interface="tools.devnull.boteco.request.RequestListener">
+    <service-properties>
+      <entry key="request" value="user.primaryDestination"/>
+    </service-properties>
+    <bean class="tools.devnull.boteco.plugins.user.UserPrimaryDestinationRequestListener">
+      <argument ref="repository"/>
+    </bean>
+  </service>
+
 </blueprint>

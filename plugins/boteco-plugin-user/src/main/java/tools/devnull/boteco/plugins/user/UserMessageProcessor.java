@@ -71,6 +71,7 @@ public class UserMessageProcessor implements MessageProcessor {
               .sendingTokenTo(request.tokenDestination());
           message.reply("Unlink requested and will be effective after confirmation.");
         })
+        .on("default", BotecoPrimaryDestinationRequest.class, userManager::requestPrimartDestinationChange)
         .execute();
   }
 

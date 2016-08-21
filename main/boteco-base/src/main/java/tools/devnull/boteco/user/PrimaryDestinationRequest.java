@@ -24,38 +24,12 @@
 
 package tools.devnull.boteco.user;
 
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.request.Verifiable;
 
-public interface UserManager {
+public interface PrimaryDestinationRequest extends Verifiable {
 
-  User find(MessageDestination destination);
+  String userId();
 
-  User find(String userId);
-
-  User create(String userId, MessageDestination primaryDestination) throws UserAlreadyExistException;
-
-  LinkSelector link(MessageDestination destination);
-
-  UnlinkSelector unlink(MessageDestination destination);
-
-  void requestPrimartDestinationChange(PrimaryDestinationRequest request);
-
-  interface LinkSelector {
-
-    TokenDestinationSelector to(String userId);
-
-  }
-
-  interface UnlinkSelector {
-
-    TokenDestinationSelector from(String userId);
-
-  }
-
-  interface TokenDestinationSelector {
-
-    void sendingTokenTo(MessageDestination destination);
-
-  }
+  String channel();
 
 }

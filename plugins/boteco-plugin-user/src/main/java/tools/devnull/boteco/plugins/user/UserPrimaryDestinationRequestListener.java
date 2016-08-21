@@ -22,40 +22,32 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.user;
+package tools.devnull.boteco.plugins.user;
 
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.request.Request;
+import tools.devnull.boteco.request.RequestListener;
+import tools.devnull.boteco.user.User;
+import tools.devnull.boteco.user.UserNotFoundException;
 
-public interface UserManager {
+public class UserPrimaryDestinationRequestListener implements RequestListener<BotecoPrimaryDestinationRequest> {
 
-  User find(MessageDestination destination);
+  private final UserRepository repository;
 
-  User find(String userId);
-
-  User create(String userId, MessageDestination primaryDestination) throws UserAlreadyExistException;
-
-  LinkSelector link(MessageDestination destination);
-
-  UnlinkSelector unlink(MessageDestination destination);
-
-  void requestPrimartDestinationChange(PrimaryDestinationRequest request);
-
-  interface LinkSelector {
-
-    TokenDestinationSelector to(String userId);
-
+  public UserPrimaryDestinationRequestListener(UserRepository repository) {
+    this.repository = repository;
   }
 
-  interface UnlinkSelector {
-
-    TokenDestinationSelector from(String userId);
-
-  }
-
-  interface TokenDestinationSelector {
-
-    void sendingTokenTo(MessageDestination destination);
-
+  @Override
+  public void onConfirm(Request<BotecoPrimaryDestinationRequest> request) {
+    BotecoPrimaryDestinationRequest destinationRequest = request.object(BotecoPrimaryDestinationRequest.class);
+    String userId = destinationRequest.user();
+    User user = this.repository.find(userId);
+    if (user != null) {
+      user.setPrimaryDestination(destinationRequest.channel());
+      this.repository.update(user);
+    } else {
+      throw new UserNotFoundException("User " + userId + " doesn't exist!");
+    }
   }
 
 }

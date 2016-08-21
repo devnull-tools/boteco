@@ -26,6 +26,7 @@ package tools.devnull.boteco.plugins.user;
 
 import tools.devnull.boteco.MessageDestination;
 import tools.devnull.boteco.request.RequestManager;
+import tools.devnull.boteco.user.PrimaryDestinationRequest;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.user.UserManager;
 
@@ -70,6 +71,13 @@ public class BotecoUserManager implements UserManager {
         "user.unlink",
         "unlink account from"
     );
+  }
+
+  @Override
+  public void requestPrimartDestinationChange(PrimaryDestinationRequest request) {
+    this.requestManager.create(request,
+        "user.primaryDestination",
+        "primary destination to " + request.channel());
   }
 
 }

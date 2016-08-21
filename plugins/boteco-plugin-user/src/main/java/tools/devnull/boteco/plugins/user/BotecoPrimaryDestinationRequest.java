@@ -22,40 +22,41 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.user;
+package tools.devnull.boteco.plugins.user;
 
+import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.Param;
+import tools.devnull.boteco.Parameters;
+import tools.devnull.boteco.user.PrimaryDestinationRequest;
 
-public interface UserManager {
+@Parameters({
+    "user",
+    "channel",
+    "user channel"
+})
+public class BotecoPrimaryDestinationRequest implements PrimaryDestinationRequest {
 
-  User find(MessageDestination destination);
+  private final String user;
+  private final String channel;
 
-  User find(String userId);
-
-  User create(String userId, MessageDestination primaryDestination) throws UserAlreadyExistException;
-
-  LinkSelector link(MessageDestination destination);
-
-  UnlinkSelector unlink(MessageDestination destination);
-
-  void requestPrimartDestinationChange(PrimaryDestinationRequest request);
-
-  interface LinkSelector {
-
-    TokenDestinationSelector to(String userId);
-
+  public BotecoPrimaryDestinationRequest(@Param("user") String user,
+                                         @Param("channel") String channel) {
+    this.user = user;
+    this.channel = channel;
   }
 
-  interface UnlinkSelector {
-
-    TokenDestinationSelector from(String userId);
-
+  public String userId() {
+    return user;
   }
 
-  interface TokenDestinationSelector {
+  public String channel() {
+    return channel;
+  }
 
-    void sendingTokenTo(MessageDestination destination);
-
+  @Override
+  public MessageDestination targetDestination() {
+    return Destination.channel("user").to(user);
   }
 
 }
