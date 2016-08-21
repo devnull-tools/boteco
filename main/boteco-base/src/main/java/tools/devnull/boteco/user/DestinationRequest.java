@@ -22,52 +22,15 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.user;
+package tools.devnull.boteco.user;
 
-import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.MessageDestination;
-import tools.devnull.boteco.Param;
-import tools.devnull.boteco.Parameters;
-import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.request.Verifiable;
 
-/**
- * A class that represents a request to link/unlink a destination
- * to an user.
- */
-@Parameters({
-    "channel target",
-    "user"
-})
-public class LinkRequest {
+public interface DestinationRequest extends Verifiable {
 
-  private final String user;
-  private final MessageDestination linkDestination;
-  private final MessageDestination tokenDestination;
+  String userId();
 
-  public LinkRequest(IncomeMessage message,
-                     @Param("channel") String channel,
-                     @Param("target") String target) {
-    this.user = message.user().id();
-    this.linkDestination = Destination.channel(channel).to(target);
-    this.tokenDestination = linkDestination;
-  }
-
-  public LinkRequest(@Param("user") String user, IncomeMessage message) {
-    this.user = user;
-    this.linkDestination = message.destination();
-    this.tokenDestination = Destination.channel("user").to(user);
-  }
-
-  public String user() {
-    return user;
-  }
-
-  public MessageDestination linkDestination() {
-    return linkDestination;
-  }
-
-  public MessageDestination tokenDestination() {
-    return tokenDestination;
-  }
+  MessageDestination targetDestination();
 
 }

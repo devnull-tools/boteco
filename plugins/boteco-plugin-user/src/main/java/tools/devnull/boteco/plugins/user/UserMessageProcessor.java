@@ -59,19 +59,18 @@ public class UserMessageProcessor implements MessageProcessor {
           userManager.create(userId, message.destination());
           message.reply("User created");
         })
-        .on("link", LinkRequest.class, request -> {
-          userManager.link(request.linkDestination())
-              .to(request.user())
-              .sendingTokenTo(request.tokenDestination());
+        .on("link", BotecoDestinationRequest.class, request -> {
+          userManager.link(request);
           message.reply("Link requested and will be effective after confirmation.");
         })
-        .on("unlink", LinkRequest.class, request -> {
-          userManager.unlink(request.linkDestination())
-              .from(request.user())
-              .sendingTokenTo(request.tokenDestination());
+        .on("unlink", BotecoDestinationRequest.class, request -> {
+          userManager.unlink(request);
           message.reply("Unlink requested and will be effective after confirmation.");
         })
-        .on("default", BotecoPrimaryDestinationRequest.class, userManager::requestPrimartDestinationChange)
+        .on("default", BotecoPrimaryDestinationRequest.class, request -> {
+          userManager.changePrimaryDestination(request);
+          message.reply("Change requested and will be effective after confirmation.");
+        })
         .execute();
   }
 

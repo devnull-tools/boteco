@@ -55,7 +55,7 @@ public class BotecoPrimaryDestinationRequest implements PrimaryDestinationReques
   }
 
   @Override
-  public MessageDestination targetDestination() {
+  public MessageDestination tokenDestination() {
     return Destination.channel("user").to(user);
   }
 

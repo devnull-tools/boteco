@@ -40,7 +40,7 @@ public class UserPrimaryDestinationRequestListener implements RequestListener<Bo
   @Override
   public void onConfirm(Request<BotecoPrimaryDestinationRequest> request) {
     BotecoPrimaryDestinationRequest destinationRequest = request.object(BotecoPrimaryDestinationRequest.class);
-    String userId = destinationRequest.user();
+    String userId = destinationRequest.userId();
     User user = this.repository.find(userId);
     if (user != null) {
       user.setPrimaryDestination(destinationRequest.channel());

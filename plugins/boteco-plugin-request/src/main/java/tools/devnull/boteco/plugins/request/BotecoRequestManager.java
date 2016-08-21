@@ -49,7 +49,7 @@ public class BotecoRequestManager implements RequestManager {
     //TODO externalize this to allow customization of the text
     messageSender.send("To confirm '[aa]" + description + "[/aa]' use the token '[a]" + token + "[/a]'.\n" +
         "If you didn't request this, just ignore this message.")
-        .to(object.targetDestination());
+        .to(object.tokenDestination());
     return token;
   }
 

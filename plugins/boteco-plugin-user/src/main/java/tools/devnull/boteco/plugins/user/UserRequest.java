@@ -52,7 +52,7 @@ public class UserRequest implements Verifiable {
   }
 
   @Override
-  public MessageDestination targetDestination() {
+  public MessageDestination tokenDestination() {
     return targetDestination;
   }
 

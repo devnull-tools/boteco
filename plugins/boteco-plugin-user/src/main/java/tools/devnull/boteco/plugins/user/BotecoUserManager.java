@@ -26,6 +26,7 @@ package tools.devnull.boteco.plugins.user;
 
 import tools.devnull.boteco.MessageDestination;
 import tools.devnull.boteco.request.RequestManager;
+import tools.devnull.boteco.user.DestinationRequest;
 import tools.devnull.boteco.user.PrimaryDestinationRequest;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.user.UserManager;
@@ -55,29 +56,21 @@ public class BotecoUserManager implements UserManager {
     return repository.create(userId, destination);
   }
 
+
   @Override
-  public LinkSelector link(MessageDestination destination) {
-    return userId -> tokenDestination -> this.requestManager.create(
-        new UserRequest(userId, destination, tokenDestination),
-        "user.link",
-        "link account to user"
-    );
+  public void link(DestinationRequest request) {
+    this.requestManager.create(request, "user.link", "link account to user " + request.userId());
   }
 
   @Override
-  public UnlinkSelector unlink(MessageDestination destination) {
-    return userId -> tokenDestination -> this.requestManager.create(
-        new UserRequest(userId, destination, tokenDestination),
-        "user.unlink",
-        "unlink account from"
-    );
+  public void unlink(DestinationRequest request) {
+    this.requestManager.create(request, "user.unlink", "unlink account from user " + request.userId());
   }
 
   @Override
-  public void requestPrimartDestinationChange(PrimaryDestinationRequest request) {
-    this.requestManager.create(request,
-        "user.primaryDestination",
-        "primary destination to " + request.channel());
+  public void changePrimaryDestination(PrimaryDestinationRequest request) {
+    this.requestManager.create(request, "user.primaryDestination",
+        "primary destination to " + request.channel() + " for user " + request.userId());
   }
 
 }

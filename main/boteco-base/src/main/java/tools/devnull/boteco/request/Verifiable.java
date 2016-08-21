@@ -36,6 +36,6 @@ public interface Verifiable {
    *
    * @return the destination to send instructions.
    */
-  MessageDestination targetDestination();
+  MessageDestination tokenDestination();
 
 }

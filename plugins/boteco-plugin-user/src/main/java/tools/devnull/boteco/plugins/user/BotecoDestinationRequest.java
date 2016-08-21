@@ -22,41 +22,53 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.subscription;
+package tools.devnull.boteco.plugins.user;
 
 import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.MessageDestination;
-import tools.devnull.boteco.request.Verifiable;
+import tools.devnull.boteco.Param;
+import tools.devnull.boteco.Parameters;
+import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.user.DestinationRequest;
 
 /**
- * A class that represents a subscription request (for both add or remove)
+ * A class that represents a request to link/unlink a destination
+ * to an user.
  */
-public class SubscriptionRequest implements Verifiable {
+@Parameters({
+    "channel target",
+    "user"
+})
+public class BotecoDestinationRequest implements DestinationRequest {
 
-  private final String event;
-  private final String channel;
-  private final String target;
+  private final String user;
+  private final MessageDestination targetDestination;
+  private final MessageDestination tokenDestination;
 
-  public SubscriptionRequest(String event, String channel, String target) {
-    this.event = event;
-    this.channel = channel;
-    this.target = target;
+  public BotecoDestinationRequest(IncomeMessage message,
+                                  @Param("channel") String channel,
+                                  @Param("target") String target) {
+    this.user = message.user().id();
+    this.targetDestination = Destination.channel(channel).to(target);
+    this.tokenDestination = targetDestination;
   }
 
-  public String getEvent() {
-    return event;
+  public BotecoDestinationRequest(@Param("user") String user, IncomeMessage message) {
+    this.user = user;
+    this.targetDestination = message.destination();
+    this.tokenDestination = Destination.channel("user").to(user);
   }
 
-  public String getChannel() {
-    return channel;
+  public String userId() {
+    return user;
   }
 
-  public String getTarget() {
-    return target;
+  public MessageDestination targetDestination() {
+    return targetDestination;
   }
 
   public MessageDestination tokenDestination() {
-    return Destination.channel(channel).to(target);
+    return tokenDestination;
   }
 
 }
