@@ -33,7 +33,7 @@
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
   <reference id="database" interface="com.mongodb.client.MongoDatabase"/>
-  <reference id="request-manager" interface="tools.devnull.boteco.RequestManager"/>
+  <reference id="request-manager" interface="tools.devnull.boteco.request.RequestManager"/>
 
   <service interface="tools.devnull.boteco.plugins.subscription.SubscriptionRepository">
     <bean class="tools.devnull.boteco.persistence.subscription.MongoSubscriptionRepository">

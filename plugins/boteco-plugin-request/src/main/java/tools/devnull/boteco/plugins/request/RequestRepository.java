@@ -24,7 +24,7 @@
 
 package tools.devnull.boteco.plugins.request;
 
-import tools.devnull.boteco.Request;
+import tools.devnull.boteco.request.Request;
 
 /**
  * Interface that defines a repository for storing {@link Request requests}.

@@ -22,7 +22,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco;
+package tools.devnull.boteco.request;
 
 /**
  * Interface that defines a component capable of managing {@link Request requests}.

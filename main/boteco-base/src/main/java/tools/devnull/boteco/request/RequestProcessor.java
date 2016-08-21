@@ -22,36 +22,14 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco;
-
-import java.util.Date;
+package tools.devnull.boteco.request;
 
 /**
- * Interface that represents a request that needs to be verified.
- *
- * @param <T> the type of the object requested.
+ * Interface that defines a processor of a request that has
+ * confirmed.
  */
-public interface Request<T> {
+public interface RequestProcessor<T> {
 
-  /**
-   * Returns the token that validates this request.
-   *
-   * @return the token that validates this request.
-   */
-  String token();
-
-  /**
-   * Returns the requested object.
-   *
-   * @return the requested object.
-   */
-  T object();
-
-  /**
-   * Returns the time when this request was created.
-   *
-   * @return the time when this request was created.
-   */
-  Date createdAt();
+  void process(Request<T> request);
 
 }

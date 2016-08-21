@@ -24,8 +24,8 @@
 
 package tools.devnull.boteco.plugins.request;
 
-import tools.devnull.boteco.Request;
-import tools.devnull.boteco.RequestManager;
+import tools.devnull.boteco.request.Request;
+import tools.devnull.boteco.request.RequestManager;
 
 /**
  * The default implementation for a {@link RequestManager}.

@@ -22,41 +22,36 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.request;
-
-import tools.devnull.boteco.request.Request;
+package tools.devnull.boteco.request;
 
 import java.util.Date;
-import java.util.UUID;
 
 /**
- * Default Request implementation
+ * Interface that represents a request that needs to be verified.
+ *
+ * @param <T> the type of the object requested.
  */
-public class BotecoRequest implements Request {
+public interface Request<T> {
 
-  private final String token;
-  private final Object object;
-  private final Date createdAt;
+  /**
+   * Returns the token that validates this request.
+   *
+   * @return the token that validates this request.
+   */
+  String token();
 
-  public BotecoRequest(Object object) {
-    this.object = object;
-    this.token = UUID.randomUUID().toString();
-    this.createdAt = new Date();
-  }
+  /**
+   * Returns the requested object.
+   *
+   * @return the requested object.
+   */
+  T object();
 
-  @Override
-  public String token() {
-    return this.token;
-  }
-
-  @Override
-  public Object object() {
-    return this.object;
-  }
-
-  @Override
-  public Date createdAt() {
-    return this.createdAt;
-  }
+  /**
+   * Returns the time when this request was created.
+   *
+   * @return the time when this request was created.
+   */
+  Date createdAt();
 
 }

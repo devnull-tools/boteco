@@ -34,7 +34,7 @@
 
   <reference id="repository" interface="tools.devnull.boteco.plugins.request.RequestRepository"/>
 
-  <service interface="tools.devnull.boteco.RequestManager">
+  <service interface="tools.devnull.boteco.request.RequestManager">
     <bean class="tools.devnull.boteco.plugins.request.BotecoRequestManager">
       <argument ref="repository"/>
     </bean>

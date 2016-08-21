@@ -30,7 +30,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import tools.devnull.boteco.RequestManager;
+import tools.devnull.boteco.request.RequestManager;
 import tools.devnull.boteco.event.Subscription;
 import tools.devnull.boteco.plugins.subscription.SubscriptionRepository;
 

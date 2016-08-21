@@ -31,7 +31,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import tools.devnull.boteco.Request;
+import tools.devnull.boteco.request.Request;
 import tools.devnull.boteco.plugins.request.RequestRepository;
 
 import java.util.concurrent.TimeUnit;
