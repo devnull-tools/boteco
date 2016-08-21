@@ -27,6 +27,7 @@ package tools.devnull.boteco.plugins.user;
 import tools.devnull.boteco.request.Request;
 import tools.devnull.boteco.request.RequestListener;
 import tools.devnull.boteco.user.User;
+import tools.devnull.boteco.user.UserNotFoundException;
 
 public class UserLinkRequestListener implements RequestListener<UserRequest> {
 
@@ -41,11 +42,11 @@ public class UserLinkRequestListener implements RequestListener<UserRequest> {
     UserRequest userRequest = request.object(UserRequest.class);
     String userId = userRequest.getUser();
     User user = this.repository.find(userId);
-    if (user == null) {
-      this.repository.create(userId, userRequest.targetDestination());
-    } else {
+    if (user != null) {
       user.addDestination(userRequest.targetDestination());
       this.repository.update(user);
+    } else {
+      throw new UserNotFoundException("User " + userId + " doesn't exist!");
     }
   }
 
