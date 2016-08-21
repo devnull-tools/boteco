@@ -43,7 +43,7 @@ public class UserLinkRequestListener implements RequestListener<UserRequest> {
     String userId = userRequest.getUser();
     User user = this.repository.find(userId);
     if (user != null) {
-      user.addDestination(userRequest.targetDestination());
+      user.addDestination(userRequest.destination());
       this.repository.update(user);
     } else {
       throw new UserNotFoundException("User " + userId + " doesn't exist!");

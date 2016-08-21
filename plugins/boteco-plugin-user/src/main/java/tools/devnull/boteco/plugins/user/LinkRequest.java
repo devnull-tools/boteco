@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.plugins.user;
 
+import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.MessageDestination;
 import tools.devnull.boteco.Param;
 import tools.devnull.boteco.Parameters;
@@ -34,40 +35,39 @@ import tools.devnull.boteco.message.IncomeMessage;
  * to an user.
  */
 @Parameters({
-    "user channel target",
+    "channel target",
     "user"
 })
 public class LinkRequest {
 
   private final String user;
-  private final String channel;
-  private final String target;
+  private final MessageDestination linkDestination;
+  private final MessageDestination tokenDestination;
 
-  public LinkRequest(@Param("user") String user,
+  public LinkRequest(IncomeMessage message,
                      @Param("channel") String channel,
                      @Param("target") String target) {
-    this.user = user;
-    this.channel = channel;
-    this.target = target;
+    this.user = message.user().id();
+    this.linkDestination = Destination.channel(channel).to(target);
+    this.tokenDestination = linkDestination;
   }
 
-  public LinkRequest(String user, IncomeMessage message) {
-    MessageDestination destination = message.destination();
+  public LinkRequest(@Param("user") String user, IncomeMessage message) {
     this.user = user;
-    this.channel = destination.channel();
-    this.target = destination.target();
+    this.linkDestination = message.destination();
+    this.tokenDestination = Destination.channel("user").to(user);
   }
 
   public String user() {
     return user;
   }
 
-  public String channel() {
-    return channel;
+  public MessageDestination linkDestination() {
+    return linkDestination;
   }
 
-  public String target() {
-    return target;
+  public MessageDestination tokenDestination() {
+    return tokenDestination;
   }
 
 }

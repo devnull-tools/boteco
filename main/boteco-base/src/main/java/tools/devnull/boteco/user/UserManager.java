@@ -34,8 +34,26 @@ public interface UserManager {
 
   User create(String userId, MessageDestination primaryDestination) throws UserAlreadyExistException;
 
-  void link(String userId, MessageDestination destination);
+  LinkSelector link(MessageDestination destination);
 
-  void unlink(String userId, MessageDestination destination);
+  UnlinkSelector unlink(MessageDestination destination);
+
+  interface LinkSelector {
+
+    TokenDestinationSelector to(String userId);
+
+  }
+
+  interface UnlinkSelector {
+
+    TokenDestinationSelector from(String userId);
+
+  }
+
+  interface TokenDestinationSelector {
+
+    void sendingTokenTo(MessageDestination destination);
+
+  }
 
 }

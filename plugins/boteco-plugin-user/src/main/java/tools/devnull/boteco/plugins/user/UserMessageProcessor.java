@@ -24,7 +24,6 @@
 
 package tools.devnull.boteco.plugins.user;
 
-import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.user.UserManager;
@@ -61,12 +60,16 @@ public class UserMessageProcessor implements MessageProcessor {
           message.reply("User created");
         })
         .on("link", LinkRequest.class, request -> {
-          userManager.link(request.user(), Destination.channel(request.channel()).to(request.target()));
-          message.reply("Link requested, check your primary destination for instructions.");
+          userManager.link(request.linkDestination())
+              .to(request.user())
+              .sendingTokenTo(request.tokenDestination());
+          message.reply("Link requested");
         })
         .on("unlink", LinkRequest.class, request -> {
-          userManager.unlink(request.user(), Destination.channel(request.channel()).to(request.target()));
-          message.reply("Unlink requested, check your primary destination for instructions.");
+          userManager.unlink(request.linkDestination())
+              .from(request.user())
+              .sendingTokenTo(request.tokenDestination());
+          message.reply("Unlink requested.");
         })
         .execute();
   }
