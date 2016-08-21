@@ -35,10 +35,16 @@
   <reference id="message-sender" interface="tools.devnull.boteco.message.MessageSender"/>
   <reference id="repository" interface="tools.devnull.boteco.plugins.user.UserRepository"/>
 
-  <service interface="tools.devnull.boteco.user.UserManager">
-    <bean class="tools.devnull.boteco.plugins.user.BotecoUserManager">
-      <argument ref="repository"/>
-      <argument ref="message-sender"/>
+  <bean id="user-manager" class="tools.devnull.boteco.plugins.user.BotecoUserManager">
+    <argument ref="repository"/>
+    <argument ref="message-sender"/>
+  </bean>
+
+  <service interface="tools.devnull.boteco.user.UserManager" ref="user-manager"/>
+
+  <service interface="tools.devnull.boteco.message.MessageProcessor">
+    <bean class="tools.devnull.boteco.plugins.user.UserMessageProcessor">
+      <argument ref="user-manager"/>
     </bean>
   </service>
 

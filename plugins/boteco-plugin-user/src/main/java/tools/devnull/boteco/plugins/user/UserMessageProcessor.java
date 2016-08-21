@@ -24,17 +24,47 @@
 
 package tools.devnull.boteco.plugins.user;
 
-import tools.devnull.boteco.MessageDestination;
-import tools.devnull.boteco.user.User;
+import tools.devnull.boteco.Destination;
+import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.user.UserManager;
 
-public interface UserRepository {
+import static tools.devnull.boteco.Predicates.command;
+import static tools.devnull.boteco.message.MessageChecker.check;
 
-  User find(MessageDestination destination);
+/**
+ * A message processor for user operations.
+ */
+public class UserMessageProcessor implements MessageProcessor {
 
-  User find(String userId);
+  private final UserManager userManager;
 
-  User create(String userId, MessageDestination primaryDestination);
+  public UserMessageProcessor(UserManager userManager) {
+    this.userManager = userManager;
+  }
 
-  void update(User user);
+  @Override
+  public String id() {
+    return "user";
+  }
+
+  @Override
+  public boolean canProcess(IncomeMessage message) {
+    return check(message).accept(command("user"));
+  }
+
+  @Override
+  public void process(IncomeMessage message) {
+    message.command()
+        .on("new", String.class, userId -> {
+          userManager.create(userId, message.destination());
+          message.reply("User created");
+        })
+        .on("link", LinkRequest.class, request -> {
+          userManager.requestLink(request.user(), Destination.channel(request.channel()).to(request.target()));
+          message.reply("Link requested, check your primary destination for instructions.");
+        })
+        .execute();
+  }
 
 }

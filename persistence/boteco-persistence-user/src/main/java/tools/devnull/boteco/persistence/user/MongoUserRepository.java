@@ -30,6 +30,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import tools.devnull.boteco.InvalidDestinationException;
 import tools.devnull.boteco.MessageDestination;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.user.UserAlreadyExistException;
@@ -66,11 +67,14 @@ public class MongoUserRepository implements UserRepository {
   }
 
   @Override
-  public User create(String userId, MessageDestination defaultDestination) {
+  public User create(String userId, MessageDestination primaryDestination) {
     if (find(userId) != null) {
       throw new UserAlreadyExistException("User " + userId + " already exists");
     }
-    User user = new BotecoUser(userId, defaultDestination);
+    if (find(primaryDestination) != null) {
+      throw new InvalidDestinationException("Destination already registered");
+    }
+    User user = new BotecoUser(userId, primaryDestination);
     this.users.insertOne(Document.parse(this.gson.toJson(user)));
     return user;
   }

@@ -56,7 +56,7 @@ public class BotecoUserTest {
   public void testConstructor() {
     TestScenario.given(user)
         .then(User::id, should().be("user"))
-        .then(User::defaultDestination, should().be(defaultDestination))
+        .then(User::primaryDestination, should().be(defaultDestination))
         .then(User::destinations, should().have(twoElements()));
   }
 
@@ -73,7 +73,7 @@ public class BotecoUserTest {
   public void testChangeDefaultDestination() {
     TestScenario.given(user)
         .when(defaultDestinationIsSetTo(secondaryDestination))
-        .then(User::defaultDestination, should().be(secondaryDestination))
+        .then(User::primaryDestination, should().be(secondaryDestination))
 
         .then(removing(defaultDestination), should().succeed())
 
@@ -84,11 +84,11 @@ public class BotecoUserTest {
         .when(defaultDestinationIsSetTo(defaultDestination))
 
         .then(User::destinations, should().have(twoElements()))
-        .then(User::defaultDestination, should().be(defaultDestination));
+        .then(User::primaryDestination, should().be(defaultDestination));
   }
 
   private Consumer<User> defaultDestinationIsSetTo(MessageDestination destination) {
-    return u -> u.setDefaultDestination(destination);
+    return u -> u.setPrimaryDestination(destination);
   }
 
   private Predicate<List> oneElement() {

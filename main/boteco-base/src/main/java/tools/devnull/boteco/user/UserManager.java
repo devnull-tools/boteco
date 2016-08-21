@@ -25,7 +25,6 @@
 package tools.devnull.boteco.user;
 
 import tools.devnull.boteco.MessageDestination;
-import tools.devnull.boteco.message.IncomeMessage;
 
 public interface UserManager {
 
@@ -33,12 +32,22 @@ public interface UserManager {
 
   User find(String userId);
 
-  User create(String userId, IncomeMessage message) throws UserAlreadyExistException;
-
-  User link(String userId, IncomeMessage message);
-
-  User unlink(String userId, IncomeMessage message);
+  User create(String userId, MessageDestination primaryDestination) throws UserAlreadyExistException;
 
   void update(User user);
+
+  void delete(User user);
+
+  User link(String userId, MessageDestination destination);
+
+  User unlink(String userId, MessageDestination destination);
+
+  String requestLink(String userId, MessageDestination destination);
+
+  String requestUnlink(String userId, MessageDestination destination);
+
+  boolean confirmLink(String token);
+
+  boolean confirmUnlink(String token);
 
 }

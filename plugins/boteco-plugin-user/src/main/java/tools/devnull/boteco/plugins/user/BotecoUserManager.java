@@ -25,11 +25,10 @@
 package tools.devnull.boteco.plugins.user;
 
 import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.user.UserManager;
 import tools.devnull.boteco.user.UserNotFoundException;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageSender;
 
 public class BotecoUserManager implements UserManager {
 
@@ -52,28 +51,28 @@ public class BotecoUserManager implements UserManager {
   }
 
   @Override
-  public User create(String userId, IncomeMessage message) {
-    return repository.create(userId, message.destination());
+  public User create(String userId, MessageDestination destination) {
+    return repository.create(userId, destination);
   }
 
   @Override
-  public User link(String userId, IncomeMessage message) {
+  public User link(String userId, MessageDestination destination) {
     User user = find(userId);
     if (user == null) {
-      return create(userId, message);
+      return create(userId, destination);
     }
-    user.addDestination(message.destination());
+    user.addDestination(destination);
     update(user);
     return user;
   }
 
   @Override
-  public User unlink(String userId, IncomeMessage message) {
+  public User unlink(String userId, MessageDestination destination) {
     User user = find(userId);
     if (user == null) {
       throw new UserNotFoundException("Couldn't find user with the id " + userId);
     }
-    user.removeDestination(message.destination());
+    user.removeDestination(destination);
     update(user);
     return user;
   }

@@ -42,13 +42,13 @@ public class BotecoUser implements User {
   @SerializedName("_id")
   private final String id;
   private final Map<String, String> destinations;
-  private String defaultDestination;
+  private String primaryDestination;
 
-  public BotecoUser(String id, MessageDestination defaultDestination) {
+  public BotecoUser(String id, MessageDestination primaryDestination) {
     this.id = id;
-    this.defaultDestination = defaultDestination.channel();
+    this.primaryDestination = primaryDestination.channel();
     this.destinations = new HashMap<>();
-    this.destinations.put(defaultDestination.channel(), defaultDestination.target());
+    this.destinations.put(primaryDestination.channel(), primaryDestination.target());
   }
 
   @Override
@@ -64,8 +64,8 @@ public class BotecoUser implements User {
   }
 
   @Override
-  public MessageDestination defaultDestination() {
-    return Destination.channel(this.defaultDestination).to(this.destinations.get(this.defaultDestination));
+  public MessageDestination primaryDestination() {
+    return Destination.channel(this.primaryDestination).to(this.destinations.get(this.primaryDestination));
   }
 
   @Override
@@ -75,16 +75,19 @@ public class BotecoUser implements User {
 
   @Override
   public void removeDestination(MessageDestination destination) {
-    if (destination.channel().equals(this.defaultDestination)) {
+    if (destination.channel().equals(this.primaryDestination)) {
       throw new InvalidDestinationException("Can't remove default destination");
     }
-    this.destinations.remove(destination.channel());
+    if (this.destinations.containsKey(destination.channel())) {
+      this.destinations.remove(destination.channel());
+    } else {
+      throw new InvalidDestinationException("User don't have the given destination");
+    }
   }
 
-  @Override
-  public void setDefaultDestination(MessageDestination defaultDestination) {
-    addDestination(defaultDestination);
-    this.defaultDestination = defaultDestination.channel();
+  public void setPrimaryDestination(MessageDestination primaryDestination) {
+    addDestination(primaryDestination);
+    this.primaryDestination = primaryDestination.channel();
   }
 
 }

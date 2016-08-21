@@ -22,29 +22,52 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.user;
+package tools.devnull.boteco.plugins.user;
 
-import tools.devnull.boteco.InvalidDestinationException;
 import tools.devnull.boteco.MessageDestination;
-
-import java.io.Serializable;
-import java.util.List;
+import tools.devnull.boteco.Param;
+import tools.devnull.boteco.Parameters;
+import tools.devnull.boteco.message.IncomeMessage;
 
 /**
- * Interface that defines a user
+ * A class that represents a request to link a destination
+ * to an user.
  */
-public interface User extends Serializable {
+@Parameters({
+    "user channel target",
+    "user"
+})
+public class LinkRequest {
 
-  String id();
+  private final String user;
+  private final String channel;
+  private final String target;
 
-  List<MessageDestination> destinations();
+  public LinkRequest(@Param("user") String user,
+                     @Param("channel") String channel,
+                     @Param("target") String target) {
+    this.user = user;
+    this.channel = channel;
+    this.target = target;
+  }
 
-  MessageDestination primaryDestination();
+  public LinkRequest(String user, IncomeMessage message) {
+    MessageDestination destination = message.destination();
+    this.user = user;
+    this.channel = destination.channel();
+    this.target = destination.target();
+  }
 
-  void setPrimaryDestination(MessageDestination primaryDestination);
+  public String user() {
+    return user;
+  }
 
-  void addDestination(MessageDestination destination);
+  public String channel() {
+    return channel;
+  }
 
-  void removeDestination(MessageDestination destination) throws InvalidDestinationException;
+  public String target() {
+    return target;
+  }
 
 }
