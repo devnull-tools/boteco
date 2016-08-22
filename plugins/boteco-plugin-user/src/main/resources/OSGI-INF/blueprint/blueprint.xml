@@ -45,6 +45,7 @@
   <service interface="tools.devnull.boteco.message.MessageProcessor">
     <bean class="tools.devnull.boteco.plugins.user.UserMessageProcessor">
       <argument ref="user-manager"/>
+      <argument ref="repository"/>
     </bean>
   </service>
 

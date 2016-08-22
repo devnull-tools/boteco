@@ -25,7 +25,9 @@
 package tools.devnull.boteco.plugins.user;
 
 import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessingException;
 import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.user.UserManager;
 
 import static tools.devnull.boteco.Predicates.command;
@@ -37,9 +39,11 @@ import static tools.devnull.boteco.message.MessageChecker.check;
 public class UserMessageProcessor implements MessageProcessor {
 
   private final UserManager userManager;
+  private final UserRepository repository;
 
-  public UserMessageProcessor(UserManager userManager) {
+  public UserMessageProcessor(UserManager userManager, UserRepository repository) {
     this.userManager = userManager;
+    this.repository = repository;
   }
 
   @Override
@@ -67,9 +71,17 @@ public class UserMessageProcessor implements MessageProcessor {
           userManager.unlink(request);
           message.reply("Unlink requested and will be effective after confirmation.");
         })
-        .on("default", BotecoPrimaryDestinationRequest.class, request -> {
-          userManager.changePrimaryDestination(request);
-          message.reply("Change requested and will be effective after confirmation.");
+        .on("default", String.class, channel -> {
+          User user = message.user();
+          if (user == null) {
+            throw new MessageProcessingException("You're not registered.");
+          }
+          if (channel.isEmpty()) {
+            channel = message.channel().id();
+          }
+          user.setPrimaryDestination(channel);
+          this.repository.update(user);
+          message.reply("Your new primary destination was saved!");
         })
         .execute();
   }

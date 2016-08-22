@@ -28,10 +28,12 @@ import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.MessageDestination;
 import tools.devnull.boteco.Param;
 import tools.devnull.boteco.Parameters;
+import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.user.PrimaryDestinationRequest;
+import tools.devnull.boteco.user.UserNotFoundException;
 
 @Parameters({
-    "user",
+    "",
     "channel",
     "user channel"
 })
@@ -44,6 +46,23 @@ public class BotecoPrimaryDestinationRequest implements PrimaryDestinationReques
                                          @Param("channel") String channel) {
     this.user = user;
     this.channel = channel;
+  }
+
+  public BotecoPrimaryDestinationRequest(IncomeMessage message) {
+    if (message.user() == null) {
+      throw new UserNotFoundException("User not registered");
+    }
+    this.user = message.user().id();
+    this.channel = message.channel().id();
+  }
+
+  public BotecoPrimaryDestinationRequest(@Param("channel") String channel,
+                                         IncomeMessage message) {
+    if (message.user() == null) {
+      throw new UserNotFoundException("User not registered");
+    }
+    this.channel = channel;
+    this.user = message.user().id();
   }
 
   public String userId() {
