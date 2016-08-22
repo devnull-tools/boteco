@@ -43,6 +43,7 @@ public class ExtractedCommand implements MessageCommand {
   private final String rawArguments;
   private final Map<Class<?>, Function<String, ?>> functions;
   private final Map<String, Runnable> actions;
+  private Consumer<String> defaultAction = (string) -> {};
 
   public ExtractedCommand(IncomeMessage incomeMessage, String name, String rawArguments) {
     this.incomeMessage = incomeMessage;
@@ -101,10 +102,24 @@ public class ExtractedCommand implements MessageCommand {
   }
 
   @Override
+  public void orElse(Consumer<String> action) {
+    this.defaultAction = action;
+    execute();
+  }
+
+  @Override
+  public void orElseReturn(String message) {
+    orElse((string) -> this.incomeMessage.reply(message));
+    execute();
+  }
+
+  @Override
   public void execute() {
     String actionName = rawArguments.split("\\s+")[0];
     if (this.actions.containsKey(actionName)) {
       this.actions.get(actionName).run();
+    } else {
+      this.defaultAction.accept(rawArguments);
     }
   }
 

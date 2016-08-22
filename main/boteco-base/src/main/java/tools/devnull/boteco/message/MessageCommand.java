@@ -81,6 +81,15 @@ public interface MessageCommand {
   MessageCommand on(String actionName, Runnable action);
 
   /**
+   * Do something if none of the commands are defined
+   *
+   * @param action
+   */
+  void orElse(Consumer<String> action);
+
+  void orElseReturn(String message);
+
+  /**
    * Treats the first parameter of this command as an action and the remaining as parameters of
    * this action.
    * <p>
