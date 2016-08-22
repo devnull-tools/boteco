@@ -73,7 +73,7 @@ public class BotecoUserTest {
   @Test
   public void testChangeDefaultDestination() {
     TestScenario.given(user)
-        .when(defaultDestinationIsSetTo(secondaryDestination))
+        .when(primaryDestinationIsSetTo(secondaryDestination))
         .then(User::primaryDestination, should().be(secondaryDestination))
 
         .then(removing(defaultDestination), should().succeed())
@@ -82,7 +82,7 @@ public class BotecoUserTest {
 
         .then(removing(secondaryDestination), should().raise(InvalidDestinationException.class))
 
-        .when(defaultDestinationIsSetTo(defaultDestination))
+        .when(primaryDestinationIsSetTo(defaultDestination))
 
         .then(User::destinations, should().have(twoElements()),
             because("The destination should be created if a MessageDestination is passed"))
@@ -90,7 +90,7 @@ public class BotecoUserTest {
         .then(User::primaryDestination, should().be(defaultDestination));
 
     TestScenario.given(user)
-        .when(defaultDestinationIsSetTo("secondary_channel"))
+        .when(primaryDestinationIsSetTo("secondary_channel"))
         .then(User::primaryDestination, should().be(secondaryDestination))
 
         .then(removing(defaultDestination), should().succeed())
@@ -99,18 +99,18 @@ public class BotecoUserTest {
 
         .then(removing(secondaryDestination), should().raise(InvalidDestinationException.class))
 
-        .then(settingDefaultDestinationTo("mychannel"), should().raise(InvalidDestinationException.class));
+        .then(settingPrimaryDestinationTo("mychannel"), should().raise(InvalidDestinationException.class));
   }
 
-  private Consumer<User> defaultDestinationIsSetTo(MessageDestination destination) {
+  private Consumer<User> primaryDestinationIsSetTo(MessageDestination destination) {
     return u -> u.setPrimaryDestination(destination);
   }
 
-  private Consumer<User> settingDefaultDestinationTo(String channel) {
+  private Consumer<User> settingPrimaryDestinationTo(String channel) {
     return u -> u.setPrimaryDestination(channel);
   }
 
-  private Consumer<User> defaultDestinationIsSetTo(String channel) {
+  private Consumer<User> primaryDestinationIsSetTo(String channel) {
     return u -> u.setPrimaryDestination(channel);
   }
 
