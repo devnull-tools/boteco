@@ -57,9 +57,9 @@ public class MessageCommandConverter<E> implements Function<String, E> {
   @Override
   public E apply(String content) {
     Parameters parameters = type.getAnnotation(Parameters.class);
-    String[] values = content.split("\\s+");
+    String[] values = split(content);
     for (String path : parameters.value()) {
-      String[] names = path.split("\\s+");
+      String[] names = split(path);
       if (names.length == values.length) {
         ContextFactory factory = new ContextFactory();
         Context context = factory.context();
@@ -82,6 +82,10 @@ public class MessageCommandConverter<E> implements Function<String, E> {
 
   private Predicate<Parameter> parameterNamed(String name) {
     return p -> p.getAnnotation(Param.class).value().equals(name);
+  }
+
+  private String[] split(String content) {
+    return content.isEmpty() ? new String[0] : content.split("\\s+");
   }
 
 }
