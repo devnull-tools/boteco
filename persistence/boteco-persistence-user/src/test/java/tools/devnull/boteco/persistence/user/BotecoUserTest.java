@@ -85,10 +85,29 @@ public class BotecoUserTest {
 
         .then(User::destinations, should().have(twoElements()))
         .then(User::primaryDestination, should().be(defaultDestination));
+
+    TestScenario.given(user)
+        .when(defaultDestinationIsSetTo("secondary_channel"))
+        .then(User::primaryDestination, should().be(secondaryDestination))
+
+        .then(removing(defaultDestination), should().succeed())
+
+        .then(User::destinations, should().have(oneElement()))
+
+        .then(removing(secondaryDestination), should().raise(InvalidDestinationException.class))
+
+        .when(defaultDestinationIsSetTo("mychannel"))
+
+        .then(User::destinations, should().have(twoElements()))
+        .then(User::primaryDestination, should().be(defaultDestination));
   }
 
   private Consumer<User> defaultDestinationIsSetTo(MessageDestination destination) {
     return u -> u.setPrimaryDestination(destination);
+  }
+
+  private Consumer<User> defaultDestinationIsSetTo(String channel) {
+    return u -> u.setPrimaryDestination(channel);
   }
 
   private Predicate<List> oneElement() {
