@@ -22,7 +22,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco;
+package tools.devnull.boteco.message;
 
 import org.junit.Before;
 import org.junit.Test;
