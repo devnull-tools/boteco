@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import static tools.devnull.kodo.Reason.because;
 import static tools.devnull.kodo.Spec.should;
 
 public class BotecoUserTest {
@@ -83,7 +84,9 @@ public class BotecoUserTest {
 
         .when(defaultDestinationIsSetTo(defaultDestination))
 
-        .then(User::destinations, should().have(twoElements()))
+        .then(User::destinations, should().have(twoElements()),
+            because("The destination should be created if a MessageDestination is passed"))
+
         .then(User::primaryDestination, should().be(defaultDestination));
 
     TestScenario.given(user)
@@ -96,14 +99,15 @@ public class BotecoUserTest {
 
         .then(removing(secondaryDestination), should().raise(InvalidDestinationException.class))
 
-        .when(defaultDestinationIsSetTo("mychannel"))
-
-        .then(User::destinations, should().have(twoElements()))
-        .then(User::primaryDestination, should().be(defaultDestination));
+        .then(settingDefaultDestinationTo("mychannel"), should().raise(InvalidDestinationException.class));
   }
 
   private Consumer<User> defaultDestinationIsSetTo(MessageDestination destination) {
     return u -> u.setPrimaryDestination(destination);
+  }
+
+  private Consumer<User> settingDefaultDestinationTo(String channel) {
+    return u -> u.setPrimaryDestination(channel);
   }
 
   private Consumer<User> defaultDestinationIsSetTo(String channel) {
