@@ -43,7 +43,8 @@ public class ExtractedCommand implements MessageCommand {
   private final String rawArguments;
   private final Map<Class<?>, Function<String, ?>> functions;
   private final Map<String, Runnable> actions;
-  private Consumer<String> defaultAction = (string) -> {};
+  private Consumer<String> defaultAction = (string) -> {
+  };
 
   public ExtractedCommand(IncomeMessage incomeMessage, String name, String rawArguments) {
     this.incomeMessage = incomeMessage;
@@ -86,8 +87,12 @@ public class ExtractedCommand implements MessageCommand {
   @Override
   public <T> MessageCommand on(String actionName, Class<T> parameterType, Consumer<T> consumer) {
     this.actions.put(actionName,
-        () -> consumer.accept(convert(rawArguments.replaceFirst("\\S+\\s", "").trim(), parameterType)));
+        () -> consumer.accept(convert(resolveParameterString(rawArguments), parameterType)));
     return this;
+  }
+
+  private String resolveParameterString(String string) {
+    return string.contains(" ") ? string.replaceFirst("\\S+\\s", "").trim() : "";
   }
 
   @Override
