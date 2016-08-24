@@ -25,13 +25,8 @@
 package tools.devnull.boteco.plugins.subscription;
 
 import tools.devnull.boteco.Param;
-import tools.devnull.boteco.Parameters;
 import tools.devnull.boteco.message.IncomeMessage;
 
-@Parameters({
-    "",
-    "channel target"
-})
 public class SubscriptionListParameters {
 
   private final String channel;

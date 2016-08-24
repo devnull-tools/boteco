@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
 /**
  * Indicates the command parameter that should be passed to the annotated parameter.
  * <p>
- * This annotation is neede in case you don't have the "-parameter" compiler flag activated.
+ * This annotation is needed in case you don't have the "-parameter" compiler flag activated.
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
@@ -41,6 +41,6 @@ public @interface Param {
   /**
    * @return the command parameter that should be passed
    */
-  String value();
+  String value() default "";
 
 }

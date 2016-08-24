@@ -41,6 +41,8 @@ public interface User extends Serializable {
 
   MessageDestination primaryDestination();
 
+  MessageDestination destination(String channel);
+
   void setPrimaryDestination(MessageDestination primaryDestination);
 
   void setPrimaryDestination(String channel);

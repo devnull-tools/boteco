@@ -69,6 +69,14 @@ public class BotecoUser implements User {
   }
 
   @Override
+  public MessageDestination destination(String channel) {
+    if (this.destinations.containsKey(channel)) {
+      return Destination.channel(channel).to(this.destinations.get(channel));
+    }
+    throw new InvalidDestinationException("User don't have the channel '" + channel + "' registered");
+  }
+
+  @Override
   public void addDestination(MessageDestination destination) {
     this.destinations.put(destination.channel(), destination.target());
   }

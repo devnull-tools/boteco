@@ -27,16 +27,10 @@ package tools.devnull.boteco.plugins.user;
 import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.MessageDestination;
 import tools.devnull.boteco.Param;
-import tools.devnull.boteco.Parameters;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.user.PrimaryDestinationRequest;
 import tools.devnull.boteco.user.UserNotFoundException;
 
-@Parameters({
-    "",
-    "channel",
-    "user channel"
-})
 public class BotecoPrimaryDestinationRequest implements PrimaryDestinationRequest {
 
   private final String user;

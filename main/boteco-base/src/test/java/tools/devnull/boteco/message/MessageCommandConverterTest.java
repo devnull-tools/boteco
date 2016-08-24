@@ -26,7 +26,6 @@ package tools.devnull.boteco.message;
 
 import org.junit.Test;
 import tools.devnull.boteco.Param;
-import tools.devnull.boteco.Parameters;
 import tools.devnull.kodo.TestScenario;
 
 import java.util.function.Consumer;
@@ -37,7 +36,6 @@ import static tools.devnull.kodo.Spec.should;
 
 public class MessageCommandConverterTest {
 
-  @Parameters({"foo bar"})
   public static class TestObject1 {
 
     private String foo;
@@ -60,10 +58,6 @@ public class MessageCommandConverterTest {
 
   }
 
-  @Parameters({
-      "",
-      "foo"
-  })
   public static class TestObject2 {
 
     private String foo;

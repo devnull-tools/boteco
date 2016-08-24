@@ -25,13 +25,8 @@
 package tools.devnull.boteco.plugins.subscription;
 
 import tools.devnull.boteco.Param;
-import tools.devnull.boteco.Parameters;
 import tools.devnull.boteco.message.IncomeMessage;
 
-@Parameters({
-    "event",
-    "event channel target"
-})
 public class SubscriptionParameters {
 
   private final String event;

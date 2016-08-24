@@ -25,14 +25,18 @@
 package tools.devnull.boteco.message;
 
 import tools.devnull.boteco.Param;
-import tools.devnull.boteco.Parameters;
+import tools.devnull.trugger.reflection.Reflection;
 import tools.devnull.trugger.util.factory.Context;
 import tools.devnull.trugger.util.factory.ContextFactory;
 import tools.devnull.trugger.util.factory.CreateException;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static tools.devnull.trugger.reflection.ParameterPredicates.annotatedWith;
 import static tools.devnull.trugger.reflection.ParameterPredicates.named;
@@ -56,18 +60,18 @@ public class MessageCommandConverter<E> implements Function<String, E> {
 
   @Override
   public E apply(String content) {
-    Parameters parameters = type.getAnnotation(Parameters.class);
+    List<Constructor<?>> constructors = Reflection.reflect().constructors().in(type);
     String[] values = split(content);
-    for (String path : parameters.value()) {
-      String[] names = split(path);
-      if (names.length == values.length) {
+    for (Constructor constructor : constructors) {
+      List<String> names = getParameters(constructor);
+      if (names.size() == values.length) {
         ContextFactory factory = new ContextFactory();
         Context context = factory.context();
         context.use(this.message).when(type(IncomeMessage.class));
-        for (int i = 0; i < names.length; i++) {
-          context.use(values[i]).when(named(names[i]));
+        for (int i = 0; i < names.size(); i++) {
+          context.use(values[i]).when(named(names.get(i)));
           context.use(values[i]).when(
-              annotatedWith(Param.class).and(parameterNamed(names[i]))
+              annotatedWith(Param.class).and(parameterNamed(names.get(i)))
           );
         }
         try {
@@ -78,6 +82,15 @@ public class MessageCommandConverter<E> implements Function<String, E> {
       }
     }
     throw new MessageProcessingException("Invalid command parameters.");
+  }
+
+  private List<String> getParameters(Constructor constructor) {
+    return Arrays.stream(constructor.getParameters())
+        .filter(annotatedWith(Param.class))
+        .map(parameter -> {
+          String value = parameter.getAnnotation(Param.class).value();
+          return value.isEmpty() ? parameter.getName() : value;
+        }).collect(Collectors.toList());
   }
 
   private Predicate<Parameter> parameterNamed(String name) {

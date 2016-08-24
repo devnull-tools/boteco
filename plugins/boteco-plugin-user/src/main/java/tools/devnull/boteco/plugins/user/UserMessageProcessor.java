@@ -68,8 +68,17 @@ public class UserMessageProcessor implements MessageProcessor {
           message.reply("Link requested and will be effective after confirmation.");
         })
         .on("unlink", BotecoDestinationRequest.class, request -> {
-          userManager.unlink(request);
-          message.reply("Unlink requested and will be effective after confirmation.");
+          if (request.targetDestination().channel().equals(message.channel().id())) {
+            User user = message.user();
+            if (user == null) {
+              throw new MessageProcessingException("You're not registered.");
+            }
+            user.removeDestination(request.targetDestination());
+            message.reply("Destination unlinked.");
+          } else {
+            userManager.unlink(request);
+            message.reply("Unlink requested and will be effective after confirmation.");
+          }
         })
         .on("default", String.class, channel -> {
           User user = message.user();

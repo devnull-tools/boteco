@@ -42,14 +42,14 @@ import static tools.devnull.kodo.Spec.should;
 public class BotecoUserTest {
 
   private User user;
-  private MessageDestination defaultDestination;
+  private MessageDestination primaryDestination;
   private MessageDestination secondaryDestination;
 
   @Before
   public void initialize() {
-    defaultDestination = Destination.channel("mychannel").to("myuser");
+    primaryDestination = Destination.channel("mychannel").to("myuser");
     secondaryDestination = Destination.channel("secondary_channel").to("myuser");
-    user = new BotecoUser("user", defaultDestination);
+    user = new BotecoUser("user", primaryDestination);
     user.addDestination(secondaryDestination);
   }
 
@@ -57,14 +57,16 @@ public class BotecoUserTest {
   public void testConstructor() {
     TestScenario.given(user)
         .then(User::id, should().be("user"))
-        .then(User::primaryDestination, should().be(defaultDestination))
-        .then(User::destinations, should().have(twoElements()));
+        .then(User::primaryDestination, should().be(primaryDestination))
+        .then(User::destinations, should().have(twoElements()))
+        .then(user -> user.destination("mychannel"), should().be(primaryDestination))
+        .then((Consumer<User>) user -> user.destination("foo"), should().raise(InvalidDestinationException.class));
   }
 
   @Test
   public void testRemoveDestination() {
     TestScenario.given(user)
-        .then(removing(defaultDestination), should().raise(InvalidDestinationException.class))
+        .then(removing(primaryDestination), should().raise(InvalidDestinationException.class))
 
         .when(removing(secondaryDestination))
         .then(User::destinations, should().have(oneElement()));
@@ -76,24 +78,24 @@ public class BotecoUserTest {
         .when(primaryDestinationIsSetTo(secondaryDestination))
         .then(User::primaryDestination, should().be(secondaryDestination))
 
-        .then(removing(defaultDestination), should().succeed())
+        .then(removing(primaryDestination), should().succeed())
 
         .then(User::destinations, should().have(oneElement()))
 
         .then(removing(secondaryDestination), should().raise(InvalidDestinationException.class))
 
-        .when(primaryDestinationIsSetTo(defaultDestination))
+        .when(primaryDestinationIsSetTo(primaryDestination))
 
         .then(User::destinations, should().have(twoElements()),
             because("The destination should be created if a MessageDestination is passed"))
 
-        .then(User::primaryDestination, should().be(defaultDestination));
+        .then(User::primaryDestination, should().be(primaryDestination));
 
     TestScenario.given(user)
         .when(primaryDestinationIsSetTo("secondary_channel"))
         .then(User::primaryDestination, should().be(secondaryDestination))
 
-        .then(removing(defaultDestination), should().succeed())
+        .then(removing(primaryDestination), should().succeed())
 
         .then(User::destinations, should().have(oneElement()))
 
