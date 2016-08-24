@@ -34,7 +34,7 @@ public interface UserManager {
 
   User create(String userId, MessageDestination primaryDestination) throws UserAlreadyExistException;
 
-  void link(String userId, MessageDestination destination);
+  void link(String userId, String channel, String target);
 
   void unlink(String userId, String channel);
 

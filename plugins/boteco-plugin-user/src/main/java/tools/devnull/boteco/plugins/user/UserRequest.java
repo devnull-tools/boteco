@@ -26,7 +26,6 @@ package tools.devnull.boteco.plugins.user;
 
 import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.MessageDestination;
-import tools.devnull.boteco.UserMessageDestination;
 import tools.devnull.boteco.request.Verifiable;
 
 public class UserRequest implements Verifiable {
@@ -34,26 +33,31 @@ public class UserRequest implements Verifiable {
   private final String user;
   private final String channel;
   private final String target;
-  private final UserMessageDestination tokenDestination;
 
-  public UserRequest(String user, MessageDestination destination, MessageDestination tokenDestination) {
+  public UserRequest(String user, String channel, String target) {
     this.user = user;
-    this.channel = destination.channel();
-    this.target = destination.target();
-    this.tokenDestination = new UserMessageDestination(tokenDestination.channel(), tokenDestination.target());
+    this.channel = channel;
+    this.target = target;
+  }
+
+  public UserRequest(String user, String channel) {
+    this(user, channel, null);
   }
 
   public String getUser() {
     return user;
   }
 
-  public MessageDestination destination() {
-    return Destination.channel(this.channel).to(this.target);
+  public String getChannel() {
+    return channel;
   }
 
-  @Override
+  public String getTarget() {
+    return target;
+  }
+
   public MessageDestination tokenDestination() {
-    return tokenDestination;
+    return Destination.channel("user").to(user);
   }
 
 }

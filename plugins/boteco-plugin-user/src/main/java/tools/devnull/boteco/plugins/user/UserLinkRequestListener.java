@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.plugins.user;
 
+import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.request.Request;
 import tools.devnull.boteco.request.RequestListener;
 import tools.devnull.boteco.user.User;
@@ -43,7 +44,7 @@ public class UserLinkRequestListener implements RequestListener<UserRequest> {
     String userId = userRequest.getUser();
     User user = this.repository.find(userId);
     if (user != null) {
-      user.addDestination(userRequest.destination());
+      user.addDestination(Destination.channel(userRequest.getChannel()).to(userRequest.getTarget()));
       this.repository.update(user);
     } else {
       throw new UserNotFoundException("User " + userId + " doesn't exist!");

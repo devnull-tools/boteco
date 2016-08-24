@@ -45,7 +45,7 @@ public class UserUnlinkRequestListener implements RequestListener<UserRequest> {
     if (user == null) {
       throw new UserNotFoundException("User " + userId + " doesn't exist!");
     }
-    user.removeDestination(userRequest.destination());
+    user.removeDestination(userRequest.getChannel());
     this.repository.update(user);
   }
 

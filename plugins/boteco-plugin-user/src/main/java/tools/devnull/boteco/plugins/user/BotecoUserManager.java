@@ -56,14 +56,14 @@ public class BotecoUserManager implements UserManager {
   }
 
   @Override
-  public void link(String userId, MessageDestination destination) {
-    this.requestManager.create(new UserRequest(userId, destination, destination),
+  public void link(String userId, String channel, String target) {
+    this.requestManager.create(new UserRequest(userId, channel, target),
         "user.link", "link account to user " + userId);
   }
 
   @Override
   public void unlink(String userId, String channel) {
-    this.requestManager.create(new UserRequest(userId, null, null),
+    this.requestManager.create(new UserRequest(userId, channel),
         "user.unlink", "unlink account from user " + userId);
   }
 
