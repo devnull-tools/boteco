@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * A default implementation of a command extracted by a {@link CommandExtractor}.
@@ -43,8 +44,7 @@ public class ExtractedCommand implements MessageCommand {
   private final String rawArguments;
   private final Map<Class<?>, Function<String, ?>> functions;
   private final Map<String, Runnable> actions;
-  private Consumer<String> defaultAction = (string) -> {
-  };
+  private Consumer<String> defaultAction;
 
   public ExtractedCommand(IncomeMessage incomeMessage, String name, String rawArguments) {
     this.incomeMessage = incomeMessage;
@@ -64,6 +64,8 @@ public class ExtractedCommand implements MessageCommand {
         Collections.emptyList() :
         new ArrayList<>(Arrays.asList(string.split("\\s+")))
     );
+    this.defaultAction = string -> this.incomeMessage.reply("Invalid action, possible actions: \n" +
+      actions.keySet().stream().collect(Collectors.joining("\n")));
   }
 
   @Override
