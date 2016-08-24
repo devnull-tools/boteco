@@ -24,7 +24,6 @@
 
 package tools.devnull.boteco.plugins.subscription;
 
-import tools.devnull.boteco.Param;
 import tools.devnull.boteco.message.IncomeMessage;
 
 public class SubscriptionListParameters {
@@ -37,8 +36,7 @@ public class SubscriptionListParameters {
     this.channel = message.channel().id();
   }
 
-  public SubscriptionListParameters(@Param String target,
-                                    @Param String channel) {
+  public SubscriptionListParameters(String target, String channel) {
     this.target = target;
     this.channel = channel;
   }

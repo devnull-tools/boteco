@@ -64,18 +64,14 @@ public class UserMessageProcessor implements MessageProcessor {
           message.reply("User created");
         })
         .on("link", LinkRequest.class, request -> {
-          userManager.link(request.userId(), request.tokenDestination());
+          userManager.link(request.userId(), request.channel(), request.target());
           message.reply("Link requested and will be effective after confirmation.");
         })
-        .on("unlink", channel -> {
-          User user = message.user();
-          if (user == null) {
-            throw new MessageProcessingException("You're not registered.");
-          }
-          if (channel.isEmpty()) {
-            channel = message.channel().id();
-          }
-          user.removeDestination(channel);
+        .on("unlink", UnlinkRequest.class, request -> {
+          User user = request.user();
+          user.removeDestination(request.channel());
+          this.repository.update(user);
+          message.reply("The destination was removed from your user.");
         })
         .on("default", channel -> {
           User user = message.user();

@@ -26,7 +26,6 @@ package tools.devnull.boteco.message;
 
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.MessageDestination;
-import tools.devnull.boteco.Param;
 import tools.devnull.boteco.user.User;
 import tools.devnull.trugger.reflection.Reflection;
 import tools.devnull.trugger.util.factory.Context;
@@ -40,7 +39,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static tools.devnull.trugger.reflection.ParameterPredicates.annotatedWith;
 import static tools.devnull.trugger.reflection.ParameterPredicates.type;
 
 /**
@@ -96,7 +94,7 @@ public class MessageCommandConverter<E> implements Function<String, E> {
 
   private int annotatedParameters(Constructor constructor) {
     return Arrays.stream(constructor.getParameters())
-        .filter(annotatedWith(Param.class))
+        .filter(type(String.class))
         .collect(Collectors.counting())
         .intValue();
   }

@@ -25,7 +25,6 @@
 package tools.devnull.boteco.message;
 
 import org.junit.Test;
-import tools.devnull.boteco.Param;
 import tools.devnull.kodo.TestScenario;
 
 import java.util.function.Consumer;
@@ -41,8 +40,7 @@ public class MessageCommandConverterTest {
     private String foo;
     private String bar;
 
-    public TestObject1(@Param String foo,
-                       @Param String bar) {
+    public TestObject1(String foo, String bar) {
 
       this.foo = foo;
       this.bar = bar;
@@ -62,7 +60,7 @@ public class MessageCommandConverterTest {
 
     private String foo;
 
-    public TestObject2(@Param String foo) {
+    public TestObject2(String foo) {
       this.foo = foo;
     }
 
@@ -105,7 +103,7 @@ public class MessageCommandConverterTest {
         .then(TestObject2::foo, should().be("content"));
 
     TestScenario.given(converter.apply("bar"))
-      .then(TestObject2::foo, should().be("bar"));
+        .then(TestObject2::foo, should().be("bar"));
   }
 
   private Consumer<MessageCommandConverter> converting(String value) {

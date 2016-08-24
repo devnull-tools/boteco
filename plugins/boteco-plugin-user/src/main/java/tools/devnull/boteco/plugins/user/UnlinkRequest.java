@@ -22,18 +22,36 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco;
+package tools.devnull.boteco.plugins.user;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.user.User;
 
 /**
- * Indicates that a command parameter should be passed to the annotated parameter.
+ * A class that represents a request to unlink a destination
+ * to an user.
  */
-@Target(ElementType.PARAMETER)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Param {
+public class UnlinkRequest {
+
+  private final User user;
+  private final String channel;
+
+  public UnlinkRequest(User user, String channel) {
+    this.user = user;
+    this.channel = channel;
+  }
+
+  public UnlinkRequest(User user, MessageDestination source) {
+    this.user = user;
+    this.channel = source.channel();
+  }
+
+  public User user() {
+    return user;
+  }
+
+  public String channel() {
+    return channel;
+  }
 
 }

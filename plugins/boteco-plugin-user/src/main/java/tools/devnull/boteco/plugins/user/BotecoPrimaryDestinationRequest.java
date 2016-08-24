@@ -24,39 +24,30 @@
 
 package tools.devnull.boteco.plugins.user;
 
+import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.MessageDestination;
-import tools.devnull.boteco.Param;
-import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.user.PrimaryDestinationRequest;
-import tools.devnull.boteco.user.UserNotFoundException;
+import tools.devnull.boteco.user.User;
 
 public class BotecoPrimaryDestinationRequest implements PrimaryDestinationRequest {
 
   private final String user;
   private final String channel;
 
-  public BotecoPrimaryDestinationRequest(@Param String user,
-                                         @Param String channel) {
+  public BotecoPrimaryDestinationRequest(String user, String channel) {
     this.user = user;
     this.channel = channel;
   }
 
-  public BotecoPrimaryDestinationRequest(IncomeMessage message) {
-    if (message.user() == null) {
-      throw new UserNotFoundException("User not registered");
-    }
-    this.user = message.user().id();
-    this.channel = message.channel().id();
+  public BotecoPrimaryDestinationRequest(User user, Channel channel) {
+    this.user = user.id();
+    this.channel = channel.id();
   }
 
-  public BotecoPrimaryDestinationRequest(@Param String channel,
-                                         IncomeMessage message) {
-    if (message.user() == null) {
-      throw new UserNotFoundException("User not registered");
-    }
+  public BotecoPrimaryDestinationRequest(User user, String channel) {
     this.channel = channel;
-    this.user = message.user().id();
+    this.user = user.id();
   }
 
   public String userId() {

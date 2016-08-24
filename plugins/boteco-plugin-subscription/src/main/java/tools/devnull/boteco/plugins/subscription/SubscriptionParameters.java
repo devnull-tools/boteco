@@ -24,7 +24,6 @@
 
 package tools.devnull.boteco.plugins.subscription;
 
-import tools.devnull.boteco.Param;
 import tools.devnull.boteco.message.IncomeMessage;
 
 public class SubscriptionParameters {
@@ -34,17 +33,14 @@ public class SubscriptionParameters {
   private final String target;
   private final boolean requestConfirmation;
 
-  public SubscriptionParameters(IncomeMessage message,
-                                @Param String event) {
+  public SubscriptionParameters(IncomeMessage message, String event) {
     this.target = message.isGroup() ? message.target() : message.sender().id();
     this.channel = message.channel().id();
     this.event = event;
     this.requestConfirmation = false;
   }
 
-  public SubscriptionParameters(@Param String event,
-                                @Param String target,
-                                @Param String channel) {
+  public SubscriptionParameters(String event, String target, String channel) {
     this.event = event;
     this.target = target;
     this.channel = channel;

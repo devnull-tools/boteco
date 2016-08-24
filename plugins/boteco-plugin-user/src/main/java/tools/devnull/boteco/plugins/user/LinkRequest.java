@@ -24,37 +24,40 @@
 
 package tools.devnull.boteco.plugins.user;
 
-import tools.devnull.boteco.MessageDestination;
-import tools.devnull.boteco.Param;
-import tools.devnull.boteco.request.Verifiable;
 import tools.devnull.boteco.user.User;
 
 /**
- * A class that represents a request to link/unlink a destination
+ * A class that represents a request to link a destination
  * to an user.
  */
-public class LinkRequest implements Verifiable {
+public class LinkRequest {
 
   private final String user;
-  private final MessageDestination tokenDestination;
+  private final String channel;
+  private final String target;
 
-  public LinkRequest(User user,
-                     @Param String channel) {
+  public LinkRequest(User user, String channel, String target) {
     this.user = user.id();
-    this.tokenDestination = user.destination(channel);
+    this.channel = channel;
+    this.target = target;
   }
 
-  public LinkRequest(User user, MessageDestination source) {
-    this.user = user.id();
-    this.tokenDestination = source;
+  public LinkRequest(String user, String channel, String target) {
+    this.user = user;
+    this.channel = channel;
+    this.target = target;
   }
 
   public String userId() {
     return user;
   }
 
-  public MessageDestination tokenDestination() {
-    return tokenDestination;
+  public String channel() {
+    return channel;
+  }
+
+  public String target() {
+    return target;
   }
 
 }
