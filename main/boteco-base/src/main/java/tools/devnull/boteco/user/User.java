@@ -51,4 +51,6 @@ public interface User extends Serializable {
 
   void removeDestination(MessageDestination destination) throws InvalidDestinationException;
 
+  void removeDestination(String channel) throws InvalidDestinationException;
+
 }

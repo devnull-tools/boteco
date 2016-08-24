@@ -59,28 +59,25 @@ public class UserMessageProcessor implements MessageProcessor {
   @Override
   public void process(IncomeMessage message) {
     message.command()
-        .on("new", String.class, userId -> {
+        .on("new", userId -> {
           userManager.create(userId, message.destination());
           message.reply("User created");
         })
-        .on("link", BotecoDestinationRequest.class, request -> {
-          userManager.link(request);
+        .on("link", LinkRequest.class, request -> {
+          userManager.link(request.userId(), request.tokenDestination());
           message.reply("Link requested and will be effective after confirmation.");
         })
-        .on("unlink", BotecoDestinationRequest.class, request -> {
-          if (request.targetDestination().channel().equals(message.channel().id())) {
-            User user = message.user();
-            if (user == null) {
-              throw new MessageProcessingException("You're not registered.");
-            }
-            user.removeDestination(request.targetDestination());
-            message.reply("Destination unlinked.");
-          } else {
-            userManager.unlink(request);
-            message.reply("Unlink requested and will be effective after confirmation.");
+        .on("unlink", channel -> {
+          User user = message.user();
+          if (user == null) {
+            throw new MessageProcessingException("You're not registered.");
           }
+          if (channel.isEmpty()) {
+            channel = message.channel().id();
+          }
+          user.removeDestination(channel);
         })
-        .on("default", String.class, channel -> {
+        .on("default", channel -> {
           User user = message.user();
           if (user == null) {
             throw new MessageProcessingException("You're not registered.");

@@ -34,13 +34,13 @@ public class UserRequest implements Verifiable {
   private final String user;
   private final String channel;
   private final String target;
-  private final UserMessageDestination targetDestination;
+  private final UserMessageDestination tokenDestination;
 
-  public UserRequest(String user, MessageDestination destination, MessageDestination targetDestination) {
+  public UserRequest(String user, MessageDestination destination, MessageDestination tokenDestination) {
     this.user = user;
     this.channel = destination.channel();
     this.target = destination.target();
-    this.targetDestination = new UserMessageDestination(targetDestination.channel(), targetDestination.target());
+    this.tokenDestination = new UserMessageDestination(tokenDestination.channel(), tokenDestination.target());
   }
 
   public String getUser() {
@@ -53,7 +53,7 @@ public class UserRequest implements Verifiable {
 
   @Override
   public MessageDestination tokenDestination() {
-    return targetDestination;
+    return tokenDestination;
   }
 
 }

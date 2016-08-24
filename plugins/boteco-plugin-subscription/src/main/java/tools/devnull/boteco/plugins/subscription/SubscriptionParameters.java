@@ -35,16 +35,16 @@ public class SubscriptionParameters {
   private final boolean requestConfirmation;
 
   public SubscriptionParameters(IncomeMessage message,
-                                @Param("event") String event) {
+                                @Param String event) {
     this.target = message.isGroup() ? message.target() : message.sender().id();
     this.channel = message.channel().id();
     this.event = event;
     this.requestConfirmation = false;
   }
 
-  public SubscriptionParameters(@Param("event") String event,
-                                @Param("target") String target,
-                                @Param("channel") String channel) {
+  public SubscriptionParameters(@Param String event,
+                                @Param String target,
+                                @Param String channel) {
     this.event = event;
     this.target = target;
     this.channel = channel;

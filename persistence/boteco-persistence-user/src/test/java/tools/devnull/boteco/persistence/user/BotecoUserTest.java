@@ -95,11 +95,11 @@ public class BotecoUserTest {
         .when(primaryDestinationIsSetTo("secondary_channel"))
         .then(User::primaryDestination, should().be(secondaryDestination))
 
-        .then(removing(primaryDestination), should().succeed())
+        .then(removing("mychannel"), should().succeed())
 
         .then(User::destinations, should().have(oneElement()))
 
-        .then(removing(secondaryDestination), should().raise(InvalidDestinationException.class))
+        .then(removing("secondary_channel"), should().raise(InvalidDestinationException.class))
 
         .then(settingPrimaryDestinationTo("mychannel"), should().raise(InvalidDestinationException.class));
   }
@@ -128,4 +128,7 @@ public class BotecoUserTest {
     return u -> u.removeDestination(destination);
   }
 
+  private Consumer<User> removing(String channel) {
+    return u -> u.removeDestination(channel);
+  }
 }

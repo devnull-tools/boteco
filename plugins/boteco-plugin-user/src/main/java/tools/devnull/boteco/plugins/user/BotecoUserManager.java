@@ -26,7 +26,6 @@ package tools.devnull.boteco.plugins.user;
 
 import tools.devnull.boteco.MessageDestination;
 import tools.devnull.boteco.request.RequestManager;
-import tools.devnull.boteco.user.DestinationRequest;
 import tools.devnull.boteco.user.PrimaryDestinationRequest;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.user.UserManager;
@@ -56,15 +55,16 @@ public class BotecoUserManager implements UserManager {
     return repository.create(userId, destination);
   }
 
-
   @Override
-  public void link(DestinationRequest request) {
-    this.requestManager.create(request, "user.link", "link account to user " + request.userId());
+  public void link(String userId, MessageDestination destination) {
+    this.requestManager.create(new UserRequest(userId, destination, destination),
+        "user.link", "link account to user " + userId);
   }
 
   @Override
-  public void unlink(DestinationRequest request) {
-    this.requestManager.create(request, "user.unlink", "unlink account from user " + request.userId());
+  public void unlink(String userId, String channel) {
+    this.requestManager.create(new UserRequest(userId, null, null),
+        "user.unlink", "unlink account from user " + userId);
   }
 
   @Override

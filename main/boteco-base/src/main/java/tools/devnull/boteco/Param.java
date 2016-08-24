@@ -30,17 +30,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates the command parameter that should be passed to the annotated parameter.
- * <p>
- * This annotation is needed in case you don't have the "-parameter" compiler flag activated.
+ * Indicates that a command parameter should be passed to the annotated parameter.
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Param {
-
-  /**
-   * @return the command parameter that should be passed
-   */
-  String value() default "";
 
 }

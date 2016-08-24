@@ -41,8 +41,8 @@ public class MessageCommandConverterTest {
     private String foo;
     private String bar;
 
-    public TestObject1(@Param("foo") String foo,
-                       @Param("bar") String bar) {
+    public TestObject1(@Param String foo,
+                       @Param String bar) {
 
       this.foo = foo;
       this.bar = bar;
@@ -62,7 +62,7 @@ public class MessageCommandConverterTest {
 
     private String foo;
 
-    public TestObject2(@Param("foo") String foo) {
+    public TestObject2(@Param String foo) {
       this.foo = foo;
     }
 

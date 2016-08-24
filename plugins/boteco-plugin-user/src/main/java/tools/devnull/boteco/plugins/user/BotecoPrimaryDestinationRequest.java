@@ -36,8 +36,8 @@ public class BotecoPrimaryDestinationRequest implements PrimaryDestinationReques
   private final String user;
   private final String channel;
 
-  public BotecoPrimaryDestinationRequest(@Param("user") String user,
-                                         @Param("channel") String channel) {
+  public BotecoPrimaryDestinationRequest(@Param String user,
+                                         @Param String channel) {
     this.user = user;
     this.channel = channel;
   }
@@ -50,7 +50,7 @@ public class BotecoPrimaryDestinationRequest implements PrimaryDestinationReques
     this.channel = message.channel().id();
   }
 
-  public BotecoPrimaryDestinationRequest(@Param("channel") String channel,
+  public BotecoPrimaryDestinationRequest(@Param String channel,
                                          IncomeMessage message) {
     if (message.user() == null) {
       throw new UserNotFoundException("User not registered");

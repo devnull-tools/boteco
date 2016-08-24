@@ -37,8 +37,8 @@ public class SubscriptionListParameters {
     this.channel = message.channel().id();
   }
 
-  public SubscriptionListParameters(@Param("target") String target,
-                                    @Param("channel") String channel) {
+  public SubscriptionListParameters(@Param String target,
+                                    @Param String channel) {
     this.target = target;
     this.channel = channel;
   }

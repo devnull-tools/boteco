@@ -93,6 +93,11 @@ public class BotecoUser implements User {
     }
   }
 
+  @Override
+  public void removeDestination(String channel) throws InvalidDestinationException {
+    removeDestination(destination(channel));
+  }
+
   public void setPrimaryDestination(MessageDestination primaryDestination) {
     addDestination(primaryDestination);
     this.primaryDestination = primaryDestination.channel();
