@@ -81,12 +81,17 @@ public interface MessageCommand {
   MessageCommand on(String actionName, Runnable action);
 
   /**
-   * Do something if none of the commands are defined
+   * Do something if none of the actions matches the message
    *
-   * @param action
+   * @param action the action to execute
    */
   void orElse(Consumer<String> action);
 
+  /**
+   * Replies to the message with the given content if none of the actions matches the message.
+   *
+   * @param message the message to reply to the sender
+   */
   void orElseReturn(String message);
 
   /**
