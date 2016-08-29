@@ -36,8 +36,6 @@
       <cm:property name="irc.nick" value="boteco"/>
       <cm:property name="irc.server" value="localhost"/>
       <cm:property name="irc.port" value="6667"/>
-      <!-- The irc nicknames the bot should ignore messages from -->
-      <cm:property name="bot.ignorelist" value=""/>
       <!-- The expression that defines a bot command -->
       <cm:property name="bot.command.expression" value="^boteco[,:]?\s+"/>
       <!-- The options to apply to the irc component -->
@@ -46,12 +44,14 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
+  <reference id="ignore-list" interface="tools.devnull.boteco.channel.irc.IrcIgnoreList"/>
+
   <service interface="tools.devnull.boteco.Rule">
     <service-properties>
       <entry key="channel" value="irc"/>
     </service-properties>
     <bean class="tools.devnull.boteco.channel.irc.IgnoreSenderRule">
-      <argument value="{{bot.ignorelist}}"/>
+      <argument ref="ignore-list"/>
     </bean>
   </service>
 
@@ -60,6 +60,12 @@
       <entry key="id" value="irc"/>
     </service-properties>
     <bean class="tools.devnull.boteco.channel.irc.IrcChannel"/>
+  </service>
+
+  <service interface="tools.devnull.boteco.message.MessageProcessor">
+    <bean class="tools.devnull.boteco.channel.irc.IgnoreListMessageProcessor">
+      <argument ref="ignore-list"/>
+    </bean>
   </service>
 
   <bean id="irc-command-extractor"

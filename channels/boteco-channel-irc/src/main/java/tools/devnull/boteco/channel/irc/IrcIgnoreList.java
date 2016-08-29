@@ -24,23 +24,19 @@
 
 package tools.devnull.boteco.channel.irc;
 
-import tools.devnull.boteco.Rule;
-import tools.devnull.boteco.message.IncomeMessage;
+import java.util.List;
 
 /**
- * A rule to ignore IRC Messages from some senders (useful if you need to ignore other bots).
+ * Interface that defines an ignore list for the Irc channel
  */
-public class IgnoreSenderRule implements Rule {
+public interface IrcIgnoreList {
 
-  private final IrcIgnoreList ignored;
+  void add(String nickname);
 
-  public IgnoreSenderRule(IrcIgnoreList ignored) {
-    this.ignored = ignored;
-  }
+  void remove(String nickname);
 
-  @Override
-  public boolean accept(IncomeMessage message) {
-    return !ignored.contains(message.sender().id());
-  }
+  List<String> list();
+
+  boolean contains(String nickname);
 
 }

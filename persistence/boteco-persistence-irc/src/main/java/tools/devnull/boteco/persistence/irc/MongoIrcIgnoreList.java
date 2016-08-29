@@ -22,25 +22,51 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.channel.irc;
+package tools.devnull.boteco.persistence.irc;
 
-import tools.devnull.boteco.Rule;
-import tools.devnull.boteco.message.IncomeMessage;
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+import tools.devnull.boteco.channel.irc.IrcIgnoreList;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
 /**
- * A rule to ignore IRC Messages from some senders (useful if you need to ignore other bots).
+ * Igore list for IRC implemented as a mongo collection
  */
-public class IgnoreSenderRule implements Rule {
+public class MongoIrcIgnoreList implements IrcIgnoreList {
 
-  private final IrcIgnoreList ignored;
+  private final MongoCollection<Document> list;
 
-  public IgnoreSenderRule(IrcIgnoreList ignored) {
-    this.ignored = ignored;
+  public MongoIrcIgnoreList(MongoDatabase database) {
+    this.list = database.getCollection("ircignorelist");
   }
 
   @Override
-  public boolean accept(IncomeMessage message) {
-    return !ignored.contains(message.sender().id());
+  public void add(String nickname) {
+    if (!contains(nickname)) {
+      this.list.insertOne(new Document("_id", nickname));
+    }
+  }
+
+  @Override
+  public void remove(String nickname) {
+    this.list.deleteOne(new Document("_id", nickname));
+  }
+
+  @Override
+  public List<String> list() {
+    List<String> result = new ArrayList<>();
+    this.list.find().forEach((Consumer<Document>) document -> result.add(document.get("_id").toString()));
+    return result;
+  }
+
+  @Override
+  public boolean contains(String nickname) {
+    return this.list.find(new BasicDBObject("_id", nickname)).iterator().hasNext();
   }
 
 }

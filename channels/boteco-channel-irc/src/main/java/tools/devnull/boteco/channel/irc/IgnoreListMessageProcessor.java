@@ -24,23 +24,48 @@
 
 package tools.devnull.boteco.channel.irc;
 
-import tools.devnull.boteco.Rule;
 import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessor;
+
+import java.util.stream.Collectors;
+
+import static tools.devnull.boteco.Predicates.command;
+import static tools.devnull.boteco.message.MessageChecker.check;
 
 /**
- * A rule to ignore IRC Messages from some senders (useful if you need to ignore other bots).
+ * A message processor that can manipulate an {@link IrcIgnoreList}.
  */
-public class IgnoreSenderRule implements Rule {
+public class IgnoreListMessageProcessor implements MessageProcessor {
 
-  private final IrcIgnoreList ignored;
+  private final IrcIgnoreList ignoreList;
 
-  public IgnoreSenderRule(IrcIgnoreList ignored) {
-    this.ignored = ignored;
+  public IgnoreListMessageProcessor(IrcIgnoreList ignoreList) {
+    this.ignoreList = ignoreList;
   }
 
   @Override
-  public boolean accept(IncomeMessage message) {
-    return !ignored.contains(message.sender().id());
+  public String id() {
+    return "ignore-list";
+  }
+
+  @Override
+  public boolean canProcess(IncomeMessage message) {
+    return check(message).accept(command("ignore-list"));
+  }
+
+  @Override
+  public void process(IncomeMessage message) {
+    message.command()
+        .on("add", nickname -> {
+          this.ignoreList.add(nickname);
+          message.reply("Added to ignore list");
+        })
+        .on("remove", nickname -> {
+          this.ignoreList.remove(nickname);
+          message.reply("Removed from ignore list");
+        })
+        .on("", () -> message.reply(this.ignoreList.list().stream().collect(Collectors.joining("\n"))))
+        .execute();
   }
 
 }
