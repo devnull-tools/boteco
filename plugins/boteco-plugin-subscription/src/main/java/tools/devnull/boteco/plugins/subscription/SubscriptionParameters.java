@@ -34,8 +34,13 @@ public class SubscriptionParameters {
   private final boolean requestConfirmation;
 
   public SubscriptionParameters(IncomeMessage message, String event) {
-    this.target = message.isGroup() ? message.target() : message.sender().id();
-    this.channel = message.channel().id();
+    if (message.user() != null && !message.isGroup()) {
+      this.target = message.user().id();
+      this.channel = "user";
+    } else {
+      this.target = message.isGroup() ? message.target() : message.sender().id();
+      this.channel = message.channel().id();
+    }
     this.event = event;
     this.requestConfirmation = false;
   }
