@@ -34,6 +34,7 @@ import org.schwering.irc.lib.IRCModeParser;
 import org.schwering.irc.lib.IRCUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.devnull.boteco.event.EventBus;
 
 public class BotecoIrcEventListener implements IRCEventListener {
 
@@ -42,13 +43,16 @@ public class BotecoIrcEventListener implements IRCEventListener {
   private final IRCConnection connection;
   private final IrcConfiguration configuration;
   private final IrcChannelsRepository repository;
+  private final EventBus bus;
 
   public BotecoIrcEventListener(IRCConnection connection,
                                 IrcConfiguration configuration,
-                                IrcChannelsRepository repository) {
+                                IrcChannelsRepository repository,
+                                EventBus bus) {
     this.connection = connection;
     this.configuration = configuration;
     this.repository = repository;
+    this.bus = bus;
   }
 
   private void joinChannel(String channel) {
@@ -90,9 +94,11 @@ public class BotecoIrcEventListener implements IRCEventListener {
 
   @Override
   public void onInvite(String chan, IRCUser user, String passiveNick) {
-    logger.info("Received an invite to join " + chan);
+    String message = user.getNick() + " invited me to join " + chan;
+    logger.info(message);
     joinChannel(chan);
     this.repository.add(chan);
+    this.bus.broadcast(message).as("irc.invited");
   }
 
   @Override
@@ -103,7 +109,9 @@ public class BotecoIrcEventListener implements IRCEventListener {
   @Override
   public void onKick(String chan, IRCUser user, String passiveNick, String msg) {
     if (passiveNick.equals(configuration.getNickname())) {
-      logger.info(user.getNick() + " kicked me from " + chan);
+      String message = user.getNick() + " kicked me from " + chan;
+      logger.info(message);
+      this.bus.broadcast(message).as("irc.kicked");
       this.repository.remove(chan);
     }
   }

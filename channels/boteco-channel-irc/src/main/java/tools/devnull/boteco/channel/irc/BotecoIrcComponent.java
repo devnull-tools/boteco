@@ -27,6 +27,7 @@ package tools.devnull.boteco.channel.irc;
 import org.apache.camel.component.irc.IrcComponent;
 import org.apache.camel.component.irc.IrcConfiguration;
 import org.schwering.irc.lib.IRCConnection;
+import tools.devnull.boteco.event.EventBus;
 
 /**
  * An extension of the IrcComponent that can use custom listeners
@@ -34,15 +35,17 @@ import org.schwering.irc.lib.IRCConnection;
 public class BotecoIrcComponent extends IrcComponent {
 
   private final IrcChannelsRepository repository;
+  private final EventBus bus;
 
-  public BotecoIrcComponent(IrcChannelsRepository repository) {
+  public BotecoIrcComponent(IrcChannelsRepository repository, EventBus bus) {
     this.repository = repository;
+    this.bus = bus;
   }
 
   @Override
   protected IRCConnection createConnection(IrcConfiguration configuration) {
     IRCConnection connection = super.createConnection(configuration);
-    connection.addIRCEventListener(new BotecoIrcEventListener(connection, configuration, repository));
+    connection.addIRCEventListener(new BotecoIrcEventListener(connection, configuration, repository, bus));
     return connection;
   }
 

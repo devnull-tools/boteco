@@ -93,6 +93,9 @@
     <argument>
       <reference interface="tools.devnull.boteco.channel.irc.IrcChannelsRepository"/>
     </argument>
+    <argument>
+      <reference interface="tools.devnull.boteco.event.EventBus"/>
+    </argument>
   </bean>
 
   <camelContext id="boteco-channel-irc"

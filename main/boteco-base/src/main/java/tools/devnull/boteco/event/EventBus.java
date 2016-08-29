@@ -31,12 +31,21 @@ public interface EventBus {
 
   /**
    * Broadcasts the given object as an event.
-   *
+   * <p>
    * The object will be wrapped in an {@link Event} object and
    * can be accessed through a topic listener or a {@link Subscription}
    *
    * @param object the object to broadcast.
+   * @return a component to select the event
    */
   EventSelector broadcast(Notifiable object);
+
+  /**
+   * Broadcasts the given object as a Notifiable Object
+   *
+   * @param message the message to broadcast
+   * @return a component to select the event
+   */
+  EventSelector broadcast(String message);
 
 }
