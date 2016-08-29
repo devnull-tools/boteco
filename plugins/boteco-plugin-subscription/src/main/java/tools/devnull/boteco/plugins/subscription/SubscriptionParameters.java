@@ -40,7 +40,7 @@ public class SubscriptionParameters {
     this.requestConfirmation = false;
   }
 
-  public SubscriptionParameters(String event, String target, String channel) {
+  public SubscriptionParameters(String event, String channel, String target) {
     this.event = event;
     this.target = target;
     this.channel = channel;
