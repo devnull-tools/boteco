@@ -35,10 +35,9 @@
     <cm:default-properties>
       <!-- The bot's token -->
       <cm:property name="bot.token" value=""/>
-      <!-- The bot's username -->
-      <cm:property name="bot.username" value=""/>
       <!-- The chat ids the bot should listen to -->
-      <cm:property name="bot.command.expression" value="^/\S+(@{{bot.username}})?\s+"/>
+      <cm:property name="bot.command.expression"
+                   value="^/(?&lt;command&gt;[^@ ]*)(@\w+bot)?\s*(?&lt;arguments&gt;)?"/>
       <!-- The polling interval -->
       <cm:property name="polling.interval" value="2s"/>
       <!--

@@ -37,7 +37,8 @@
       <cm:property name="irc.server" value="localhost"/>
       <cm:property name="irc.port" value="6667"/>
       <!-- The expression that defines a bot command -->
-      <cm:property name="bot.command.expression" value="^boteco[,:]?\s+"/>
+      <cm:property name="bot.command.expression"
+                   value="^{{irc.nick}}[,:]?\s+(?&lt;command&gt;\S+)\s*(?&lt;arguments&gt;.+)?"/>
       <!-- The options to apply to the irc component -->
       <cm:property name="irc.options" value=""/>
       <cm:property name="delivery.consumers" value="10"/>
@@ -70,7 +71,7 @@
 
   <bean id="irc-command-extractor"
         class="tools.devnull.boteco.message.ExpressionCommandExtractor">
-    <argument value="^boteco[,:]?\s+"/>
+    <argument value="{{bot.command.expression}}"/>
   </bean>
 
   <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>

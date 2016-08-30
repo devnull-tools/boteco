@@ -51,7 +51,7 @@ public class ExpressionMessageCommandExtractorTest {
 
   @Before
   public void initialize() {
-    extractor = new ExpressionCommandExtractor("^command\\s");
+    extractor = new ExpressionCommandExtractor("^command\\s(?<command>\\S+)\\s*(?<arguments>.+)?");
     command = extractor.extract(message("command foo arg0 arg1"));
   }
 

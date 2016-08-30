@@ -22,40 +22,34 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.message;
+package tools.devnull.boteco.channel.telegram;
 
-import tools.devnull.boteco.BotException;
+import org.junit.Test;
+import tools.devnull.boteco.message.CommandExtractor;
+import tools.devnull.boteco.message.ExpressionCommandExtractor;
+import tools.devnull.boteco.message.MessageCommand;
+import tools.devnull.kodo.TestScenario;
 
-import java.io.Serializable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import static tools.devnull.boteco.test.IncomeMessageMock.message;
+import static tools.devnull.kodo.Spec.should;
 
-/**
- * A command extractor that uses an expression to check if the message is a command.
- */
-public class ExpressionCommandExtractor implements CommandExtractor, Serializable {
+public class TelegramCommandExtractorTest {
 
-  private static final long serialVersionUID = 3153909150938096646L;
-  private final Pattern pattern;
+  private String expression = "^/(?<command>[^@ ]*)(@\\w+bot)?\\s*(?<arguments>.+)?";
+  private CommandExtractor extractor = new ExpressionCommandExtractor(expression);
 
-  public ExpressionCommandExtractor(String expression) {
-    pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+  @Test
+  public void testSimpleCommand() {
+    TestScenario.given(extractor.extract(message("/command arguments")))
+        .then(MessageCommand::name, should().be("command"))
+        .then(command -> command.as(String.class), should().be("arguments"));
   }
 
-  @Override
-  public boolean isCommand(IncomeMessage message) {
-    return message.isPrivate() || pattern.matcher(message.content()).find();
-  }
-
-  public MessageCommand extract(IncomeMessage message) {
-    Matcher matcher = pattern.matcher(message.content());
-    if (matcher.find()) {
-      String command = matcher.group("command");
-      String args = matcher.group("arguments");
-      return new ExtractedCommand(message, command, args != null ? args.trim() : args);
-    } else {
-      throw new BotException(message.content() + " is not a command");
-    }
+  @Test
+  public void testDirectCommand() {
+    TestScenario.given(extractor.extract(message("/command@mybot arguments")))
+        .then(MessageCommand::name, should().be("command"))
+        .then(command -> command.as(String.class), should().be("arguments"));
   }
 
 }
