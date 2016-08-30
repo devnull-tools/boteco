@@ -51,7 +51,7 @@ public class IgnoreListMessageProcessor implements MessageProcessor {
 
   @Override
   public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(channel("irc").and(command("ignorelist")));
+    return check(message).accept(channel("irc").and(command("ignore-list")));
   }
 
   @Override
