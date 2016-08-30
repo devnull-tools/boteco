@@ -60,10 +60,10 @@ public class MessageCommandConverter<E> implements Function<String, E> {
   @Override
   public E apply(String content) {
     List<Constructor<?>> constructors = Reflection.reflect().constructors().in(type);
-    String[] values = split(content);
     for (Constructor constructor : constructors) {
-      int annotatedParameters = annotatedParameters(constructor);
-      if (annotatedParameters == values.length) {
+      int stringParameters = stringParameters(constructor);
+      String[] values = split(content, stringParameters);
+      if (stringParameters == values.length) {
         Iterator<String> iterator = Arrays.asList(values).iterator();
         Context context = new DefaultContext();
         context.use(this.message).when(type(IncomeMessage.class))
@@ -92,15 +92,15 @@ public class MessageCommandConverter<E> implements Function<String, E> {
     throw new MessageProcessingException("Invalid command parameters.");
   }
 
-  private int annotatedParameters(Constructor constructor) {
+  private int stringParameters(Constructor constructor) {
     return Arrays.stream(constructor.getParameters())
         .filter(type(String.class))
         .collect(Collectors.counting())
         .intValue();
   }
 
-  private String[] split(String content) {
-    return content.isEmpty() ? new String[0] : content.split("\\s+");
+  private String[] split(String content, int limit) {
+    return content.isEmpty() ? new String[0] : content.split("\\s+", limit);
   }
 
 }
