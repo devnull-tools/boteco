@@ -50,7 +50,7 @@ public class IgnoreListMessageProcessor implements MessageProcessor {
 
   @Override
   public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("ignore-list"));
+    return check(message).accept(command("ignorelist"));
   }
 
   @Override
