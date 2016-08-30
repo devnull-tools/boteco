@@ -36,17 +36,17 @@
   <reference id="repository" interface="tools.devnull.boteco.plugins.request.RequestRepository"/>
   <reference id="message-sender" interface="tools.devnull.boteco.message.MessageSender"/>
 
-  <service interface="tools.devnull.boteco.request.RequestManager">
-    <bean class="tools.devnull.boteco.plugins.request.BotecoRequestManager">
-      <argument ref="repository"/>
-      <argument ref="message-sender"/>
-    </bean>
-  </service>
+  <bean id="request-manager" class="tools.devnull.boteco.plugins.request.BotecoRequestManager">
+    <argument ref="repository"/>
+    <argument ref="message-sender"/>
+    <argument ref="service-locator"/>
+  </bean>
+
+  <service interface="tools.devnull.boteco.request.RequestManager" ref="request-manager"/>
 
   <service interface="tools.devnull.boteco.message.MessageProcessor">
     <bean class="tools.devnull.boteco.plugins.request.RequestMessageProcessor">
-      <argument ref="service-locator"/>
-      <argument ref="repository"/>
+      <argument ref="request-manager"/>
     </bean>
   </service>
 

@@ -22,31 +22,33 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.request;
+package tools.devnull.boteco.rest;
 
-/**
- * Interface that defines a component capable of managing {@link Request requests}.
- */
-public interface RequestManager {
+import tools.devnull.boteco.request.RequestManager;
 
-  /**
-   * Creates a request for the given object and sends instructions about how to verify
-   * the request.
-   *
-   * @param object      the target of the request
-   * @param type        the type of the request
-   * @param description the description of the request
-   * @return the token that should be used to confirm the request.
-   */
-  String create(Verifiable object, String type, String description);
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
 
-  /**
-   * Confirms a request by passing a token. If the token is valid, then a {@link RequestListener}
-   * for the {@link Request#type() request's type} will handle the confirmation process.
-   *
-   * @param token the token to validate the request
-   * @return {@code true} if the request was confirmed successful
-   */
-  boolean confirm(String token);
+@Path("/request")
+public class RequestService {
+
+  private final RequestManager requestManager;
+
+  public RequestService(RequestManager requestManager) {
+    this.requestManager = requestManager;
+  }
+
+  @POST
+  @Path("/confirm")
+  @Consumes("application/json")
+  public Response confirm(RequestConfirmation confirmation) {
+    if (this.requestManager.confirm(confirmation.getToken())) {
+      return Response.ok().build();
+    } else {
+      return Response.status(Response.Status.BAD_REQUEST).build();
+    }
+  }
 
 }

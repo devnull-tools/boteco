@@ -24,11 +24,9 @@
 
 package tools.devnull.boteco.plugins.request;
 
-import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.request.Request;
-import tools.devnull.boteco.request.RequestListener;
+import tools.devnull.boteco.request.RequestManager;
 
 import static tools.devnull.boteco.Predicates.command;
 import static tools.devnull.boteco.message.MessageChecker.check;
@@ -38,13 +36,10 @@ import static tools.devnull.boteco.message.MessageChecker.check;
  */
 public class RequestMessageProcessor implements MessageProcessor {
 
-  private final ServiceLocator serviceLocator;
-  private final RequestRepository repository;
+  private final RequestManager requestManager;
 
-  public RequestMessageProcessor(ServiceLocator serviceLocator,
-                                 RequestRepository repository) {
-    this.serviceLocator = serviceLocator;
-    this.repository = repository;
+  public RequestMessageProcessor(RequestManager requestManager) {
+    this.requestManager = requestManager;
   }
 
   @Override
@@ -60,15 +55,8 @@ public class RequestMessageProcessor implements MessageProcessor {
   @Override
   public void process(IncomeMessage message) {
     String token = message.command().as(String.class);
-    Request request = this.repository.pull(token);
-    if (request != null) {
-      RequestListener listener = serviceLocator.locate(RequestListener.class, "(request=%s)", request.type());
-      if (listener != null) {
-        listener.onConfirm(request);
-        message.reply("Confirmation OK!");
-      } else {
-        message.reply("Couldn't handle your confirmation!");
-      }
+    if (this.requestManager.confirm(token)) {
+      message.reply("Confirmation OK!");
     } else {
       message.reply("[e]Invalid token[/e]");
     }

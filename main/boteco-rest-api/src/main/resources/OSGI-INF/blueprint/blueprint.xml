@@ -45,6 +45,7 @@
   <reference id="message-sender" interface="tools.devnull.boteco.message.MessageSender"/>
   <reference id="event-bus" interface="tools.devnull.boteco.event.EventBus"/>
   <reference id="subscription-manager" interface="tools.devnull.boteco.event.SubscriptionManager"/>
+  <reference id="request-manager" interface="tools.devnull.boteco.request.RequestManager"/>
 
   <bean id="message-service" class="tools.devnull.boteco.rest.MessageService">
     <argument ref="message-sender"/>
@@ -59,11 +60,16 @@
     <argument ref="subscription-manager"/>
   </bean>
 
+  <bean id="request-service" class="tools.devnull.boteco.rest.RequestService">
+    <argument ref="request-manager"/>
+  </bean>
+
   <jaxrs:server id="messageServer" address="{{rest.message.path}}">
     <jaxrs:serviceBeans>
       <ref component-id="message-service"/>
       <ref component-id="event-service"/>
       <ref component-id="subscription-service"/>
+      <ref component-id="request-service"/>
     </jaxrs:serviceBeans>
     <jaxrs:providers>
       <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>

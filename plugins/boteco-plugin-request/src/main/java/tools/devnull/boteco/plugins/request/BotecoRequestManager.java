@@ -24,7 +24,11 @@
 
 package tools.devnull.boteco.plugins.request;
 
+import tools.devnull.boteco.BotException;
+import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.message.MessageSender;
+import tools.devnull.boteco.request.Request;
+import tools.devnull.boteco.request.RequestListener;
 import tools.devnull.boteco.request.RequestManager;
 import tools.devnull.boteco.request.Verifiable;
 
@@ -37,10 +41,14 @@ public class BotecoRequestManager implements RequestManager {
 
   private final RequestRepository repository;
   private final MessageSender messageSender;
+  private final ServiceLocator serviceLocator;
 
-  public BotecoRequestManager(RequestRepository repository, MessageSender messageSender) {
+  public BotecoRequestManager(RequestRepository repository,
+                              MessageSender messageSender,
+                              ServiceLocator serviceLocator) {
     this.repository = repository;
     this.messageSender = messageSender;
+    this.serviceLocator = serviceLocator;
   }
 
   @Override
@@ -51,6 +59,20 @@ public class BotecoRequestManager implements RequestManager {
         "If you didn't request this, just ignore this message.")
         .to(object.tokenDestination());
     return token;
+  }
+
+  @Override
+  public boolean confirm(String token) {
+    Request request = this.repository.pull(token);
+    if (request != null) {
+      RequestListener listener = serviceLocator.locate(RequestListener.class, "(request=%s)", request.type());
+      if (listener != null) {
+        listener.onConfirm(request);
+        return true;
+      }
+      throw new BotException("No listener found for request of type " + request.type());
+    }
+    return false;
   }
 
 }
