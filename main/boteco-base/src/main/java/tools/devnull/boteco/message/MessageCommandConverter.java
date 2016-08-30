@@ -34,6 +34,7 @@ import tools.devnull.trugger.util.factory.DefaultContext;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
@@ -62,9 +63,9 @@ public class MessageCommandConverter<E> implements Function<String, E> {
     List<Constructor<?>> constructors = Reflection.reflect().constructors().in(type);
     for (Constructor constructor : constructors) {
       int stringParameters = stringParameters(constructor);
-      String[] values = split(content, stringParameters);
-      if (stringParameters == values.length) {
-        Iterator<String> iterator = Arrays.asList(values).iterator();
+      List<String> values = split(content, stringParameters);
+      if (stringParameters == values.size()) {
+        Iterator<String> iterator = values.iterator();
         Context context = new DefaultContext();
         context.use(this.message).when(type(IncomeMessage.class))
             .use(this.message.channel()).when(type(Channel.class))
@@ -99,8 +100,8 @@ public class MessageCommandConverter<E> implements Function<String, E> {
         .intValue();
   }
 
-  private String[] split(String content, int limit) {
-    return content.isEmpty() ? new String[0] : content.split("\\s+", limit);
+  private List<String> split(String content, int limit) {
+    return content.isEmpty() ? Collections.emptyList() : Arrays.asList(content.split("\\s+", limit));
   }
 
 }
