@@ -29,6 +29,7 @@ import tools.devnull.boteco.message.MessageProcessor;
 
 import java.util.stream.Collectors;
 
+import static tools.devnull.boteco.Predicates.channel;
 import static tools.devnull.boteco.Predicates.command;
 import static tools.devnull.boteco.message.MessageChecker.check;
 
@@ -50,7 +51,7 @@ public class IgnoreListMessageProcessor implements MessageProcessor {
 
   @Override
   public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("ignorelist"));
+    return check(message).accept(channel("irc").and(command("ignorelist")));
   }
 
   @Override
