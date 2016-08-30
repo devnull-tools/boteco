@@ -24,37 +24,37 @@
 
 package tools.devnull.boteco.message;
 
-import tools.devnull.boteco.BotException;
-
 import java.io.Serializable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
- * A command extractor that uses an expression to check if the message is a command.
+ * A command extractor that uses prefix to check if the message is a command.
  */
-public class ExpressionCommandExtractor implements CommandExtractor, Serializable {
+public class PrefixCommandExtractor implements CommandExtractor, Serializable {
 
   private static final long serialVersionUID = 3153909150938096646L;
-  private final Pattern pattern;
+  private final String prefix;
 
-  public ExpressionCommandExtractor(String expression) {
-    this.pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+  public PrefixCommandExtractor(String prefix) {
+    this.prefix = prefix;
   }
 
   @Override
   public boolean isCommand(IncomeMessage message) {
-    return pattern.matcher(message.content()).find();
+    return message.isPrivate() || message.content().startsWith(prefix);
   }
 
   public MessageCommand extract(IncomeMessage message) {
-    Matcher matcher = pattern.matcher(message.content());
-    if (matcher.find()) {
-      String command = matcher.group("command");
-      String args = matcher.group("arguments");
-      return new ExtractedCommand(message, command, args != null ? args.trim() : args);
+    String content = message.content();
+    if (content.startsWith(prefix)) {
+      content = content.replaceFirst("^" + prefix, "");
+    }
+    int firstSpace = content.indexOf(" ");
+    if (firstSpace < 0) { // no arguments
+      return new ExtractedCommand(message, content, "");
     } else {
-      throw new BotException(message.content() + " is not a command");
+      return new ExtractedCommand(message, content.substring(0, firstSpace),
+          content.substring(firstSpace, content.length()).trim()
+      );
     }
   }
 

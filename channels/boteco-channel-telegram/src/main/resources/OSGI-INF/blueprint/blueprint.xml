@@ -37,7 +37,7 @@
       <cm:property name="bot.token" value=""/>
       <!-- The chat ids the bot should listen to -->
       <cm:property name="bot.command.expression"
-                   value="^/(?&lt;command&gt;[^@ ]*)(@\w+bot)?\s*(?&lt;arguments&gt;)?"/>
+                   value="^/(?&lt;command&gt;[^@ ]*)(@\w+bot)?\s*(?&lt;arguments&gt;.+)?"/>
       <!-- The polling interval -->
       <cm:property name="polling.interval" value="2s"/>
       <!--
@@ -52,8 +52,7 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <bean id="telegram-command-extractor"
-        class="tools.devnull.boteco.message.ExpressionCommandExtractor">
+  <bean id="command-extractor" class="tools.devnull.boteco.message.ExpressionCommandExtractor">
     <argument value="{{bot.command.expression}}"/>
   </bean>
 
@@ -68,7 +67,7 @@
   <reference id="user-manager" interface="tools.devnull.boteco.user.UserManager"/>
 
   <bean id="telegram-income-processor" class="tools.devnull.boteco.channel.telegram.TelegramIncomeProcessor">
-    <argument ref="telegram-command-extractor"/>
+    <argument ref="command-extractor"/>
     <argument ref="offset-manager"/>
     <argument ref="message-dispatcher"/>
     <argument ref="service-locator"/>
