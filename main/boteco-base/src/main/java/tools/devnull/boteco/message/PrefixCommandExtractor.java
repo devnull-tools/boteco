@@ -25,6 +25,8 @@
 package tools.devnull.boteco.message;
 
 import java.io.Serializable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A command extractor that uses prefix to check if the message is a command.
@@ -32,21 +34,22 @@ import java.io.Serializable;
 public class PrefixCommandExtractor implements CommandExtractor, Serializable {
 
   private static final long serialVersionUID = 3153909150938096646L;
-  private final String prefix;
+  private final Pattern prefix;
 
   public PrefixCommandExtractor(String prefix) {
-    this.prefix = prefix;
+    this.prefix = Pattern.compile("^" + prefix, Pattern.CASE_INSENSITIVE);
   }
 
   @Override
   public boolean isCommand(IncomeMessage message) {
-    return message.isPrivate() || message.content().startsWith(prefix);
+    return message.isPrivate() || prefix.matcher(message.content()).find();
   }
 
   public MessageCommand extract(IncomeMessage message) {
     String content = message.content();
-    if (content.startsWith(prefix)) {
-      content = content.replaceFirst("^" + prefix, "");
+    Matcher matcher = prefix.matcher(content);
+    if (matcher.find()) {
+      content = content.substring(matcher.end());
     }
     int firstSpace = content.indexOf(" ");
     if (firstSpace < 0) { // no arguments
