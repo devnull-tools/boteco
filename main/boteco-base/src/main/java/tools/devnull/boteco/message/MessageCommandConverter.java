@@ -33,11 +33,14 @@ import tools.devnull.trugger.util.factory.CreateException;
 import tools.devnull.trugger.util.factory.DefaultContext;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static tools.devnull.trugger.reflection.ParameterPredicates.type;
@@ -61,9 +64,9 @@ public class MessageCommandConverter<E> implements Function<String, E> {
   @Override
   public E apply(String content) {
     List<Constructor<?>> constructors = Reflection.reflect().constructors().in(type);
+    List<String> values = split(content);
     for (Constructor constructor : constructors) {
       int stringParameters = stringParameters(constructor);
-      List<String> values = split(content, stringParameters);
       if (stringParameters == values.size()) {
         Iterator<String> iterator = values.iterator();
         Context context = new DefaultContext();
@@ -78,10 +81,10 @@ public class MessageCommandConverter<E> implements Function<String, E> {
               }
               return user;
             }).when(type(User.class))
-            .use(parameter ->  iterator.next()).when(type(String.class));
+            .use(parameter -> iterator.next()).when(type(String.class));
         try {
           Object[] args = Arrays.stream(constructor.getParameters())
-              .map(parameter -> context.resolve(parameter))
+              .map(context::resolve)
               .collect(Collectors.toList())
               .toArray();
           return Reflection.invoke(constructor).withArgs(args);
@@ -100,8 +103,20 @@ public class MessageCommandConverter<E> implements Function<String, E> {
         .intValue();
   }
 
-  private List<String> split(String content, int limit) {
-    return content.isEmpty() ? Collections.emptyList() : Arrays.asList(content.split("\\s+", limit));
+  private List<String> split(String content) {
+    if (content.isEmpty()) {
+      return Collections.emptyList();
+    }
+    List<String> result = new ArrayList<>();
+    Matcher matcher = Pattern.compile("(?<arg>[^\"]\\S*|\".+?[^\\\\]\")\\s*").matcher(content);
+    while (matcher.find()) {
+      String arg = matcher.group("arg");
+      if (arg.startsWith("\"") && arg.endsWith("\"")) {
+        arg = arg.substring(1, arg.length() - 1).replaceAll("\\\\\"", "\"");
+      }
+      result.add(arg);
+    }
+    return result;
   }
 
 }

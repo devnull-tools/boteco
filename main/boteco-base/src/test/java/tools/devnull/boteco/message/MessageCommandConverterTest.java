@@ -87,11 +87,11 @@ public class MessageCommandConverterTest {
         .then(TestObject1::foo, should().be("value1"))
         .then(TestObject1::bar, should().be("value2"));
 
-    TestScenario.given(converter.apply("value1 value2 is a text"))
+    TestScenario.given(converter.apply("value1 \"value2 is a text\""))
         .then(TestObject1::foo, should().be("value1"))
         .then(TestObject1::bar, should().be("value2 is a text"));
 
-    TestScenario.given(converter.apply("value1 value2 \"is a\" text"))
+    TestScenario.given(converter.apply("value1 \"value2 \\\"is a\\\" text\""))
         .then(TestObject1::foo, should().be("value1"))
         .then(TestObject1::bar, should().be("value2 \"is a\" text"));
   }
