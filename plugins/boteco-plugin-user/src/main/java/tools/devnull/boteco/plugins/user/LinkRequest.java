@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.plugins.user;
 
+import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.user.User;
 
 /**
@@ -42,10 +43,10 @@ public class LinkRequest {
     this.target = target;
   }
 
-  public LinkRequest(String user, String channel, String target) {
+  public LinkRequest(IncomeMessage message, String user) {
     this.user = user;
-    this.channel = channel;
-    this.target = target;
+    this.channel = message.channel().id();
+    this.target = message.sender().id();
   }
 
   public String userId() {
