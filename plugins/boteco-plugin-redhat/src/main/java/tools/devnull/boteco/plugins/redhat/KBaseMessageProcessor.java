@@ -50,11 +50,6 @@ public class KBaseMessageProcessor implements MessageProcessor {
   }
 
   @Override
-  public boolean canProcess(IncomeMessage message) {
-    return pattern.matcher(message.content()).find();
-  }
-
-  @Override
   public void process(IncomeMessage message) {
     Matcher matcher = pattern.matcher(message.content());
     while (matcher.find()) {

@@ -26,21 +26,15 @@ package tools.devnull.boteco.plugins.weather;
 
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.message.checker.Command;
 
-import static tools.devnull.boteco.Predicates.command;
-import static tools.devnull.boteco.message.MessageChecker.check;
-
+@Command("weather")
 public class WeatherMessageProcessor implements MessageProcessor {
 
   private final WeatherSearcher searcher;
 
   public WeatherMessageProcessor(WeatherSearcher searcher) {
     this.searcher = searcher;
-  }
-
-  @Override
-  public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("weather"));
   }
 
   @Override

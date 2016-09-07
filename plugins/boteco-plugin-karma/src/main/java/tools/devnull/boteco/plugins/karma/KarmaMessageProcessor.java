@@ -26,12 +26,14 @@ package tools.devnull.boteco.plugins.karma;
 
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.message.checker.Group;
 
 import java.util.Properties;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Group
 public class KarmaMessageProcessor implements MessageProcessor {
 
   private final Pattern pattern =
@@ -43,11 +45,6 @@ public class KarmaMessageProcessor implements MessageProcessor {
   public KarmaMessageProcessor(KarmaRepository repository, Properties properties) {
     this.repository = repository;
     this.properties = properties;
-  }
-
-  @Override
-  public boolean canProcess(IncomeMessage message) {
-    return message.isGroup() && pattern.matcher(message.content()).find();
   }
 
   @Override

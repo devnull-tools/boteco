@@ -26,25 +26,19 @@ package tools.devnull.boteco.plugins.request;
 
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.message.checker.Command;
 import tools.devnull.boteco.request.RequestManager;
-
-import static tools.devnull.boteco.Predicates.command;
-import static tools.devnull.boteco.message.MessageChecker.check;
 
 /**
  * A message processor that confirms requests.
  */
+@Command("confirm")
 public class RequestMessageProcessor implements MessageProcessor {
 
   private final RequestManager requestManager;
 
   public RequestMessageProcessor(RequestManager requestManager) {
     this.requestManager = requestManager;
-  }
-
-  @Override
-  public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("confirm"));
   }
 
   @Override

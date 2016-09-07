@@ -22,29 +22,27 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.subscription;
+package tools.devnull.boteco.message.checker;
 
-import tools.devnull.boteco.event.SubscriptionManager;
 import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.message.checker.Command;
 
-@Command("subscription")
-public class SubscriptionMessageProcessor implements MessageProcessor {
+import static tools.devnull.boteco.Predicates.command;
+import static tools.devnull.boteco.message.MessageChecker.check;
 
-  private final SubscriptionManager subscriptionManager;
+/**
+ * Process the {@link Command} annotation.
+ */
+public class CommandChecker implements IncomeMessageChecker {
 
-  public SubscriptionMessageProcessor(SubscriptionManager subscriptionManager) {
-    this.subscriptionManager = subscriptionManager;
+  private final String acceptedCommand;
+
+  public CommandChecker(Command command) {
+    this.acceptedCommand = command.value();
   }
 
   @Override
-  public void process(IncomeMessage message) {
-    message.command()
-        .on("add", SubscriptionParameters.class, new SubscriptionAdd(subscriptionManager, message))
-        .on("remove", SubscriptionParameters.class, new SubscriptionRemove(subscriptionManager, message))
-        .on("list", SubscriptionListParameters.class, new SubscriptionList(subscriptionManager, message))
-        .execute();
+  public boolean canProcess(IncomeMessage message) {
+    return check(message).accept(command(acceptedCommand));
   }
 
 }

@@ -26,20 +26,15 @@ package tools.devnull.boteco.channel.telegram;
 
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
-
-import static tools.devnull.boteco.Predicates.channel;
-import static tools.devnull.boteco.Predicates.command;
-import static tools.devnull.boteco.message.MessageChecker.check;
+import tools.devnull.boteco.message.checker.Channel;
+import tools.devnull.boteco.message.checker.Command;
 
 /**
  * A message processor for retrieving Telegram ID
  */
+@Command("id")
+@Channel("telegram")
 public class TelegramIDMessageProcessor implements MessageProcessor {
-
-  @Override
-  public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(channel("telegram").and(command("id")));
-  }
 
   @Override
   public void process(IncomeMessage message) {

@@ -22,29 +22,18 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.subscription;
+package tools.devnull.boteco.message.checker;
 
-import tools.devnull.boteco.event.SubscriptionManager;
 import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.message.checker.Command;
 
-@Command("subscription")
-public class SubscriptionMessageProcessor implements MessageProcessor {
-
-  private final SubscriptionManager subscriptionManager;
-
-  public SubscriptionMessageProcessor(SubscriptionManager subscriptionManager) {
-    this.subscriptionManager = subscriptionManager;
-  }
+/**
+ * Process {@link Group} annotations.
+ */
+public class GroupChecker implements IncomeMessageChecker {
 
   @Override
-  public void process(IncomeMessage message) {
-    message.command()
-        .on("add", SubscriptionParameters.class, new SubscriptionAdd(subscriptionManager, message))
-        .on("remove", SubscriptionParameters.class, new SubscriptionRemove(subscriptionManager, message))
-        .on("list", SubscriptionListParameters.class, new SubscriptionList(subscriptionManager, message))
-        .execute();
+  public boolean canProcess(IncomeMessage message) {
+    return message.isGroup();
   }
 
 }

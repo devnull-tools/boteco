@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.message;
 
+import tools.devnull.boteco.message.checker.MessageProcessorChecker;
+
 /**
  * Interface that defines a plugin that can process a message.
  */
@@ -32,10 +34,15 @@ public interface MessageProcessor {
   /**
    * Checks if this processor can process the given message.
    *
+   * The default implementation uses the {@link MessageProcessorChecker} to
+   * process annotations
+   *
    * @param message the message to process
    * @return <code>true</code> if this processor can process the given message.
    */
-  boolean canProcess(IncomeMessage message);
+  default boolean canProcess(IncomeMessage message){
+    return new MessageProcessorChecker().canProcess(this, message);
+  }
 
   /**
    * Process the given message.

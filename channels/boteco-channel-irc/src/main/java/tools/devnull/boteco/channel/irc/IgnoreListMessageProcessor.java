@@ -26,27 +26,22 @@ package tools.devnull.boteco.channel.irc;
 
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.message.checker.Channel;
+import tools.devnull.boteco.message.checker.Command;
 
 import java.util.stream.Collectors;
-
-import static tools.devnull.boteco.Predicates.channel;
-import static tools.devnull.boteco.Predicates.command;
-import static tools.devnull.boteco.message.MessageChecker.check;
 
 /**
  * A message processor that can manipulate an {@link IrcIgnoreList}.
  */
+@Channel(IrcChannel.ID)
+@Command("ignore-list")
 public class IgnoreListMessageProcessor implements MessageProcessor {
 
   private final IrcIgnoreList ignoreList;
 
   public IgnoreListMessageProcessor(IrcIgnoreList ignoreList) {
     this.ignoreList = ignoreList;
-  }
-
-  @Override
-  public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(channel("irc").and(command("ignore-list")));
   }
 
   @Override

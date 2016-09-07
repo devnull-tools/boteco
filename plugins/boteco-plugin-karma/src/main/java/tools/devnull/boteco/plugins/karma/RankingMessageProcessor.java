@@ -26,24 +26,18 @@ package tools.devnull.boteco.plugins.karma;
 
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.message.checker.Command;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static tools.devnull.boteco.Predicates.command;
-import static tools.devnull.boteco.message.MessageChecker.check;
-
+@Command("rank")
 public class RankingMessageProcessor implements MessageProcessor {
 
   private final KarmaRepository repository;
 
   public RankingMessageProcessor(KarmaRepository repository) {
     this.repository = repository;
-  }
-
-  @Override
-  public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("rank"));
   }
 
   @Override

@@ -28,14 +28,13 @@ import tools.devnull.boteco.BotException;
 import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.message.checker.Command;
 
 import java.io.IOException;
 import java.util.Properties;
 import java.util.function.Function;
 
-import static tools.devnull.boteco.Predicates.command;
-import static tools.devnull.boteco.message.MessageChecker.check;
-
+@Command("stock")
 public class StocksMessageProcessor implements MessageProcessor {
 
   private final RestClient restClient;
@@ -44,12 +43,6 @@ public class StocksMessageProcessor implements MessageProcessor {
   public StocksMessageProcessor(RestClient restClient, Properties configuration) {
     this.restClient = restClient;
     this.configuration = configuration;
-  }
-
-  @Override
-  public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("stock").or(command("stocks"))
-    );
   }
 
   @Override

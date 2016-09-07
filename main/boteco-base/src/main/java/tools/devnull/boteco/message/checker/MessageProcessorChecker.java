@@ -22,29 +22,27 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.subscription;
+package tools.devnull.boteco.message.checker;
 
-import tools.devnull.boteco.event.SubscriptionManager;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.message.checker.Command;
+import tools.devnull.trugger.util.factory.ComponentFactory;
 
-@Command("subscription")
-public class SubscriptionMessageProcessor implements MessageProcessor {
+/**
+ * A class that verifies if a {@link MessageProcessor} can process an
+ * {@link IncomeMessage} based on annotations.
+ */
+public class MessageProcessorChecker {
 
-  private final SubscriptionManager subscriptionManager;
+  private final ComponentFactory<CheckerClass, IncomeMessageChecker> factory;
 
-  public SubscriptionMessageProcessor(SubscriptionManager subscriptionManager) {
-    this.subscriptionManager = subscriptionManager;
+  public MessageProcessorChecker() {
+    this.factory = new ComponentFactory<>(CheckerClass.class);
   }
 
-  @Override
-  public void process(IncomeMessage message) {
-    message.command()
-        .on("add", SubscriptionParameters.class, new SubscriptionAdd(subscriptionManager, message))
-        .on("remove", SubscriptionParameters.class, new SubscriptionRemove(subscriptionManager, message))
-        .on("list", SubscriptionListParameters.class, new SubscriptionList(subscriptionManager, message))
-        .execute();
+  public boolean canProcess(MessageProcessor messageProcessor, IncomeMessage message) {
+    return this.factory.createAll(messageProcessor.getClass()).stream()
+        .allMatch(checker -> checker.canProcess(message));
   }
 
 }

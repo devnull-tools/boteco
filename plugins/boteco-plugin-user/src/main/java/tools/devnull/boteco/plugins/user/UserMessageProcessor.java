@@ -27,15 +27,14 @@ package tools.devnull.boteco.plugins.user;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessingException;
 import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.message.checker.Command;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.user.UserManager;
-
-import static tools.devnull.boteco.Predicates.command;
-import static tools.devnull.boteco.message.MessageChecker.check;
 
 /**
  * A message processor for user operations.
  */
+@Command("user")
 public class UserMessageProcessor implements MessageProcessor {
 
   private final UserManager userManager;
@@ -44,11 +43,6 @@ public class UserMessageProcessor implements MessageProcessor {
   public UserMessageProcessor(UserManager userManager, UserRepository repository) {
     this.userManager = userManager;
     this.repository = repository;
-  }
-
-  @Override
-  public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("user"));
   }
 
   @Override

@@ -27,21 +27,15 @@ package tools.devnull.boteco.plugins.diceroll;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessingException;
 import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.message.checker.Command;
 
-import static tools.devnull.boteco.Predicates.command;
-import static tools.devnull.boteco.message.MessageChecker.check;
-
+@Command("roll")
 public class DiceRollMessageProcessor implements MessageProcessor {
 
   private final DiceRoll diceRoll;
 
   public DiceRollMessageProcessor(DiceRoll diceRoll) {
     this.diceRoll = diceRoll;
-  }
-
-  @Override
-  public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("roll"));
   }
 
   @Override

@@ -37,11 +37,6 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <!-- Dynamic list containing all message processors in the OSGi Registry -->
-  <reference-list id="message-processors"
-                  interface="tools.devnull.boteco.message.MessageProcessor"
-                  availability="optional"/>
-
   <reference id="client" interface="tools.devnull.boteco.client.jms.JmsClient"/>
   <bean id="service-locator" class="tools.devnull.boteco.OsgiServiceLocator"/>
 
@@ -63,7 +58,7 @@
   </service>
 
   <bean id="message-processor-finder" class="tools.devnull.boteco.process.message.BotecoMessageProcessorFinder">
-    <argument ref="message-processors"/>
+    <argument ref="service-locator"/>
   </bean>
 
   <bean id="message-processor-invoker" class="tools.devnull.boteco.process.message.BotecoMessageProcessorInvoker">

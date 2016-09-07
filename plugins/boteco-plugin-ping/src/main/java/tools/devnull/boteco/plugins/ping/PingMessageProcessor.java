@@ -26,20 +26,14 @@ package tools.devnull.boteco.plugins.ping;
 
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
-
-import static tools.devnull.boteco.Predicates.command;
-import static tools.devnull.boteco.message.MessageChecker.check;
+import tools.devnull.boteco.message.checker.Command;
 
 /**
  * A simple processor that responds to a "ping" command with a
  * "pong" response.
  */
+@Command("ping")
 public class PingMessageProcessor implements MessageProcessor {
-
-  @Override
-  public boolean canProcess(IncomeMessage message) {
-    return check(message).accept(command("ping"));
-  }
 
   @Override
   public void process(IncomeMessage message) {

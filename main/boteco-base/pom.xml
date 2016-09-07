@@ -72,6 +72,7 @@
             <Export-Package>
               tools.devnull.boteco,
               tools.devnull.boteco.message,
+              tools.devnull.boteco.message.checker,
               tools.devnull.boteco.event,
               tools.devnull.boteco.storage,
               tools.devnull.boteco.predicates,
