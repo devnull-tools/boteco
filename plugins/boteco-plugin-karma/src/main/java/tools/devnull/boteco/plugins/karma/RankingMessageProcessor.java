@@ -42,11 +42,6 @@ public class RankingMessageProcessor implements MessageProcessor {
   }
 
   @Override
-  public String id() {
-    return "rank";
-  }
-
-  @Override
   public boolean canProcess(IncomeMessage message) {
     return check(message).accept(command("rank"));
   }

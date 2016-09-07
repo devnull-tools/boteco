@@ -47,11 +47,6 @@ public class UserMessageProcessor implements MessageProcessor {
   }
 
   @Override
-  public String id() {
-    return "user";
-  }
-
-  @Override
   public boolean canProcess(IncomeMessage message) {
     return check(message).accept(command("user"));
   }

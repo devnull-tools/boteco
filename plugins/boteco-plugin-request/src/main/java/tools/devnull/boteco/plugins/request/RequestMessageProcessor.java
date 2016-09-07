@@ -43,11 +43,6 @@ public class RequestMessageProcessor implements MessageProcessor {
   }
 
   @Override
-  public String id() {
-    return "request";
-  }
-
-  @Override
   public boolean canProcess(IncomeMessage message) {
     return check(message).accept(command("confirm"));
   }

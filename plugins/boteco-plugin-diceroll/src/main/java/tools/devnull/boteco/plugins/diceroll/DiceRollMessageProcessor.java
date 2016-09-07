@@ -40,11 +40,6 @@ public class DiceRollMessageProcessor implements MessageProcessor {
   }
 
   @Override
-  public String id() {
-    return "diceroll";
-  }
-
-  @Override
   public boolean canProcess(IncomeMessage message) {
     return check(message).accept(command("roll"));
   }

@@ -52,17 +52,10 @@ public class BotecoMessageProcessorInvoker implements Processor {
     MessageProcessor messageProcessor = income.getBody(MessageProcessor.class);
     IncomeMessage message = income.getHeader(BotecoMessageProcessorFinder.INCOME_MESSAGE, IncomeMessage.class);
 
-    logger.info(String.format("[%s] [%s] [%s > %s] %s",
-        messageProcessor.id(),
-        message.channel().id(),
-        message.sender().mention(),
-        message.target(),
-        message.content()));
-
     try {
       messageProcessor.process(message);
     } catch (MessageProcessingException | DomainException e) {
-      eventBus.broadcast(new MessageProcessingError(message, messageProcessor, e)).as("error.message-processor");
+      eventBus.broadcast(new MessageProcessingError(message, e)).as("error.message-processor");
     } catch (Throwable e) {
       logger.error(e.getMessage(), e);
     }

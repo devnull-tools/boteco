@@ -39,11 +39,6 @@ public class WeatherMessageProcessor implements MessageProcessor {
   }
 
   @Override
-  public String id() {
-    return "weather";
-  }
-
-  @Override
   public boolean canProcess(IncomeMessage message) {
     return check(message).accept(command("weather"));
   }

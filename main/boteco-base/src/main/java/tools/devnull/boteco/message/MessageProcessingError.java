@@ -34,14 +34,11 @@ public class MessageProcessingError implements Notifiable {
   private static final long serialVersionUID = -9080804000347525917L;
 
   private final IncomeMessage incomeMessage;
-  private final String messageProcessorId;
   private final Throwable cause;
 
   public MessageProcessingError(IncomeMessage incomeMessage,
-                                MessageProcessor messageProcessor,
                                 Throwable cause) {
     this.incomeMessage = incomeMessage;
-    this.messageProcessorId = messageProcessor.id();
     this.cause = cause;
   }
 
@@ -52,18 +49,13 @@ public class MessageProcessingError implements Notifiable {
     return this.incomeMessage;
   }
 
-  public String messageProcessorId() {
-    return messageProcessorId;
-  }
-
   public Throwable cause() {
     return this.cause;
   }
 
   @Override
   public String message() {
-    return String.format("[%s] [%s@%s] %s",
-        messageProcessorId,
+    return String.format("[%s@%s] %s",
         incomeMessage.sender(),
         incomeMessage.channel().id(),
         cause.getMessage());

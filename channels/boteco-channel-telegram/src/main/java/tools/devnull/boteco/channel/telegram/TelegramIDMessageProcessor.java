@@ -37,11 +37,6 @@ import static tools.devnull.boteco.message.MessageChecker.check;
 public class TelegramIDMessageProcessor implements MessageProcessor {
 
   @Override
-  public String id() {
-    return "telegram-id";
-  }
-
-  @Override
   public boolean canProcess(IncomeMessage message) {
     return check(message).accept(channel("telegram").and(command("id")));
   }

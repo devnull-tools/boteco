@@ -50,11 +50,6 @@ public class KBaseMessageProcessor implements MessageProcessor {
   }
 
   @Override
-  public String id() {
-    return "redhat-kbase";
-  }
-
-  @Override
   public boolean canProcess(IncomeMessage message) {
     return pattern.matcher(message.content()).find();
   }

@@ -40,11 +40,6 @@ public class SubscriptionMessageProcessor implements MessageProcessor {
   }
 
   @Override
-  public String id() {
-    return "subscription";
-  }
-
-  @Override
   public boolean canProcess(IncomeMessage message) {
     return check(message).accept(command("subscription"));
   }

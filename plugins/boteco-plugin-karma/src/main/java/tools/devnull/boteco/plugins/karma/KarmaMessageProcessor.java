@@ -46,11 +46,6 @@ public class KarmaMessageProcessor implements MessageProcessor {
   }
 
   @Override
-  public String id() {
-    return "karma";
-  }
-
-  @Override
   public boolean canProcess(IncomeMessage message) {
     return message.isGroup() && pattern.matcher(message.content()).find();
   }

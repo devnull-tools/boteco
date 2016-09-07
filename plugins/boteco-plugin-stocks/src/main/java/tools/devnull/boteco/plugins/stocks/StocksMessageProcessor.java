@@ -47,11 +47,6 @@ public class StocksMessageProcessor implements MessageProcessor {
   }
 
   @Override
-  public String id() {
-    return "stocks";
-  }
-
-  @Override
   public boolean canProcess(IncomeMessage message) {
     return check(message).accept(command("stock").or(command("stocks"))
     );

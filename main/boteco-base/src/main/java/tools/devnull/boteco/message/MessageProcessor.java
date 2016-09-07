@@ -30,14 +30,6 @@ package tools.devnull.boteco.message;
 public interface MessageProcessor {
 
   /**
-   * Returns this processor's id. This id will be shown on logs and other related
-   * information.
-   *
-   * @return the id of this message processor
-   */
-  String id();
-
-  /**
    * Checks if this processor can process the given message.
    *
    * @param message the message to process

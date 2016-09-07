@@ -37,11 +37,6 @@ import static tools.devnull.boteco.message.MessageChecker.check;
 public class PingMessageProcessor implements MessageProcessor {
 
   @Override
-  public String id() {
-    return "ping";
-  }
-
-  @Override
   public boolean canProcess(IncomeMessage message) {
     return check(message).accept(command("ping"));
   }
