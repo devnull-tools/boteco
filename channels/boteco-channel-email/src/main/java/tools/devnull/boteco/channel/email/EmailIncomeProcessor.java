@@ -35,6 +35,9 @@ import tools.devnull.boteco.message.MessageDispatcher;
 
 import javax.mail.internet.MimeUtility;
 
+/**
+ * A class that process incoming email messages
+ */
 public class EmailIncomeProcessor implements Processor {
 
   private final MessageDispatcher dispatcher;
