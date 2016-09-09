@@ -30,6 +30,9 @@ import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.message.FormatExpressionParser;
 import tools.devnull.boteco.message.OutcomeMessage;
 
+/**
+ * A class that process messages for sending as emails.
+ */
 public class EmailOutcomeProcessor implements Processor {
 
   private final FormatExpressionParser parser;
