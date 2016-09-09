@@ -31,6 +31,8 @@ import tools.devnull.boteco.message.Sender;
  */
 public class EmailSender implements Sender {
 
+  private static final long serialVersionUID = -6074813597680040763L;
+
   private final String email;
   private final String name;
 
