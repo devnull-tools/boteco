@@ -26,6 +26,9 @@ package tools.devnull.boteco.channel.email;
 
 import tools.devnull.boteco.message.Sender;
 
+/**
+ * This class represents the sender of an email.
+ */
 public class EmailSender implements Sender {
 
   private final String email;
