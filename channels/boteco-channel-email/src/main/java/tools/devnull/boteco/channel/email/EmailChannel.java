@@ -26,6 +26,9 @@ package tools.devnull.boteco.channel.email;
 
 import tools.devnull.boteco.Channel;
 
+/**
+ * The Email Channel implementation
+ */
 public class EmailChannel implements Channel {
 
   private static final long serialVersionUID = 7784534005436706880L;
