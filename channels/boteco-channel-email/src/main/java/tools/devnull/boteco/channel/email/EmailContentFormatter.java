@@ -26,6 +26,9 @@ package tools.devnull.boteco.channel.email;
 
 import tools.devnull.boteco.ContentFormatter;
 
+/**
+ * A class that formats content for sending as an email
+ */
 public class EmailContentFormatter implements ContentFormatter {
 
   private String enclose(String tag, String content) {
