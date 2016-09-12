@@ -25,3 +25,11 @@ boteco's subscription system. The events are:
 
 - `irc.invited`: when boteco is invited to join a channel, it will tell you which channel and who invited
 - `irc.kicked`: when boteco is kicked from a channel, it will tell you which channel and who kicked
+
+## Ignore List
+
+This channel has a Message Processor that allows you to ignore nicknames. The commands are:
+
+- `ignore-list add <nickname>`: adds a nickname to the ignore list
+- `ignore-list remove <nickname>`: removes a nickname from the ignore list
+- `ignore-list`: lists the ignored nicknames
