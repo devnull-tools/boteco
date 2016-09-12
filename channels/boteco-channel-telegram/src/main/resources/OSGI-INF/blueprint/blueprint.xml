@@ -39,7 +39,7 @@
       <cm:property name="bot.command.expression"
                    value="^/(?&lt;command&gt;[^@ ]*)(@\w+bot)?\s*(?&lt;arguments&gt;.+)?"/>
       <!-- The polling interval -->
-      <cm:property name="polling.interval" value="2s"/>
+      <cm:property name="poll.interval" value="2s"/>
       <!--
         The initial value of the offset
 
@@ -47,7 +47,7 @@
         received. Use this offset if the channel was down for a long time and you
         don't want to process older messages.
       -->
-      <cm:property name="polling.initial-offset" value="0"/>
+      <cm:property name="poll.initial-offset" value="0"/>
       <cm:property name="delivery.consumers" value="10"/>
     </cm:default-properties>
   </cm:property-placeholder>
@@ -57,7 +57,7 @@
   </bean>
 
   <bean id="offset-manager" class="tools.devnull.boteco.channel.telegram.TelegramOffsetManager">
-    <argument value="{{polling.initial-offset}}"/>
+    <argument value="{{poll.initial-offset}}"/>
   </bean>
 
   <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>
@@ -110,7 +110,7 @@
                 xmlns="http://camel.apache.org/schema/blueprint">
 
     <route id="boteco.message.from.telegram">
-      <from uri="timer:telegram?period={{polling.interval}}"/>
+      <from uri="timer:telegram?period={{poll.interval}}"/>
       <log message="Pooling Telegram for new messages"
            logName="boteco-message-telegram"
            loggingLevel="DEBUG"/>
