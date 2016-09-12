@@ -41,7 +41,7 @@ public class SubscriptionListParameters {
     }
   }
 
-  public SubscriptionListParameters(String target, String channel) {
+  public SubscriptionListParameters(String channel, String target) {
     this.target = target;
     this.channel = channel;
   }
