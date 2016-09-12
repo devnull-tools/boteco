@@ -27,11 +27,20 @@ package tools.devnull.boteco.event.bus;
 import tools.devnull.boteco.event.Event;
 import tools.devnull.boteco.event.Notifiable;
 
+/**
+ * The default implementation of an event.
+ */
 public class BotecoEvent implements Event {
 
   private final String id;
   private final Notifiable object;
 
+  /**
+   * Creates a new event based on the given parameters.
+   *
+   * @param id     the id of this event
+   * @param object the object associated with this event
+   */
   public BotecoEvent(String id, Notifiable object) {
     this.id = id;
     this.object = object;

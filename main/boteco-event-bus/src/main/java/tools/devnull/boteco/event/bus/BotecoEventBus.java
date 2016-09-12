@@ -31,10 +31,22 @@ import tools.devnull.boteco.event.Notifiable;
 
 import static tools.devnull.boteco.Destination.topic;
 
+/**
+ * The default implementation of an event bus that uses JMS topics.
+ * <p>
+ * Events processed by this component will be delivered to the topic
+ * named "boteco.event.$ID", where $ID is the {@link EventSelector#as(String) ID}
+ * of the Event.
+ */
 public class BotecoEventBus implements EventBus {
 
   private final JmsClient client;
 
+  /**
+   * Creates a new bus using the given jms client to send the events.
+   *
+   * @param client the client to use
+   */
   public BotecoEventBus(JmsClient client) {
     this.client = client;
   }
