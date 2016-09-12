@@ -8,3 +8,4 @@ alerts and notifications.
 Just use the config `tools.devnull.boteco.channel.pushover`. The supported properties are:
 
 - `pushover.token`: your pushover token
+- `delivery.consumers`: how much consumers will be present to dispatch messages back to the irc (defaults to `10`)
