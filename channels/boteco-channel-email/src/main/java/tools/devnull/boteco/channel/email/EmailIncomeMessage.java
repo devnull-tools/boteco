@@ -127,7 +127,7 @@ public class EmailIncomeMessage implements IncomeMessage {
 
   @Override
   public void sendBack(String content) {
-
+    reply(content);
   }
 
 }
