@@ -32,8 +32,13 @@ public class SubscriptionListParameters {
   private final String target;
 
   public SubscriptionListParameters(IncomeMessage message) {
-    this.target = message.isGroup() ? message.target() : message.sender().id();
-    this.channel = message.channel().id();
+    if (message.user() != null && !message.isGroup()) {
+      this.target = message.user().id();
+      this.channel = "user";
+    } else {
+      this.target = message.isGroup() ? message.target() : message.sender().id();
+      this.channel = message.channel().id();
+    }
   }
 
   public SubscriptionListParameters(String target, String channel) {
