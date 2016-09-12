@@ -30,6 +30,9 @@ import tools.devnull.boteco.Channel;
  * The Pushover Channel implementation
  */
 public class PushoverChannel implements Channel {
+
+  private static final long serialVersionUID = 189869244755568254L;
+
   @Override
   public String name() {
     return "Pushover";
