@@ -35,6 +35,9 @@ import tools.devnull.boteco.message.OutcomeMessage;
 import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * A processor for outcome pushover messages
+ */
 public class PushoverOutcomeProcessor implements Processor {
 
   private final FormatExpressionParser parser;
@@ -42,6 +45,14 @@ public class PushoverOutcomeProcessor implements Processor {
   private final RestClient client;
   private final String token;
 
+  /**
+   * Creates a new processor based on the given parameters
+   *
+   * @param parser    the parser for processing the format blocks
+   * @param formatter the formatter to format the parsed blocks
+   * @param client    the rest client for sending the requests to the Pushover API
+   * @param token     the pushover token to use
+   */
   public PushoverOutcomeProcessor(FormatExpressionParser parser,
                                   ContentFormatter formatter,
                                   RestClient client,

@@ -26,6 +26,9 @@ package tools.devnull.boteco.channel.pushover;
 
 import tools.devnull.boteco.Channel;
 
+/**
+ * The Pushover Channel implementation
+ */
 public class PushoverChannel implements Channel {
   @Override
   public String name() {
