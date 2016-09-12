@@ -41,16 +41,31 @@ import javax.jms.QueueConnectionFactory;
 import javax.jms.Session;
 import java.io.Serializable;
 
+/**
+ * The AMQ implementation for the JMS Client
+ */
 public class AMQClient implements JmsClient {
 
   private static Logger logger = LoggerFactory.getLogger(AMQClient.class);
 
   private final QueueConnectionFactory connectionFactory;
 
+  /**
+   * Creates a new client based on the given parameters
+   *
+   * @param user          the broker user
+   * @param password      the broker password
+   * @param connectionUrl the broker url to connect
+   */
   public AMQClient(String user, String password, String connectionUrl) {
     this.connectionFactory = new ActiveMQConnectionFactory(user, password, connectionUrl);
   }
 
+  /**
+   * Creates a new client based on the broker url.
+   *
+   * @param connectionUrl the broker url to connect
+   */
   public AMQClient(String connectionUrl) {
     this.connectionFactory = new ActiveMQConnectionFactory(connectionUrl);
   }
