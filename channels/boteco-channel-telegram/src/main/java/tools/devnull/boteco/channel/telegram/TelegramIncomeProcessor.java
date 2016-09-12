@@ -44,6 +44,15 @@ public class TelegramIncomeProcessor implements Processor {
   private final ServiceLocator serviceLocator;
   private final UserManager userManager;
 
+  /**
+   * Creates a new processor based on the given parameters
+   *
+   * @param extractor      a component for extracting commands from messages
+   * @param offsetManager  a component to manager the current offset in poll operations
+   * @param dispatcher     a component to dispatch messages to be processed
+   * @param serviceLocator a service locator for lookup purposes
+   * @param userManager    a user manager to fetch user information
+   */
   public TelegramIncomeProcessor(CommandExtractor extractor,
                                  TelegramOffsetManager offsetManager,
                                  MessageDispatcher dispatcher,

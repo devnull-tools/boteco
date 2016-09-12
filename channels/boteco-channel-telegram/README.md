@@ -7,9 +7,11 @@ This is the implementation of the Telegram Channel. It allows Message Processors
 Just use the config `tools.devnull.boteco.channel.telegram`. The supported properties are:
 
 - `bot.token`: the bot token (you get this one after a new bot registration)
-- `bot.command.expression`: the regular expression that defines a command (defaults to `'^@?boteco(_bot)?[,:]?\s+'`)
-- `polling.interval`: the interval in which the channel should polling for new messages (defaults to `'2s'`)
-- `polling.initial-offset`: the initial offset to fetch the messages (defaults to `0`)
+- `bot.command.expression`: the regular expression that defines a command (defaults to
+`^/(?<command>[^@ ]*)(@\w+bot)?\s*(?<arguments>.+)?`)
+- `poll.interval`: the interval in which the channel should polling for new messages (defaults to `'2s'`)
+- `poll.initial-offset`: the initial offset to fetch the messages (defaults to `0`)
+- `delivery.consumers`: how much consumers will be present to dispatch messages back to the irc (defaults to `10`)
 
 ## How to get your Telegram ID
 

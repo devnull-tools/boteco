@@ -33,6 +33,9 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The content formatter for Telegram based on its support for Markdown.
+ */
 public class TelegramContentFormatter implements ContentFormatter {
 
   private static final Logger logger = LoggerFactory.getLogger(TelegramContentFormatter.class);

@@ -33,6 +33,9 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+/**
+ * A converter class that converts a Map into a InputStream for json filtering purposes
+ */
 @Converter
 public class TelegramIncomeConverter {
 
