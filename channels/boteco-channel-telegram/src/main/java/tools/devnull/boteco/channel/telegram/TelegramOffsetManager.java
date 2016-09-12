@@ -39,23 +39,12 @@ public class TelegramOffsetManager {
   private final AtomicInteger nextId;
 
   /**
-   * Creates a new object using 0 as the initial offset.
-   */
-  public TelegramOffsetManager() {
-    this(0);
-  }
-
-  /**
    * Creates a new object using the given initial offset.
    *
    * @param initialOffset the initial offset to use
    */
   public TelegramOffsetManager(int initialOffset) {
     this.nextId = new AtomicInteger(initialOffset);
-  }
-
-  public int nextId() {
-    return this.nextId.intValue();
   }
 
   public void process(TelegramPolling pooling, Consumer<TelegramPolling> consumer) {
