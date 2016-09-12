@@ -32,7 +32,7 @@ import java.util.Dictionary;
 import java.util.Properties;
 
 /**
- * A service register that uses the OSGi Registry
+ * A service register that uses the OSGi Registry.
  */
 public class OsgiServiceRegister implements ServiceRegister, Serializable {
 

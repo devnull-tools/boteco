@@ -26,18 +26,65 @@ package tools.devnull.boteco.user;
 
 import tools.devnull.boteco.MessageDestination;
 
+/**
+ * Interface that defines a component capable of managing users.
+ */
 public interface UserManager {
 
+  /**
+   * Finds the user that had registered the given destination.
+   *
+   * @param destination the user destination
+   * @return the user that has the given destination linked to it
+   */
   User find(MessageDestination destination);
 
+  /**
+   * Finds the user by its ID
+   *
+   * @param userId the user id
+   * @return the user that has the given ID
+   */
   User find(String userId);
 
+  /**
+   * Creates and registers a user based on the given ID and primary destination
+   *
+   * @param userId             the user id
+   * @param primaryDestination the user's primary destination
+   * @return the created user
+   * @throws UserAlreadyExistException if an user with this id is already registered
+   */
   User create(String userId, MessageDestination primaryDestination) throws UserAlreadyExistException;
 
+  /**
+   * Links the given destination to a user.
+   * <p>
+   * This operation might create a request for confirmation.
+   *
+   * @param userId  the user id
+   * @param channel the channel of the destination
+   * @param target  the target of the destination
+   */
   void link(String userId, String channel, String target);
 
+  /**
+   * Removes the destination from the user's destinations.
+   * <p>
+   * This operation might create a request for confirmation.
+   *
+   * @param userId  the user id
+   * @param channel the channel of the destination
+   */
   void unlink(String userId, String channel);
 
+  /**
+   * Changes a user's primary destination
+   * <p>
+   * This operation might create a request for confirmation.
+   *
+   * @param request the request
+   */
   void changePrimaryDestination(PrimaryDestinationRequest request);
 
 }

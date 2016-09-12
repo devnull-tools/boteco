@@ -43,12 +43,15 @@ public class MessageProcessingError implements Notifiable {
   }
 
   /**
-   * @return the income
+   * @return the income message
    */
   public IncomeMessage incomeMessage() {
     return this.incomeMessage;
   }
 
+  /**
+   * @return the thrown cause
+   */
   public Throwable cause() {
     return this.cause;
   }

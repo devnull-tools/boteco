@@ -37,7 +37,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A ServiceLocator that lookups services by using the OSGi Registry
+ * A ServiceLocator that lookups services by using the OSGi Registry.
+ * <p>
+ * Please note that this class doesn't return the OSGi proxies so you
+ * might want not to store the lookup results for too long. (Avoid to
+ * use them as instance variable at least.)
  */
 public class OsgiServiceLocator implements ServiceLocator, Serializable {
 

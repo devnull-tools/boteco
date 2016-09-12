@@ -39,6 +39,13 @@ public class OutcomeMessage implements Serializable {
   private final String target;
   private final Map<String, Object> metadata;
 
+  /**
+   * Creates a new outcome message using the given parameters
+   *
+   * @param target   the target of the message
+   * @param content  the content of the message
+   * @param metadata the metadata map
+   */
   public OutcomeMessage(String target, String content, Map<String, Object> metadata) {
     this.content = content;
     this.target = target;

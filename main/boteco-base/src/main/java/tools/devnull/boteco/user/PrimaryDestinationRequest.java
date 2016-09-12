@@ -26,10 +26,22 @@ package tools.devnull.boteco.user;
 
 import tools.devnull.boteco.request.Verifiable;
 
+/**
+ * Interface that defines a request to set the primary destination of a user.
+ * <p>
+ * This request is only to promote a destination to primary. It does not apply to
+ * register a new destination as the primary one.
+ */
 public interface PrimaryDestinationRequest extends Verifiable {
 
+  /**
+   * @return the user id
+   */
   String userId();
 
+  /**
+   * @return the primary destination
+   */
   String channel();
 
 }

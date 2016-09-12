@@ -29,6 +29,11 @@ package tools.devnull.boteco.event;
  */
 public interface EventSelector {
 
+  /**
+   * Broadcasts the event as the given id
+   *
+   * @param eventId the id to use for the broadcast
+   */
   void as(String eventId);
 
 }
