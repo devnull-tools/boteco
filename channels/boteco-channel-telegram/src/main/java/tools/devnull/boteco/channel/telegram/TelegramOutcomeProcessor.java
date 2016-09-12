@@ -46,6 +46,15 @@ public class TelegramOutcomeProcessor implements Processor {
   private final RestClient client;
   private final String token;
 
+  /**
+   * Creates a new processor based on the given parameters
+   *
+   * @param parser                   the parser for formatting purposes
+   * @param markdownContentFormatter the content formatter for markdown format
+   * @param defaultContentFormatter  the content formatter for non markdown format
+   * @param client                   the rest client to use
+   * @param token                    the bot token
+   */
   public TelegramOutcomeProcessor(FormatExpressionParser parser,
                                   ContentFormatter markdownContentFormatter,
                                   ContentFormatter defaultContentFormatter,
