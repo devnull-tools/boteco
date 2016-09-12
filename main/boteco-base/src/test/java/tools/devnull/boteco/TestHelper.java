@@ -25,6 +25,7 @@
 package tools.devnull.boteco;
 
 import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.checker.IncomeMessageChecker;
 
 import java.util.function.Predicate;
 
@@ -36,6 +37,10 @@ public class TestHelper {
 
   public static Predicate<Predicate<IncomeMessage>> notAccept(IncomeMessage message) {
     return accept(message).negate();
+  }
+
+  public static Predicate<IncomeMessageChecker> process(IncomeMessage message) {
+    return checker -> checker.canProcess(message);
   }
 
 }
