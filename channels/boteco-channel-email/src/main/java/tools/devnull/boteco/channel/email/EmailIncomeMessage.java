@@ -34,6 +34,9 @@ import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.message.Sender;
 import tools.devnull.boteco.message.SimpleCommandExtractor;
 
+/**
+ * An abstraction for an email income message
+ */
 public class EmailIncomeMessage implements IncomeMessage {
 
   private static final long serialVersionUID = 8180521354784182482L;
@@ -46,7 +49,20 @@ public class EmailIncomeMessage implements IncomeMessage {
   private final Sender sender;
   private final String target;
 
-  public EmailIncomeMessage(ServiceLocator serviceLocator, String content, EmailSender sender, String target, User user) {
+  /**
+   * Creates a new message using the given parameters
+   *
+   * @param serviceLocator the service locator for fetching a {@link MessageSender} component
+   * @param content        the content of the email
+   * @param sender         the sender of the email
+   * @param target         the target of the email
+   * @param user           the user associated with this message (may be {@code null})
+   */
+  public EmailIncomeMessage(ServiceLocator serviceLocator,
+                            String content,
+                            EmailSender sender,
+                            String target,
+                            User user) {
     this.content = content;
     this.sender = sender;
     this.target = target;
