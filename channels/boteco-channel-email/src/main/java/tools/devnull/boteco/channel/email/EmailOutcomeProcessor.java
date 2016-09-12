@@ -38,6 +38,11 @@ public class EmailOutcomeProcessor implements Processor {
   private final FormatExpressionParser parser;
   private final ContentFormatter contentFormatter;
 
+  /**
+   * Creates a new processor using the given parameter
+   *
+   * @param parser the parser to extract format expressions in the content
+   */
   public EmailOutcomeProcessor(FormatExpressionParser parser) {
     this.parser = parser;
     this.contentFormatter = new EmailContentFormatter();

@@ -44,6 +44,13 @@ public class EmailIncomeProcessor implements Processor {
   private final ServiceLocator serviceLocator;
   private final UserManager userManager;
 
+  /**
+   * Creates a new processor using the given parameters
+   *
+   * @param dispatcher     the component to dispatch the messages to be processed
+   * @param serviceLocator the service locator for component lookup
+   * @param userManager    the user manager for fetching registered users
+   */
   public EmailIncomeProcessor(MessageDispatcher dispatcher, ServiceLocator serviceLocator, UserManager userManager) {
     this.dispatcher = dispatcher;
     this.serviceLocator = serviceLocator;
