@@ -31,11 +31,20 @@ import tools.devnull.boteco.user.UserManager;
 import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.message.OutcomeMessage;
 
+/**
+ * A processor that uses the user's preferred channel for sending the messages
+ */
 public class UserOutcomeProcessor implements Processor {
 
   private final UserManager userManager;
   private final MessageSender messageSender;
 
+  /**
+   * Creates a new processor based on the given parameters
+   *
+   * @param userManager   the user manager to fetch user information
+   * @param messageSender the message sender to use for sending messages
+   */
   public UserOutcomeProcessor(UserManager userManager, MessageSender messageSender) {
     this.userManager = userManager;
     this.messageSender = messageSender;

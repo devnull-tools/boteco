@@ -26,6 +26,9 @@ package tools.devnull.boteco.channel.user;
 
 import tools.devnull.boteco.Channel;
 
+/**
+ * The implementation of the User Channel
+ */
 public class UserChannel implements Channel {
 
   private static final long serialVersionUID = 3082760054512521519L;
