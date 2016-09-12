@@ -29,6 +29,9 @@ import tools.devnull.boteco.ContentFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * A content formatter for IRC messages.
+ */
 public class IrcContentFormatter implements ContentFormatter {
 
   enum Color {

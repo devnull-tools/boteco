@@ -50,6 +50,14 @@ public class IrcIncomeMessage implements IncomeMessage {
   private final Sender sender;
   private final String target;
 
+  /**
+   * Creates a new message using the given parameters
+   *
+   * @param income           the actual IRC message
+   * @param commandExtractor the component to extract commands from this message
+   * @param serviceLocator   the service locator to find a {@link MessageSender} when necessary
+   * @param user             the user associated with this message (may be {@code null})
+   */
   public IrcIncomeMessage(IrcMessage income,
                           CommandExtractor commandExtractor,
                           ServiceLocator serviceLocator,

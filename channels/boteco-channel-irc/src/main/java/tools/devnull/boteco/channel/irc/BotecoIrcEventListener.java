@@ -36,6 +36,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.event.EventBus;
 
+/**
+ * A class that listens to IRC events.
+ * <p>
+ * This listener is mainly based on /invite and /kick events from IRC.
+ * Everytime the bot receives an invite, the channel will be recorded in
+ * an {@link IrcChannelsRepository} so the bot can join it later in case
+ * of reconnection.
+ * <p>
+ * Also, whenever the bot is kicked from a channel, the channel will be
+ * removed from the repository so the bot will not join it anymore.
+ * <p>
+ * Broadcasts are also available for both events in case anyone needs
+ * to be aware of those events ("irc.invited" and "irc.kicked").
+ */
 public class BotecoIrcEventListener implements IRCEventListener {
 
   private static final Logger logger = LoggerFactory.getLogger(BotecoIrcEventListener.class);
@@ -45,6 +59,14 @@ public class BotecoIrcEventListener implements IRCEventListener {
   private final IrcChannelsRepository repository;
   private final EventBus bus;
 
+  /**
+   * Creates a new listener using the given parameters
+   *
+   * @param connection    the irc connection to execute operations
+   * @param configuration the configuration to get the bot information
+   * @param repository    the channel repository for auto join feature
+   * @param bus           the message bus to broadcast events
+   */
   public BotecoIrcEventListener(IRCConnection connection,
                                 IrcConfiguration configuration,
                                 IrcChannelsRepository repository,
@@ -69,7 +91,6 @@ public class BotecoIrcEventListener implements IRCEventListener {
   public void onDisconnected() {
     this.connection.doQuit();
     this.connection.close();
-    // TODO use a different approach to reconnect to irc in case of failures
     BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
     try {
       Bundle bundle = bundleContext.getBundle();

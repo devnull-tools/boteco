@@ -31,11 +31,20 @@ import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.message.FormatExpressionParser;
 import tools.devnull.boteco.message.OutcomeMessage;
 
+/**
+ * A processor to dispatch messages from the bot to the IRC
+ */
 public class IrcOutcomeProcessor implements Processor {
 
   private final FormatExpressionParser parser;
   private final ContentFormatter contentFormatter;
 
+  /**
+   * Creates a new processor using the given parameters
+   *
+   * @param parser           the expression parser to use
+   * @param contentFormatter the content formatter to use
+   */
   public IrcOutcomeProcessor(FormatExpressionParser parser, ContentFormatter contentFormatter) {
     this.parser = parser;
     this.contentFormatter = contentFormatter;

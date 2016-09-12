@@ -34,6 +34,11 @@ public class IgnoreSenderRule implements Rule {
 
   private final IrcIgnoreList ignored;
 
+  /**
+   * Creates a new rule using the given ignore list
+   *
+   * @param ignored the ignore list to use
+   */
   public IgnoreSenderRule(IrcIgnoreList ignored) {
     this.ignored = ignored;
   }

@@ -40,6 +40,11 @@ public class IgnoreListMessageProcessor implements MessageProcessor {
 
   private final IrcIgnoreList ignoreList;
 
+  /**
+   * Creates a new processor using the given ignore list
+   *
+   * @param ignoreList the ignore list to use
+   */
   public IgnoreListMessageProcessor(IrcIgnoreList ignoreList) {
     this.ignoreList = ignoreList;
   }

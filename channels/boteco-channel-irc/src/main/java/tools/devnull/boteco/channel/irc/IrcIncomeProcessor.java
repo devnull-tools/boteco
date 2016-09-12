@@ -34,6 +34,9 @@ import tools.devnull.boteco.message.CommandExtractor;
 import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.message.MessageDispatcher;
 
+/**
+ * A processor that dispatches income IRC messages for the bot to process.
+ */
 public class IrcIncomeProcessor implements Processor {
 
   private final CommandExtractor extractor;
@@ -41,6 +44,14 @@ public class IrcIncomeProcessor implements Processor {
   private final ServiceLocator serviceLocator;
   private final UserManager userManager;
 
+  /**
+   * Creates a new processor based on the giving parameters
+   *
+   * @param extractor      the component to extract commands from the messages
+   * @param dispatcher     the component to dispatch the messages to be processed
+   * @param serviceLocator the service locator for component lookup
+   * @param userManager    the user manager to retrieve the registered users
+   */
   public IrcIncomeProcessor(CommandExtractor extractor,
                             MessageDispatcher dispatcher,
                             ServiceLocator serviceLocator,

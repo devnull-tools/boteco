@@ -26,8 +26,14 @@ package tools.devnull.boteco.channel.irc;
 
 import tools.devnull.boteco.Channel;
 
+/**
+ * Implementation of the IRC Channel
+ */
 public class IrcChannel implements Channel {
 
+  /**
+   * The ID of this channel.
+   */
   public static final String ID = "irc";
 
   @Override

@@ -31,12 +31,33 @@ import java.util.List;
  */
 public interface IrcIgnoreList {
 
+  /**
+   * Ignores the given nickname
+   *
+   * @param nickname the nickname to ignore
+   */
   void add(String nickname);
 
+  /**
+   * Removes the given nickname from this list
+   *
+   * @param nickname the nickname to remove
+   */
   void remove(String nickname);
 
+  /**
+   * Lists all the ignored nicknames
+   *
+   * @return the ignored nicknames
+   */
   List<String> list();
 
+  /**
+   * Checks if the given nickname
+   *
+   * @param nickname
+   * @return
+   */
   boolean contains(String nickname);
 
 }

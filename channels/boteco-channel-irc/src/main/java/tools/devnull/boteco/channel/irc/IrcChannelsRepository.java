@@ -27,14 +27,31 @@ package tools.devnull.boteco.channel.irc;
 import java.util.List;
 
 /**
- * A repository to store the channels that the bot should join
+ * A repository to store the channels that the bot should join.
+ * <p>
+ * The bot will auto join all the channels in this repository.
  */
 public interface IrcChannelsRepository {
 
+  /**
+   * Adds a channel for the bot to join
+   *
+   * @param channelName the name of the channel
+   */
   void add(String channelName);
 
+  /**
+   * Removes the given channel from the repository.
+   *
+   * @param channelName the name of the channel
+   */
   void remove(String channelName);
 
+  /**
+   * Lists all channels in this repository.
+   *
+   * @return all channels in this repository.
+   */
   List<String> channels();
 
 }
