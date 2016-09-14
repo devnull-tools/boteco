@@ -31,6 +31,9 @@ import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.event.Event;
 import tools.devnull.boteco.event.EventListener;
 
+/**
+ * A processor to invoke the {@link EventListener#onEvent(Event)}
+ */
 public class ListenerInvokerProcessor implements Processor {
 
   private static final Logger logger = LoggerFactory.getLogger(ListenerInvokerProcessor.class);

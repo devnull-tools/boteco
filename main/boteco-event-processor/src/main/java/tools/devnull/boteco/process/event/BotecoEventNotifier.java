@@ -31,6 +31,10 @@ import tools.devnull.boteco.event.EventListener;
 import tools.devnull.boteco.event.SubscriptionManager;
 import tools.devnull.boteco.message.MessageSender;
 
+/**
+ * An event listener that uses the {@link SubscriptionManager} to
+ * notify users about events from the {@link tools.devnull.boteco.event.EventBus}.
+ */
 public class BotecoEventNotifier implements EventListener {
 
   private static final Logger logger = LoggerFactory.getLogger(BotecoEventNotifier.class);
@@ -38,6 +42,12 @@ public class BotecoEventNotifier implements EventListener {
   private final SubscriptionManager subscriptionManager;
   private final MessageSender messageSender;
 
+  /**
+   * Creates a new notifier based on the given parameters
+   *
+   * @param subscriptionManager the subscription manager to fetch subscriber information
+   * @param messageSender       the message sender to notify the subscribers
+   */
   public BotecoEventNotifier(SubscriptionManager subscriptionManager, MessageSender messageSender) {
     this.subscriptionManager = subscriptionManager;
     this.messageSender = messageSender;

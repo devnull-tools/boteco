@@ -34,6 +34,9 @@ import tools.devnull.boteco.event.EventListener;
 
 import java.util.List;
 
+/**
+ * A processor that finds listeners for events raised
+ */
 public class ListenerFinderProcessor implements Processor {
 
   public static String EVENT = "event";
@@ -42,6 +45,12 @@ public class ListenerFinderProcessor implements Processor {
 
   private final ServiceLocator serviceLocator;
 
+  /**
+   * Creates a new processor using the given service locator for
+   * fetching the {@link EventListener listeners}
+   *
+   * @param serviceLocator the service locator to use
+   */
   public ListenerFinderProcessor(ServiceLocator serviceLocator) {
     this.serviceLocator = serviceLocator;
   }
