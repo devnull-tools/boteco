@@ -30,7 +30,6 @@ import java.util.Map;
 public class Message {
 
   private String content;
-  private String target;
   private Map<String, String> metadata;
 
   public Map<String, String> getMetadata() {
@@ -50,14 +49,6 @@ public class Message {
 
   public void setContent(String content) {
     this.content = content;
-  }
-
-  public String getTarget() {
-    return target;
-  }
-
-  public void setTarget(String target) {
-    this.target = target;
   }
 
 }

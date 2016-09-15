@@ -32,11 +32,11 @@
                                http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
-  <cm:property-placeholder persistent-id="tools.devnull.boteco.rest"
+  <cm:property-placeholder persistent-id="tools.devnull.boteco.rest.api"
                            placeholder-prefix="{{"
                            placeholder-suffix="}}">
     <cm:default-properties>
-      <cm:property name="rest.message.path" value="/boteco"/>
+      <cm:property name="path" value="/boteco/api"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
@@ -60,16 +60,16 @@
     <argument ref="subscription-manager"/>
   </bean>
 
-  <bean id="request-service" class="tools.devnull.boteco.rest.RequestService">
+  <bean id="confirmation-service" class="tools.devnull.boteco.rest.ConfirmationService">
     <argument ref="request-manager"/>
   </bean>
 
-  <jaxrs:server id="messageServer" address="{{rest.message.path}}">
+  <jaxrs:server address="{{rest.message.path}}">
     <jaxrs:serviceBeans>
       <ref component-id="message-service"/>
       <ref component-id="event-service"/>
       <ref component-id="subscription-service"/>
-      <ref component-id="request-service"/>
+      <ref component-id="confirmation-service"/>
     </jaxrs:serviceBeans>
     <jaxrs:providers>
       <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>

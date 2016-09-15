@@ -52,12 +52,14 @@ public class MessageService {
 
   @POST
   @Consumes("application/json")
-  @Path("/{channel}")
-  public Response sendMessage(@PathParam("channel") String channelId, Message message) {
+  @Path("/{channel}/{target}")
+  public Response sendMessage(@PathParam("channel") String channelId,
+                              @PathParam("target") String target,
+                              Message message) {
     Channel channel = serviceLocator.locate(Channel.class, String.format("(id=%s)", channelId));
     OutcomeMessageBuilder builder = messageSender.send(message.getContent());
     message.getMetadata().entrySet().forEach(entry -> builder.with(entry.getKey(), entry.getValue()));
-    builder.to(message.getTarget())
+    builder.to(target)
         .through(channelId);
     // if the channel is present, then the message will be delivered as soon as the channel can process it
     // otherwise, the message will be delivered on channel bundle starts

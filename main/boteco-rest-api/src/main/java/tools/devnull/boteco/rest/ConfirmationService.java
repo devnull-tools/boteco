@@ -29,26 +29,25 @@ import tools.devnull.boteco.request.RequestManager;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
-@Path("/request")
-public class RequestService {
+@Path("/confirmation")
+public class ConfirmationService {
 
   private final RequestManager requestManager;
 
-  public RequestService(RequestManager requestManager) {
+  public ConfirmationService(RequestManager requestManager) {
     this.requestManager = requestManager;
   }
 
   @POST
-  @Path("/confirm")
+  @Path("/{token}")
   @Consumes("application/json")
-  public Response confirm(RequestConfirmation confirmation) {
-    if (this.requestManager.confirm(confirmation.getToken())) {
-      return Response.ok().build();
-    } else {
-      return Response.status(Response.Status.BAD_REQUEST).build();
-    }
+  public Response confirm(@PathParam("token") String token) {
+    return this.requestManager.confirm(token) ?
+        Response.ok().build() :
+        Response.status(Response.Status.BAD_REQUEST).build();
   }
 
 }
