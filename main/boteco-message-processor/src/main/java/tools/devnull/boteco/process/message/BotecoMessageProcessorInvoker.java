@@ -36,12 +36,21 @@ import tools.devnull.boteco.message.MessageProcessingError;
 import tools.devnull.boteco.message.MessageProcessingException;
 import tools.devnull.boteco.message.MessageProcessor;
 
+/**
+ * A processor that invokes a {@link MessageProcessor} to process
+ * a specific message.
+ */
 public class BotecoMessageProcessorInvoker implements Processor {
 
   private static final Logger logger = LoggerFactory.getLogger(BotecoMessageProcessorInvoker.class);
 
   private final EventBus eventBus;
 
+  /**
+   * Creates a new processor
+   *
+   * @param eventBus the event bus to broadcast error events
+   */
   public BotecoMessageProcessorInvoker(EventBus eventBus) {
     this.eventBus = eventBus;
   }

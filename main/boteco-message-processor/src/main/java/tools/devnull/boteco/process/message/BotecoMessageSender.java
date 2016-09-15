@@ -28,6 +28,10 @@ import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.message.OutcomeMessageBuilder;
 import tools.devnull.boteco.client.jms.JmsClient;
 
+/**
+ * The default implementation of a message sender component based on
+ * a jms client to send the messages.
+ */
 public class BotecoMessageSender implements MessageSender {
 
   private static final long serialVersionUID = 8229143816118073058L;
@@ -35,6 +39,15 @@ public class BotecoMessageSender implements MessageSender {
   private final JmsClient client;
   private final String queueFormat;
 
+  /**
+   * Creates a new message sender based on the given parameters
+   * <p>
+   * Since this class is based on a naming convention, the queue format
+   * must have a "%s" to represent the channel name in the queue's name.
+   *
+   * @param client      the jms client to send the messages
+   * @param queueFormat the format to create queue names
+   */
   public BotecoMessageSender(JmsClient client, String queueFormat) {
     this.client = client;
     this.queueFormat = queueFormat;

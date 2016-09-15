@@ -34,12 +34,29 @@ import java.util.List;
 
 import static tools.devnull.boteco.Destination.queue;
 
+/**
+ * A component responsible for dispatching messages for being processed by
+ * delivering them to a jms queue.
+ * <p>
+ * The destination queue is based on a given name plus a "." and the channel
+ * (e.g. "boteco.process.irc").
+ * <p>
+ * The purpose of this class is also to apply {@link Rule rules} so only allowed
+ * messages will be dispatched to their respective queues.
+ */
 public class BotecoMessageDispatcher implements MessageDispatcher {
 
   private final JmsClient client;
   private final ServiceLocator serviceLocator;
   private final String queueName;
 
+  /**
+   * Creates a new message dispatcher based on the given parameters
+   *
+   * @param client         the jms client for sending the messages to queues
+   * @param serviceLocator the service locator to lookup rules
+   * @param queueName      the queue name to use
+   */
   public BotecoMessageDispatcher(JmsClient client, ServiceLocator serviceLocator, String queueName) {
     this.client = client;
     this.serviceLocator = serviceLocator;

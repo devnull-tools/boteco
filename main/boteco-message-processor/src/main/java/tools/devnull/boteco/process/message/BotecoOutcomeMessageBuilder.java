@@ -33,6 +33,10 @@ import java.util.Map;
 
 import static tools.devnull.boteco.Destination.queue;
 
+/**
+ * A default implementation to a message builder based on a queue format to send
+ * the messages.
+ */
 public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
 
   private final JmsClient client;
@@ -41,6 +45,16 @@ public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
   private final Map<String, Object> headers;
   private String target;
 
+  /**
+   * Creates a new message builder based on the given parameters.
+   * <p>
+   * Since this class is based on a naming convention, the queue format
+   * must have a "%s" to represent the channel name in the queue's name.
+   *
+   * @param client      the jms client to send the messages
+   * @param queueFormat the queue format to generate the queue name
+   * @param content     the content to send
+   */
   public BotecoOutcomeMessageBuilder(JmsClient client, String queueFormat, String content) {
     this.client = client;
     this.queueFormat = queueFormat;

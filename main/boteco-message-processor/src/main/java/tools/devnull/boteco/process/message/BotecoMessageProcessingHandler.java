@@ -28,8 +28,10 @@ import tools.devnull.boteco.event.Event;
 import tools.devnull.boteco.event.EventListener;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessingError;
-import tools.devnull.boteco.message.MessageProcessingException;
 
+/**
+ * A handler class that listens to errors and sends a feedback for the user.
+ */
 public class BotecoMessageProcessingHandler implements EventListener<MessageProcessingError> {
 
   @Override

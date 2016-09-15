@@ -33,12 +33,22 @@ import tools.devnull.boteco.message.MessageProcessor;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * A processor that finds the message processors for each received message.
+ *
+ * @see MessageProcessor#canProcess(IncomeMessage)
+ */
 public class BotecoMessageProcessorFinder implements Processor {
 
   public static String INCOME_MESSAGE = "incomeMessage";
 
   private final ServiceLocator serviceLocator;
 
+  /**
+   * Creates a new processor
+   *
+   * @param serviceLocator the service locator to query for the message processors available
+   */
   public BotecoMessageProcessorFinder(ServiceLocator serviceLocator) {
     this.serviceLocator = serviceLocator;
   }
