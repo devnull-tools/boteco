@@ -171,12 +171,9 @@ public class DefaultRestConfiguration implements RestConfiguration {
   }
 
   private RestResponse getResponse(int retries) throws IOException {
-    try {
-      CloseableHttpResponse httpResponse = client.execute(request, context);
-
+    try (CloseableHttpResponse httpResponse = client.execute(request, context)) {
       HttpEntity entity = httpResponse.getEntity();
       String content = entity == null ? "" : IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
-      httpResponse.close();
 
       DefaultRestResponse response = new DefaultRestResponse(content,
           httpResponse.getStatusLine().getStatusCode(),
