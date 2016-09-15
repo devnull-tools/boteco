@@ -45,8 +45,6 @@
       <cm:property name="outcome.host" value="localhost"/>
       <cm:property name="outcome.options" value=""/>
       <cm:property name="outcome.from" value=""/>
-
-      <cm:property name="delivery.consumers" value="10"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
@@ -82,7 +80,7 @@
     </route>
 
     <route id="boteco.message.to.email">
-      <from uri="activemq:queue:boteco.message.email?concurrentConsumers={{delivery.consumers}}"/>
+      <from uri="activemq:queue:boteco.message.email"/>
       <log logName="boteco-channel-email"
            loggingLevel="INFO"
            message="sending message through email"/>

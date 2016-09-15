@@ -11,7 +11,6 @@ Just use the config `tools.devnull.boteco.channel.telegram`. The supported prope
 `^/(?<command>[^@ ]*)(@\w+bot)?\s*(?<arguments>.+)?`)
 - `poll.interval`: the interval in which the channel should polling for new messages (defaults to `'2s'`)
 - `poll.initial-offset`: the initial offset to fetch the messages (defaults to `0`)
-- `delivery.consumers`: how much consumers will be present to dispatch messages back to the irc (defaults to `10`)
 
 ## How to get your Telegram ID
 

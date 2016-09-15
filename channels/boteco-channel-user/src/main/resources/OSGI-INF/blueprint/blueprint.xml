@@ -59,7 +59,7 @@
                 xmlns="http://camel.apache.org/schema/blueprint">
 
     <route id="message.to.user">
-      <from uri="activemq:queue:boteco.message.user?concurrentConsumers={{delivery.consumers}}"/>
+      <from uri="activemq:queue:boteco.message.user"/>
       <process ref="outcome-processor"/>
     </route>
 

@@ -10,7 +10,6 @@ Just use the config `tools.devnull.boteco.channel.irc`. The supported properties
 - `irc.server`: the server to connect (defaults to `'localhost'`)
 - `irc.port`: the port to connect (defaults to `'6667'`)
 - `bot.command.prefix`: the regular expression that defines the command prefix (defaults to `'^boteco[,:]?\s+'`)
-- `delivery.consumers`: how much consumers will be present to dispatch messages back to the irc (defaults to `10`)
 
 ## How to add channels
 
