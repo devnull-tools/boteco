@@ -188,7 +188,7 @@ public class DefaultRestConfiguration implements RestConfiguration {
         logger.error("Request error: " + e.getMessage());
         return new DefaultRestResponse(null, HttpStatus.SC_REQUEST_TIMEOUT, null);
       } else {
-        logger.error("Request error: " + e.getMessage());
+        logger.error("Request error, retrying: " + e.getMessage());
         if (retryInterval > 0) {
           try {
             Thread.sleep(retryInterval);
