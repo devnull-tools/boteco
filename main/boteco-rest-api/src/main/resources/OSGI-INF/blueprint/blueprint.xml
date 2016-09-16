@@ -36,7 +36,7 @@
                            placeholder-prefix="{{"
                            placeholder-suffix="}}">
     <cm:default-properties>
-      <cm:property name="path" value="/boteco/api"/>
+      <cm:property name="rest.path" value="/boteco/api"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
@@ -64,7 +64,7 @@
     <argument ref="request-manager"/>
   </bean>
 
-  <jaxrs:server address="{{rest.message.path}}">
+  <jaxrs:server id="server" address="{{rest.path}}">
     <jaxrs:serviceBeans>
       <ref component-id="message-service"/>
       <ref component-id="event-service"/>
