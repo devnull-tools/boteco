@@ -41,12 +41,12 @@ public class SubscriptionParameters {
       this.target = message.isGroup() ? message.target() : message.sender().id();
       this.channel = message.channel().id();
     }
-    this.event = event;
+    this.event = event.toLowerCase();
     this.requestConfirmation = false;
   }
 
   public SubscriptionParameters(String event, String channel, String target) {
-    this.event = event;
+    this.event = event.toLowerCase();
     this.target = target;
     this.channel = channel;
     this.requestConfirmation = true;
