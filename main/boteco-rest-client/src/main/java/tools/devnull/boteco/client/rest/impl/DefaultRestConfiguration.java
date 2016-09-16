@@ -83,7 +83,7 @@ public class DefaultRestConfiguration implements RestConfiguration {
   private void configureTimeout(Properties configuration) {
     this.retryOnConnectionError(Integer.parseInt(configuration.getProperty("error.retries", "0")));
     this.timeoutIn(Integer.parseInt(configuration.getProperty("timeout.value", "10000")), TimeUnit.MILLISECONDS);
-    this.waitAfterRetry(Integer.parseInt(configuration.getProperty("timeout.interval", "500")), TimeUnit.MILLISECONDS);
+    this.waitAfterRetry(Integer.parseInt(configuration.getProperty("retry.interval", "500")), TimeUnit.MILLISECONDS);
   }
 
   @Override
