@@ -51,7 +51,7 @@ public class MongoKarmaRepository implements KarmaRepository {
   }
 
   @Override
-  public Karma find(String term) {
+  public synchronized Karma find(String term) {
     BasicDBObject query = new BasicDBObject();
     query.put("_id", term.toLowerCase());
     Document result = karmas.find(query).first();
@@ -64,7 +64,7 @@ public class MongoKarmaRepository implements KarmaRepository {
   }
 
   @Override
-  public void update(Karma karma) {
+  public synchronized void update(Karma karma) {
     BasicDBObject query = new BasicDBObject();
     query.put("_id", karma.name());
     if (karma.value() != 0) {
@@ -76,7 +76,7 @@ public class MongoKarmaRepository implements KarmaRepository {
   }
 
   @Override
-  public List<Karma> search(String queryString) {
+  public synchronized List<Karma> search(String queryString) {
     int order = DESC;
     List<Karma> result = new ArrayList<>();
     BasicDBObject query = new BasicDBObject();
