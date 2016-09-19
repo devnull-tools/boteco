@@ -40,9 +40,7 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.client.rest.RestClient;
@@ -55,24 +53,12 @@ public class DefaultRestClient implements RestClient {
 
   private static final Logger logger = LoggerFactory.getLogger(DefaultRestClient.class);
 
-  private CloseableHttpClient client;
   private HttpClientContext context;
   private Properties configuration;
 
   public DefaultRestClient(Properties configuration) {
     this.configuration = configuration;
     configureAuth(configuration);
-    configureClient(configuration);
-  }
-
-  private void configureClient(Properties configuration) {
-    logger.info("Configuring client");
-    PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
-    cm.setMaxTotal(Integer.parseInt(configuration.getProperty("client.max.total", "200")));
-    cm.setDefaultMaxPerRoute(Integer.parseInt(configuration.getProperty("client.max.perRoute", "20")));
-    this.client = HttpClients.custom()
-        .setConnectionManager(cm)
-        .build();
   }
 
   private void configureAuth(Properties configuration) {
@@ -164,7 +150,7 @@ public class DefaultRestClient implements RestClient {
   }
 
   private RestConfiguration execute(HttpRequestBase request) {
-    return new DefaultRestConfiguration(client, context, request, configuration);
+    return new DefaultRestConfiguration(HttpClients.createDefault(), context, request, configuration);
   }
 
 }

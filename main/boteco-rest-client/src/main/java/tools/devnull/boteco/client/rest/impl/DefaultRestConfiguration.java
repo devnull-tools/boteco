@@ -198,6 +198,8 @@ public class DefaultRestConfiguration implements RestConfiguration {
         }
         return getResponse(retries - 1);
       }
+    } finally {
+      this.client.close();
     }
   }
 

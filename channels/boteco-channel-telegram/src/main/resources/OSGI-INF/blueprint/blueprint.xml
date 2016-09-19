@@ -125,7 +125,7 @@
     </route>
 
     <route id="boteco.message.to.telegram">
-      <from uri="activemq:queue:boteco.message.telegram"/>
+      <from uri="activemq:queue:boteco.message.telegram?concurrentConsumers=10"/>
       <log logName="boteco-channel-telegram"
            loggingLevel="INFO"
            message="sending message through telegram"/>
