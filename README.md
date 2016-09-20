@@ -88,16 +88,24 @@ create a configuration named `tools.devnull.boteco.plugins.mongodb` with the fol
 
 ### Running in JBoss Fuse
 
-It's easier than fall of a bike! From your Fuse console, do the following commands:
+It's easier than fall of a bike! From your Fuse console, do the following commands (`$VERSION` is the version of
+boteco that you want to install):
 
 ~~~
-features:addurl mvn:tools.devnull/boteco-features/1.0.0/xml/features
+features:addurl mvn:tools.devnull/boteco-features/$VERSION/xml/features
 
-features:install boteco
+features:install boteco-all
 ~~~
 
 Built in channels will start automatically but you need to configure them correctly. See the channel projects for
-details about how to configure each one.
+details about how to configure each one. You can also install the feature `boteco` to install the base platform and
+install the feature for each channel separately:
+
+- `boteco-irc`
+- `boteco-pushover`
+- `boteco-telegram`
+- `boteco-email`
+- `boteco-user`
 
 ## Concepts
 
