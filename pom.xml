@@ -28,10 +28,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                             http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>boteco-parent</artifactId>
+    <groupId>tools.devnull</groupId>
+    <version>${boteco.version}</version>
+    <relativePath>misc/boteco-parent/pom.xml</relativePath>
+  </parent>
 
-  <groupId>tools.devnull</groupId>
   <artifactId>boteco</artifactId>
-  <version>1.0.0</version>
+  <version>${boteco.version}</version>
+
   <packaging>pom</packaging>
   <name>boteco: the multiplatform bot</name>
   <description>Boteco is a bot that allows you to write platform agnostic plugins.</description>

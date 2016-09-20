@@ -32,7 +32,7 @@
   <parent>
     <groupId>tools.devnull</groupId>
     <artifactId>boteco-bundle-parent</artifactId>
-    <version>1.0.0</version>
+    <version>${boteco.version}</version>
     <relativePath>../../misc/boteco-bundle-parent/pom.xml</relativePath>
   </parent>
 
@@ -40,12 +40,6 @@
   <packaging>bundle</packaging>
 
   <dependencies>
-    <dependency>
-      <groupId>tools.devnull</groupId>
-      <artifactId>boteco-base</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-blueprint</artifactId>
@@ -65,7 +59,6 @@
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-gson</artifactId>
     </dependency>
-
   </dependencies>
 
 </project>
