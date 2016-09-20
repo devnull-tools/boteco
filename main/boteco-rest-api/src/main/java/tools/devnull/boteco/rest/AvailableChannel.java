@@ -24,14 +24,19 @@
 
 package tools.devnull.boteco.rest;
 
+import tools.devnull.boteco.Channel;
+
+/**
+ * Response object that represents an available {@link Channel}
+ */
 public class AvailableChannel {
 
   private final String id;
   private final String name;
 
-  public AvailableChannel(String id, String name) {
-    this.id = id;
-    this.name = name;
+  public AvailableChannel(Channel channel) {
+    this.id = channel.id();
+    this.name = channel.name();
   }
 
   public String getId() {

@@ -71,11 +71,10 @@ public class MessageService {
   @Path("/channels")
   public Response getAvailableChannels() {
     List<Channel> channels = serviceLocator.locateAll(Channel.class, "(id=*)");
-    return Response.ok(
-        channels.stream()
-            .map(channel -> new AvailableChannel(channel.id(), channel.name()))
-            .collect(Collectors.toList())
-    ).build();
+    return Response.ok(channels.stream()
+        .map(AvailableChannel::new)
+        .collect(Collectors.toList()))
+        .build();
   }
 
 }
