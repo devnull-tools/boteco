@@ -31,10 +31,9 @@
   <groupId>tools.devnull</groupId>
   <artifactId>boteco-parent</artifactId>
   <packaging>pom</packaging>
-  <version>${boteco.version}</version>
+  <version>1.0.0</version>
 
   <properties>
-    <boteco.version>1.0.0</boteco.version>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.source>1.8</maven.compiler.source>
     <fuse.version>6.2.1.redhat-084</fuse.version>
