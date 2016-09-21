@@ -37,7 +37,6 @@
   </parent>
 
   <artifactId>boteco</artifactId>
-  <version>1.0.0</version>
 
   <packaging>pom</packaging>
   <name>boteco: the multiplatform bot</name>
