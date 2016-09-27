@@ -28,7 +28,9 @@ import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Group;
 
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,12 +52,18 @@ public class KarmaMessageProcessor implements MessageProcessor {
   @Override
   public void process(IncomeMessage message) {
     Matcher matcher = pattern.matcher(message.content());
+    StringBuilder replyMessage = new StringBuilder();
+    Set<String> evaluated = new HashSet<>();
     while (matcher.find()) {
       String term = matcher.group("term");
       String operation = matcher.group("operation");
-      int value = update(term, operation);
-      reply(message, term, value);
+      if (!evaluated.contains(term.toLowerCase())) {
+        int value = update(term, operation);
+        replyMessage.append(buildReplyMessage(term, value)).append("\n");
+        evaluated.add(term.toLowerCase());
+      }
     }
+    message.sendBack(replyMessage.toString());
   }
 
   private int update(String term, String operation) {
@@ -71,7 +79,7 @@ public class KarmaMessageProcessor implements MessageProcessor {
     return updatedValue;
   }
 
-  private void reply(IncomeMessage message, String term, int value) {
+  private String buildReplyMessage(String term, int value) {
     String key = term.toLowerCase();
     String content = properties.getProperty(key, "[a]%t[/a] has now %n %u of %k");
     String tag = value < 0 ? "n" : "p";
@@ -79,7 +87,7 @@ public class KarmaMessageProcessor implements MessageProcessor {
     content = content.replace("%n", String.format("[%s]%d[/%s]", tag, value, tag));
     content = content.replace("%u", properties.getProperty(key + ".unit", "points"));
     content = content.replace("%k", properties.getProperty(key + ".karma", "karma"));
-    message.sendBack(content);
+    return content;
   }
 
   private int operateKarma(String term, Consumer<Karma> operation) {
