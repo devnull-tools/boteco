@@ -28,14 +28,19 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.devnull.boteco.BotException;
+import tools.devnull.boteco.client.rest.ContentTypeSelector;
 import tools.devnull.boteco.client.rest.RestConfiguration;
 import tools.devnull.boteco.client.rest.RestResponse;
 import tools.devnull.boteco.client.rest.RestResult;
@@ -137,6 +142,30 @@ public class DefaultRestConfiguration implements RestConfiguration {
   public RestConfiguration withDateFormat(DateFormat dateFormat) {
     this.gsonBuilder.registerTypeAdapter(Date.class, new DateTypeAdapter(dateFormat));
     return this;
+  }
+
+  public ContentTypeSelector with(Object object) {
+    return new ContentTypeSelector() {
+      @Override
+      public RestConfiguration asJson() {
+        return as(gsonBuilder.create().toJson(object), ContentType.APPLICATION_JSON);
+      }
+
+      @Override
+      public RestConfiguration asPlainText() {
+        return as(object.toString(), ContentType.TEXT_PLAIN);
+      }
+
+      private RestConfiguration as(String content, ContentType contentType) {
+        if (DefaultRestConfiguration.this.request instanceof HttpEntityEnclosingRequest) {
+          ((HttpEntityEnclosingRequest) DefaultRestConfiguration.this.request)
+              .setEntity(new StringEntity(content, contentType));
+        } else {
+          throw new BotException("This request doesn't allow entities");
+        }
+        return DefaultRestConfiguration.this;
+      }
+    };
   }
 
   @Override

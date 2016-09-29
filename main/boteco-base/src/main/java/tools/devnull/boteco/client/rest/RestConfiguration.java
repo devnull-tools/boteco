@@ -40,6 +40,14 @@ import java.util.function.Predicate;
 public interface RestConfiguration {
 
   /**
+   * Sets the payload's content
+   *
+   * @param value the value to set
+   * @return a component for selecting the content type to be sent
+   */
+  ContentTypeSelector with(Object value);
+
+  /**
    * Sets the timeout fot this invocation.
    * <p>
    * Calling this method will override the default timeout.

@@ -26,18 +26,22 @@ package tools.devnull.boteco.channel.telegram;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import org.apache.http.client.utils.URIBuilder;
+import tools.devnull.boteco.BotException;
 import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.message.FormatExpressionParser;
 import tools.devnull.boteco.message.OutcomeMessage;
 
-import java.net.URI;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A processor that receives an outcome telegram message and sends it as a bot message.
  */
 public class TelegramOutcomeProcessor implements Processor {
+
+  private static final Integer MAX_CHARS = 4000;
 
   private final FormatExpressionParser parser;
   private final ContentFormatter markdownContentFormatter;
@@ -69,25 +73,37 @@ public class TelegramOutcomeProcessor implements Processor {
   @Override
   public void process(Exchange exchange) throws Exception {
     OutcomeMessage message = exchange.getIn().getBody(OutcomeMessage.class);
-    if (message != null) {
-      URIBuilder builder = new URIBuilder("https://api.telegram.org")
-          .setPath("/bot" + token + "/sendMessage");
+    if (!(message == null || message.getContent() == null || message.getContent().isEmpty())) {
+      Map<String, String> body = new HashMap<>();
       // avoids conflicts with the markdown syntax
       String content = message.getContent();
+      if (content.length() > MAX_CHARS) {
+        content = content.substring(0, MAX_CHARS);
+        content = content.substring(0, content.lastIndexOf(" "))  + "...";
+      }
       ContentFormatter formatter;
       if (!(content.contains("*") || content.contains("_") || content.contains("`"))) {
         formatter = markdownContentFormatter;
-        builder.addParameter("parse_mode", "Markdown");
+        body.put("parse_mode", "Markdown");
       } else {
         formatter = defaultContentFormatter;
       }
-      message.eachMetadata(header -> builder.addParameter(header.getKey(), String.valueOf(header.getValue())));
+      message.eachMetadata(header -> body.put(header.getKey(), String.valueOf(header.getValue())));
+      body.put("chat_id", message.getTarget());
       content = parser.parse(formatter, content);
-      URI uri = builder
-          .addParameter("chat_id", message.getTarget())
-          .addParameter("text", content)
-          .build();
-      client.post(uri).execute();
+      body.put("text", content);
+      sendMessage(body);
+    }
+  }
+
+  private void sendMessage(Map<String, String> body) {
+    try {
+      client.post("https://api.telegram.org/bot" + token + "/sendMessage")
+          .with(body).asJson()
+          .on(429, response -> sendMessage(body)) // limit error
+          .execute();
+    } catch (IOException e) {
+      throw new BotException(e);
     }
   }
 }
