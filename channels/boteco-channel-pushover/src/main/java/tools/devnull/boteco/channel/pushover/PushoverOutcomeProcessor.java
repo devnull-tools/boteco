@@ -26,13 +26,13 @@ package tools.devnull.boteco.channel.pushover;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import org.apache.http.client.utils.URIBuilder;
 import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.message.FormatExpressionParser;
 import tools.devnull.boteco.message.OutcomeMessage;
 
-import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -66,12 +66,14 @@ public class PushoverOutcomeProcessor implements Processor {
   @Override
   public void process(Exchange exchange) throws Exception {
     OutcomeMessage out = exchange.getIn().getBody(OutcomeMessage.class);
-    URI uri = new URIBuilder("https://api.pushover.net/1/messages.json")
-        .addParameter("token", token)
-        .addParameter("user", out.getTarget())
-        .addParameter("message", parser.parse(formatter, out.getContent()))
-        .build();
-    client.post(uri)
+    Map<String, String> body = new HashMap<>();
+
+    body.put("token", token);
+    body.put("user", out.getTarget());
+    body.put("message", parser.parse(formatter, out.getContent()));
+
+    client.post("https://api.pushover.net/1/messages.json")
+        .with(body).asFormUrlEncoded()
         .retryOnConnectionError(5)
         .waitAfterRetry(1, TimeUnit.SECONDS)
         .execute();

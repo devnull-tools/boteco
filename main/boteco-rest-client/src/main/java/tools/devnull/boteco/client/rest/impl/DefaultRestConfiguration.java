@@ -31,11 +31,13 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,16 +51,22 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import static tools.devnull.trugger.element.Elements.elements;
 
 public class DefaultRestConfiguration implements RestConfiguration {
 
@@ -156,15 +164,35 @@ public class DefaultRestConfiguration implements RestConfiguration {
         return as(object.toString(), ContentType.TEXT_PLAIN);
       }
 
+      @Override
+      public RestConfiguration asFormUrlEncoded() {
+        List<BasicNameValuePair> pairs;
+        if (object instanceof Map) {
+          pairs = ((Set<Map.Entry>)((Map) object).entrySet()).stream()
+              .map(entry -> new BasicNameValuePair(entry.getKey().toString(), entry.getValue().toString()))
+              .collect(Collectors.toList());
+        } else {
+          pairs = elements().in(object).stream()
+              .map(el -> new BasicNameValuePair(el.name(), el.value().toString()))
+              .collect(Collectors.toList());
+        }
+        return setEntity(new UrlEncodedFormEntity(pairs, Charset.defaultCharset()));
+      }
+
       private RestConfiguration as(String content, ContentType contentType) {
+        return setEntity(new StringEntity(content, contentType));
+      }
+
+      private RestConfiguration setEntity(HttpEntity entity) {
         if (DefaultRestConfiguration.this.request instanceof HttpEntityEnclosingRequest) {
           ((HttpEntityEnclosingRequest) DefaultRestConfiguration.this.request)
-              .setEntity(new StringEntity(content, contentType));
+              .setEntity(entity);
         } else {
           throw new BotException("This request doesn't allow entities");
         }
         return DefaultRestConfiguration.this;
       }
+
     };
   }
 

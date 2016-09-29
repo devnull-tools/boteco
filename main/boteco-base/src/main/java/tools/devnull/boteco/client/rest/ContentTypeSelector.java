@@ -43,4 +43,11 @@ public interface ContentTypeSelector {
    */
   RestConfiguration asPlainText();
 
+  /**
+   * Sends the payload as a Form URL-Encoded
+   *
+   * @return the rest configuration for finishing the flow
+   */
+  RestConfiguration asFormUrlEncoded();
+
 }
