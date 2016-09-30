@@ -75,24 +75,44 @@ public class TelegramOutcomeProcessor implements Processor {
     OutcomeMessage message = exchange.getIn().getBody(OutcomeMessage.class);
     if (!(message == null || message.getContent() == null || message.getContent().isEmpty())) {
       Map<String, String> body = new HashMap<>();
-      // avoids conflicts with the markdown syntax
       String content = message.getContent();
-      if (content.length() > MAX_CHARS) {
-        content = content.substring(0, MAX_CHARS);
-        content = content.substring(0, content.lastIndexOf(" "))  + "...";
-      }
-      ContentFormatter formatter;
-      if (!(content.contains("*") || content.contains("_") || content.contains("`"))) {
-        formatter = markdownContentFormatter;
-        body.put("parse_mode", "Markdown");
-      } else {
-        formatter = defaultContentFormatter;
-      }
       message.eachMetadata(header -> body.put(header.getKey(), String.valueOf(header.getValue())));
       body.put("chat_id", message.getTarget());
-      content = parser.parse(formatter, content);
-      body.put("text", content);
-      sendMessage(body);
+      checkAndSend(body, content);
+    }
+  }
+
+  private void checkAndSend(Map<String, String> body, String content) {
+    String remaining = null;
+    if (content.length() > MAX_CHARS) {
+      StringBuilder temp = new StringBuilder(content);
+      int end = content.length();
+      while (end > MAX_CHARS) {
+        end = temp.lastIndexOf("\n");
+        if (end == -1) {
+          end = temp.lastIndexOf(" ");
+        }
+        if (end == -1) {
+          end = MAX_CHARS;
+        }
+        temp.delete(end, temp.length() -1);
+      }
+      remaining = content.substring(end);
+      content = temp.toString() + " ...";
+    }
+    ContentFormatter formatter;
+    // avoids conflicts with the markdown syntax
+    if (!(content.contains("*") || content.contains("_") || content.contains("`"))) {
+      formatter = markdownContentFormatter;
+      body.put("parse_mode", "Markdown");
+    } else {
+      formatter = defaultContentFormatter;
+    }
+    content = parser.parse(formatter, content);
+    body.put("text", content);
+    sendMessage(body);
+    if (remaining != null) {
+      checkAndSend(body, remaining);
     }
   }
 
