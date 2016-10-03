@@ -60,7 +60,7 @@ public class IgnoreListMessageProcessor implements MessageProcessor {
           this.ignoreList.remove(nickname);
           message.reply("Removed from ignore list");
         })
-        .on("", () -> message.reply(this.ignoreList.list().stream().collect(Collectors.joining("\n"))))
+        .on("show", () -> message.reply(this.ignoreList.list().stream().collect(Collectors.joining("\n"))))
         .execute();
   }
 
