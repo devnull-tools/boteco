@@ -39,7 +39,7 @@
       <cm:property name="bot.command.expression"
                    value="^/(?&lt;command&gt;[^@ ]*)(@\w+bot)?\s*(?&lt;arguments&gt;.+)?"/>
       <!-- The polling interval -->
-      <cm:property name="poll.interval" value="2s"/>
+      <cm:property name="poll.interval" value="500"/>
       <!--
         The initial value of the offset
 
