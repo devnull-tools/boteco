@@ -17,13 +17,14 @@ Channels are added through the classical `/invite` irc command. Just invite the 
 and remember that channel so it can join again in case of a restart. If you kick boteco from a channel, it will be
 removed and boteco will not join it anymore.
 
-## Invite and Kick Events
+## Events
 
-Every time you invite boteco to a channel or kick it from one, an event is sent and you can subscribe to it using
-boteco's subscription system. The events are:
+These are the events you can subscribe:
 
 - `irc.invited`: when boteco is invited to join a channel, it will tell you which channel and who invited
 - `irc.kicked`: when boteco is kicked from a channel, it will tell you which channel and who kicked
+- `irc.disconnected`: when boteco is disconnected form the IRC (of course you need to subscribe a channel that is
+not the `irc`)
 
 ## Ignore List
 
