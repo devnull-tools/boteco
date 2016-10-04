@@ -89,9 +89,9 @@ public class BotecoIrcEventListener implements IRCEventListener {
 
   @Override
   public void onDisconnected() {
+    this.bus.broadcast("The bot was disconnected from IRC").as("irc.disconnect");
     this.connection.doQuit();
     this.connection.close();
-    this.bus.broadcast("The bot was disconnected from IRC").as("irc.disconnect");
     BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
     try {
       Bundle bundle = bundleContext.getBundle();
