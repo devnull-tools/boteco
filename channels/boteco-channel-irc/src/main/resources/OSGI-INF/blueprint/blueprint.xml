@@ -63,7 +63,7 @@
   </service>
 
   <service interface="tools.devnull.boteco.message.MessageProcessor">
-    <bean class="tools.devnull.boteco.channel.irc.IgnoreListMessageProcessor">
+    <bean class="tools.devnull.boteco.channel.irc.IrcMessageProcessor">
       <argument ref="ignore-list"/>
     </bean>
   </service>

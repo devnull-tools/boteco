@@ -26,10 +26,11 @@ These are the events you can subscribe:
 - `irc.disconnected`: when boteco is disconnected form the IRC (of course you need to subscribe a channel that is
 not the `irc`)
 
-## Ignore List
+## IRC Operations
 
-This channel has a Message Processor that allows you to ignore nicknames. The commands are:
+This channel has a Message Processor that allows you to customize its behaviour. The commands are:
 
-- `ignore-list add <nickname>`: adds a nickname to the ignore list
-- `ignore-list remove <nickname>`: removes a nickname from the ignore list
-- `ignore-list`: lists the ignored nicknames
+- `irc ignore <nickname>`: adds a nickname to the ignore list
+- `irc accept <nickname>`: removes a nickname from the ignore list
+- `irc ignored`: lists the ignored nicknames
+- `irc reconnect`: reconnects to the IRC (you can use this together with the notification)

@@ -24,19 +24,21 @@
 
 package tools.devnull.boteco.channel.irc;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessingException;
 import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.message.checker.Channel;
 import tools.devnull.boteco.message.checker.Command;
 
 import java.util.stream.Collectors;
 
 /**
- * A message processor that can manipulate an {@link IrcIgnoreList}.
+ * A message processor that can adjust how the bot behaves on the IRC.
  */
-@Channel(IrcChannel.ID)
-@Command("ignore-list")
-public class IgnoreListMessageProcessor implements MessageProcessor {
+@Command("irc")
+public class IrcMessageProcessor implements MessageProcessor {
 
   private final IrcIgnoreList ignoreList;
 
@@ -45,22 +47,33 @@ public class IgnoreListMessageProcessor implements MessageProcessor {
    *
    * @param ignoreList the ignore list to use
    */
-  public IgnoreListMessageProcessor(IrcIgnoreList ignoreList) {
+  public IrcMessageProcessor(IrcIgnoreList ignoreList) {
     this.ignoreList = ignoreList;
   }
 
   @Override
   public void process(IncomeMessage message) {
     message.command()
-        .on("add", nickname -> {
+        .on("ignore", nickname -> {
           this.ignoreList.add(nickname);
           message.reply("Added to ignore list");
         })
-        .on("remove", nickname -> {
+        .on("accept", nickname -> {
           this.ignoreList.remove(nickname);
           message.reply("Removed from ignore list");
         })
-        .on("show", () -> message.reply(this.ignoreList.list().stream().collect(Collectors.joining("\n"))))
+        .on("ignored", () -> message.reply(this.ignoreList.list().stream().collect(Collectors.joining("\n"))))
+        .on("reconnect", () -> {
+          BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
+          try {
+            Bundle bundle = bundleContext.getBundle();
+            bundle.stop();
+            bundle.start();
+            message.reply("Reconnected to IRC!");
+          } catch (Exception e) {
+            throw new MessageProcessingException(e.getMessage(), e);
+          }
+        })
         .execute();
   }
 

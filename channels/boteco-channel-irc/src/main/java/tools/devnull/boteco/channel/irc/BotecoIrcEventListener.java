@@ -25,9 +25,6 @@
 package tools.devnull.boteco.channel.irc;
 
 import org.apache.camel.component.irc.IrcConfiguration;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
 import org.schwering.irc.lib.IRCConnection;
 import org.schwering.irc.lib.IRCEventListener;
 import org.schwering.irc.lib.IRCModeParser;
@@ -89,19 +86,7 @@ public class BotecoIrcEventListener implements IRCEventListener {
 
   @Override
   public void onDisconnected() {
-    this.bus.broadcast("The bot was disconnected from IRC").as("irc.disconnect");
-    this.connection.doQuit();
-    this.connection.close();
-    BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
-    try {
-      Bundle bundle = bundleContext.getBundle();
-      if (bundle.getState() == Bundle.ACTIVE) {
-        bundle.stop();
-        bundle.start();
-      }
-    } catch (Exception e) {
-      logger.error(e.getMessage());
-    }
+    new Thread(() -> this.bus.broadcast("The bot was disconnected from IRC").as("irc.disconnected")).start();
   }
 
   @Override
