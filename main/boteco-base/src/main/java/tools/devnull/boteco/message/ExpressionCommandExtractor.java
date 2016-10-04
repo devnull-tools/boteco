@@ -52,7 +52,7 @@ public class ExpressionCommandExtractor implements CommandExtractor, Serializabl
     if (matcher.find()) {
       String command = matcher.group("command");
       String args = matcher.group("arguments");
-      return new ExtractedCommand(message, command, args != null ? args.trim() : null);
+      return new ExtractedCommand(message, command, args != null ? args.trim() : "");
     } else {
       throw new BotException(message.content() + " is not a command");
     }
