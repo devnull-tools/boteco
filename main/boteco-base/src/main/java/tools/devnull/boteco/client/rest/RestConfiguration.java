@@ -205,6 +205,15 @@ public interface RestConfiguration {
   RestConfiguration withDateFormat(DateFormat dateFormat);
 
   /**
+   * Sets the credentials to send as a basic authentication
+   *
+   * @param user     the username
+   * @param password the password
+   * @return an instance of this object
+   */
+  RestConfiguration withAuthentication(String user, String password);
+
+  /**
    * Invokes the rest url and parses the response into an object of the given class.
    *
    * @param type the type of the result

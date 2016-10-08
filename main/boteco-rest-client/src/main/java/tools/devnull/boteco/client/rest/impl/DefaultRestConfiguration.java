@@ -29,16 +29,24 @@ import com.google.gson.JsonSyntaxException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpStatus;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.AuthCache;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.BasicAuthCache;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.BotException;
@@ -50,6 +58,7 @@ import tools.devnull.boteco.client.rest.RestResult;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.SocketTimeoutException;
+import java.net.URI;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -73,7 +82,7 @@ public class DefaultRestConfiguration implements RestConfiguration {
   private static final Logger logger = LoggerFactory.getLogger(DefaultRestClient.class);
 
   private final CloseableHttpClient client;
-  private final HttpContext context;
+  private final HttpClientContext context;
   private final HttpRequestBase request;
   private final GsonBuilder gsonBuilder;
   private final Map<Predicate<RestResponse>, Consumer<RestResponse>> actionsMap;
@@ -82,7 +91,7 @@ public class DefaultRestConfiguration implements RestConfiguration {
   private int retryInterval;
 
   public DefaultRestConfiguration(CloseableHttpClient client,
-                                  HttpContext context,
+                                  HttpClientContext context,
                                   HttpRequestBase request,
                                   Properties configuration) {
     this.client = client;
@@ -143,6 +152,25 @@ public class DefaultRestConfiguration implements RestConfiguration {
   @Override
   public RestConfiguration withDateFormat(String pattern) {
     this.gsonBuilder.setDateFormat(pattern);
+    return this;
+  }
+
+  @Override
+  public RestConfiguration withAuthentication(String user, String password) {
+    // Create AuthCache instance
+    AuthCache authCache = new BasicAuthCache();
+    // Generate BASIC scheme object and add it to the local auth cache
+    BasicScheme basicAuth = new BasicScheme();
+    CredentialsProvider provider = new BasicCredentialsProvider();
+
+    URI uri = request.getURI();
+    authCache.put(new HttpHost(uri.getHost(), uri.getPort(), uri.getScheme()), basicAuth);
+    provider.setCredentials(new AuthScope(uri.getHost(), AuthScope.ANY_PORT),
+        new UsernamePasswordCredentials(user + ":" + password));
+
+    this.context.setCredentialsProvider(provider);
+    this.context.setAuthCache(authCache);
+
     return this;
   }
 
