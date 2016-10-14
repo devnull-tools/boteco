@@ -83,9 +83,6 @@
       <reference interface="tools.devnull.boteco.message.FormatExpressionParser"/>
     </argument>
     <argument>
-      <bean class="tools.devnull.boteco.channel.telegram.TelegramContentFormatter"/>
-    </argument>
-    <argument>
       <bean class="tools.devnull.boteco.DefaultContentFormatter"/>
     </argument>
     <argument>

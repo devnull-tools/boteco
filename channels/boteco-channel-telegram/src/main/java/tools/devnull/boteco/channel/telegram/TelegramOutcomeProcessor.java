@@ -33,7 +33,6 @@ import tools.devnull.boteco.message.FormatExpressionParser;
 import tools.devnull.boteco.message.OutcomeMessage;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,28 +44,24 @@ public class TelegramOutcomeProcessor implements Processor {
   private static final Integer MAX_CHARS = 4000;
 
   private final FormatExpressionParser parser;
-  private final ContentFormatter markdownContentFormatter;
-  private final ContentFormatter defaultContentFormatter;
+  private final ContentFormatter contentFormatter;
   private final RestClient client;
   private final String token;
 
   /**
    * Creates a new processor based on the given parameters
    *
-   * @param parser                   the parser for formatting purposes
-   * @param markdownContentFormatter the content formatter for markdown format
-   * @param defaultContentFormatter  the content formatter for non markdown format
-   * @param client                   the rest client to use
-   * @param token                    the bot token
+   * @param parser           the parser for formatting purposes
+   * @param contentFormatter the content formatter to use
+   * @param client           the rest client to use
+   * @param token            the bot token
    */
   public TelegramOutcomeProcessor(FormatExpressionParser parser,
-                                  ContentFormatter markdownContentFormatter,
-                                  ContentFormatter defaultContentFormatter,
+                                  ContentFormatter contentFormatter,
                                   RestClient client,
                                   String token) {
     this.parser = parser;
-    this.markdownContentFormatter = markdownContentFormatter;
-    this.defaultContentFormatter = defaultContentFormatter;
+    this.contentFormatter = contentFormatter;
     this.client = client;
     this.token = token;
   }
@@ -101,15 +96,7 @@ public class TelegramOutcomeProcessor implements Processor {
       remaining = content.substring(end);
       content = temp.toString() + " ...";
     }
-    ContentFormatter formatter;
-    // avoids conflicts with the markdown syntax
-    if (canUseMarkdown(content)) {
-      formatter = markdownContentFormatter;
-      body.put("parse_mode", "Markdown");
-    } else {
-      formatter = defaultContentFormatter;
-    }
-    content = parser.parse(formatter, content);
+    content = parser.parse(contentFormatter, content);
     body.put("text", content);
     sendMessage(body);
     if (remaining != null) {
@@ -126,11 +113,6 @@ public class TelegramOutcomeProcessor implements Processor {
     } catch (IOException e) {
       throw new BotException(e);
     }
-  }
-
-  private boolean canUseMarkdown(String content) {
-    return Arrays.stream(new String[]{"*", "_", "`", "[", "]"})
-        .anyMatch(content::contains);
   }
 
 }
