@@ -33,6 +33,7 @@ import tools.devnull.boteco.message.FormatExpressionParser;
 import tools.devnull.boteco.message.OutcomeMessage;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -95,14 +96,14 @@ public class TelegramOutcomeProcessor implements Processor {
         if (end == -1) {
           end = MAX_CHARS;
         }
-        temp.delete(end, temp.length() -1);
+        temp.delete(end, temp.length() - 1);
       }
       remaining = content.substring(end);
       content = temp.toString() + " ...";
     }
     ContentFormatter formatter;
     // avoids conflicts with the markdown syntax
-    if (!(content.contains("*") || content.contains("_") || content.contains("`"))) {
+    if (canUseMarkdown(content)) {
       formatter = markdownContentFormatter;
       body.put("parse_mode", "Markdown");
     } else {
@@ -126,4 +127,10 @@ public class TelegramOutcomeProcessor implements Processor {
       throw new BotException(e);
     }
   }
+
+  private boolean canUseMarkdown(String content) {
+    return Arrays.stream(new String[]{"*", "_", "`", "[", "]"})
+        .anyMatch(content::contains);
+  }
+
 }
