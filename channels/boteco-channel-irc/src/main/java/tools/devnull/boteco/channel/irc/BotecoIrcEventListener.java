@@ -25,6 +25,7 @@
 package tools.devnull.boteco.channel.irc;
 
 import org.apache.camel.component.irc.IrcConfiguration;
+import org.osgi.framework.ServiceException;
 import org.schwering.irc.lib.IRCConnection;
 import org.schwering.irc.lib.IRCEventListener;
 import org.schwering.irc.lib.IRCModeParser;
@@ -86,7 +87,13 @@ public class BotecoIrcEventListener implements IRCEventListener {
 
   @Override
   public void onDisconnected() {
-    new Thread(() -> this.bus.broadcast("The bot was disconnected from IRC").as("irc.disconnected")).start();
+    new Thread(() -> {
+      try {
+        this.bus.broadcast("The bot was disconnected from IRC").as("irc.disconnected");
+      } catch (ServiceException e) {
+        logger.error("Error while trying to send irc.disconnected event: " + e.getMessage());
+      }
+    }).start();
   }
 
   @Override
