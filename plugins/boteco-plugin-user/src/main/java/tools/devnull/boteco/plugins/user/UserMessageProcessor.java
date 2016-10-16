@@ -53,7 +53,7 @@ public class UserMessageProcessor implements MessageProcessor {
           message.reply("User created");
         })
         .on("link", LinkRequest.class, request -> {
-          userManager.link(request.userId(), request.channel(), request.target());
+          userManager.link(message, request.userId(), request.channel(), request.target());
           message.reply("Link requested and will be effective after confirmation.");
         })
         .on("unlink", UnlinkRequest.class, request -> {

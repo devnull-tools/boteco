@@ -61,4 +61,8 @@ public class UserMessageDestination implements MessageDestination {
     return target;
   }
 
+  public static UserMessageDestination of(MessageDestination destination) {
+    return new UserMessageDestination(destination.channel(), destination.target());
+  }
+
 }

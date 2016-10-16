@@ -25,6 +25,7 @@
 package tools.devnull.boteco.user;
 
 import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.message.IncomeMessage;
 
 /**
  * Interface that defines a component capable of managing users.
@@ -62,11 +63,12 @@ public interface UserManager {
    * <p>
    * This operation might create a request for confirmation.
    *
+   * @param message the message that originates the request for link
    * @param userId  the user id
    * @param channel the channel of the destination
    * @param target  the target of the destination
    */
-  void link(String userId, String channel, String target);
+  void link(IncomeMessage message, String userId, String channel, String target);
 
   /**
    * Removes the destination from the user's destinations.

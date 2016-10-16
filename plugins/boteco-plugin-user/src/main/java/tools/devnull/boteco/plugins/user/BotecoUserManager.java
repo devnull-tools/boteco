@@ -24,7 +24,9 @@
 
 package tools.devnull.boteco.plugins.user;
 
+import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.request.RequestManager;
 import tools.devnull.boteco.user.PrimaryDestinationRequest;
 import tools.devnull.boteco.user.User;
@@ -56,9 +58,14 @@ public class BotecoUserManager implements UserManager {
   }
 
   @Override
-  public void link(String userId, String channel, String target) {
-    this.requestManager.create(new UserRequest(userId, channel, target),
-        "user.link", "link account to user " + userId);
+  public void link(IncomeMessage message, String userId, String channel, String target) {
+    UserRequest request;
+    if (message.user() != null && message.user().id().equals(userId)) {
+      request = new UserRequest(userId, channel, target, Destination.channel(channel).to(target));
+    } else {
+      request = new UserRequest(userId, channel, target, Destination.channel("user").to(userId));
+    }
+    this.requestManager.create(request, "user.link", "link account to user " + userId);
   }
 
   @Override
