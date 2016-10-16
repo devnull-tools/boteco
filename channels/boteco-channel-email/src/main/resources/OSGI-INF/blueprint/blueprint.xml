@@ -37,6 +37,9 @@
                            placeholder-prefix="{{"
                            placeholder-suffix="}}">
     <cm:default-properties>
+      <cm:property name="income.enabled" value="false"/>
+      <cm:property name="outcome.enabled" value="false"/>
+
       <cm:property name="income.protocol" value="imap"/>
       <cm:property name="income.host" value="localhost"/>
       <cm:property name="income.options" value=""/>
@@ -74,12 +77,12 @@
 
   <camelContext id="boteco-channel-email"
                 xmlns="http://camel.apache.org/schema/blueprint">
-    <route id="boteco.message.from.email">
+    <route id="boteco.message.from.email" autoStartup="{{income.enabled}}">
       <from uri="{{income.protocol}}://{{income.host}}?{{income.options}}"/>
       <process ref="income-processor"/>
     </route>
 
-    <route id="boteco.message.to.email">
+    <route id="boteco.message.to.email" autoStartup="{{outcome.enabled}}">
       <from uri="activemq:queue:boteco.message.email"/>
       <log logName="boteco-channel-email"
            loggingLevel="INFO"

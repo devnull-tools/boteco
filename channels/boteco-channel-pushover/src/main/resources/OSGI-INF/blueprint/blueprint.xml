@@ -33,6 +33,7 @@
                            placeholder-prefix="{{"
                            placeholder-suffix="}}">
     <cm:default-properties>
+      <cm:property name="outcome.enable" value="false"/>
       <cm:property name="pushover.token" value=""/>
     </cm:default-properties>
   </cm:property-placeholder>
@@ -60,7 +61,7 @@
   <camelContext id="boteco-channel-pushover"
                 xmlns="http://camel.apache.org/schema/blueprint">
 
-    <route id="boteco.message.to.pushover">
+    <route id="boteco.message.to.pushover" autoStartup="{{outcome.enabled}}">
       <from uri="activemq:queue:boteco.message.pushover"/>
       <log logName="boteco-channel-pushover"
            loggingLevel="INFO"

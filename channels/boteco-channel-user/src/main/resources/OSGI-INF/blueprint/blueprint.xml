@@ -55,10 +55,10 @@
     <argument ref="message-sender"/>
   </bean>
 
-  <camelContext id="user.channel"
+  <camelContext id="boteco-channel-user"
                 xmlns="http://camel.apache.org/schema/blueprint">
 
-    <route id="message.to.user">
+    <route id="boteco.message.to.user">
       <from uri="activemq:queue:boteco.message.user"/>
       <process ref="outcome-processor"/>
     </route>
