@@ -39,7 +39,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Path("/message")
+@Path("/channels")
 public class MessageService {
 
   private final MessageSender messageSender;
@@ -62,13 +62,13 @@ public class MessageService {
     builder.to(target)
         .through(channelId);
     // if the channel is present, then the message will be delivered as soon as the channel can process it
-    // otherwise, the message will be delivered on channel bundle starts
+    // otherwise, the message will be delivered when the channel bundle starts
     return channel != null ? Response.ok().build() : Response.accepted().build();
   }
 
   @GET
   @Produces("application/json")
-  @Path("/channels")
+  @Path("/")
   public Response getAvailableChannels() {
     List<Channel> channels = serviceLocator.locateAll(Channel.class, "(id=*)");
     return Response.ok(channels.stream()

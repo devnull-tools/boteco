@@ -32,7 +32,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
-@Path("/subscription")
+@Path("/subscriptions")
 public class SubscriptionService {
 
   private final SubscriptionManager subscriptionManager;

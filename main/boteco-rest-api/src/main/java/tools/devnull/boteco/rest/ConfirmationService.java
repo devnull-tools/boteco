@@ -32,7 +32,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
-@Path("/confirmation")
+@Path("/confirmations")
 public class ConfirmationService {
 
   private final RequestManager requestManager;

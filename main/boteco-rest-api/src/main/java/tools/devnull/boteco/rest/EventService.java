@@ -32,7 +32,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
-@Path("/event")
+@Path("/events")
 public class EventService {
 
   private final EventBus eventBus;
