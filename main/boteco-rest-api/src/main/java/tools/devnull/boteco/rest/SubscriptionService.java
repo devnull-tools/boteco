@@ -42,7 +42,7 @@ public class SubscriptionService {
   }
 
   @POST
-  @Path("/{channel}/{target}/{event}")
+  @Path("/{event}/{channel}/{target}")
   public Response subscribe(@PathParam("event") String eventId,
                             @PathParam("target") String subscriberTarget,
                             @PathParam("channel") String subscriberChannel) {
@@ -55,7 +55,7 @@ public class SubscriptionService {
   }
 
   @DELETE
-  @Path("/{channel}/{target}/{event}")
+  @Path("/{event}/{channel}/{target}")
   public Response unsubscribe(@PathParam("event") String eventId,
                               @PathParam("target") String subscriberTarget,
                               @PathParam("channel") String subscriberChannel) {

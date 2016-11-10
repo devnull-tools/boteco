@@ -72,6 +72,12 @@ public class PushoverOutcomeProcessor implements Processor {
     body.put("user", out.getTarget());
     body.put("message", parser.parse(formatter, out.getContent()));
 
+    if (out.isHighPriority()) {
+      body.put("priority", "1");
+    } else if (out.isLowPriority()) {
+      body.put("priority", "-1");
+    }
+
     client.post("https://api.pushover.net/1/messages.json")
         .with(body).asFormUrlEncoded()
         .retryOnConnectionError(5)

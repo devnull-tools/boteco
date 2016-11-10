@@ -27,6 +27,7 @@ package tools.devnull.boteco.process.message;
 import tools.devnull.boteco.message.OutcomeMessage;
 import tools.devnull.boteco.message.OutcomeMessageBuilder;
 import tools.devnull.boteco.client.jms.JmsClient;
+import tools.devnull.boteco.message.Priority;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +44,7 @@ public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
   private final String queueFormat;
   private final String content;
   private final Map<String, Object> headers;
+  private Priority priority = Priority.NORMAL;
   private String target;
 
   /**
@@ -75,8 +77,14 @@ public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
   }
 
   @Override
+  public OutcomeMessageBuilder withPriority(Priority priority) {
+    this.priority = priority;
+    return this;
+  }
+
+  @Override
   public void through(String channel) {
-    client.send(new OutcomeMessage(target, content, headers)).to(queue(String.format(queueFormat, channel)));
+    client.send(new OutcomeMessage(target, content, priority, headers)).to(queue(String.format(queueFormat, channel)));
   }
 
 }

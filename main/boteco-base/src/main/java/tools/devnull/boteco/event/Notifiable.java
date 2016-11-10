@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.event;
 
+import tools.devnull.boteco.message.Priority;
+
 import java.io.Serializable;
 
 /**
@@ -41,5 +43,14 @@ public interface Notifiable extends Serializable {
    * @see tools.devnull.boteco.message.FormatExpressionParser
    */
   String message();
+
+  /**
+   * Returns the priority of this notification.
+   *
+   * @return the priority of this notification.
+   */
+  default Priority priority() {
+    return Priority.NORMAL;
+  }
 
 }

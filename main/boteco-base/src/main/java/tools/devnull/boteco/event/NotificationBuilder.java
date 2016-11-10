@@ -22,51 +22,51 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.message;
+package tools.devnull.boteco.event;
 
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.message.Priority;
 
 /**
- * Interface that defines a component for building
- * outcome messages to be sent.
+ * A class to create notifications
  */
-public interface OutcomeMessageBuilder {
+public class NotificationBuilder {
 
-  /**
-   * Sets the target of the message
-   *
-   * @param target the target of the message
-   * @return a reference to this object
-   */
-  OutcomeMessageBuilder to(String target);
+  private final String message;
 
-  /**
-   * Adds a header to this message.
-   * <p>
-   * Headers can be used to customize the message in different channels.
-   *
-   * @param headerName  the header name
-   * @param headerValue the header value
-   * @return a reference to this object
-   */
-  OutcomeMessageBuilder with(String headerName, Object headerValue);
+  private NotificationBuilder(String message) {
+    this.message = message;
+  }
 
-  OutcomeMessageBuilder withPriority(Priority priority);
+  public Notifiable withPriority(Priority priority) {
+    return new Notification(message, priority);
+  }
 
-  /**
-   * Sets the channel to send the message and sends the message
-   *
-   * @param channel the id of the channel to send the message
-   */
-  void through(String channel);
+  private static class Notification implements Notifiable {
 
-  /**
-   * Sends the message to the given destination.
-   *
-   * @param destination the destination that should receive the message.
-   */
-  default void to(MessageDestination destination) {
-    to(destination.target()).through(destination.channel());
+    private static final long serialVersionUID = -4314808647779314529L;
+
+    private final String message;
+    private final Priority priority;
+
+    private Notification(String message, Priority priority) {
+      this.message = message;
+      this.priority = priority;
+    }
+
+    @Override
+    public String message() {
+      return message;
+    }
+
+    @Override
+    public Priority priority() {
+      return priority;
+    }
+
+  }
+
+  public static NotificationBuilder notification(String message) {
+    return new NotificationBuilder(message);
   }
 
 }

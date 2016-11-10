@@ -28,6 +28,7 @@ import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.ServiceLocator;
 import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.message.OutcomeMessageBuilder;
+import tools.devnull.boteco.message.Priority;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -58,7 +59,15 @@ public class MessageService {
                               Message message) {
     Channel channel = serviceLocator.locate(Channel.class, String.format("(id=%s)", channelId));
     OutcomeMessageBuilder builder = messageSender.send(message.getContent());
+
     message.getMetadata().entrySet().forEach(entry -> builder.with(entry.getKey(), entry.getValue()));
+
+    try {
+      builder.withPriority(Priority.parse(message.getPriority()));
+    } catch (IllegalArgumentException e) {
+      return Response.status(Response.Status.BAD_REQUEST).entity("Invalid priority").build();
+    }
+
     builder.to(target)
         .through(channelId);
     // if the channel is present, then the message will be delivered as soon as the channel can process it

@@ -24,49 +24,18 @@
 
 package tools.devnull.boteco.message;
 
-import tools.devnull.boteco.MessageDestination;
-
 /**
- * Interface that defines a component for building
- * outcome messages to be sent.
+ * Enumeration of the possible priorities of a message.
  */
-public interface OutcomeMessageBuilder {
+public enum Priority {
 
-  /**
-   * Sets the target of the message
-   *
-   * @param target the target of the message
-   * @return a reference to this object
-   */
-  OutcomeMessageBuilder to(String target);
+  LOW, NORMAL, HIGH;
 
-  /**
-   * Adds a header to this message.
-   * <p>
-   * Headers can be used to customize the message in different channels.
-   *
-   * @param headerName  the header name
-   * @param headerValue the header value
-   * @return a reference to this object
-   */
-  OutcomeMessageBuilder with(String headerName, Object headerValue);
-
-  OutcomeMessageBuilder withPriority(Priority priority);
-
-  /**
-   * Sets the channel to send the message and sends the message
-   *
-   * @param channel the id of the channel to send the message
-   */
-  void through(String channel);
-
-  /**
-   * Sends the message to the given destination.
-   *
-   * @param destination the destination that should receive the message.
-   */
-  default void to(MessageDestination destination) {
-    to(destination.target()).through(destination.channel());
+  public static Priority parse(String value) {
+    if (value != null && !value.isEmpty()) {
+      return Enum.valueOf(Priority.class, value.toUpperCase());
+    }
+    return NORMAL;
   }
 
 }
