@@ -30,6 +30,7 @@ import java.util.Map;
 public class Message {
 
   private String content;
+  private String priority;
   private Map<String, String> metadata;
 
   public Map<String, String> getMetadata() {
@@ -49,6 +50,14 @@ public class Message {
 
   public void setContent(String content) {
     this.content = content;
+  }
+
+  public String getPriority() {
+    return priority;
+  }
+
+  public void setPriority(String priority) {
+    this.priority = priority;
   }
 
 }

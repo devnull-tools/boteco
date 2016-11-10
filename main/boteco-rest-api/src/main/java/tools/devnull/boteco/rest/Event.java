@@ -25,10 +25,15 @@
 package tools.devnull.boteco.rest;
 
 import tools.devnull.boteco.event.Notifiable;
+import tools.devnull.boteco.message.Priority;
 
 public class Event implements Notifiable {
 
+  private static final long serialVersionUID = 2214241531566066461L;
+
   private String text;
+
+  private String priority;
 
   public String getText() {
     return text;
@@ -36,6 +41,15 @@ public class Event implements Notifiable {
 
   public void setText(String text) {
     this.text = text;
+  }
+
+  public void setPriority(String priority) {
+    this.priority = priority;
+  }
+
+  @Override
+  public Priority priority() {
+    return Priority.parse(priority);
   }
 
   @Override

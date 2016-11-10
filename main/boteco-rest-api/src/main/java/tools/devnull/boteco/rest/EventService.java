@@ -32,6 +32,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
+import static tools.devnull.boteco.event.NotificationBuilder.notification;
+
 @Path("/events")
 public class EventService {
 
@@ -45,7 +47,9 @@ public class EventService {
   @Path("/{event}")
   @Consumes("application/json")
   public Response broadcast(@PathParam("event") String eventId, Event event) {
-    eventBus.broadcast(event).as(eventId);
+    eventBus.broadcast(notification(event.message())
+        .withPriority(event.priority()))
+        .as(eventId);
     return Response.ok().build();
   }
 

@@ -56,7 +56,9 @@ public class UserOutcomeProcessor implements Processor {
     if (message != null) {
       User user = this.userManager.find(message.getTarget());
       if (user != null) {
-        this.messageSender.send(message.getContent()).to(user.primaryDestination());
+        this.messageSender.send(message.getContent())
+            .withPriority(message.getPriority())
+            .to(user.primaryDestination());
       }
     }
   }

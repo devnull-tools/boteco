@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /**
- * Interface that defines a message that can be delivered through a channel.
+ * Class that defines a message that can be delivered through a channel.
  */
 public class OutcomeMessage implements Serializable {
 
@@ -37,6 +37,7 @@ public class OutcomeMessage implements Serializable {
 
   private final String content;
   private final String target;
+  private final Priority priority;
   private final Map<String, Object> metadata;
 
   /**
@@ -44,11 +45,13 @@ public class OutcomeMessage implements Serializable {
    *
    * @param target   the target of the message
    * @param content  the content of the message
+   * @param priority the message priority
    * @param metadata the metadata map
    */
-  public OutcomeMessage(String target, String content, Map<String, Object> metadata) {
+  public OutcomeMessage(String target, String content, Priority priority, Map<String, Object> metadata) {
     this.content = content;
     this.target = target;
+    this.priority = priority;
     this.metadata = metadata;
   }
 
@@ -58,6 +61,18 @@ public class OutcomeMessage implements Serializable {
 
   public String getTarget() {
     return target;
+  }
+
+  public Priority getPriority() {
+    return priority;
+  }
+
+  public boolean isHighPriority() {
+    return priority == Priority.HIGH;
+  }
+
+  public boolean isLowPriority() {
+    return priority == Priority.LOW;
   }
 
   public void eachMetadata(Consumer<Map.Entry<String, Object>> consumer) {

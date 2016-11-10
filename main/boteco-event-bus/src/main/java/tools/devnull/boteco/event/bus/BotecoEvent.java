@@ -32,6 +32,8 @@ import tools.devnull.boteco.event.Notifiable;
  */
 public class BotecoEvent implements Event {
 
+  private static final long serialVersionUID = 5944459296393830211L;
+
   private final String id;
   private final Notifiable object;
 
