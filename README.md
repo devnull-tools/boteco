@@ -8,65 +8,8 @@ Boteco is gladly built on top of JBoss Fuse.
 
 ### Pre Requisites
 
-Make sure you have [Apache Maven](https://maven.apache.org) installed and a profile in your `settings.xml` file to fetch
-JBoss Fuse artifacts.
-
-~~~xml
-<profile>
-  <id>fusesource</id>
-  <activation>
-    <activeByDefault>true</activeByDefault>
-  </activation>
-  <repositories>
-    <repository>
-      <id>fuse-public-repository</id>
-      <name>FuseSource Community Release Repository</name>
-      <url>https://repo.fusesource.com/nexus/content/groups/public</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-    <repository>
-      <id>fusesource.ea</id>
-      <name>JBoss Community Early Access Release Repository</name>
-      <url>https://repo.fusesource.com/nexus/content/groups/ea</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>fuse-public-repository</id>
-      <name>FuseSource Community Release Repository</name>
-      <url>https://repo.fusesource.com/nexus/content/groups/public</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </pluginRepository>
-    <pluginRepository>
-      <id>fusesource.ea</id>
-      <name>JBoss Community Early Access Release Repository</name>
-      <url>https://repo.fusesource.com/nexus/content/groups/ea</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
-</profile>
-~~~
+- Maven
+- JDK 8
 
 ### Build Step
 
