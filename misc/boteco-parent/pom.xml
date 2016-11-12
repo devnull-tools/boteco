@@ -36,7 +36,7 @@
   <properties>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.source>1.8</maven.compiler.source>
-    <fuse.version>6.2.1.redhat-084</fuse.version>
+    <fuse.version>6.3.0.redhat-187</fuse.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <trugger.version>5.1.1</trugger.version>
     <kodo.version>2.1.0</kodo.version>
@@ -126,8 +126,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven-compiler-plugin-version}</version>
         <configuration>
-          <!-- ASM still broke when this option is used so leave it commented by now -->
-          <!--<compilerArgument>-parameters</compilerArgument>-->
+          <compilerArgument>-parameters</compilerArgument>
         </configuration>
       </plugin>
       <plugin>
@@ -174,17 +173,6 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
-    <repository>
-      <id>fuse-public-repository</id>
-      <name>FuseSource Community Release Repository</name>
-      <url>https://repo.fusesource.com/nexus/content/groups/public</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
   </repositories>
   <pluginRepositories>
     <pluginRepository>
@@ -198,17 +186,6 @@
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
-    </pluginRepository>
-    <pluginRepository>
-      <id>fuse-public-repository</id>
-      <name>FuseSource Community Release Repository</name>
-      <url>https://repo.fusesource.com/nexus/content/groups/public</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
     </pluginRepository>
   </pluginRepositories>
 

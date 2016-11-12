@@ -22,27 +22,28 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.channel.telegram;
+package tools.devnull.boteco.channel.telegram.converters;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.camel.Converter;
+import org.apache.camel.TypeConverters;
+import tools.devnull.boteco.channel.telegram.TelegramPolling;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
  * A converter class that converts a Map into a InputStream for json filtering purposes
  */
-@Converter
-public class TelegramIncomeConverter {
+public class TelegramIncomeConverter implements TypeConverters {
 
   @Converter
-  public InputStream toInputStream(Map map) throws Exception {
-    Gson gson = new GsonBuilder().create();
-    return new ByteArrayInputStream(gson.toJson(map).getBytes(StandardCharsets.UTF_8));
+  public TelegramPolling convert(Map map) throws Exception {
+    Gson gson = new GsonBuilder()
+        .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+        .create();
+    return gson.fromJson(gson.toJson(map), TelegramPolling.class);
   }
 
 }

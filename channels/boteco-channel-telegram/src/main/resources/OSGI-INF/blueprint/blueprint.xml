@@ -76,11 +76,6 @@
     <argument ref="user-manager"/>
   </bean>
 
-  <bean id="telegram-message-json" class="org.apache.camel.component.gson.GsonDataFormat">
-    <property name="unmarshalType" value="tools.devnull.boteco.channel.telegram.TelegramPolling"/>
-    <property name="fieldNamingPolicy" value="LOWER_CASE_WITH_UNDERSCORES"/>
-  </bean>
-
   <bean id="telegram-outcome-processor" class="tools.devnull.boteco.channel.telegram.TelegramOutcomeProcessor">
     <argument>
       <reference interface="tools.devnull.boteco.message.FormatExpressionParser"/>
@@ -105,6 +100,8 @@
     <bean class="tools.devnull.boteco.channel.telegram.TelegramIDMessageProcessor"/>
   </service>
 
+  <bean id="converter" class="tools.devnull.boteco.channel.telegram.converters.TelegramIncomeConverter"/>
+
   <camelContext id="boteco-channel-telegram"
                 xmlns="http://camel.apache.org/schema/blueprint">
 
@@ -119,7 +116,6 @@
       <to uri="https4:api.telegram.org/bot{{bot.token}}/getUpdates"/>
       <split>
         <jsonpath>$.result</jsonpath>
-        <unmarshal ref="telegram-message-json"/>
         <process ref="telegram-income-processor"/>
       </split>
     </route>
