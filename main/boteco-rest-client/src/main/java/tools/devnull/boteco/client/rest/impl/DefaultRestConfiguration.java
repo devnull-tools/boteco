@@ -166,7 +166,7 @@ public class DefaultRestConfiguration implements RestConfiguration {
     URI uri = request.getURI();
     authCache.put(new HttpHost(uri.getHost(), uri.getPort(), uri.getScheme()), basicAuth);
     provider.setCredentials(new AuthScope(uri.getHost(), AuthScope.ANY_PORT),
-        new UsernamePasswordCredentials(user + ":" + password));
+        new UsernamePasswordCredentials(user, password));
 
     this.context.setCredentialsProvider(provider);
     this.context.setAuthCache(authCache);
