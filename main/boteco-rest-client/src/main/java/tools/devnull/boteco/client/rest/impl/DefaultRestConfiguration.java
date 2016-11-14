@@ -269,16 +269,16 @@ public class DefaultRestConfiguration implements RestConfiguration {
           .ifPresent(entry -> entry.getValue().accept(response));
       return response;
     } catch (SocketTimeoutException | UnknownHostException e) {
+      logger.error("Request error", e);
       if (retries == 0) {
-        logger.error("Request error: " + e.getMessage());
         return new DefaultRestResponse(null, HttpStatus.SC_REQUEST_TIMEOUT, null);
       } else {
-        logger.error("Request error, retrying: " + e.getMessage());
+        logger.error("Retrying request");
         if (retryInterval > 0) {
           try {
             Thread.sleep(retryInterval);
           } catch (InterruptedException e1) {
-            logger.error("Error while waiting for retry", e1);
+            logger.error("Error while waiting to retry", e1);
           }
         }
         return getResponse(retries - 1);
