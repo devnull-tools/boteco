@@ -24,9 +24,12 @@
 
 package tools.devnull.boteco.channel.irc;
 
+import org.apache.camel.CamelContext;
 import org.apache.camel.component.irc.IrcComponent;
 import org.apache.camel.component.irc.IrcConfiguration;
 import org.schwering.irc.lib.IRCConnection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.event.EventBus;
 
 /**
@@ -34,19 +37,42 @@ import tools.devnull.boteco.event.EventBus;
  */
 public class BotecoIrcComponent extends IrcComponent {
 
+  private static final Logger logger = LoggerFactory.getLogger(BotecoIrcComponent.class);
+
   private final IrcChannelsRepository repository;
   private final EventBus bus;
+  private BotecoIrcEventListener listener;
+  private final CamelContext camelContext;
 
-  public BotecoIrcComponent(IrcChannelsRepository repository, EventBus bus) {
+  public BotecoIrcComponent(IrcChannelsRepository repository, EventBus bus, CamelContext camelContext) {
     this.repository = repository;
     this.bus = bus;
+    this.camelContext = camelContext;
   }
 
   @Override
   protected IRCConnection createConnection(IrcConfiguration configuration) {
     IRCConnection connection = super.createConnection(configuration);
-    connection.addIRCEventListener(new BotecoIrcEventListener(connection, configuration, repository, bus));
+    listener = new BotecoIrcEventListener(connection, configuration, repository, bus);
+    connection.addIRCEventListener(listener);
     return connection;
+  }
+
+  public boolean isDisconnected() {
+    return listener != null && listener.isDisconnected();
+  }
+
+  public void reconnect() {
+    try {
+      doStop(); //force the cache to clear so we can refresh the irc connection later
+      camelContext.stopRoute("boteco.message.to.irc");
+      camelContext.stopRoute("boteco.message.from.irc");
+
+      camelContext.startRoute("boteco.message.to.irc");
+      camelContext.startRoute("boteco.message.from.irc");
+    } catch (Exception e) {
+      logger.error(e.getMessage(), e);
+    }
   }
 
 }

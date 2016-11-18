@@ -35,6 +35,8 @@
     <cm:default-properties>
       <cm:property name="income.enabled" value="false"/>
       <cm:property name="outcome.enabled" value="false"/>
+      <cm:property name="connection.check" value="false"/>
+      <cm:property name="connection.check.interval" value="1m"/>
 
       <cm:property name="irc.nick" value="boteco"/>
       <cm:property name="irc.server" value="localhost"/>
@@ -104,6 +106,11 @@
     <argument>
       <reference interface="tools.devnull.boteco.event.EventBus"/>
     </argument>
+    <argument ref="boteco-channel-irc"/>
+  </bean>
+
+  <bean id="shutdown" class="org.apache.camel.impl.DefaultShutdownStrategy">
+    <property name="timeout" value="30"/>
   </bean>
 
   <camelContext id="boteco-channel-irc"
@@ -128,6 +135,17 @@
         <tokenize token="\n"/>
         <to uri="irc:{{irc.nick}}@{{irc.server}}:{{irc.port}}"/>
       </split>
+    </route>
+
+    <route id="boteco.irc.check" autoStartup="{{connection.check}}"
+           shutdownRunningTask="CompleteCurrentTaskOnly">
+      <from uri="timer:irc-check?period={{connection.check.interval}}"/>
+      <choice>
+        <when>
+          <simple>${bean:irc.isDisconnected}</simple>
+          <to uri="bean:irc?method=reconnect"/>
+        </when>
+      </choice>
     </route>
 
   </camelContext>

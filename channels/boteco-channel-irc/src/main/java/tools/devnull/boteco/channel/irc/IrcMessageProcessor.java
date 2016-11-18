@@ -24,11 +24,7 @@
 
 package tools.devnull.boteco.channel.irc;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
 import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessingException;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Command;
 
@@ -63,17 +59,6 @@ public class IrcMessageProcessor implements MessageProcessor {
           message.reply("Removed from ignore list");
         })
         .on("ignored", () -> message.reply(this.ignoreList.list().stream().collect(Collectors.joining("\n"))))
-        .on("reconnect", () -> {
-          BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
-          try {
-            Bundle bundle = bundleContext.getBundle();
-            bundle.stop();
-            bundle.start();
-            message.reply("Reconnected to IRC!");
-          } catch (Exception e) {
-            throw new MessageProcessingException(e.getMessage(), e);
-          }
-        })
         .execute();
   }
 

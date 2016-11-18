@@ -23,8 +23,6 @@ These are the events you can subscribe:
 
 - `irc.invited`: when boteco is invited to join a channel, it will tell you which channel and who invited
 - `irc.kicked`: when boteco is kicked from a channel, it will tell you which channel and who kicked
-- `irc.disconnected`: when boteco is disconnected form the IRC (of course you need to subscribe a channel that is
-not the `irc`)
 
 ## IRC Operations
 
@@ -33,4 +31,3 @@ This channel has a Message Processor that allows you to customize its behaviour.
 - `irc ignore <nickname>`: adds a nickname to the ignore list
 - `irc accept <nickname>`: removes a nickname from the ignore list
 - `irc ignored`: lists the ignored nicknames
-- `irc reconnect`: reconnects to the IRC (you can use this together with the notification)

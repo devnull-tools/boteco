@@ -25,6 +25,9 @@
 package tools.devnull.boteco.channel.irc;
 
 import org.apache.camel.component.irc.IrcConfiguration;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceException;
 import org.schwering.irc.lib.IRCConnection;
 import org.schwering.irc.lib.IRCEventListener;
@@ -56,6 +59,7 @@ public class BotecoIrcEventListener implements IRCEventListener {
   private final IrcConfiguration configuration;
   private final IrcChannelsRepository repository;
   private final EventBus bus;
+  private boolean disconnected;
 
   /**
    * Creates a new listener using the given parameters
@@ -75,6 +79,14 @@ public class BotecoIrcEventListener implements IRCEventListener {
     this.bus = bus;
   }
 
+  public boolean isDisconnected() {
+    return disconnected;
+  }
+
+  public IrcConfiguration getConfiguration() {
+    return configuration;
+  }
+
   private void joinChannel(String channel) {
     logger.info("Joining channel " + channel);
     this.connection.doJoin(channel);
@@ -82,18 +94,24 @@ public class BotecoIrcEventListener implements IRCEventListener {
 
   @Override
   public void onRegistered() {
+    this.disconnected = false;
     this.repository.channels().forEach(this::joinChannel);
   }
 
   @Override
   public void onDisconnected() {
-    new Thread(() -> {
-      try {
-        this.bus.broadcast("The bot was disconnected from IRC").as("irc.disconnected");
-      } catch (ServiceException e) {
-        logger.error("Error while trying to send irc.disconnected event: " + e.getMessage());
-      }
-    }).start();
+    BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
+    Bundle bundle = bundleContext.getBundle();
+    if (bundle.getState() == Bundle.ACTIVE) {
+      this.disconnected = true;
+      new Thread(() -> {
+        try {
+          this.bus.broadcast("The bot was disconnected from IRC").as("irc.disconnected");
+        } catch (ServiceException e) {
+          logger.error("Error while trying to send irc.disconnected event: " + e.getMessage());
+        }
+      }).start();
+    }
   }
 
   @Override
