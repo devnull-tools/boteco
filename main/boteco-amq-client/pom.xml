@@ -32,7 +32,7 @@
   <parent>
     <groupId>tools.devnull</groupId>
     <artifactId>boteco-bundle-parent</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.2.0</version>
     <relativePath>../../misc/boteco-bundle-parent/pom.xml</relativePath>
   </parent>
 
@@ -44,16 +44,6 @@
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-blueprint</artifactId>
     </dependency>
-
-    <!--<dependency>
-      <groupId>org.osgi</groupId>
-      <artifactId>org.osgi.core</artifactId>
-    </dependency>-->
-
-    <!--<dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-camel</artifactId>
-    </dependency>-->
 
     <dependency>
       <groupId>org.apache.activemq</groupId>
