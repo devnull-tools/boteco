@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.2.0
+## v0.2.0 (2016-11-18)
 
 - Code improvements
 - Add a way of reconnecting to the irc server in case of a connection error
