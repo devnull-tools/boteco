@@ -50,6 +50,8 @@ install the feature for each channel separately:
 - `boteco-email`
 - `boteco-user`
 
+Boteco targets JBoss Fuse _6.3.0_.
+
 ## Concepts
 
 Boteco consists basically on the following components:
