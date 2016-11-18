@@ -6,6 +6,8 @@ This is the implementation of the Telegram Channel. It allows Message Processors
 
 Just use the config `tools.devnull.boteco.channel.telegram`. The supported properties are:
 
+- `income.enabled`: if the channel should process incoming messages (defaults to `false`)
+- `outcome.enabled`: if the channel should process outcome messages (defaults to `false`)
 - `bot.token`: the bot token (you get this one after a new bot registration)
 - `bot.command.expression`: the regular expression that defines a command (defaults to
 `^/(?<command>[^@ ]*)(@\w+bot)?\s*(?<arguments>.+)?`)

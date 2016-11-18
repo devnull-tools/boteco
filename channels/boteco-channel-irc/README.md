@@ -6,6 +6,10 @@ This is the implementation of the IRC Channel. It allows Message Processors to r
 
 Just use the config `tools.devnull.boteco.channel.irc`. The supported properties are:
 
+- `income.enabled`: if the channel should process incoming messages (defaults to `false`)
+- `outcome.enabled`: if the channel should process outcome messages (defaults to `false`)
+- `connection.check`: if the channel should check if the connection is lost and try to reconnect (defaults to `false`)
+- `connection.check.interval`: the interval in which the channel will check for the connection status (defaults to `1m`)
 - `irc.nick`: the nickname to use (defaults to `'boteco'`)
 - `irc.server`: the server to connect (defaults to `'localhost'`)
 - `irc.port`: the port to connect (defaults to `'6667'`)
