@@ -43,7 +43,19 @@
   <service interface="tools.devnull.boteco.event.SubscriptionManager" ref="subscription-manager"/>
 
   <service interface="tools.devnull.boteco.message.MessageProcessor">
-    <bean class="tools.devnull.boteco.plugins.subscription.SubscriptionMessageProcessor">
+    <bean class="tools.devnull.boteco.plugins.subscription.SubscriptionAddMessageProcessor">
+      <argument ref="subscription-manager"/>
+    </bean>
+  </service>
+
+  <service interface="tools.devnull.boteco.message.MessageProcessor">
+    <bean class="tools.devnull.boteco.plugins.subscription.SubscriptionRemoveMessageProcessor">
+      <argument ref="subscription-manager"/>
+    </bean>
+  </service>
+
+  <service interface="tools.devnull.boteco.message.MessageProcessor">
+    <bean class="tools.devnull.boteco.plugins.subscription.SubscriptionListMessageProcessor">
       <argument ref="subscription-manager"/>
     </bean>
   </service>
