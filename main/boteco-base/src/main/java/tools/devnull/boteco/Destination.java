@@ -29,7 +29,7 @@ import tools.devnull.boteco.client.jms.JmsDestination;
 /**
  * An utility class to create destinations.
  */
-public class Destination {
+public interface Destination {
 
   /**
    * Creates a queue destination based on the given queue name.
@@ -37,7 +37,7 @@ public class Destination {
    * @param name the queue name
    * @return a queue destination
    */
-  public static JmsDestination queue(String name) {
+  static JmsDestination queue(String name) {
     return session -> session.createQueue(name);
   }
 
@@ -47,7 +47,7 @@ public class Destination {
    * @param name the topic name
    * @return a topic destination
    */
-  public static JmsDestination topic(String name) {
+  static JmsDestination topic(String name) {
     return session -> session.createTopic(name);
   }
 
@@ -57,7 +57,7 @@ public class Destination {
    * @param channelId the channel id of the destination
    * @return a component to select the target of the destination
    */
-  public static TargetResultSelector<String, MessageDestination> channel(String channelId) {
+  static TargetResultSelector<String, MessageDestination> channel(String channelId) {
     return target -> new UserMessageDestination(channelId, target);
   }
 
