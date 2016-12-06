@@ -4,6 +4,7 @@
 
 - Subscription commands simplified (`subscribe`, `unsubscribe` and `subscriptions`)
 - Removed irc disconnect notifications (this time for real)
+- Improved JmsClient DSL
 
 ## v0.2.0 (2016-11-18)
 
