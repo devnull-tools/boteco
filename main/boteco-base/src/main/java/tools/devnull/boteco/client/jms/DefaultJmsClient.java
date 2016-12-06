@@ -22,52 +22,38 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.client.jms.impl;
+package tools.devnull.boteco.client.jms;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.TargetSelector;
-import tools.devnull.boteco.client.jms.JmsClient;
-import tools.devnull.boteco.client.jms.JmsDestination;
 
 import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
 import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
-import javax.jms.QueueConnectionFactory;
 import javax.jms.Session;
 import java.io.Serializable;
 
 /**
  * The AMQ implementation for the JMS Client
  */
-public class AMQClient implements JmsClient {
+public class DefaultJmsClient implements JmsClient {
 
-  private static Logger logger = LoggerFactory.getLogger(AMQClient.class);
+  private static Logger logger = LoggerFactory.getLogger(DefaultJmsClient.class);
 
-  private final QueueConnectionFactory connectionFactory;
-
-  /**
-   * Creates a new client based on the given parameters
-   *
-   * @param user          the broker user
-   * @param password      the broker password
-   * @param connectionUrl the broker url to connect
-   */
-  public AMQClient(String user, String password, String connectionUrl) {
-    this.connectionFactory = new ActiveMQConnectionFactory(user, password, connectionUrl);
-  }
+  private final ConnectionFactory connectionFactory;
 
   /**
-   * Creates a new client based on the broker url.
+   * Creates a new client based on the given connection factory
    *
-   * @param connectionUrl the broker url to connect
+   * @param connectionFactory the connection factory to use
    */
-  public AMQClient(String connectionUrl) {
-    this.connectionFactory = new ActiveMQConnectionFactory(connectionUrl);
+  public DefaultJmsClient(ConnectionFactory connectionFactory) {
+    this.connectionFactory = connectionFactory;
   }
 
   @Override
