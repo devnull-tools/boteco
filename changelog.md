@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.3.0
+## v0.3.0 (2016-12-16)
 
 - Subscription commands simplified (`subscribe`, `unsubscribe` and `subscriptions`)
 - Removed irc disconnect notifications (this time for real)
