@@ -24,45 +24,37 @@
 
 package tools.devnull.boteco.plugins.subscription;
 
+import tools.devnull.boteco.event.Subscription;
 import tools.devnull.boteco.event.SubscriptionManager;
 import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.message.checker.Command;
 
-import java.util.function.Consumer;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class SubscriptionAdd implements Consumer<SubscriptionParameters> {
+@Command("subscriptions")
+public class SubscriptionListMessageProcessor implements MessageProcessor {
 
   private final SubscriptionManager subscriptionManager;
-  private final IncomeMessage message;
 
-  public SubscriptionAdd(SubscriptionManager subscriptionManager, IncomeMessage message) {
+  public SubscriptionListMessageProcessor(SubscriptionManager subscriptionManager) {
     this.subscriptionManager = subscriptionManager;
-    this.message = message;
   }
 
   @Override
-  public void accept(SubscriptionParameters parameters) {
-    boolean alreadyRegistered = this.subscriptionManager.subscriptions(parameters.event()).stream()
-        .anyMatch(subscription -> subscription.subscriber().channel().equals(parameters.channel()) &&
-            subscription.subscriber().target().equals(parameters.target()));
-    if (alreadyRegistered) {
-      message.reply("Subscriber has already subscribed to this event!");
+  public void process(IncomeMessage message) {
+    SubscriptionListParameters parameters = message.command().as(SubscriptionListParameters.class);
+    String channel = parameters.channel();
+    String target = parameters.target();
+    List<Subscription> subscriptions = this.subscriptionManager.subscriptions(channel, target);
+    if (subscriptions.isEmpty()) {
+      message.reply("No subscriptions");
     } else {
-      if (parameters.shouldRequestConfirmation()) {
-        this.subscriptionManager
-            .subscribe()
-            .target(parameters.target())
-            .ofChannel(parameters.channel())
-            .withConfirmation()
-            .toEvent(parameters.event());
-        message.reply("The subscription will be added after confirmation!");
-      } else {
-        this.subscriptionManager
-            .subscribe()
-            .target(parameters.target())
-            .ofChannel(parameters.channel())
-            .toEvent(parameters.event());
-        message.reply("Subscription added!");
-      }
+      message.reply(subscriptions.stream()
+          .map(Subscription::eventId)
+          .collect(Collectors.joining("\n")));
     }
   }
+
 }

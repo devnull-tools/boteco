@@ -26,36 +26,43 @@ package tools.devnull.boteco.plugins.subscription;
 
 import tools.devnull.boteco.event.SubscriptionManager;
 import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.message.checker.Command;
 
-import java.util.function.Consumer;
-
-public class SubscriptionRemove implements Consumer<SubscriptionParameters> {
+@Command("subscribe")
+public class SubscriptionAddMessageProcessor implements MessageProcessor {
 
   private final SubscriptionManager subscriptionManager;
-  private final IncomeMessage message;
 
-  public SubscriptionRemove(SubscriptionManager subscriptionManager, IncomeMessage message) {
+  public SubscriptionAddMessageProcessor(SubscriptionManager subscriptionManager) {
     this.subscriptionManager = subscriptionManager;
-    this.message = message;
   }
 
   @Override
-  public void accept(SubscriptionParameters parameters) {
-    if (parameters.shouldRequestConfirmation()) {
-      this.subscriptionManager
-          .unsubscribe()
-          .target(parameters.target())
-          .ofChannel(parameters.channel())
-          .withConfirmation()
-          .fromEvent(parameters.event());
-      message.reply("The subscription will be removed after confirmation!");
+  public void process(IncomeMessage message) {
+    SubscriptionParameters parameters = message.command().as(SubscriptionParameters.class);
+    boolean alreadyRegistered = this.subscriptionManager.subscriptions(parameters.event()).stream()
+        .anyMatch(subscription -> subscription.subscriber().channel().equals(parameters.channel()) &&
+            subscription.subscriber().target().equals(parameters.target()));
+    if (alreadyRegistered) {
+      message.reply("Subscriber has already subscribed to this event!");
     } else {
-      this.subscriptionManager
-          .unsubscribe()
-          .target(parameters.target())
-          .ofChannel(parameters.channel())
-          .fromEvent(parameters.event());
-      message.reply("Subscription removed!");
+      if (parameters.shouldRequestConfirmation()) {
+        this.subscriptionManager
+            .subscribe()
+            .target(parameters.target())
+            .ofChannel(parameters.channel())
+            .withConfirmation()
+            .toEvent(parameters.event());
+        message.reply("The subscription will be added after confirmation!");
+      } else {
+        this.subscriptionManager
+            .subscribe()
+            .target(parameters.target())
+            .ofChannel(parameters.channel())
+            .toEvent(parameters.event());
+        message.reply("Subscription added!");
+      }
     }
   }
 

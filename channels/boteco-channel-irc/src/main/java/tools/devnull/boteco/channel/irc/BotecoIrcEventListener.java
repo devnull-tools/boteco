@@ -28,7 +28,6 @@ import org.apache.camel.component.irc.IrcConfiguration;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.ServiceException;
 import org.schwering.irc.lib.IRCConnection;
 import org.schwering.irc.lib.IRCEventListener;
 import org.schwering.irc.lib.IRCModeParser;
@@ -104,13 +103,6 @@ public class BotecoIrcEventListener implements IRCEventListener {
     Bundle bundle = bundleContext.getBundle();
     if (bundle.getState() == Bundle.ACTIVE) {
       this.disconnected = true;
-      new Thread(() -> {
-        try {
-          this.bus.broadcast("The bot was disconnected from IRC").as("irc.disconnected");
-        } catch (ServiceException e) {
-          logger.error("Error while trying to send irc.disconnected event: " + e.getMessage());
-        }
-      }).start();
     }
   }
 

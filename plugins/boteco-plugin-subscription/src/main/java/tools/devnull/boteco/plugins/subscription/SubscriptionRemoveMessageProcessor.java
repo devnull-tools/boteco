@@ -29,22 +29,34 @@ import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Command;
 
-@Command("subscription")
-public class SubscriptionMessageProcessor implements MessageProcessor {
+@Command("unsubscribe")
+public class SubscriptionRemoveMessageProcessor implements MessageProcessor {
 
   private final SubscriptionManager subscriptionManager;
 
-  public SubscriptionMessageProcessor(SubscriptionManager subscriptionManager) {
+  public SubscriptionRemoveMessageProcessor(SubscriptionManager subscriptionManager) {
     this.subscriptionManager = subscriptionManager;
   }
 
   @Override
   public void process(IncomeMessage message) {
-    message.command()
-        .on("add", SubscriptionParameters.class, new SubscriptionAdd(subscriptionManager, message))
-        .on("remove", SubscriptionParameters.class, new SubscriptionRemove(subscriptionManager, message))
-        .on("list", SubscriptionListParameters.class, new SubscriptionList(subscriptionManager, message))
-        .execute();
+    SubscriptionParameters parameters = message.command().as(SubscriptionParameters.class);
+    if (parameters.shouldRequestConfirmation()) {
+      this.subscriptionManager
+          .unsubscribe()
+          .target(parameters.target())
+          .ofChannel(parameters.channel())
+          .withConfirmation()
+          .fromEvent(parameters.event());
+      message.reply("The subscription will be removed after confirmation!");
+    } else {
+      this.subscriptionManager
+          .unsubscribe()
+          .target(parameters.target())
+          .ofChannel(parameters.channel())
+          .fromEvent(parameters.event());
+      message.reply("Subscription removed!");
+    }
   }
 
 }

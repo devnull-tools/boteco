@@ -88,6 +88,23 @@ public class PingMessageProcessor implements MessageProcessor {
 }
 ~~~
 
+You can also use the built-in annotations to simplify the code:
+
+~~~java
+@Command("ping")
+public class PingMessageProcessor implements MessageProcessor {
+
+  // Process the given message
+  public void process(IncomeMessage message) {
+    // Reply to the message without worrying how to send it
+    message.reply("pong");
+  }
+
+}
+~~~
+
+Both codes will run exactly the same way.
+
 ### Channel
 
 Your Message Processor doesn't need to know how to send a content, but the Channel needs. A Channel is the integration between the chat platform and the Boteco runtime, a _camel route_ is the most obvious thought.
