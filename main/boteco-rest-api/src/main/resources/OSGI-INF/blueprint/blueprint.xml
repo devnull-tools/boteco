@@ -47,7 +47,7 @@
   <reference id="subscription-manager" interface="tools.devnull.boteco.event.SubscriptionManager"/>
   <reference id="request-manager" interface="tools.devnull.boteco.request.RequestManager"/>
 
-  <bean id="message-service" class="tools.devnull.boteco.rest.MessageService">
+  <bean id="channel-service" class="tools.devnull.boteco.rest.ChannelService">
     <argument ref="message-sender"/>
     <argument ref="service-locator"/>
   </bean>
@@ -66,7 +66,7 @@
 
   <jaxrs:server id="server" address="{{rest.path}}">
     <jaxrs:serviceBeans>
-      <ref component-id="message-service"/>
+      <ref component-id="channel-service"/>
       <ref component-id="event-service"/>
       <ref component-id="subscription-service"/>
       <ref component-id="confirmation-service"/>

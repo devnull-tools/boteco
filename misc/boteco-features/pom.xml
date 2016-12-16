@@ -29,7 +29,7 @@
   <parent>
     <groupId>tools.devnull</groupId>
     <artifactId>boteco-parent</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
     <relativePath>../../misc/boteco-parent/pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>

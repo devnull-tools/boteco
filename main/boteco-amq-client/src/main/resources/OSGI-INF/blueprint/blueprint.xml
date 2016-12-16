@@ -41,10 +41,8 @@
   </cm:property-placeholder>
 
   <service id="amq-client" interface="tools.devnull.boteco.client.jms.JmsClient">
-    <bean class="tools.devnull.boteco.client.jms.impl.AMQClient">
-      <argument value="${jms.user}"/>
-      <argument value="${jms.password}"/>
-      <argument value="${jms.connectionUrl}"/>
+    <bean class="tools.devnull.boteco.client.jms.DefaultJmsClient">
+      <argument ref="connection-factory"/>
     </bean>
   </service>
 
@@ -53,10 +51,14 @@
       <entry key="component" value="activemq"/>
     </service-properties>
     <bean class="org.apache.activemq.camel.component.ActiveMQComponent">
-      <property name="brokerURL" value="${jms.connectionUrl}"/>
-      <property name="userName" value="${jms.user}"/>
-      <property name="password" value="${jms.password}"/>
+      <property name="connectionFactory" ref="connection-factory"/>
     </bean>
   </service>
+
+  <bean id="connection-factory" class="org.apache.activemq.ActiveMQConnectionFactory">
+    <property name="brokerURL" value="${jms.connectionUrl}"/>
+    <property name="userName" value="${jms.user}"/>
+    <property name="password" value="${jms.password}"/>
+  </bean>
 
 </blueprint>

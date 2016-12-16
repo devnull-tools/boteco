@@ -41,12 +41,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Path("/channels")
-public class MessageService {
+public class ChannelService {
 
   private final MessageSender messageSender;
   private final ServiceLocator serviceLocator;
 
-  public MessageService(MessageSender messageSender, ServiceLocator serviceLocator) {
+  public ChannelService(MessageSender messageSender, ServiceLocator serviceLocator) {
     this.messageSender = messageSender;
     this.serviceLocator = serviceLocator;
   }
@@ -84,6 +84,19 @@ public class MessageService {
         .map(AvailableChannel::new)
         .collect(Collectors.toList()))
         .build();
+  }
+
+  @GET
+  @Produces("application/json")
+  @Path("/{channel}")
+  public Response getAvailableChannel(@PathParam("channel") String channelId) {
+    Channel channel = serviceLocator.locate(Channel.class, String.format("(id=%s)", channelId));
+    if (channel != null) {
+      return Response.ok(new AvailableChannel(channel))
+          .build();
+    } else {
+      return Response.status(Response.Status.NOT_FOUND).build();
+    }
   }
 
 }
