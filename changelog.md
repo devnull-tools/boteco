@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.4.0
+
+- Added trace options for camel routes in channels
+
 ## v0.3.0 (2016-12-16)
 
 - Subscription commands simplified (`subscribe`, `unsubscribe` and `subscriptions`)
