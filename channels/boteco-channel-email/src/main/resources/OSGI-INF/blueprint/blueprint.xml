@@ -38,9 +38,7 @@
                            placeholder-suffix="}}">
     <cm:default-properties>
       <cm:property name="income.enabled" value="false"/>
-      <cm:property name="income.trace" value="false"/>
       <cm:property name="outcome.enabled" value="false"/>
-      <cm:property name="outcome.trace" value="false"/>
 
       <cm:property name="income.protocol" value="imap"/>
       <cm:property name="income.host" value="localhost"/>
@@ -50,6 +48,8 @@
       <cm:property name="outcome.host" value="localhost"/>
       <cm:property name="outcome.options" value=""/>
       <cm:property name="outcome.from" value=""/>
+
+      <cm:property name="trace" value="false"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
@@ -78,6 +78,7 @@
   </bean>
 
   <camelContext id="boteco-channel-email"
+                trace="{{trace}}"
                 xmlns="http://camel.apache.org/schema/blueprint">
     <route id="boteco.message.from.email" autoStartup="{{income.enabled}}"
            trace="{{income.trace}}">
@@ -85,8 +86,7 @@
       <process ref="income-processor"/>
     </route>
 
-    <route id="boteco.message.to.email" autoStartup="{{outcome.enabled}}"
-           trace="{{outcome.trace}}">
+    <route id="boteco.message.to.email" autoStartup="{{outcome.enabled}}">
       <from uri="activemq:queue:boteco.message.email"/>
       <log logName="boteco-channel-email"
            loggingLevel="INFO"

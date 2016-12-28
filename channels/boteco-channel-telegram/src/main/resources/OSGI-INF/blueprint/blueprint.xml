@@ -34,9 +34,8 @@
                            placeholder-suffix="}}">
     <cm:default-properties>
       <cm:property name="income.enable" value="false"/>
-      <cm:property name="income.trace" value="false"/>
       <cm:property name="outcome.enable" value="false"/>
-      <cm:property name="outcome.trace" value="false"/>
+      <cm:property name="trace" value="false"/>
 
       <!-- The bot's token -->
       <cm:property name="bot.token" value=""/>
@@ -105,10 +104,10 @@
   <bean id="converter" class="tools.devnull.boteco.channel.telegram.converters.TelegramIncomeConverter"/>
 
   <camelContext id="boteco-channel-telegram"
+                trace="{{trace}}"
                 xmlns="http://camel.apache.org/schema/blueprint">
 
-    <route id="boteco.message.from.telegram" autoStartup="{{income.enabled}}"
-           trace="{{income.trace}}">
+    <route id="boteco.message.from.telegram" autoStartup="{{income.enabled}}">
       <from uri="timer:telegram?period={{poll.interval}}"/>
       <log message="Pooling Telegram for new messages"
            logName="boteco-message-telegram"
@@ -123,8 +122,7 @@
       </split>
     </route>
 
-    <route id="boteco.message.to.telegram" autoStartup="{{outcome.enabled}}"
-           trace="{{outcome.trace}}">
+    <route id="boteco.message.to.telegram" autoStartup="{{outcome.enabled}}">
       <from uri="activemq:queue:boteco.message.telegram?concurrentConsumers=10"/>
       <log logName="boteco-channel-telegram"
            loggingLevel="INFO"
