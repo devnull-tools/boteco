@@ -147,6 +147,7 @@
       <choice>
         <when>
           <simple>${bean:irc.isDisconnected}</simple>
+          <log message="Trying to reconnect to IRC"/>
           <to uri="bean:irc?method=reconnect"/>
         </when>
       </choice>
