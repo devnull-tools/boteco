@@ -26,7 +26,7 @@ package tools.devnull.boteco.process.message;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import tools.devnull.boteco.ServiceLocator;
+import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 
@@ -42,21 +42,21 @@ public class BotecoMessageProcessorFinder implements Processor {
 
   public static String INCOME_MESSAGE = "incomeMessage";
 
-  private final ServiceLocator serviceLocator;
+  private final ServiceRegistry serviceRegistry;
 
   /**
    * Creates a new processor
    *
-   * @param serviceLocator the service locator to query for the message processors available
+   * @param serviceRegistry the service registry to query for the message processors available
    */
-  public BotecoMessageProcessorFinder(ServiceLocator serviceLocator) {
-    this.serviceLocator = serviceLocator;
+  public BotecoMessageProcessorFinder(ServiceRegistry serviceRegistry) {
+    this.serviceRegistry = serviceRegistry;
   }
 
   @Override
   public void process(Exchange exchange) throws Exception {
     IncomeMessage message = exchange.getIn().getBody(IncomeMessage.class);
-    List<MessageProcessor> messageProcessors = serviceLocator.locateAll(MessageProcessor.class);
+    List<MessageProcessor> messageProcessors = serviceRegistry.locateAll(MessageProcessor.class);
     List<MessageProcessor> processors = messageProcessors.stream()
         .filter(processor -> processor.canProcess(message))
         .collect(Collectors.toList());

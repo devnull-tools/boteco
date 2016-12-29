@@ -25,7 +25,7 @@
 package tools.devnull.boteco.channel.email;
 
 import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.ServiceLocator;
+import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.message.CommandExtractor;
 import tools.devnull.boteco.message.IncomeMessage;
@@ -41,7 +41,7 @@ public class EmailIncomeMessage implements IncomeMessage {
 
   private static final long serialVersionUID = 8180521354784182482L;
 
-  private final ServiceLocator serviceLocator;
+  private final ServiceRegistry serviceRegistry;
   private final User user;
   private final CommandExtractor extractor;
   private final Channel channel = new EmailChannel();
@@ -52,13 +52,13 @@ public class EmailIncomeMessage implements IncomeMessage {
   /**
    * Creates a new message using the given parameters
    *
-   * @param serviceLocator the service locator for fetching a {@link MessageSender} component
-   * @param content        the content of the email
-   * @param sender         the sender of the email
-   * @param target         the target of the email
-   * @param user           the user associated with this message (may be {@code null})
+   * @param serviceRegistry the service locator for fetching a {@link MessageSender} component
+   * @param content         the content of the email
+   * @param sender          the sender of the email
+   * @param target          the target of the email
+   * @param user            the user associated with this message (may be {@code null})
    */
-  public EmailIncomeMessage(ServiceLocator serviceLocator,
+  public EmailIncomeMessage(ServiceRegistry serviceRegistry,
                             String content,
                             EmailSender sender,
                             String target,
@@ -66,7 +66,7 @@ public class EmailIncomeMessage implements IncomeMessage {
     this.content = content;
     this.sender = sender;
     this.target = target;
-    this.serviceLocator = serviceLocator;
+    this.serviceRegistry = serviceRegistry;
     this.user = user;
     this.extractor = new SimpleCommandExtractor();
   }
@@ -118,7 +118,7 @@ public class EmailIncomeMessage implements IncomeMessage {
 
   @Override
   public void reply(String content) {
-    this.serviceLocator.locate(MessageSender.class)
+    this.serviceRegistry.locate(MessageSender.class)
         .send(content)
         .with("Subject", "Re: " + this.content)
         .to(sender().id())

@@ -25,7 +25,7 @@
 package tools.devnull.boteco.rest;
 
 import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.ServiceLocator;
+import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.message.OutcomeMessageBuilder;
 import tools.devnull.boteco.message.Priority;
@@ -44,11 +44,11 @@ import java.util.stream.Collectors;
 public class ChannelService {
 
   private final MessageSender messageSender;
-  private final ServiceLocator serviceLocator;
+  private final ServiceRegistry serviceRegistry;
 
-  public ChannelService(MessageSender messageSender, ServiceLocator serviceLocator) {
+  public ChannelService(MessageSender messageSender, ServiceRegistry serviceRegistry) {
     this.messageSender = messageSender;
-    this.serviceLocator = serviceLocator;
+    this.serviceRegistry = serviceRegistry;
   }
 
   @POST
@@ -57,7 +57,7 @@ public class ChannelService {
   public Response sendMessage(@PathParam("channel") String channelId,
                               @PathParam("target") String target,
                               Message message) {
-    Channel channel = serviceLocator.locate(Channel.class, String.format("(id=%s)", channelId));
+    Channel channel = serviceRegistry.locate(Channel.class, String.format("(id=%s)", channelId));
     OutcomeMessageBuilder builder = messageSender.send(message.getContent());
 
     message.getMetadata().entrySet().forEach(entry -> builder.with(entry.getKey(), entry.getValue()));
@@ -79,7 +79,7 @@ public class ChannelService {
   @Produces("application/json")
   @Path("/")
   public Response getAvailableChannels() {
-    List<Channel> channels = serviceLocator.locateAll(Channel.class, "(id=*)");
+    List<Channel> channels = serviceRegistry.locateAll(Channel.class, "(id=*)");
     return Response.ok(channels.stream()
         .map(AvailableChannel::new)
         .collect(Collectors.toList()))
@@ -90,7 +90,7 @@ public class ChannelService {
   @Produces("application/json")
   @Path("/{channel}")
   public Response getAvailableChannel(@PathParam("channel") String channelId) {
-    Channel channel = serviceLocator.locate(Channel.class, String.format("(id=%s)", channelId));
+    Channel channel = serviceRegistry.locate(Channel.class, String.format("(id=%s)", channelId));
     if (channel != null) {
       return Response.ok(new AvailableChannel(channel))
           .build();

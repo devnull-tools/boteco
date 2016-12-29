@@ -30,7 +30,7 @@ import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.boteco.message.CommandExtractor;
-import tools.devnull.boteco.ServiceLocator;
+import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.message.Sender;
@@ -44,7 +44,7 @@ public class IrcIncomeMessage implements IncomeMessage {
 
   private final Channel channel = new IrcChannel();
   private final CommandExtractor commandExtractor;
-  private final ServiceLocator serviceLocator;
+  private final ServiceRegistry serviceRegistry;
   private final User user;
   private final String message;
   private final Sender sender;
@@ -55,18 +55,18 @@ public class IrcIncomeMessage implements IncomeMessage {
    *
    * @param income           the actual IRC message
    * @param commandExtractor the component to extract commands from this message
-   * @param serviceLocator   the service locator to find a {@link MessageSender} when necessary
+   * @param serviceRegistry  the service locator to find a {@link MessageSender} when necessary
    * @param user             the user associated with this message (may be {@code null})
    */
   public IrcIncomeMessage(IrcMessage income,
                           CommandExtractor commandExtractor,
-                          ServiceLocator serviceLocator,
+                          ServiceRegistry serviceRegistry,
                           User user) {
     this.commandExtractor = commandExtractor;
     this.message = income.getMessage();
     this.sender = new IrcSender(income.getUser());
     this.target = income.getTarget();
-    this.serviceLocator = serviceLocator;
+    this.serviceRegistry = serviceRegistry;
     this.user = user;
   }
 
@@ -134,7 +134,7 @@ public class IrcIncomeMessage implements IncomeMessage {
   }
 
   private void send(String target, String content) {
-    serviceLocator.locate(MessageSender.class).send(content).to(target).through(channel().id());
+    serviceRegistry.locate(MessageSender.class).send(content).to(target).through(channel().id());
   }
 
   private static class IrcSender implements Sender {

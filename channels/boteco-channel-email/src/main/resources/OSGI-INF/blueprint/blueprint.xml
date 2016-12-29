@@ -61,13 +61,13 @@
   </service>
 
   <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>
-  <bean id="service-locator" class="tools.devnull.boteco.OsgiServiceLocator"/>
+  <bean id="service-registry" class="tools.devnull.boteco.OsgiServiceRegistry"/>
 
   <reference id="user-manager" interface="tools.devnull.boteco.user.UserManager"/>
 
   <bean id="income-processor" class="tools.devnull.boteco.channel.email.EmailIncomeProcessor">
     <argument ref="message-dispatcher"/>
-    <argument ref="service-locator"/>
+    <argument ref="service-registry"/>
     <argument ref="user-manager"/>
   </bean>
 

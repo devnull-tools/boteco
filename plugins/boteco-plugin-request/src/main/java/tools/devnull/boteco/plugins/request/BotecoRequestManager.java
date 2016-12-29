@@ -25,7 +25,7 @@
 package tools.devnull.boteco.plugins.request;
 
 import tools.devnull.boteco.BotException;
-import tools.devnull.boteco.ServiceLocator;
+import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.request.Request;
 import tools.devnull.boteco.request.RequestListener;
@@ -41,14 +41,14 @@ public class BotecoRequestManager implements RequestManager {
 
   private final RequestRepository repository;
   private final MessageSender messageSender;
-  private final ServiceLocator serviceLocator;
+  private final ServiceRegistry serviceRegistry;
 
   public BotecoRequestManager(RequestRepository repository,
                               MessageSender messageSender,
-                              ServiceLocator serviceLocator) {
+                              ServiceRegistry serviceRegistry) {
     this.repository = repository;
     this.messageSender = messageSender;
-    this.serviceLocator = serviceLocator;
+    this.serviceRegistry = serviceRegistry;
   }
 
   @Override
@@ -65,7 +65,7 @@ public class BotecoRequestManager implements RequestManager {
   public boolean confirm(String token) {
     Request request = this.repository.pull(token);
     if (request != null) {
-      RequestListener listener = serviceLocator.locate(RequestListener.class, "(request=%s)", request.type());
+      RequestListener listener = serviceRegistry.locate(RequestListener.class, "(request=%s)", request.type());
       if (listener != null) {
         listener.onConfirm(request);
         return true;

@@ -30,22 +30,19 @@ import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Dictionary;
 import java.util.List;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 /**
- * A ServiceLocator that lookups services by using the OSGi Registry.
- * <p>
- * Please note that this class doesn't return the OSGi proxies so you
- * might want not to store the lookup results for too long. (Avoid to
- * use them as instance variable at least.)
+ * An implementation of a service registry that uses the OSGi Registry
  */
-public class OsgiServiceLocator implements ServiceLocator, Serializable {
+public class OsgiServiceRegistry implements ServiceRegistry {
 
-  private static final long serialVersionUID = 8996784912658235746L;
+  private static final long serialVersionUID = -7905765563295691457L;
 
   public <T> T locate(Class<T> serviceClass) {
     BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
@@ -79,4 +76,25 @@ public class OsgiServiceLocator implements ServiceLocator, Serializable {
   public <T> List<T> locateAll(Class<T> serviceClass) {
     return locateAll(serviceClass, null);
   }
+
+  @Override
+  public <E> void register(Class<E> serviceClass, E implementation) {
+    BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
+    bundleContext.registerService(serviceClass, implementation, null);
+  }
+
+  @Override
+  public <E> void register(Class<E> serviceClass, E implementation, Dictionary<String, ?> properties) {
+    BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
+    bundleContext.registerService(serviceClass, implementation, properties);
+  }
+
+  @Override
+  public <E> void register(Class<E> serviceClass, E implementation, String id) {
+    BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
+    Dictionary properties = new Properties();
+    properties.put("id", id);
+    bundleContext.registerService(serviceClass, implementation, properties);
+  }
+
 }

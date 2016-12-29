@@ -25,12 +25,13 @@
 package tools.devnull.boteco;
 
 import java.io.Serializable;
+import java.util.Dictionary;
 import java.util.List;
 
 /**
- * Interface to locate services in bundles.
+ * Interface that defines a registry for finding or registering services
  */
-public interface ServiceLocator extends Serializable {
+public interface ServiceRegistry extends Serializable {
 
   /**
    * Locates the service that implements the given interface
@@ -95,5 +96,34 @@ public interface ServiceLocator extends Serializable {
    * @return the services that implements the given interface.
    */
   <T> List<T> locateAll(Class<T> serviceClass);
+
+  /**
+   * Registers the given service.
+   *
+   * @param serviceClass   the service class
+   * @param implementation the service implementation
+   * @param <E>            the service type
+   */
+  <E> void register(Class<E> serviceClass, E implementation);
+
+  /**
+   * Registers the given service.
+   *
+   * @param serviceClass   the service class
+   * @param implementation the service implementation
+   * @param properties     the service properties
+   * @param <E>            the service type
+   */
+  <E> void register(Class<E> serviceClass, E implementation, Dictionary<String, ?> properties);
+
+  /**
+   * Registers the given service.
+   *
+   * @param serviceClass   the service class
+   * @param implementation the service implementation
+   * @param id             the service id
+   * @param <E>            the service type
+   */
+  <E> void register(Class<E> serviceClass, E implementation, String id);
 
 }
