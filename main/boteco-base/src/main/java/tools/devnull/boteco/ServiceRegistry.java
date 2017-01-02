@@ -36,17 +36,17 @@ public interface ServiceRegistry extends Serializable {
    *
    * @param serviceClass the interface that the service implements
    * @param <T>          the type of the service
-   * @return the located service
+   * @return a component to configure the query
    */
   <T> ServiceQuery<T> locate(Class<T> serviceClass);
 
   /**
    * Registers the given service.
    *
-   * @param serviceClass   the service class
    * @param implementation the service implementation
-   * @param <E>            the service type
+   * @param <T>            the service type
+   * @return a component to define the service
    */
-  <E> void register(Class<E> serviceClass, E implementation);
+  <T> ServiceDefinition<T> register(T implementation);
 
 }

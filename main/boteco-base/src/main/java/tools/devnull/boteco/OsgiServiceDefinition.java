@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -25,23 +25,31 @@
 package tools.devnull.boteco;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
 
-/**
- * An implementation of a service registry that uses the OSGi Registry
- */
-public class OsgiServiceRegistry implements ServiceRegistry {
+import java.util.Dictionary;
+import java.util.Properties;
 
-  private static final long serialVersionUID = -7905765563295691457L;
+public class OsgiServiceDefinition<T> implements ServiceDefinition<T> {
 
-  public <T> ServiceQuery<T> locate(Class<T> serviceClass) {
-    BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
-    return new OsgiServiceQuery<>(bundleContext, serviceClass);
+  private final BundleContext bundleContext;
+  private final T implementation;
+  private final Dictionary properties;
+
+  public OsgiServiceDefinition(BundleContext bundleContext, T implementation) {
+    this.bundleContext = bundleContext;
+    this.implementation = implementation;
+    this.properties = new Properties();
   }
 
   @Override
-  public <T> ServiceDefinition<T> register(T implementation) {
-    BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
-    return new OsgiServiceDefinition(bundleContext, implementation);
+  public ServiceDefinition<T> withProperty(String key, Object value) {
+    this.properties.put(key, value);
+    return this;
   }
+
+  @Override
+  public void as(Class<T> serviceClass) {
+    bundleContext.registerService(serviceClass, implementation, properties);
+  }
+
 }

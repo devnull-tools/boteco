@@ -31,6 +31,7 @@ import org.osgi.framework.ServiceReference;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -92,6 +93,17 @@ public class OsgiServiceQuery<T> implements ServiceQuery<T> {
     } catch (InvalidSyntaxException e) {
       throw new BotException(e);
     }
+  }
+
+  @Override
+  public T orElseReturn(T returnValue) {
+    return orElse(() -> returnValue);
+  }
+
+  @Override
+  public T orElse(Supplier<T> supplier) {
+    T service = one();
+    return service != null ? service : supplier.get();
   }
 
 }
