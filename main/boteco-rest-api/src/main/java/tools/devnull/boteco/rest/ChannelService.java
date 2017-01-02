@@ -40,6 +40,8 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static tools.devnull.boteco.Predicates.id;
+
 @Path("/channels")
 public class ChannelService {
 
@@ -57,7 +59,7 @@ public class ChannelService {
   public Response sendMessage(@PathParam("channel") String channelId,
                               @PathParam("target") String target,
                               Message message) {
-    Channel channel = serviceRegistry.locate(Channel.class, String.format("(id=%s)", channelId));
+    Channel channel = serviceRegistry.locate(Channel.class).filter(id(channelId)).one();
     OutcomeMessageBuilder builder = messageSender.send(message.getContent());
 
     message.getMetadata().entrySet().forEach(entry -> builder.with(entry.getKey(), entry.getValue()));
@@ -79,7 +81,7 @@ public class ChannelService {
   @Produces("application/json")
   @Path("/")
   public Response getAvailableChannels() {
-    List<Channel> channels = serviceRegistry.locateAll(Channel.class, "(id=*)");
+    List<Channel> channels = serviceRegistry.locate(Channel.class).all();
     return Response.ok(channels.stream()
         .map(AvailableChannel::new)
         .collect(Collectors.toList()))
@@ -90,7 +92,7 @@ public class ChannelService {
   @Produces("application/json")
   @Path("/{channel}")
   public Response getAvailableChannel(@PathParam("channel") String channelId) {
-    Channel channel = serviceRegistry.locate(Channel.class, String.format("(id=%s)", channelId));
+    Channel channel = serviceRegistry.locate(Channel.class).filter(id(channelId)).one();
     if (channel != null) {
       return Response.ok(new AvailableChannel(channel))
           .build();

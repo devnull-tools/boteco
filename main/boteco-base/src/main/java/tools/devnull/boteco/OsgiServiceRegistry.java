@@ -44,10 +44,9 @@ public class OsgiServiceRegistry implements ServiceRegistry {
 
   private static final long serialVersionUID = -7905765563295691457L;
 
-  public <T> T locate(Class<T> serviceClass) {
+  public <T> ServiceQuery<T> locate(Class<T> serviceClass) {
     BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
-    ServiceReference<T> serviceReference = bundleContext.getServiceReference(serviceClass);
-    return bundleContext.getService(serviceReference);
+    return new OsgiServiceQuery<>(bundleContext, serviceClass);
   }
 
   public <T> T locate(Class<T> serviceClass, String filter) {
@@ -72,7 +71,6 @@ public class OsgiServiceRegistry implements ServiceRegistry {
     }
   }
 
-  @Override
   public <T> List<T> locateAll(Class<T> serviceClass) {
     return locateAll(serviceClass, null);
   }
@@ -83,13 +81,11 @@ public class OsgiServiceRegistry implements ServiceRegistry {
     bundleContext.registerService(serviceClass, implementation, null);
   }
 
-  @Override
   public <E> void register(Class<E> serviceClass, E implementation, Dictionary<String, ?> properties) {
     BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
     bundleContext.registerService(serviceClass, implementation, properties);
   }
 
-  @Override
   public <E> void register(Class<E> serviceClass, E implementation, String id) {
     BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
     Dictionary properties = new Properties();

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -24,29 +24,20 @@
 
 package tools.devnull.boteco;
 
-import java.io.Serializable;
+import org.osgi.framework.ServiceReference;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 /**
- * Interface that defines a registry for finding or registering services
+ * Interface for querying services in a {@link ServiceRegistry}
  */
-public interface ServiceRegistry extends Serializable {
+public interface ServiceQuery<T> {
 
-  /**
-   * Locates the service that implements the given interface
-   *
-   * @param serviceClass the interface that the service implements
-   * @param <T>          the type of the service
-   * @return the located service
-   */
-  <T> ServiceQuery<T> locate(Class<T> serviceClass);
+  ServiceQuery<T> filter(Predicate<ServiceReference> predicate);
 
-  /**
-   * Registers the given service.
-   *
-   * @param serviceClass   the service class
-   * @param implementation the service implementation
-   * @param <E>            the service type
-   */
-  <E> void register(Class<E> serviceClass, E implementation);
+  T one();
+  
+  List<T> all();
 
 }

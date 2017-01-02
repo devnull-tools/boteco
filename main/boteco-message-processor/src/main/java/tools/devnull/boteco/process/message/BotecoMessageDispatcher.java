@@ -33,6 +33,8 @@ import tools.devnull.boteco.message.MessageDispatcher;
 import java.util.List;
 
 import static tools.devnull.boteco.Destination.queue;
+import static tools.devnull.boteco.Predicates.eq;
+import static tools.devnull.boteco.Predicates.serviceProperty;
 
 /**
  * A component responsible for dispatching messages for being processed by
@@ -65,8 +67,9 @@ public class BotecoMessageDispatcher implements MessageDispatcher {
 
   @Override
   public void dispatch(IncomeMessage incomeMessage) {
-    List<Rule> rules = serviceRegistry.locateAll(Rule.class,
-        "(|(channel=all)(channel=%s))", incomeMessage.channel().id());
+    List<Rule> rules = serviceRegistry.locate(Rule.class)
+        .filter(serviceProperty("channel", eq("all").or(eq(incomeMessage.channel().id()))))
+        .all();
     if (rules.isEmpty() || rules.stream().allMatch(rule -> rule.accept(incomeMessage))) {
       client.send(incomeMessage).to(queue(queueName + "." + incomeMessage.channel().id()));
     }

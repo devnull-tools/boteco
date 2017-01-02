@@ -34,6 +34,9 @@ import tools.devnull.boteco.event.EventListener;
 
 import java.util.List;
 
+import static tools.devnull.boteco.Predicates.eq;
+import static tools.devnull.boteco.Predicates.serviceProperty;
+
 /**
  * A processor that finds listeners for events raised
  */
@@ -59,7 +62,9 @@ public class ListenerFinderProcessor implements Processor {
   public void process(Exchange exchange) throws Exception {
     Event event = exchange.getIn().getBody(Event.class);
     List<EventListener> listeners = this.serviceRegistry
-        .locateAll(EventListener.class, "(|(event=all)(event=%s))", event.id());
+        .locate(EventListener.class)
+        .filter(serviceProperty("event", eq("all").or(eq(event.id()))))
+        .all();
     logger.info("Found " + listeners.size() + " listeners for event " + event.id());
     exchange.getOut().setBody(listeners);
     exchange.getOut().setHeader(EVENT, event);

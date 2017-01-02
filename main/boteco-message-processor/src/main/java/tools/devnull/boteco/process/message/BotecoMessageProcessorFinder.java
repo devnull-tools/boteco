@@ -56,7 +56,7 @@ public class BotecoMessageProcessorFinder implements Processor {
   @Override
   public void process(Exchange exchange) throws Exception {
     IncomeMessage message = exchange.getIn().getBody(IncomeMessage.class);
-    List<MessageProcessor> messageProcessors = serviceRegistry.locateAll(MessageProcessor.class);
+    List<MessageProcessor> messageProcessors = serviceRegistry.locate(MessageProcessor.class).all();
     List<MessageProcessor> processors = messageProcessors.stream()
         .filter(processor -> processor.canProcess(message))
         .collect(Collectors.toList());

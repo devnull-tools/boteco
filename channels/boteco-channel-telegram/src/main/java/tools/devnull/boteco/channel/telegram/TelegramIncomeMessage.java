@@ -110,14 +110,14 @@ class TelegramIncomeMessage implements IncomeMessage {
 
   @Override
   public void sendBack(String content) {
-    serviceRegistry.locate(MessageSender.class)
+    serviceRegistry.locate(MessageSender.class).one()
         .send(content)
         .to(String.valueOf(message.getChat().getId()))
         .through(channel().id());
   }
 
   private void replyMessage(String id, String content) {
-    serviceRegistry.locate(MessageSender.class)
+    serviceRegistry.locate(MessageSender.class).one()
         .send(content)
         .with("reply_to_message_id", message.getMessageId())
         .to(id)

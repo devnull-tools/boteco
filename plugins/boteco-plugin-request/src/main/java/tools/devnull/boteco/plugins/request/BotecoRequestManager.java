@@ -32,6 +32,9 @@ import tools.devnull.boteco.request.RequestListener;
 import tools.devnull.boteco.request.RequestManager;
 import tools.devnull.boteco.request.Verifiable;
 
+import static tools.devnull.boteco.Predicates.eq;
+import static tools.devnull.boteco.Predicates.serviceProperty;
+
 /**
  * The default implementation for a {@link RequestManager}.
  * <p>
@@ -65,7 +68,9 @@ public class BotecoRequestManager implements RequestManager {
   public boolean confirm(String token) {
     Request request = this.repository.pull(token);
     if (request != null) {
-      RequestListener listener = serviceRegistry.locate(RequestListener.class, "(request=%s)", request.type());
+      RequestListener listener = serviceRegistry.locate(RequestListener.class)
+          .filter(serviceProperty("request", eq(request.type())))
+          .one();
       if (listener != null) {
         listener.onConfirm(request);
         return true;

@@ -134,7 +134,7 @@ public class IrcIncomeMessage implements IncomeMessage {
   }
 
   private void send(String target, String content) {
-    serviceRegistry.locate(MessageSender.class).send(content).to(target).through(channel().id());
+    serviceRegistry.locate(MessageSender.class).one().send(content).to(target).through(channel().id());
   }
 
   private static class IrcSender implements Sender {

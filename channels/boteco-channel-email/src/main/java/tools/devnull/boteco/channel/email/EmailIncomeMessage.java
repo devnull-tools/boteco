@@ -118,7 +118,7 @@ public class EmailIncomeMessage implements IncomeMessage {
 
   @Override
   public void reply(String content) {
-    this.serviceRegistry.locate(MessageSender.class)
+    this.serviceRegistry.locate(MessageSender.class).one()
         .send(content)
         .with("Subject", "Re: " + this.content)
         .to(sender().id())
