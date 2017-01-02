@@ -39,6 +39,14 @@ public interface ServiceDefinition<T> {
   ServiceDefinition<T> withProperty(String key, Object value);
 
   /**
+   * Defines the service id as a service property
+   *
+   * @param value the id of the service
+   * @return an instance of the service definition
+   */
+  ServiceDefinition<T> withId(Object value);
+
+  /**
    * Defines the service class that the given object will be registered
    *
    * @param serviceClass the service class to register the given service

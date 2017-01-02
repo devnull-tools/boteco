@@ -48,6 +48,11 @@ public class OsgiServiceDefinition<T> implements ServiceDefinition<T> {
   }
 
   @Override
+  public ServiceDefinition<T> withId(Object value) {
+    return withProperty("id", value);
+  }
+
+  @Override
   public void as(Class<T> serviceClass) {
     bundleContext.registerService(serviceClass, implementation, properties);
   }
