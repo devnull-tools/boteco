@@ -42,6 +42,7 @@ public class OsgiServiceRegistry implements ServiceRegistry {
   @Override
   public <T> ServiceDefinition<T> register(T implementation) {
     BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
-    return new OsgiServiceDefinition(bundleContext, implementation);
+    return new OsgiServiceDefinition<>(bundleContext, implementation);
   }
+
 }
