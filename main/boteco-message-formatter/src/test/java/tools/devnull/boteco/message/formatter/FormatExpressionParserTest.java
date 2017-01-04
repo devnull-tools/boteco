@@ -73,7 +73,7 @@ public class FormatExpressionParserTest {
         .then(expression("[n]value[/n]"), should().be("negative: value"))
         .then(expression("[t]value[/t]"), should().be("tag: value"))
         .then(expression("[e]value[/e]"), should().be("error: value"))
-        .then(expression("[l]title <url>[/l]"), should().be("link: title - url"))
+        .then(expression("[l]title|url[/l]"), should().be("link: title - url"))
 
         .then(expression("[t]value[/a]"), should().be("[t]value[/a]"));
 

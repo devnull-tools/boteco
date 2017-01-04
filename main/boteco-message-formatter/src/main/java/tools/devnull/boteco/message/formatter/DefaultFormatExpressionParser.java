@@ -84,7 +84,7 @@ public class DefaultFormatExpressionParser implements FormatExpressionParser {
   }
 
   private String formatLink(ContentFormatter formatter, String content) {
-    Matcher matcher = Pattern.compile("^(?<title>.+)\\s*<(?<url>.+)>$").matcher(content);
+    Matcher matcher = Pattern.compile("^(?<title>[^|]+)\\s*\\|\\s*(?<url>.+)$").matcher(content);
     return matcher.find() ? formatter.link(matcher.group("title").trim(), matcher.group("url")) : content;
   }
 
