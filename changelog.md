@@ -5,6 +5,7 @@
 - Merged `ServiceLocator` and `ServiceRegister` into a new interface `ServiceRegistry`
 - Added trace options for camel routes in channels
 - Telegram content formatter
+- Link expression changed to `title|url` instead of `title <url>`
 
 ## v0.3.0 (2016-12-16)
 
