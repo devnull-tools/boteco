@@ -32,6 +32,7 @@ import tools.devnull.kodo.TestScenario;
 
 import java.util.function.Function;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -48,10 +49,11 @@ public class FormatExpressionParserTest {
     formatter = mock(ContentFormatter.class);
     parser = new DefaultFormatExpressionParser();
 
+    when(formatter.normalize(any())).thenAnswer(invocation -> invocation.getArguments()[0]);
     when(formatter.accent("value")).thenReturn("accent: value");
     when(formatter.alternativeAccent("value")).thenReturn("alternative_accent: value");
     when(formatter.error("value")).thenReturn("error: value");
-    when(formatter.link("title <url>")).thenReturn("link: title - url");
+    when(formatter.link("title", "url")).thenReturn("link: title - url");
     when(formatter.negative("value")).thenReturn("negative: value");
     when(formatter.positive("value")).thenReturn("positive: value");
     when(formatter.tag("value")).thenReturn("tag: value");
@@ -82,7 +84,8 @@ public class FormatExpressionParserTest {
     verify(formatter, times(1)).negative("value");
     verify(formatter, times(1)).tag("value");
     verify(formatter, times(1)).error("value");
-    verify(formatter, times(1)).link("title <url>");
+    verify(formatter, times(1)).link("title", "url");
+    verify(formatter, times(10)).normalize(any());
   }
 
   private Function<FormatExpressionParser, String> expression(String expression) {

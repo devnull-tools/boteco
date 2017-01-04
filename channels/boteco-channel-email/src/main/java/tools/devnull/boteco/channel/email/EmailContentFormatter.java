@@ -66,8 +66,8 @@ public class EmailContentFormatter implements ContentFormatter {
   }
 
   @Override
-  public String link(String content) {
-    return content;
+  public String link(String title, String url) {
+    return String.format("<a href=\"%s\">%s</a>", url, title);
   }
 
   @Override
