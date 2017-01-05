@@ -27,33 +27,22 @@ package tools.devnull.boteco;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 
-import java.io.Serializable;
-import java.util.Dictionary;
-import java.util.Properties;
-
 /**
- * A service register that uses the OSGi Registry.
+ * An implementation of a service registry that uses the OSGi Registry
  */
-public class OsgiServiceRegister implements ServiceRegister, Serializable {
+public class OsgiServiceRegistry implements ServiceRegistry {
 
-  @Override
-  public <E> void register(Class<E> serviceClass, E implementation) {
+  private static final long serialVersionUID = -7905765563295691457L;
+
+  public <T> ServiceQuery<T> locate(Class<T> serviceClass) {
     BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
-    bundleContext.registerService(serviceClass, implementation, null);
+    return new OsgiServiceQuery<>(bundleContext, serviceClass);
   }
 
   @Override
-  public <E> void register(Class<E> serviceClass, E implementation, Dictionary<String, ?> properties) {
+  public <T> ServiceDefinition<T> register(T implementation) {
     BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
-    bundleContext.registerService(serviceClass, implementation, properties);
-  }
-
-  @Override
-  public <E> void register(Class<E> serviceClass, E implementation, String id) {
-    BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
-    Dictionary properties = new Properties();
-    properties.put("id", id);
-    bundleContext.registerService(serviceClass, implementation, properties);
+    return new OsgiServiceDefinition<>(bundleContext, implementation);
   }
 
 }

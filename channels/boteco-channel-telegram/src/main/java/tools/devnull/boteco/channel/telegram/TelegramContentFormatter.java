@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -22,51 +22,60 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco;
+package tools.devnull.boteco.channel.telegram;
 
-/**
- * A default object for the {@link ContentFormatter} interface.
- */
-public class DefaultContentFormatter implements ContentFormatter {
+import tools.devnull.boteco.ContentFormatter;
+
+public class TelegramContentFormatter implements ContentFormatter {
+
+  @Override
+  public String normalize(String content) {
+    return content.replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+  }
+
+  private String enclose(String tag, String content) {
+    return String.format("<%s>%s</%s>", tag, content, tag);
+  }
 
   @Override
   public String accent(String content) {
-    return content;
+    return enclose("b", content);
   }
 
   @Override
   public String alternativeAccent(String content) {
-    return content;
+    return enclose("i", content);
   }
 
   @Override
   public String positive(String content) {
-    return content;
+    return enclose("code", content);
   }
 
   @Override
   public String negative(String content) {
-    return content;
+    return enclose("code", content);
   }
 
   @Override
   public String value(String content) {
-    return content;
+    return enclose("code", content);
   }
 
   @Override
   public String error(String content) {
-    return content;
+    return enclose("code", content);
   }
 
   @Override
   public String link(String title, String url) {
-    return String.format("%s <%s>", title, url);
+    return String.format("<a href=\"%s\">%s</a>", url, title);
   }
 
   @Override
   public String tag(String content) {
-    return String.format("[%s]", content);
+    return enclose("pre", content);
   }
-
 }

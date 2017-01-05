@@ -32,14 +32,14 @@
                                http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
-  <bean id="service-locator" class="tools.devnull.boteco.OsgiServiceLocator"/>
+  <bean id="service-registry" class="tools.devnull.boteco.OsgiServiceRegistry"/>
   <reference id="repository" interface="tools.devnull.boteco.plugins.request.RequestRepository"/>
   <reference id="message-sender" interface="tools.devnull.boteco.message.MessageSender"/>
 
   <bean id="request-manager" class="tools.devnull.boteco.plugins.request.BotecoRequestManager">
     <argument ref="repository"/>
     <argument ref="message-sender"/>
-    <argument ref="service-locator"/>
+    <argument ref="service-registry"/>
   </bean>
 
   <service interface="tools.devnull.boteco.request.RequestManager" ref="request-manager"/>

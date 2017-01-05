@@ -30,6 +30,8 @@ import tools.devnull.boteco.message.FormatExpressionParser;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This is the default expression parser for boteco. It uses the pattern {@link [tag]content[/tag]}
@@ -44,7 +46,7 @@ import java.util.function.Function;
  * <li>n: applies {@link ContentFormatter#negative(String)} </li>
  * <li>t: applies {@link ContentFormatter#tag(String)} </li>
  * <li>e: applies {@link ContentFormatter#error(String)} </li>
- * <li>l: applies {@link ContentFormatter#link(String)} </li>
+ * <li>l: applies {@link ContentFormatter#link(String, String)} </li>
  * </ul>
  */
 public class DefaultFormatExpressionParser implements FormatExpressionParser {
@@ -60,9 +62,9 @@ public class DefaultFormatExpressionParser implements FormatExpressionParser {
     map.put("n", formatter::negative);
     map.put("t", formatter::tag);
     map.put("e", formatter::error);
-    map.put("l", formatter::link);
+    map.put("l", content -> formatLink(formatter, content));
 
-    StringBuilder result = new StringBuilder(expression);
+    StringBuilder result = new StringBuilder(formatter.normalize(expression));
     map.entrySet().forEach(entry -> replaceText(result, entry.getKey(), entry.getValue()));
     return result.toString();
   }
@@ -79,6 +81,11 @@ public class DefaultFormatExpressionParser implements FormatExpressionParser {
       begin = result.indexOf(open);
       end = result.indexOf(close, begin);
     }
+  }
+
+  private String formatLink(ContentFormatter formatter, String content) {
+    Matcher matcher = Pattern.compile("^(?<title>[^|]+)\\s*\\|\\s*(?<url>.+)$").matcher(content);
+    return matcher.find() ? formatter.link(matcher.group("title").trim(), matcher.group("url")) : content;
   }
 
 }

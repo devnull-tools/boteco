@@ -30,6 +30,16 @@ package tools.devnull.boteco;
 public interface ContentFormatter {
 
   /**
+   * Normalizes the content before applying the format.
+   *
+   * @param content the content to be normalized
+   * @return the normalized content for applying the format tags
+   */
+  default String normalize(String content) {
+    return content;
+  }
+
+  /**
    * Adds an accent to the content
    *
    * @param content the content to format
@@ -89,13 +99,12 @@ public interface ContentFormatter {
 
   /**
    * Adds a link format to the given url
-   * <p>
-   * The content should be in the given format "title &lt;link&gt;"
    *
-   * @param content the content
+   * @param title the link title
+   * @param url   the link url
    * @return the formatted content
    */
-  String link(String content);
+  String link(String title, String url);
 
   /**
    * Adds a tag format to the given content.

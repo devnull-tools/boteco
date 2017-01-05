@@ -37,6 +37,7 @@
                            placeholder-suffix="}}">
     <cm:default-properties>
       <cm:property name="delivery.consumers" value="10"/>
+      <cm:property name="trace" value="false"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
@@ -56,6 +57,7 @@
   </bean>
 
   <camelContext id="boteco-channel-user"
+                trace="{{trace}}"
                 xmlns="http://camel.apache.org/schema/blueprint">
 
     <route id="boteco.message.to.user">

@@ -31,7 +31,7 @@ import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.user.UserManager;
 import tools.devnull.boteco.message.CommandExtractor;
-import tools.devnull.boteco.ServiceLocator;
+import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.message.MessageDispatcher;
 
 /**
@@ -41,24 +41,24 @@ public class IrcIncomeProcessor implements Processor {
 
   private final CommandExtractor extractor;
   private final MessageDispatcher dispatcher;
-  private final ServiceLocator serviceLocator;
+  private final ServiceRegistry serviceRegistry;
   private final UserManager userManager;
 
   /**
    * Creates a new processor based on the giving parameters
    *
-   * @param extractor      the component to extract commands from the messages
-   * @param dispatcher     the component to dispatch the messages to be processed
-   * @param serviceLocator the service locator for component lookup
-   * @param userManager    the user manager to retrieve the registered users
+   * @param extractor       the component to extract commands from the messages
+   * @param dispatcher      the component to dispatch the messages to be processed
+   * @param serviceRegistry the service locator for component lookup
+   * @param userManager     the user manager to retrieve the registered users
    */
   public IrcIncomeProcessor(CommandExtractor extractor,
                             MessageDispatcher dispatcher,
-                            ServiceLocator serviceLocator,
+                            ServiceRegistry serviceRegistry,
                             UserManager userManager) {
     this.extractor = extractor;
     this.dispatcher = dispatcher;
-    this.serviceLocator = serviceLocator;
+    this.serviceRegistry = serviceRegistry;
     this.userManager = userManager;
   }
 
@@ -67,7 +67,7 @@ public class IrcIncomeProcessor implements Processor {
     IrcMessage income = exchange.getIn(IrcMessage.class);
     if (income.getMessage() != null && !income.getMessage().isEmpty()) {
       User user = this.userManager.find(Destination.channel(IrcChannel.ID).to(income.getUser().getNick()));
-      dispatcher.dispatch(new IrcIncomeMessage(income, extractor, serviceLocator, user));
+      dispatcher.dispatch(new IrcIncomeMessage(income, extractor, serviceRegistry, user));
     }
   }
 

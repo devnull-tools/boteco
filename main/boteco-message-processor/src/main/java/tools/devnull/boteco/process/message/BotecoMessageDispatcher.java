@@ -25,7 +25,7 @@
 package tools.devnull.boteco.process.message;
 
 import tools.devnull.boteco.Rule;
-import tools.devnull.boteco.ServiceLocator;
+import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.client.jms.JmsClient;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageDispatcher;
@@ -33,6 +33,8 @@ import tools.devnull.boteco.message.MessageDispatcher;
 import java.util.List;
 
 import static tools.devnull.boteco.Destination.queue;
+import static tools.devnull.boteco.Predicates.eq;
+import static tools.devnull.boteco.Predicates.serviceProperty;
 
 /**
  * A component responsible for dispatching messages for being processed by
@@ -47,26 +49,27 @@ import static tools.devnull.boteco.Destination.queue;
 public class BotecoMessageDispatcher implements MessageDispatcher {
 
   private final JmsClient client;
-  private final ServiceLocator serviceLocator;
+  private final ServiceRegistry serviceRegistry;
   private final String queueName;
 
   /**
    * Creates a new message dispatcher based on the given parameters
    *
-   * @param client         the jms client for sending the messages to queues
-   * @param serviceLocator the service locator to lookup rules
-   * @param queueName      the queue name to use
+   * @param client          the jms client for sending the messages to queues
+   * @param serviceRegistry the service registry to lookup rules
+   * @param queueName       the queue name to use
    */
-  public BotecoMessageDispatcher(JmsClient client, ServiceLocator serviceLocator, String queueName) {
+  public BotecoMessageDispatcher(JmsClient client, ServiceRegistry serviceRegistry, String queueName) {
     this.client = client;
-    this.serviceLocator = serviceLocator;
+    this.serviceRegistry = serviceRegistry;
     this.queueName = queueName;
   }
 
   @Override
   public void dispatch(IncomeMessage incomeMessage) {
-    List<Rule> rules = serviceLocator.locateAll(Rule.class,
-        "(|(channel=all)(channel=%s))", incomeMessage.channel().id());
+    List<Rule> rules = serviceRegistry.locate(Rule.class)
+        .filter(serviceProperty("channel", eq("all").or(eq(incomeMessage.channel().id()))))
+        .all();
     if (rules.isEmpty() || rules.stream().allMatch(rule -> rule.accept(incomeMessage))) {
       client.send(incomeMessage).to(queue(queueName + "." + incomeMessage.channel().id()));
     }

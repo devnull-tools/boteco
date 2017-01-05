@@ -24,49 +24,29 @@
 
 package tools.devnull.boteco;
 
+import java.io.Serializable;
+
 /**
- * A default object for the {@link ContentFormatter} interface.
+ * Interface that defines a registry for finding or registering services
  */
-public class DefaultContentFormatter implements ContentFormatter {
+public interface ServiceRegistry extends Serializable {
 
-  @Override
-  public String accent(String content) {
-    return content;
-  }
+  /**
+   * Locates the service that implements the given interface
+   *
+   * @param serviceClass the interface that the service implements
+   * @param <T>          the type of the service
+   * @return a component to configure the query
+   */
+  <T> ServiceQuery<T> locate(Class<T> serviceClass);
 
-  @Override
-  public String alternativeAccent(String content) {
-    return content;
-  }
-
-  @Override
-  public String positive(String content) {
-    return content;
-  }
-
-  @Override
-  public String negative(String content) {
-    return content;
-  }
-
-  @Override
-  public String value(String content) {
-    return content;
-  }
-
-  @Override
-  public String error(String content) {
-    return content;
-  }
-
-  @Override
-  public String link(String title, String url) {
-    return String.format("%s <%s>", title, url);
-  }
-
-  @Override
-  public String tag(String content) {
-    return String.format("[%s]", content);
-  }
+  /**
+   * Registers the given service.
+   *
+   * @param implementation the service implementation
+   * @param <T>            the service type
+   * @return a component to define the service
+   */
+  <T> ServiceDefinition<T> register(T implementation);
 
 }

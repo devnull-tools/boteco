@@ -48,7 +48,7 @@
 
   <bean id="listener-finder-processor" class="tools.devnull.boteco.process.event.ListenerFinderProcessor">
     <argument>
-      <bean class="tools.devnull.boteco.OsgiServiceLocator"/>
+      <bean class="tools.devnull.boteco.OsgiServiceRegistry"/>
     </argument>
   </bean>
 
