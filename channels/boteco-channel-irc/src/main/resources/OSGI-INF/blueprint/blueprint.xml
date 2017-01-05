@@ -34,12 +34,11 @@
                            placeholder-suffix="}}">
     <cm:default-properties>
       <cm:property name="income.enabled" value="false"/>
-      <cm:property name="income.trace" value="false"/>
       <cm:property name="outcome.enabled" value="false"/>
-      <cm:property name="outcome.trace" value="false"/>
       <cm:property name="connection.check" value="false"/>
       <cm:property name="connection.check.interval" value="1m"/>
       <cm:property name="connection.check.trace" value="false"/>
+
 
       <cm:property name="irc.nick" value="boteco"/>
       <cm:property name="irc.server" value="localhost"/>
@@ -49,6 +48,8 @@
                    value="{{irc.nick}}[,:]?\s+"/>
       <!-- The options to apply to the irc component -->
       <cm:property name="irc.options" value=""/>
+
+      <cm:property name="trace" value="false"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
