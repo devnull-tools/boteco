@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.4.0
+## v0.4.0 (2017-01-04)
 
 - Merged `ServiceLocator` and `ServiceRegister` into a new interface `ServiceRegistry`
 - Added trace options for camel routes in channels
