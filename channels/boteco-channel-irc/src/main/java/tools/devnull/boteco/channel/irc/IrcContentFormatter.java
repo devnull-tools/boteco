@@ -26,9 +26,6 @@ package tools.devnull.boteco.channel.irc;
 
 import tools.devnull.boteco.ContentFormatter;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * A content formatter for IRC messages.
  */
@@ -91,9 +88,8 @@ public class IrcContentFormatter implements ContentFormatter {
   }
 
   @Override
-  public String link(String content) {
-    Matcher matcher = Pattern.compile("^(?<title>.+)\\s*<(?<url>.+)>$").matcher(content);
-    return matcher.find() ? String.format("%s <%s>", accent(matcher.group("title").trim()), matcher.group("url")) : content;
+  public String link(String title, String url) {
+    return String.format("%s <%s>", accent(title), url);
   }
 
   @Override

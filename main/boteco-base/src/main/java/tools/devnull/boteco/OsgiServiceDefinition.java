@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -24,41 +24,37 @@
 
 package tools.devnull.boteco;
 
-import java.io.Serializable;
+import org.osgi.framework.BundleContext;
+
 import java.util.Dictionary;
+import java.util.Properties;
 
-/**
- * Interface that allows service registration.
- */
-public interface ServiceRegister extends Serializable {
+public class OsgiServiceDefinition<T> implements ServiceDefinition<T> {
 
-  /**
-   * Registers the given service.
-   *
-   * @param serviceClass   the service class
-   * @param implementation the service implementation
-   * @param <E>            the service type
-   */
-  <E> void register(Class<E> serviceClass, E implementation);
+  private final BundleContext bundleContext;
+  private final T implementation;
+  private final Dictionary properties;
 
-  /**
-   * Registers the given service.
-   *
-   * @param serviceClass   the service class
-   * @param implementation the service implementation
-   * @param properties     the service properties
-   * @param <E>            the service type
-   */
-  <E> void register(Class<E> serviceClass, E implementation, Dictionary<String, ?> properties);
+  public OsgiServiceDefinition(BundleContext bundleContext, T implementation) {
+    this.bundleContext = bundleContext;
+    this.implementation = implementation;
+    this.properties = new Properties();
+  }
 
-  /**
-   * Registers the given service.
-   *
-   * @param serviceClass   the service class
-   * @param implementation the service implementation
-   * @param id             the service id
-   * @param <E>            the service type
-   */
-  <E> void register(Class<E> serviceClass, E implementation, String id);
+  @Override
+  public ServiceDefinition<T> withProperty(String key, Object value) {
+    this.properties.put(key, value);
+    return this;
+  }
+
+  @Override
+  public ServiceDefinition<T> withId(Object value) {
+    return withProperty("id", value);
+  }
+
+  @Override
+  public void as(Class<T> serviceClass) {
+    bundleContext.registerService(serviceClass, implementation, properties);
+  }
 
 }

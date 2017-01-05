@@ -35,6 +35,7 @@
     <cm:default-properties>
       <cm:property name="income.enable" value="false"/>
       <cm:property name="outcome.enable" value="false"/>
+      <cm:property name="trace" value="false"/>
 
       <!-- The bot's token -->
       <cm:property name="bot.token" value=""/>
@@ -64,7 +65,7 @@
 
   <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>
 
-  <bean id="service-locator" class="tools.devnull.boteco.OsgiServiceLocator"/>
+  <bean id="service-registry" class="tools.devnull.boteco.OsgiServiceRegistry"/>
 
   <reference id="user-manager" interface="tools.devnull.boteco.user.UserManager"/>
 
@@ -72,7 +73,7 @@
     <argument ref="command-extractor"/>
     <argument ref="offset-manager"/>
     <argument ref="message-dispatcher"/>
-    <argument ref="service-locator"/>
+    <argument ref="service-registry"/>
     <argument ref="user-manager"/>
   </bean>
 
@@ -81,7 +82,7 @@
       <reference interface="tools.devnull.boteco.message.FormatExpressionParser"/>
     </argument>
     <argument>
-      <bean class="tools.devnull.boteco.DefaultContentFormatter"/>
+      <bean class="tools.devnull.boteco.channel.telegram.TelegramContentFormatter"/>
     </argument>
     <argument>
       <reference interface="tools.devnull.boteco.client.rest.RestClient"/>
@@ -103,6 +104,7 @@
   <bean id="converter" class="tools.devnull.boteco.channel.telegram.converters.TelegramIncomeConverter"/>
 
   <camelContext id="boteco-channel-telegram"
+                trace="{{trace}}"
                 xmlns="http://camel.apache.org/schema/blueprint">
 
     <route id="boteco.message.from.telegram" autoStartup="{{income.enabled}}">

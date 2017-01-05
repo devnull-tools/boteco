@@ -29,7 +29,7 @@ import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.boteco.message.CommandExtractor;
 import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.ServiceLocator;
+import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.message.Sender;
 
@@ -40,16 +40,16 @@ class TelegramIncomeMessage implements IncomeMessage {
   private final CommandExtractor extractor;
   private final TelegramPolling.Message message;
   private final Channel channel = new TelegramChannel();
-  private final ServiceLocator serviceLocator;
+  private final ServiceRegistry serviceRegistry;
   private final User user;
 
   TelegramIncomeMessage(CommandExtractor extractor,
                         TelegramPolling.Message message,
-                        ServiceLocator serviceLocator,
+                        ServiceRegistry serviceRegistry,
                         User user) {
     this.extractor = extractor;
     this.message = message;
-    this.serviceLocator = serviceLocator;
+    this.serviceRegistry = serviceRegistry;
     this.user = user;
   }
 
@@ -110,14 +110,14 @@ class TelegramIncomeMessage implements IncomeMessage {
 
   @Override
   public void sendBack(String content) {
-    serviceLocator.locate(MessageSender.class)
+    serviceRegistry.locate(MessageSender.class).one()
         .send(content)
         .to(String.valueOf(message.getChat().getId()))
         .through(channel().id());
   }
 
   private void replyMessage(String id, String content) {
-    serviceLocator.locate(MessageSender.class)
+    serviceRegistry.locate(MessageSender.class).one()
         .send(content)
         .with("reply_to_message_id", message.getMessageId())
         .to(id)

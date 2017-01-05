@@ -74,6 +74,7 @@ public class TelegramOutcomeProcessor implements Processor {
       String content = message.getContent();
       message.eachMetadata(header -> body.put(header.getKey(), String.valueOf(header.getValue())));
       body.put("chat_id", message.getTarget());
+      body.put("parse_mode", "HTML");
       checkAndSend(body, content);
     }
   }

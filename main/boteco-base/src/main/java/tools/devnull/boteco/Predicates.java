@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco;
 
+import org.osgi.framework.ServiceReference;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.predicates.AcceptedValuePredicate;
 import tools.devnull.boteco.predicates.MatchedValuePredicate;
@@ -102,6 +103,37 @@ public class Predicates {
    */
   public static Predicate<IncomeMessage> content(String expression) {
     return new MatchedValuePredicate<>(expression, IncomeMessage::content);
+  }
+
+  /**
+   * A predicate that evaluates a service property.
+   *
+   * @param key       the name of the property
+   * @param predicate the predicate to evaluate the value associated with the given key
+   * @return the created predicate
+   */
+  public static Predicate<ServiceReference> serviceProperty(String key, Predicate<Object> predicate) {
+    return serviceReference -> predicate.test(serviceReference.getProperty(key));
+  }
+
+  /**
+   * A predicate to evaluate the property key named "id"
+   *
+   * @param value the value to check against the "id" property
+   * @return the created predicate
+   */
+  public static Predicate<ServiceReference> id(String value) {
+    return serviceProperty("id", eq(value));
+  }
+
+  /**
+   * A predicate that evaluates an object using {@link Object#equals(Object)}
+   *
+   * @param value the value to check
+   * @return the created predicate
+   */
+  public static Predicate<Object> eq(Object value) {
+    return value::equals;
   }
 
 }

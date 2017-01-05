@@ -38,7 +38,7 @@
   </cm:property-placeholder>
 
   <reference id="client" interface="tools.devnull.boteco.client.jms.JmsClient"/>
-  <bean id="service-locator" class="tools.devnull.boteco.OsgiServiceLocator"/>
+  <bean id="service-registry" class="tools.devnull.boteco.OsgiServiceRegistry"/>
 
   <service id="message-sender"
            interface="tools.devnull.boteco.message.MessageSender">
@@ -52,13 +52,13 @@
            interface="tools.devnull.boteco.message.MessageDispatcher">
     <bean class="tools.devnull.boteco.process.message.BotecoMessageDispatcher">
       <argument ref="client"/>
-      <argument ref="service-locator"/>
+      <argument ref="service-registry"/>
       <argument value="boteco.process"/>
     </bean>
   </service>
 
   <bean id="message-processor-finder" class="tools.devnull.boteco.process.message.BotecoMessageProcessorFinder">
-    <argument ref="service-locator"/>
+    <argument ref="service-registry"/>
   </bean>
 
   <bean id="message-processor-invoker" class="tools.devnull.boteco.process.message.BotecoMessageProcessorInvoker">

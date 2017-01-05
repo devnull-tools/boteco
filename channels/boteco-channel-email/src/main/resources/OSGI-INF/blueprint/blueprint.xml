@@ -48,6 +48,8 @@
       <cm:property name="outcome.host" value="localhost"/>
       <cm:property name="outcome.options" value=""/>
       <cm:property name="outcome.from" value=""/>
+
+      <cm:property name="trace" value="false"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
@@ -59,13 +61,13 @@
   </service>
 
   <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>
-  <bean id="service-locator" class="tools.devnull.boteco.OsgiServiceLocator"/>
+  <bean id="service-registry" class="tools.devnull.boteco.OsgiServiceRegistry"/>
 
   <reference id="user-manager" interface="tools.devnull.boteco.user.UserManager"/>
 
   <bean id="income-processor" class="tools.devnull.boteco.channel.email.EmailIncomeProcessor">
     <argument ref="message-dispatcher"/>
-    <argument ref="service-locator"/>
+    <argument ref="service-registry"/>
     <argument ref="user-manager"/>
   </bean>
 
@@ -76,8 +78,10 @@
   </bean>
 
   <camelContext id="boteco-channel-email"
+                trace="{{trace}}"
                 xmlns="http://camel.apache.org/schema/blueprint">
-    <route id="boteco.message.from.email" autoStartup="{{income.enabled}}">
+    <route id="boteco.message.from.email" autoStartup="{{income.enabled}}"
+           trace="{{income.trace}}">
       <from uri="{{income.protocol}}://{{income.host}}?{{income.options}}"/>
       <process ref="income-processor"/>
     </route>

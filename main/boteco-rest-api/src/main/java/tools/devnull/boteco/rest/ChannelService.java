@@ -25,7 +25,7 @@
 package tools.devnull.boteco.rest;
 
 import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.ServiceLocator;
+import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.message.OutcomeMessageBuilder;
 import tools.devnull.boteco.message.Priority;
@@ -40,15 +40,17 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static tools.devnull.boteco.Predicates.id;
+
 @Path("/channels")
 public class ChannelService {
 
   private final MessageSender messageSender;
-  private final ServiceLocator serviceLocator;
+  private final ServiceRegistry serviceRegistry;
 
-  public ChannelService(MessageSender messageSender, ServiceLocator serviceLocator) {
+  public ChannelService(MessageSender messageSender, ServiceRegistry serviceRegistry) {
     this.messageSender = messageSender;
-    this.serviceLocator = serviceLocator;
+    this.serviceRegistry = serviceRegistry;
   }
 
   @POST
@@ -57,7 +59,7 @@ public class ChannelService {
   public Response sendMessage(@PathParam("channel") String channelId,
                               @PathParam("target") String target,
                               Message message) {
-    Channel channel = serviceLocator.locate(Channel.class, String.format("(id=%s)", channelId));
+    Channel channel = serviceRegistry.locate(Channel.class).filter(id(channelId)).one();
     OutcomeMessageBuilder builder = messageSender.send(message.getContent());
 
     message.getMetadata().entrySet().forEach(entry -> builder.with(entry.getKey(), entry.getValue()));
@@ -79,7 +81,7 @@ public class ChannelService {
   @Produces("application/json")
   @Path("/")
   public Response getAvailableChannels() {
-    List<Channel> channels = serviceLocator.locateAll(Channel.class, "(id=*)");
+    List<Channel> channels = serviceRegistry.locate(Channel.class).all();
     return Response.ok(channels.stream()
         .map(AvailableChannel::new)
         .collect(Collectors.toList()))
@@ -90,7 +92,7 @@ public class ChannelService {
   @Produces("application/json")
   @Path("/{channel}")
   public Response getAvailableChannel(@PathParam("channel") String channelId) {
-    Channel channel = serviceLocator.locate(Channel.class, String.format("(id=%s)", channelId));
+    Channel channel = serviceRegistry.locate(Channel.class).filter(id(channelId)).one();
     if (channel != null) {
       return Response.ok(new AvailableChannel(channel))
           .build();

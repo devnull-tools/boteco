@@ -30,7 +30,7 @@ import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.user.UserManager;
 import tools.devnull.boteco.message.CommandExtractor;
-import tools.devnull.boteco.ServiceLocator;
+import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.message.MessageDispatcher;
 
 /**
@@ -41,27 +41,27 @@ public class TelegramIncomeProcessor implements Processor {
   private final CommandExtractor extractor;
   private final TelegramOffsetManager offsetManager;
   private final MessageDispatcher dispatcher;
-  private final ServiceLocator serviceLocator;
+  private final ServiceRegistry serviceRegistry;
   private final UserManager userManager;
 
   /**
    * Creates a new processor based on the given parameters
    *
-   * @param extractor      a component for extracting commands from messages
-   * @param offsetManager  a component to manager the current offset in poll operations
-   * @param dispatcher     a component to dispatch messages to be processed
-   * @param serviceLocator a service locator for lookup purposes
-   * @param userManager    a user manager to fetch user information
+   * @param extractor       a component for extracting commands from messages
+   * @param offsetManager   a component to manager the current offset in poll operations
+   * @param dispatcher      a component to dispatch messages to be processed
+   * @param serviceRegistry a service locator for lookup purposes
+   * @param userManager     a user manager to fetch user information
    */
   public TelegramIncomeProcessor(CommandExtractor extractor,
                                  TelegramOffsetManager offsetManager,
                                  MessageDispatcher dispatcher,
-                                 ServiceLocator serviceLocator,
+                                 ServiceRegistry serviceRegistry,
                                  UserManager userManager) {
     this.extractor = extractor;
     this.offsetManager = offsetManager;
     this.dispatcher = dispatcher;
-    this.serviceLocator = serviceLocator;
+    this.serviceRegistry = serviceRegistry;
     this.userManager = userManager;
   }
 
@@ -71,7 +71,7 @@ public class TelegramIncomeProcessor implements Processor {
         pooling -> {
           String senderId = pooling.getMessage().getChat().getId().toString();
           User user = this.userManager.find(Destination.channel(TelegramChannel.ID).to(senderId));
-          dispatcher.dispatch(new TelegramIncomeMessage(extractor, pooling.getMessage(), serviceLocator, user));
+          dispatcher.dispatch(new TelegramIncomeMessage(extractor, pooling.getMessage(), serviceRegistry, user));
         });
   }
 

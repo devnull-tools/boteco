@@ -40,7 +40,7 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <bean id="service-locator" class="tools.devnull.boteco.OsgiServiceLocator"/>
+  <bean id="service-registry" class="tools.devnull.boteco.OsgiServiceRegistry"/>
 
   <reference id="message-sender" interface="tools.devnull.boteco.message.MessageSender"/>
   <reference id="event-bus" interface="tools.devnull.boteco.event.EventBus"/>
@@ -49,7 +49,7 @@
 
   <bean id="channel-service" class="tools.devnull.boteco.rest.ChannelService">
     <argument ref="message-sender"/>
-    <argument ref="service-locator"/>
+    <argument ref="service-registry"/>
   </bean>
 
   <bean id="event-service" class="tools.devnull.boteco.rest.EventService">

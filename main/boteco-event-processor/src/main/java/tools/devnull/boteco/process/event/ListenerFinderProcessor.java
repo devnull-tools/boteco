@@ -28,11 +28,14 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tools.devnull.boteco.ServiceLocator;
+import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.event.Event;
 import tools.devnull.boteco.event.EventListener;
 
 import java.util.List;
+
+import static tools.devnull.boteco.Predicates.eq;
+import static tools.devnull.boteco.Predicates.serviceProperty;
 
 /**
  * A processor that finds listeners for events raised
@@ -43,23 +46,25 @@ public class ListenerFinderProcessor implements Processor {
 
   private static final Logger logger = LoggerFactory.getLogger(ListenerFinderProcessor.class);
 
-  private final ServiceLocator serviceLocator;
+  private final ServiceRegistry serviceRegistry;
 
   /**
    * Creates a new processor using the given service locator for
    * fetching the {@link EventListener listeners}
    *
-   * @param serviceLocator the service locator to use
+   * @param serviceRegistry the service locator to use
    */
-  public ListenerFinderProcessor(ServiceLocator serviceLocator) {
-    this.serviceLocator = serviceLocator;
+  public ListenerFinderProcessor(ServiceRegistry serviceRegistry) {
+    this.serviceRegistry = serviceRegistry;
   }
 
   @Override
   public void process(Exchange exchange) throws Exception {
     Event event = exchange.getIn().getBody(Event.class);
-    List<EventListener> listeners = this.serviceLocator
-        .locateAll(EventListener.class, "(|(event=all)(event=%s))", event.id());
+    List<EventListener> listeners = this.serviceRegistry
+        .locate(EventListener.class)
+        .filter(serviceProperty("event", eq("all").or(eq(event.id()))))
+        .all();
     logger.info("Found " + listeners.size() + " listeners for event " + event.id());
     exchange.getOut().setBody(listeners);
     exchange.getOut().setHeader(EVENT, event);

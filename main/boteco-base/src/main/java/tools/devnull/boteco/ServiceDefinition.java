@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -25,48 +25,32 @@
 package tools.devnull.boteco;
 
 /**
- * A default object for the {@link ContentFormatter} interface.
+ * An interface to define a service for registering in the OSGi Registry
  */
-public class DefaultContentFormatter implements ContentFormatter {
+public interface ServiceDefinition<T> {
 
-  @Override
-  public String accent(String content) {
-    return content;
-  }
+  /**
+   * Defines a service property
+   *
+   * @param key   the name of the property
+   * @param value the value of the property
+   * @return an instance of the service definition
+   */
+  ServiceDefinition<T> withProperty(String key, Object value);
 
-  @Override
-  public String alternativeAccent(String content) {
-    return content;
-  }
+  /**
+   * Defines the service id as a service property
+   *
+   * @param value the id of the service
+   * @return an instance of the service definition
+   */
+  ServiceDefinition<T> withId(Object value);
 
-  @Override
-  public String positive(String content) {
-    return content;
-  }
-
-  @Override
-  public String negative(String content) {
-    return content;
-  }
-
-  @Override
-  public String value(String content) {
-    return content;
-  }
-
-  @Override
-  public String error(String content) {
-    return content;
-  }
-
-  @Override
-  public String link(String title, String url) {
-    return String.format("%s <%s>", title, url);
-  }
-
-  @Override
-  public String tag(String content) {
-    return String.format("[%s]", content);
-  }
+  /**
+   * Defines the service class that the given object will be registered
+   *
+   * @param serviceClass the service class to register the given service
+   */
+  void as(Class<T> serviceClass);
 
 }

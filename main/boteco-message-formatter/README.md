@@ -13,4 +13,4 @@ The implementation is based on a `[tag]sentence[/tag]` pattern:
 - `[n]`: marks a negative format (for using with numbers)
 - `[t]`: marks a tag format (for using as tags or labels)
 - `[e]`: marks an error format (for error messages)
-- `[l]`: marks a link format (`title <link>`)
+- `[l]`: marks a link format (`title|link`)
