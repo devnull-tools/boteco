@@ -26,6 +26,7 @@ package tools.devnull.boteco.client.rest.impl;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -63,6 +64,7 @@ import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -156,6 +158,12 @@ public class DefaultRestConfiguration implements RestConfiguration {
   }
 
   @Override
+  public RestConfiguration withDateFormat(DateFormat dateFormat) {
+    this.gsonBuilder.registerTypeAdapter(Date.class, new DateTypeAdapter(dateFormat));
+    return this;
+  }
+
+  @Override
   public RestConfiguration withAuthentication(String user, String password) {
     // Create AuthCache instance
     AuthCache authCache = new BasicAuthCache();
@@ -171,12 +179,6 @@ public class DefaultRestConfiguration implements RestConfiguration {
     this.context.setCredentialsProvider(provider);
     this.context.setAuthCache(authCache);
 
-    return this;
-  }
-
-  @Override
-  public RestConfiguration withDateFormat(DateFormat dateFormat) {
-    this.gsonBuilder.registerTypeAdapter(Date.class, new DateTypeAdapter(dateFormat));
     return this;
   }
 
@@ -196,7 +198,7 @@ public class DefaultRestConfiguration implements RestConfiguration {
       public RestConfiguration asFormUrlEncoded() {
         List<BasicNameValuePair> pairs;
         if (object instanceof Map) {
-          pairs = ((Set<Map.Entry>)((Map) object).entrySet()).stream()
+          pairs = ((Set<Map.Entry>) ((Map) object).entrySet()).stream()
               .map(entry -> new BasicNameValuePair(entry.getKey().toString(), entry.getValue().toString()))
               .collect(Collectors.toList());
         } else {
@@ -253,6 +255,13 @@ public class DefaultRestConfiguration implements RestConfiguration {
       logger.error("Error while parsing JSON", e);
       return new DefaultRestResult<>(null);
     }
+  }
+
+  @Override
+  public <E> RestResult<List<E>> toListOf(Class<E> type) throws IOException {
+    Type listType = new TypeToken<ArrayList<E>>() {
+    }.getType();
+    return to(listType);
   }
 
   private RestResponse getResponse(int retries) throws IOException {
