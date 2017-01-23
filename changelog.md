@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.5.0
+
+- Improvements on Rest Client DSL
+
 ## v0.4.0 (2017-01-04)
 
 - Merged `ServiceLocator` and `ServiceRegister` into a new interface `ServiceRegistry`
