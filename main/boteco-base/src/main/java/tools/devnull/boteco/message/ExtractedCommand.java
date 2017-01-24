@@ -24,15 +24,17 @@
 
 package tools.devnull.boteco.message;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.user.User;
+import tools.devnull.boteco.util.ParameterBinder;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static tools.devnull.trugger.reflection.ParameterPredicates.type;
 
 /**
  * A default implementation of a command extracted by a {@link CommandExtractor}.
@@ -42,7 +44,6 @@ public class ExtractedCommand implements MessageCommand {
   private final IncomeMessage incomeMessage;
   private final String name;
   private final String rawArguments;
-  private final Map<Class<?>, Function<String, ?>> functions;
   private final Map<String, Runnable> actions;
   private Consumer<String> defaultAction;
 
@@ -50,22 +51,10 @@ public class ExtractedCommand implements MessageCommand {
     this.incomeMessage = incomeMessage;
     this.name = name;
     this.rawArguments = rawArguments;
-    this.functions = new HashMap<>();
     this.actions = new HashMap<>();
 
-    this.functions.put(String.class, Function.identity());
-    this.functions.put(Integer.class, Integer::parseInt);
-    this.functions.put(int.class, Integer::parseInt);
-    this.functions.put(Long.class, Long::parseLong);
-    this.functions.put(long.class, Long::parseLong);
-    this.functions.put(Double.class, Double::parseDouble);
-    this.functions.put(double.class, Double::parseDouble);
-    this.functions.put(List.class, string -> string.isEmpty() ?
-        Collections.emptyList() :
-        new ArrayList<>(Arrays.asList(string.split("\\s+")))
-    );
     this.defaultAction = string -> this.incomeMessage.reply("Invalid action, possible actions: \n" +
-      actions.keySet().stream().collect(Collectors.joining("\n")));
+        actions.keySet().stream().collect(Collectors.joining("\n")));
   }
 
   @Override
@@ -79,11 +68,29 @@ public class ExtractedCommand implements MessageCommand {
   }
 
   private <T> T convert(String string, Class<T> type) {
-    Function<String, ?> function = functions.get(type);
-    if (function == null) {
-      function = new MessageCommandConverter<>(this.incomeMessage, type);
+    try {
+      return new ParameterBinder<>(type)
+          .context(context -> {
+            context.use(this.incomeMessage)
+                .when(type(IncomeMessage.class))
+
+                .use(this.incomeMessage.channel())
+                .when(type(Channel.class))
+
+                .use(this.incomeMessage.sender())
+                .when(type(Sender.class))
+
+                .use(this.incomeMessage.destination())
+                .when(type(MessageDestination.class));
+
+            if (this.incomeMessage.user() != null) {
+              context.use(parameter -> this.incomeMessage.user())
+                  .when(type(User.class));
+            }
+          }).apply(string);
+    } catch (Exception e) {
+      throw new MessageProcessingException("Invalid command parameters.");
     }
-    return (T) function.apply(string);
   }
 
   @Override

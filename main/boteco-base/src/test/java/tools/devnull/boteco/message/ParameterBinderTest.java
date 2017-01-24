@@ -25,15 +25,15 @@
 package tools.devnull.boteco.message;
 
 import org.junit.Test;
+import tools.devnull.boteco.util.ParameterBinder;
 import tools.devnull.kodo.TestScenario;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static tools.devnull.kodo.Spec.should;
 
-public class MessageCommandConverterTest {
+public class ParameterBinderTest {
 
   public static class TestObject1 {
 
@@ -41,7 +41,6 @@ public class MessageCommandConverterTest {
     private String bar;
 
     public TestObject1(String foo, String bar) {
-
       this.foo = foo;
       this.bar = bar;
     }
@@ -58,30 +57,32 @@ public class MessageCommandConverterTest {
 
   public static class TestObject2 {
 
-    private String foo;
+    private Integer x;
+    private int y;
 
-    public TestObject2(String foo) {
-      this.foo = foo;
+    public TestObject2(Integer x, int y) {
+      this.x = x;
+      this.y = y;
     }
 
-    public TestObject2(IncomeMessage message) {
-      this.foo = message.content();
+    public int y() {
+      return y;
     }
 
-    public String foo() {
-      return foo;
+    public Integer x() {
+      return x;
     }
 
   }
 
   @Test
   public void testParameterValues() {
-    IncomeMessage message = mock(IncomeMessage.class);
-    MessageCommandConverter<TestObject1> converter = new MessageCommandConverter<>(message, TestObject1.class);
+    ParameterBinder<TestObject1> converter = new ParameterBinder<>(TestObject1.class);
 
     TestScenario.given(converter)
         .then(converting("value1 value2"), should().succeed())
-        .then(converting("value"), should().raise(MessageProcessingException.class));
+        .then(converting("value"), should().raise(IllegalArgumentException.class))
+        .then(converting("value1 value2 value3"), should().raise(IllegalArgumentException.class));
 
     TestScenario.given(converter.apply("value1 value2"))
         .then(TestObject1::foo, should().be("value1"))
@@ -97,24 +98,20 @@ public class MessageCommandConverterTest {
   }
 
   @Test
-  public void testConstructorMatch() {
-    IncomeMessage message = mock(IncomeMessage.class);
-    when(message.content()).thenReturn("content");
-
-    MessageCommandConverter<TestObject2> converter = new MessageCommandConverter<>(message, TestObject2.class);
+  public void testNumericParameterValues() {
+    ParameterBinder<TestObject2> converter = new ParameterBinder<>(TestObject2.class);
 
     TestScenario.given(converter)
-        .then(converting("value"), should().succeed())
-        .then(converting(""), should().succeed());
+        .then(converting("1 2"), should().succeed())
+        .then(converting("1 foo"), should().raise(IllegalArgumentException.class))
+        .then(converting("1 2 3"), should().raise(IllegalArgumentException.class));
 
-    TestScenario.given(converter.apply(""))
-        .then(TestObject2::foo, should().be("content"));
-
-    TestScenario.given(converter.apply("bar"))
-        .then(TestObject2::foo, should().be("bar"));
+    TestScenario.given(converter.apply("1 3"))
+        .then(TestObject2::x, should().be(1))
+        .then(TestObject2::y, should().be(3));
   }
 
-  private Consumer<MessageCommandConverter> converting(String value) {
+  private Consumer<Function> converting(String value) {
     return converter -> converter.apply(value);
   }
 
