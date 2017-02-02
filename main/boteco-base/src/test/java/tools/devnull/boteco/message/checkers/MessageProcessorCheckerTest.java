@@ -32,7 +32,7 @@ import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.CheckerClass;
 import tools.devnull.boteco.message.checker.IncomeMessageChecker;
 import tools.devnull.boteco.message.checker.MessageProcessorChecker;
-import tools.devnull.kodo.TestScenario;
+import tools.devnull.kodo.Spec;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -41,8 +41,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static org.mockito.Mockito.mock;
-import static tools.devnull.kodo.Predicates.empty;
-import static tools.devnull.kodo.Spec.should;
+import static tools.devnull.kodo.Expectation.to;
 
 public class MessageProcessorCheckerTest {
 
@@ -58,17 +57,17 @@ public class MessageProcessorCheckerTest {
   @Test
   public void testWithoutAnnotations() {
     MessageProcessorWithoutAnnotations processor = new MessageProcessorWithoutAnnotations();
-    TestScenario.given(checker)
-        .then(listFor(processor), should().be(empty()))
-        .then(resultOfVerify(processor), should().be(true));
+    Spec.given(checker)
+        .expect(listFor(processor), to().be(List::isEmpty))
+        .expect(resultOfVerify(processor), to().be(true));
   }
 
   @Test
   public void testWithAnnotations() {
     MessageProcessorWithAnnotations processor = new MessageProcessorWithAnnotations();
-    TestScenario.given(checker)
-        .then(listFor(processor), should().not().be(empty()))
-        .then(verify(processor), should().raise(BotException.class));
+    Spec.given(checker)
+        .expect(listFor(processor), to().not().be(List::isEmpty))
+        .expect(verify(processor), to().raise(BotException.class));
   }
 
   private Function<MessageProcessorChecker, List<IncomeMessageChecker>> listFor(MessageProcessor processor) {

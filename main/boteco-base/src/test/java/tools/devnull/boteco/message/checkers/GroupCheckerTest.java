@@ -28,12 +28,13 @@ import org.junit.Before;
 import org.junit.Test;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.checker.GroupChecker;
-import tools.devnull.kodo.TestScenario;
+import tools.devnull.kodo.Spec;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static tools.devnull.boteco.TestHelper.process;
-import static tools.devnull.kodo.Spec.should;
+import static tools.devnull.kodo.Expectation.it;
+import static tools.devnull.kodo.Expectation.to;
 
 public class GroupCheckerTest {
 
@@ -51,9 +52,9 @@ public class GroupCheckerTest {
 
   @Test
   public void test() {
-    TestScenario.given(new GroupChecker())
-        .it(should(process(groupMessage)))
-        .it(should().not(process(normalMessage)));
+    Spec.given(new GroupChecker())
+        .expect(it(), to(process(groupMessage)))
+        .expect(it(), to().not(process(normalMessage)));
   }
 
 }

@@ -28,13 +28,14 @@ import org.junit.Before;
 import org.junit.Test;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.Predicates;
-import tools.devnull.kodo.TestScenario;
+import tools.devnull.kodo.Spec;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static tools.devnull.boteco.TestHelper.accept;
 import static tools.devnull.boteco.TestHelper.notAccept;
-import static tools.devnull.kodo.Spec.should;
+import static tools.devnull.kodo.Expectation.it;
+import static tools.devnull.kodo.Expectation.to;
 
 public class MessagePredicateTest {
 
@@ -55,16 +56,16 @@ public class MessagePredicateTest {
 
   @Test
   public void testGroupPredicate() {
-    TestScenario.given(Predicates.groupMessage())
-        .it(should(accept(groupMessage)))
-        .it(should(notAccept(privateMessage)));
+    Spec.given(Predicates.groupMessage())
+        .expect(it(), to(accept(groupMessage)))
+        .expect(it(), to(notAccept(privateMessage)));
   }
 
   @Test
   public void testPrivatePredicate() {
-    TestScenario.given(Predicates.privateMessage())
-        .it(should(accept(privateMessage)))
-        .it(should(notAccept(groupMessage)));
+    Spec.given(Predicates.privateMessage())
+        .expect(it(), to(accept(privateMessage)))
+        .expect(it(), to(notAccept(groupMessage)));
   }
 
 }

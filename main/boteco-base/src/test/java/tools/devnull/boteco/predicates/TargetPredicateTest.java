@@ -28,13 +28,14 @@ import org.junit.Before;
 import org.junit.Test;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.Predicates;
-import tools.devnull.kodo.TestScenario;
+import tools.devnull.kodo.Spec;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static tools.devnull.boteco.TestHelper.accept;
 import static tools.devnull.boteco.TestHelper.notAccept;
-import static tools.devnull.kodo.Spec.should;
+import static tools.devnull.kodo.Expectation.it;
+import static tools.devnull.kodo.Expectation.to;
 
 public class TargetPredicateTest {
 
@@ -56,10 +57,10 @@ public class TargetPredicateTest {
 
   @Test
   public void test() {
-    TestScenario.given(Predicates.target("target"))
-        .it(should(accept(messageFromTarget)))
-        .it(should(notAccept(messageFromOtherTarget)))
-        .it(should(notAccept(messageFromUnknownTarget)));
+    Spec.given(Predicates.target("target"))
+        .expect(it(), to(accept(messageFromTarget)))
+        .expect(it(), to(notAccept(messageFromOtherTarget)))
+        .expect(it(), to(notAccept(messageFromUnknownTarget)));
   }
 
 }

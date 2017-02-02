@@ -30,13 +30,14 @@ import tools.devnull.boteco.message.CommandExtractor;
 import tools.devnull.boteco.message.ExpressionCommandExtractor;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageCommand;
-import tools.devnull.kodo.TestScenario;
+import tools.devnull.kodo.Spec;
 
 import java.util.function.Predicate;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static tools.devnull.kodo.Spec.should;
+import static tools.devnull.kodo.Expectation.it;
+import static tools.devnull.kodo.Expectation.to;
 
 public class ExpressionMessageCommandExtractorTest {
 
@@ -57,23 +58,23 @@ public class ExpressionMessageCommandExtractorTest {
 
   @Test
   public void testCheck() {
-    TestScenario.given(extractor)
-        .it(should(accept("command foo")))
-        .it(should(accept("Command Foo")))
-        .it(should(reject("not a command foo")));
+    Spec.given(extractor)
+        .expect(it(), to(accept("command foo")))
+        .expect(it(), to(accept("Command Foo")))
+        .expect(it(), to(reject("not a command foo")));
   }
 
   @Test
   public void testExtraction() {
-    TestScenario.given(extractor.extract(message("command foo")))
-        .then(MessageCommand::name, should().be("foo"));
+    Spec.given(extractor.extract(message("command foo")))
+        .expect(MessageCommand::name, to().be("foo"));
 
-    TestScenario.given(extractor.extract(message("command bar")))
-        .then(MessageCommand::name, should().be("bar"));
+    Spec.given(extractor.extract(message("command bar")))
+        .expect(MessageCommand::name, to().be("bar"));
 
-    TestScenario.given(command)
-        .then(MessageCommand::name, should().be("foo"))
-        .then(command -> command.as(String.class), should().be("arg0 arg1"));
+    Spec.given(command)
+        .expect(MessageCommand::name, to().be("foo"))
+        .expect(command -> command.as(String.class), to().be("arg0 arg1"));
   }
 
   private Predicate<CommandExtractor> accept(String string) {
