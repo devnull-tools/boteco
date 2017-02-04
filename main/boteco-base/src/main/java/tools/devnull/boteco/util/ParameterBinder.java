@@ -24,14 +24,23 @@
 
 package tools.devnull.boteco.util;
 
+import tools.devnull.trugger.reflection.Execution;
 import tools.devnull.trugger.reflection.Reflection;
 import tools.devnull.trugger.util.factory.Context;
-import tools.devnull.trugger.util.factory.CreateException;
 import tools.devnull.trugger.util.factory.DefaultContext;
+import tools.devnull.trugger.validation.Validation;
+import tools.devnull.trugger.validation.ValidationEngine;
+import tools.devnull.trugger.validation.ValidationResult;
 
 import java.lang.reflect.Constructor;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -46,6 +55,8 @@ public class ParameterBinder<E> implements Function<String, E> {
   private final Function<String, List<String>> splitter;
   private final Consumer<Context> contextConfiguration;
   private final Map<Class<?>, Function<String, ?>> functions;
+  private final ValidationEngine engine = Validation.engine();
+  private final String datePattern;
 
   public ParameterBinder(Class<E> type) {
     this.type = type;
@@ -53,29 +64,28 @@ public class ParameterBinder<E> implements Function<String, E> {
     this.functions = new HashMap<>();
     this.contextConfiguration = (context -> {
     });
-    initialize();
-  }
-
-  protected ParameterBinder() {
-    this.type = Reflection.reflect().genericType().in(this);
-    this.splitter = new ParameterSplitter();
-    this.functions = new HashMap<>();
-    this.contextConfiguration = (context -> {
-    });
+    this.datePattern = "yyyy-MM-dd";
     initialize();
   }
 
   private ParameterBinder(Class<E> type,
                           Function<String, List<String>> splitter,
-                          Consumer<Context> contextConfiguration) {
+                          Consumer<Context> contextConfiguration,
+                          String datePattern) {
     this.type = type;
     this.splitter = splitter;
     this.contextConfiguration = contextConfiguration;
+    this.datePattern = datePattern;
     this.functions = new HashMap<>();
     initialize();
   }
 
   private void initialize() {
+    DateFormat dateFormat = new SimpleDateFormat(datePattern);
+    dateFormat.setLenient(false);
+
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(datePattern);
+
     this.functions.put(String.class, Function.identity());
     this.functions.put(Integer.class, Integer::parseInt);
     this.functions.put(int.class, Integer::parseInt);
@@ -83,22 +93,37 @@ public class ParameterBinder<E> implements Function<String, E> {
     this.functions.put(long.class, Long::parseLong);
     this.functions.put(Double.class, Double::parseDouble);
     this.functions.put(double.class, Double::parseDouble);
-    this.functions.put(List.class, string -> string.isEmpty() ?
-        Collections.emptyList() : splitter.apply(string)
-    );
+    this.functions.put(List.class, splitter::apply);
+    this.functions.put(Date.class, content -> {
+      try {
+        return dateFormat.parse(content);
+      } catch (ParseException e) {
+        throw new IllegalArgumentException("Invalid date format");
+      }
+    });
+    this.functions.put(LocalDate.class, content -> {
+      try {
+        return LocalDate.parse(content, dateTimeFormatter);
+      } catch (DateTimeParseException e) {
+        throw new IllegalArgumentException("Invalid date format");
+      }
+    });
   }
 
   public ParameterBinder<E> context(Consumer<Context> contextConfiguration) {
-    return new ParameterBinder<>(this.type, this.splitter, contextConfiguration);
+    return new ParameterBinder<>(this.type, this.splitter, contextConfiguration, this.datePattern);
   }
 
   public ParameterBinder<E> split(Function<String, List<String>> splitter) {
-    return new ParameterBinder<>(this.type, splitter, this.contextConfiguration);
+    return new ParameterBinder<>(this.type, splitter, this.contextConfiguration, this.datePattern);
   }
 
   @Override
   public E apply(String content) {
     if (this.functions.containsKey(type)) {
+      if (content.isEmpty()) {
+        throw new IllegalArgumentException("Empty parameter");
+      }
       return (E) this.functions.get(type).apply(content);
     }
     List<Constructor<?>> constructors = Reflection.reflect().constructors().in(type);
@@ -112,14 +137,22 @@ public class ParameterBinder<E> implements Function<String, E> {
         context.use(parameter -> this.functions.get(parameter.getType()).apply(iterator.next()))
             .when(parameter -> this.functions.containsKey(parameter.getType()));
 
-        try {
-          Object[] args = Arrays.stream(constructor.getParameters())
-              .map(context::resolve)
-              .collect(Collectors.toList())
-              .toArray();
-          return Reflection.invoke(constructor).withArgs(args);
-        } catch (CreateException e) {
-          throw new IllegalArgumentException(e.getCause());
+        Object[] args = Arrays.stream(constructor.getParameters())
+            .map(context::resolve)
+            .collect(Collectors.toList())
+            .toArray();
+
+        ValidationResult result = engine.validate(new Execution(constructor, args));
+        if (result.isValid()) {
+          E object = Reflection.invoke(constructor).withArgs(args);
+          result = engine.validate(object);
+          if (result.isValid()) {
+            return object;
+          } else {
+            throw new IllegalArgumentException();
+          }
+        } else {
+          throw new IllegalArgumentException();
         }
       }
     }
@@ -128,9 +161,8 @@ public class ParameterBinder<E> implements Function<String, E> {
 
   private int bindableParameters(Constructor constructor) {
     return (int) Arrays.stream(constructor.getParameters())
-        .filter(
-            parameter -> this.functions.containsKey(parameter.getType())
-        ).count();
+        .filter(parameter -> this.functions.containsKey(parameter.getType()))
+        .count();
   }
 
 }
