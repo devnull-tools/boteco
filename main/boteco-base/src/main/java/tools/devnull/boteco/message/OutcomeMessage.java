@@ -38,6 +38,8 @@ public class OutcomeMessage implements Serializable {
   private final String content;
   private final String target;
   private final Priority priority;
+  private final String title;
+  private final String url;
   private final Map<String, Object> metadata;
 
   /**
@@ -48,7 +50,14 @@ public class OutcomeMessage implements Serializable {
    * @param priority the message priority
    * @param metadata the metadata map
    */
-  public OutcomeMessage(String target, String content, Priority priority, Map<String, Object> metadata) {
+  public OutcomeMessage(String title,
+                        String url,
+                        String target,
+                        String content,
+                        Priority priority,
+                        Map<String, Object> metadata) {
+    this.title = title;
+    this.url = url;
     this.content = content;
     this.target = target;
     this.priority = priority;
@@ -73,6 +82,22 @@ public class OutcomeMessage implements Serializable {
 
   public boolean isLowPriority() {
     return priority == Priority.LOW;
+  }
+
+  public boolean hasTitle() {
+    return this.title != null && !this.title.isEmpty();
+  }
+
+  public boolean hasUrl() {
+    return this.url != null && !this.url.isEmpty();
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public String getUrl() {
+    return url;
   }
 
   public void eachMetadata(Consumer<Map.Entry<String, Object>> consumer) {

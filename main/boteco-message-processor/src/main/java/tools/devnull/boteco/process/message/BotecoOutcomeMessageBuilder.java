@@ -46,6 +46,8 @@ public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
   private final Map<String, Object> headers;
   private Priority priority = Priority.NORMAL;
   private String target;
+  private String title;
+  private String url;
 
   /**
    * Creates a new message builder based on the given parameters.
@@ -82,9 +84,20 @@ public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
     return this;
   }
 
+  public OutcomeMessageBuilder withTitle(String title) {
+    this.title = title;
+    return this;
+  }
+
+  public OutcomeMessageBuilder withUrl(String url) {
+    this.url = url;
+    return this;
+  }
+
   @Override
   public void through(String channel) {
-    client.send(new OutcomeMessage(target, content, priority, headers)).to(queue(String.format(queueFormat, channel)));
+    client.send(new OutcomeMessage(title, url, target, content, priority, headers))
+        .to(queue(String.format(queueFormat, channel)));
   }
 
 }
