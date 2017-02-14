@@ -26,12 +26,29 @@ package tools.devnull.boteco.plugins.xgh;
 
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.message.checker.Command;
 
-@Command("xgh")
+import static tools.devnull.boteco.Predicates.command;
+import static tools.devnull.boteco.message.MessageChecker.check;
+
 public class XghMessageProcessor implements MessageProcessor {
 
-  private final XGH xgh = new XGH();
+  private final XGH xgh;
+  private final String commandName;
+
+  public XghMessageProcessor(String lang) {
+    this.xgh = new XGH(lang);
+    this.commandName = "xgh-" + lang;
+  }
+
+  public XghMessageProcessor() {
+    this.xgh = new XGH();
+    this.commandName = "xgh";
+  }
+
+  @Override
+  public boolean canProcess(IncomeMessage message) {
+    return check(message).accept(command(commandName));
+  }
 
   @Override
   public void process(IncomeMessage message) {
