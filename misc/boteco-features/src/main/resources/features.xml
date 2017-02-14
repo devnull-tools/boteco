@@ -56,6 +56,7 @@
     <bundle>mvn:${project.groupId}/boteco-plugin-user/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-stocks/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-request/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-xgh/${project.version}</bundle>
 
     <!-- persistence bundles -->
     <bundle>mvn:${project.groupId}/boteco-persistence-mongodb/${project.version}</bundle>
