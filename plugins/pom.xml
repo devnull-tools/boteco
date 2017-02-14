@@ -47,6 +47,7 @@
     <module>boteco-plugin-subscription</module>
     <module>boteco-plugin-user</module>
     <module>boteco-plugin-request</module>
+    <module>boteco-plugin-xgh</module>
   </modules>
 
 </project>
