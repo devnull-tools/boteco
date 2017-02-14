@@ -44,7 +44,7 @@ public class ExtractedCommand implements MessageCommand {
   private final IncomeMessage incomeMessage;
   private final String name;
   private final String rawArguments;
-  private final Map<String, Runnable> actions;
+  private final Map<String, Action> actions;
   private Consumer<String> defaultAction;
 
   public ExtractedCommand(IncomeMessage incomeMessage, String name, String rawArguments) {
@@ -100,6 +100,13 @@ public class ExtractedCommand implements MessageCommand {
     return this;
   }
 
+  @Override
+  public MessageCommand on(String actionName, Class<? extends Action> actionClass) {
+    this.actions.put(actionName,
+        () -> convert(resolveParameterString(rawArguments), actionClass));
+    return this;
+  }
+
   private String resolveParameterString(String string) {
     return string.contains(" ") ? string.replaceFirst("\\S+\\s", "").trim() : "";
   }
@@ -110,7 +117,7 @@ public class ExtractedCommand implements MessageCommand {
   }
 
   @Override
-  public MessageCommand on(String actionName, Runnable action) {
+  public MessageCommand on(String actionName, Action action) {
     this.actions.put(actionName, action);
     return this;
   }
@@ -131,7 +138,7 @@ public class ExtractedCommand implements MessageCommand {
   public void execute() {
     String actionName = rawArguments.split("\\s+")[0];
     if (this.actions.containsKey(actionName)) {
-      this.actions.get(actionName).run();
+      this.actions.get(actionName).execute();
     } else {
       this.defaultAction.accept(rawArguments);
     }
