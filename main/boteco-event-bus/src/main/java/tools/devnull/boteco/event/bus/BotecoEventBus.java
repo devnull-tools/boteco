@@ -58,7 +58,24 @@ public class BotecoEventBus implements EventBus {
 
   @Override
   public EventSelector broadcast(String message) {
-    return broadcast(() -> message);
+    return broadcast(new Notifiable() {
+      private static final long serialVersionUID = 7895898641225035972L;
+
+      @Override
+      public String message() {
+        return message;
+      }
+
+      @Override
+      public String title() {
+        return null;
+      }
+
+      @Override
+      public String url() {
+        return null;
+      }
+    });
   }
 
 }
