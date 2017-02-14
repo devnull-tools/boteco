@@ -27,6 +27,9 @@ package tools.devnull.boteco.plugins.xgh;
 import org.junit.Test;
 import tools.devnull.kodo.Spec;
 
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 import static tools.devnull.kodo.Expectation.exec;
 import static tools.devnull.kodo.Expectation.to;
 
@@ -38,6 +41,19 @@ public class XGHTest {
         .expect(exec(xgh -> xgh.axiom(1)), to().succeed())
         .expect(exec(xgh -> xgh.axiom(23)), to().fail())
         .expect(exec(xgh -> xgh.axiom(0)), to().fail());
+
+    for (int i = 1 ; i <= 22 ; i++) {
+      Spec.given(new XGH())
+          .expect(axiom(i), to().have(number(i)));
+    }
+  }
+
+  private Predicate<Axiom> number(int i) {
+    return axiom -> axiom.getNumber() == i;
+  }
+
+  private Function<XGH, Axiom> axiom(int n) {
+    return xgh -> xgh.axiom(n);
   }
 
 }

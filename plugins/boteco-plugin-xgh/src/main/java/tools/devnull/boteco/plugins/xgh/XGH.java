@@ -55,7 +55,10 @@ public class XGH {
   }
 
   public Axiom axiom(int number) {
-    return axioms.get(number + 1);
+    if (number < 1 || number > axioms.size()) {
+      throw new IllegalArgumentException(String.format("Axiom %d is not defined", number));
+    }
+    return axioms.get(number - 1);
   }
 
   public List<Axiom> axioms() {
