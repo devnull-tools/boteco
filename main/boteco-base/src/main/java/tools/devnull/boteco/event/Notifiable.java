@@ -44,6 +44,10 @@ public interface Notifiable extends Serializable {
    */
   String message();
 
+  String title();
+
+  String url();
+
   /**
    * Returns the priority of this notification.
    *

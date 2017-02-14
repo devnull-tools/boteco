@@ -57,6 +57,16 @@ public class MessageProcessingError implements Notifiable {
   }
 
   @Override
+  public String title() {
+    return "Error while processing a message";
+  }
+
+  @Override
+  public String url() {
+    return null;
+  }
+
+  @Override
   public String message() {
     return String.format("[%s@%s] %s",
         incomeMessage.sender(),

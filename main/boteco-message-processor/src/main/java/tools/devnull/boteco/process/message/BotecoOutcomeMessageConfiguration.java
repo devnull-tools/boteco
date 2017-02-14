@@ -25,7 +25,7 @@
 package tools.devnull.boteco.process.message;
 
 import tools.devnull.boteco.message.OutcomeMessage;
-import tools.devnull.boteco.message.OutcomeMessageBuilder;
+import tools.devnull.boteco.message.OutcomeMessageConfiguration;
 import tools.devnull.boteco.client.jms.JmsClient;
 import tools.devnull.boteco.message.Priority;
 
@@ -38,7 +38,7 @@ import static tools.devnull.boteco.Destination.queue;
  * A default implementation to a message builder based on a queue format to send
  * the messages.
  */
-public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
+public class BotecoOutcomeMessageConfiguration implements OutcomeMessageConfiguration {
 
   private final JmsClient client;
   private final String queueFormat;
@@ -59,7 +59,7 @@ public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
    * @param queueFormat the queue format to generate the queue name
    * @param content     the content to send
    */
-  public BotecoOutcomeMessageBuilder(JmsClient client, String queueFormat, String content) {
+  public BotecoOutcomeMessageConfiguration(JmsClient client, String queueFormat, String content) {
     this.client = client;
     this.queueFormat = queueFormat;
     this.content = content;
@@ -67,29 +67,31 @@ public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
   }
 
   @Override
-  public OutcomeMessageBuilder to(String target) {
+  public OutcomeMessageConfiguration to(String target) {
     this.target = target;
     return this;
   }
 
   @Override
-  public OutcomeMessageBuilder with(String headerName, Object headerValue) {
+  public OutcomeMessageConfiguration with(String headerName, Object headerValue) {
     this.headers.put(headerName, headerValue);
     return this;
   }
 
   @Override
-  public OutcomeMessageBuilder withPriority(Priority priority) {
+  public OutcomeMessageConfiguration withPriority(Priority priority) {
     this.priority = priority;
     return this;
   }
 
-  public OutcomeMessageBuilder withTitle(String title) {
+  @Override
+  public OutcomeMessageConfiguration withTitle(String title) {
     this.title = title;
     return this;
   }
 
-  public OutcomeMessageBuilder withUrl(String url) {
+  @Override
+  public OutcomeMessageConfiguration withUrl(String url) {
     this.url = url;
     return this;
   }

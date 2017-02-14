@@ -100,6 +100,18 @@ public class OutcomeMessage implements Serializable {
     return url;
   }
 
+  public void ifTitle(Consumer<String> consumer) {
+    if (hasTitle()) {
+      consumer.accept(title);
+    }
+  }
+
+  public void ifUrl(Consumer<String> consumer) {
+    if (hasUrl()) {
+      consumer.accept(url);
+    }
+  }
+
   public void eachMetadata(Consumer<Map.Entry<String, Object>> consumer) {
     this.metadata.entrySet().forEach(consumer);
   }

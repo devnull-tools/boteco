@@ -25,7 +25,7 @@
 package tools.devnull.boteco.process.message;
 
 import tools.devnull.boteco.message.MessageSender;
-import tools.devnull.boteco.message.OutcomeMessageBuilder;
+import tools.devnull.boteco.message.OutcomeMessageConfiguration;
 import tools.devnull.boteco.client.jms.JmsClient;
 
 /**
@@ -54,8 +54,8 @@ public class BotecoMessageSender implements MessageSender {
   }
 
   @Override
-  public OutcomeMessageBuilder send(String content) {
-    return new BotecoOutcomeMessageBuilder(client, queueFormat, content);
+  public OutcomeMessageConfiguration send(String content) {
+    return new BotecoOutcomeMessageConfiguration(client, queueFormat, content);
   }
 
 }

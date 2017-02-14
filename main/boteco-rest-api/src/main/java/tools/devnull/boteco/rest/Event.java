@@ -35,6 +35,10 @@ public class Event implements Notifiable {
 
   private String priority;
 
+  private String title;
+
+  private String url;
+
   public String getText() {
     return text;
   }
@@ -47,6 +51,14 @@ public class Event implements Notifiable {
     this.priority = priority;
   }
 
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
+  }
+
   @Override
   public Priority priority() {
     return Priority.parse(priority);
@@ -55,6 +67,16 @@ public class Event implements Notifiable {
   @Override
   public String message() {
     return this.text;
+  }
+
+  @Override
+  public String title() {
+    return this.title;
+  }
+
+  @Override
+  public String url() {
+    return this.url;
   }
 
 }

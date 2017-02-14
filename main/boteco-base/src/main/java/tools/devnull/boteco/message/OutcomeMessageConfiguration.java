@@ -30,7 +30,7 @@ import tools.devnull.boteco.MessageDestination;
  * Interface that defines a component for building
  * outcome messages to be sent.
  */
-public interface OutcomeMessageBuilder {
+public interface OutcomeMessageConfiguration {
 
   /**
    * Sets the target of the message
@@ -38,7 +38,7 @@ public interface OutcomeMessageBuilder {
    * @param target the target of the message
    * @return a reference to this object
    */
-  OutcomeMessageBuilder to(String target);
+  OutcomeMessageConfiguration to(String target);
 
   /**
    * Adds a header to this message.
@@ -49,9 +49,33 @@ public interface OutcomeMessageBuilder {
    * @param headerValue the header value
    * @return a reference to this object
    */
-  OutcomeMessageBuilder with(String headerName, Object headerValue);
+  OutcomeMessageConfiguration with(String headerName, Object headerValue);
 
-  OutcomeMessageBuilder withPriority(Priority priority);
+  /**
+   * Sets the priority.
+   * <p>
+   * Note that not all channels support priorities.
+   *
+   * @param priority the priority to set
+   * @return a reference to this object
+   */
+  OutcomeMessageConfiguration withPriority(Priority priority);
+
+  /**
+   * Sets the title
+   *
+   * @param title the title to set
+   * @return a reference to this object
+   */
+  OutcomeMessageConfiguration withTitle(String title);
+
+  /**
+   * Sets the url
+   *
+   * @param url the url to set
+   * @return a reference to this object
+   */
+  OutcomeMessageConfiguration withUrl(String url);
 
   /**
    * Sets the channel to send the message and sends the message

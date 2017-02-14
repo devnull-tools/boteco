@@ -32,13 +32,31 @@ import tools.devnull.boteco.message.Priority;
 public class NotificationBuilder {
 
   private final String message;
+  private Priority priority = Priority.NORMAL;
+  private String title;
+  private String url;
 
   private NotificationBuilder(String message) {
     this.message = message;
   }
 
-  public Notifiable withPriority(Priority priority) {
-    return new Notification(message, priority);
+  public NotificationBuilder withPriority(Priority priority) {
+    this.priority = priority;
+    return this;
+  }
+
+  public NotificationBuilder withTitle(String title) {
+    this.title = title;
+    return this;
+  }
+
+  public NotificationBuilder withUrl(String url) {
+    this.url = url;
+    return this;
+  }
+
+  public Notifiable build() {
+    return new Notification(message, priority, title, url);
   }
 
   private static class Notification implements Notifiable {
@@ -47,10 +65,14 @@ public class NotificationBuilder {
 
     private final String message;
     private final Priority priority;
+    private final String title;
+    private final String url;
 
-    private Notification(String message, Priority priority) {
+    private Notification(String message, Priority priority, String title, String url) {
       this.message = message;
       this.priority = priority;
+      this.title = title;
+      this.url = url;
     }
 
     @Override
@@ -63,6 +85,15 @@ public class NotificationBuilder {
       return priority;
     }
 
+    @Override
+    public String title() {
+      return title;
+    }
+
+    @Override
+    public String url() {
+      return url;
+    }
   }
 
   public static NotificationBuilder notification(String message) {

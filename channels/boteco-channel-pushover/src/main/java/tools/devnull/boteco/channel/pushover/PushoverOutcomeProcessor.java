@@ -71,6 +71,8 @@ public class PushoverOutcomeProcessor implements Processor {
     body.put("token", token);
     body.put("user", out.getTarget());
     body.put("message", parser.parse(formatter, out.getContent()));
+    out.ifTitle(title -> body.put("title", title));
+    out.ifUrl(url -> body.put("url", url));
 
     if (out.isHighPriority()) {
       body.put("priority", "1");

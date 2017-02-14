@@ -37,6 +37,6 @@ public interface MessageSender extends Serializable {
    * @param content the content of the message to send
    * @return a component to define the target and channel.
    */
-  OutcomeMessageBuilder send(String content);
+  OutcomeMessageConfiguration send(String content);
 
 }

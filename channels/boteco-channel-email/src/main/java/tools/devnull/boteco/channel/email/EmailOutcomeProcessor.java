@@ -25,6 +25,7 @@
 package tools.devnull.boteco.channel.email;
 
 import org.apache.camel.Exchange;
+import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.message.FormatExpressionParser;
@@ -52,9 +53,13 @@ public class EmailOutcomeProcessor implements Processor {
   public void process(Exchange exchange) throws Exception {
     OutcomeMessage message = exchange.getIn().getBody(OutcomeMessage.class);
     if (message != null) {
-      message.eachMetadata(entry -> exchange.getOut().setHeader(entry.getKey(), entry.getValue()));
-      exchange.getOut().setHeader("To", message.getTarget());
-      exchange.getOut().setBody(parser.parse(contentFormatter, message.getContent()).replaceAll("\\n", "<br>"));
+      Message out = exchange.getOut();
+      message.eachMetadata(entry -> out.setHeader(entry.getKey(), entry.getValue()));
+      out.setHeader("To", message.getTarget());
+      message.ifTitle(title -> out.setHeader("Subject", title));
+      StringBuilder content = new StringBuilder(message.getContent());
+      message.ifUrl(url -> content.append("\n\n").append(url));
+      out.setBody(parser.parse(contentFormatter, content.toString()).replaceAll("\\n", "<br>"));
     }
   }
 
