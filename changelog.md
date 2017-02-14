@@ -3,6 +3,7 @@
 ## v0.5.0
 
 - Improvements on Rest Client DSL
+- Added support for title and url in messages and events
 - Internal code refactoring
 
 ## v0.4.0 (2017-01-04)
