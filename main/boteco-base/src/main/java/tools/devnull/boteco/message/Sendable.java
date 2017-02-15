@@ -71,24 +71,7 @@ public interface Sendable extends Serializable {
    * @return a new sendable object
    */
   default Sendable append(String content) {
-    return new Sendable() {
-      private static final long serialVersionUID = -2676259626347572106L;
-
-      @Override
-      public String message() {
-        return Sendable.this.message() + content;
-      }
-
-      @Override
-      public String title() {
-        return Sendable.this.title();
-      }
-
-      @Override
-      public String url() {
-        return Sendable.this.url();
-      }
-    };
+    return new SendableObject(message() + content, title(), url(), priority());
   }
 
   /**
@@ -98,24 +81,7 @@ public interface Sendable extends Serializable {
    * @return a new sendable object
    */
   default Sendable prepend(String content) {
-    return new Sendable() {
-      private static final long serialVersionUID = -7677315645960771732L;
-
-      @Override
-      public String message() {
-        return content + Sendable.this.message();
-      }
-
-      @Override
-      public String title() {
-        return Sendable.this.title();
-      }
-
-      @Override
-      public String url() {
-        return Sendable.this.url();
-      }
-    };
+    return new SendableObject(content + message(), title(), url(), priority());
   }
 
   /**
@@ -125,24 +91,7 @@ public interface Sendable extends Serializable {
    * @return a new sendable object
    */
   static Sendable message(String content) {
-    return new Sendable() {
-      private static final long serialVersionUID = -2676259626347572106L;
-
-      @Override
-      public String message() {
-        return content;
-      }
-
-      @Override
-      public String title() {
-        return null;
-      }
-
-      @Override
-      public String url() {
-        return null;
-      }
-    };
+    return new SendableObject(content, null, null, Priority.NORMAL);
   }
 
 }
