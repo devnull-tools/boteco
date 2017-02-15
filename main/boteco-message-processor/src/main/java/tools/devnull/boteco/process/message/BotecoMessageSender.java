@@ -63,4 +63,5 @@ public class BotecoMessageSender implements MessageSender {
   public OutcomeMessageConfiguration send(Sendable object) {
     return new BotecoOutcomeMessageConfiguration(client, queueFormat, object);
   }
+
 }
