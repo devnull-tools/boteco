@@ -72,19 +72,21 @@ public interface Sendable extends Serializable {
    */
   default Sendable append(String content) {
     return new Sendable() {
+      private static final long serialVersionUID = -2676259626347572106L;
+
       @Override
       public String message() {
-        return this.message() + content;
+        return Sendable.this.message() + content;
       }
 
       @Override
       public String title() {
-        return this.title();
+        return Sendable.this.title();
       }
 
       @Override
       public String url() {
-        return this.url();
+        return Sendable.this.url();
       }
     };
   }
@@ -97,19 +99,21 @@ public interface Sendable extends Serializable {
    */
   default Sendable prepend(String content) {
     return new Sendable() {
+      private static final long serialVersionUID = -7677315645960771732L;
+
       @Override
       public String message() {
-        return content + this.message();
+        return content + Sendable.this.message();
       }
 
       @Override
       public String title() {
-        return this.title();
+        return Sendable.this.title();
       }
 
       @Override
       public String url() {
-        return this.url();
+        return Sendable.this.url();
       }
     };
   }
