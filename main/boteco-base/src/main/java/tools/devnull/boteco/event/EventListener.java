@@ -24,12 +24,14 @@
 
 package tools.devnull.boteco.event;
 
+import tools.devnull.boteco.message.Sendable;
+
 /**
  * Interface that represents a listener for specific events.
  *
  * @param <E> the type of the event object that this listener should receive
  */
-public interface EventListener<E extends Notifiable> {
+public interface EventListener<E extends Sendable> {
 
   /**
    * Called when an {@link Event} occurs.

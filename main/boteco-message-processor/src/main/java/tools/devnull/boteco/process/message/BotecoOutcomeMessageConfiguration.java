@@ -28,6 +28,7 @@ import tools.devnull.boteco.message.OutcomeMessage;
 import tools.devnull.boteco.message.OutcomeMessageConfiguration;
 import tools.devnull.boteco.client.jms.JmsClient;
 import tools.devnull.boteco.message.Priority;
+import tools.devnull.boteco.message.Sendable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -64,6 +65,30 @@ public class BotecoOutcomeMessageConfiguration implements OutcomeMessageConfigur
     this.queueFormat = queueFormat;
     this.content = content;
     this.headers = new HashMap<>();
+  }
+
+  /**
+   * Creates a new message builder based on the given parameters.
+   * <p>
+   * Since this class is based on a naming convention, the queue format
+   * must have a "%s" to represent the channel name in the queue's name.
+   * <p>
+   * The given object will be used to fill up the message properties based on
+   * the {@link Sendable} interface. You can override then by specific
+   * calling the methods to build the outcome message.
+   *
+   * @param client      the jms client to send the messages
+   * @param queueFormat the queue format to generate the queue name
+   * @param object      the object to send
+   */
+  public BotecoOutcomeMessageConfiguration(JmsClient client, String queueFormat, Sendable object) {
+    this.client = client;
+    this.queueFormat = queueFormat;
+    this.content = object.message();
+    this.headers = new HashMap<>();
+    this.url = object.url();
+    this.title = object.title();
+    this.priority = object.priority();
   }
 
   @Override

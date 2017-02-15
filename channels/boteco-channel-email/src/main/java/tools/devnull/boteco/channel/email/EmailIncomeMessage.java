@@ -26,6 +26,7 @@ package tools.devnull.boteco.channel.email;
 
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.ServiceRegistry;
+import tools.devnull.boteco.message.Sendable;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.message.CommandExtractor;
 import tools.devnull.boteco.message.IncomeMessage;
@@ -117,16 +118,16 @@ public class EmailIncomeMessage implements IncomeMessage {
   }
 
   @Override
-  public void reply(String content) {
+  public void reply(Sendable object) {
     this.serviceRegistry.locate(MessageSender.class).one()
         .send(content)
-        .with("Subject", "Re: " + this.content)
+        .with("Subject", object.title() != null ? object.title() : "Re: " + this.content)
         .to(sender().id())
         .through(channel().id());
   }
 
   @Override
-  public void sendBack(String content) {
+  public void sendBack(Sendable object) {
     reply(content);
   }
 

@@ -24,10 +24,10 @@
 
 package tools.devnull.boteco.rest;
 
-import tools.devnull.boteco.event.Notifiable;
 import tools.devnull.boteco.message.Priority;
+import tools.devnull.boteco.message.Sendable;
 
-public class Event implements Notifiable {
+public class Event implements Sendable {
 
   private static final long serialVersionUID = 2214241531566066461L;
 

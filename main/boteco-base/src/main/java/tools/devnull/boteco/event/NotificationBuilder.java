@@ -25,6 +25,7 @@
 package tools.devnull.boteco.event;
 
 import tools.devnull.boteco.message.Priority;
+import tools.devnull.boteco.message.Sendable;
 
 /**
  * A class to create notifications
@@ -55,11 +56,11 @@ public class NotificationBuilder {
     return this;
   }
 
-  public Notifiable build() {
+  public Sendable build() {
     return new Notification(message, priority, title, url);
   }
 
-  private static class Notification implements Notifiable {
+  private static class Notification implements Sendable {
 
     private static final long serialVersionUID = -4314808647779314529L;
 

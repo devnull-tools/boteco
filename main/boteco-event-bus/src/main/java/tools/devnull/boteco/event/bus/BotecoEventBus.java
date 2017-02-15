@@ -27,7 +27,7 @@ package tools.devnull.boteco.event.bus;
 import tools.devnull.boteco.client.jms.JmsClient;
 import tools.devnull.boteco.event.EventBus;
 import tools.devnull.boteco.event.EventSelector;
-import tools.devnull.boteco.event.Notifiable;
+import tools.devnull.boteco.message.Sendable;
 
 import static tools.devnull.boteco.Destination.topic;
 
@@ -52,13 +52,13 @@ public class BotecoEventBus implements EventBus {
   }
 
   @Override
-  public EventSelector broadcast(Notifiable object) {
+  public EventSelector broadcast(Sendable object) {
     return id -> client.send(new BotecoEvent(id, object)).to(topic("boteco.event." + id));
   }
 
   @Override
   public EventSelector broadcast(String message) {
-    return broadcast(new Notifiable() {
+    return broadcast(new Sendable() {
       private static final long serialVersionUID = 7895898641225035972L;
 
       @Override

@@ -24,9 +24,10 @@
 
 package tools.devnull.boteco.process.message;
 
+import tools.devnull.boteco.client.jms.JmsClient;
 import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.message.OutcomeMessageConfiguration;
-import tools.devnull.boteco.client.jms.JmsClient;
+import tools.devnull.boteco.message.Sendable;
 
 /**
  * The default implementation of a message sender component based on
@@ -58,4 +59,8 @@ public class BotecoMessageSender implements MessageSender {
     return new BotecoOutcomeMessageConfiguration(client, queueFormat, content);
   }
 
+  @Override
+  public OutcomeMessageConfiguration send(Sendable object) {
+    return new BotecoOutcomeMessageConfiguration(client, queueFormat, object);
+  }
 }

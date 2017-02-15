@@ -24,21 +24,11 @@
 
 package tools.devnull.boteco.message;
 
-import tools.devnull.boteco.MessageDestination;
-
 /**
  * Interface that defines a component for building
  * outcome messages to be sent.
  */
-public interface OutcomeMessageConfiguration {
-
-  /**
-   * Sets the target of the message
-   *
-   * @param target the target of the message
-   * @return a reference to this object
-   */
-  OutcomeMessageConfiguration to(String target);
+public interface OutcomeMessageConfiguration extends DestinationConfiguration {
 
   /**
    * Adds a header to this message.
@@ -77,20 +67,7 @@ public interface OutcomeMessageConfiguration {
    */
   OutcomeMessageConfiguration withUrl(String url);
 
-  /**
-   * Sets the channel to send the message and sends the message
-   *
-   * @param channel the id of the channel to send the message
-   */
-  void through(String channel);
-
-  /**
-   * Sends the message to the given destination.
-   *
-   * @param destination the destination that should receive the message.
-   */
-  default void to(MessageDestination destination) {
-    to(destination.target()).through(destination.channel());
-  }
+  @Override
+  OutcomeMessageConfiguration to(String target);
 
 }

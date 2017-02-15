@@ -25,6 +25,7 @@
 package tools.devnull.boteco.channel.telegram;
 
 import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.message.Sendable;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.boteco.message.CommandExtractor;
@@ -100,25 +101,25 @@ class TelegramIncomeMessage implements IncomeMessage {
   }
 
   @Override
-  public void reply(String content) {
+  public void reply(Sendable object) {
     if (isPrivate()) {
-      replyMessage(String.valueOf(message.getFrom().id()), content);
+      replyMessage(String.valueOf(message.getFrom().id()), object);
     } else {
-      replyMessage(String.valueOf(message.getChat().getId()), sender().mention() + ": " + content);
+      replyMessage(String.valueOf(message.getChat().getId()), object.prepend(sender().mention() + ": "));
     }
   }
 
   @Override
-  public void sendBack(String content) {
+  public void sendBack(Sendable object) {
     serviceRegistry.locate(MessageSender.class).one()
-        .send(content)
+        .send(object)
         .to(String.valueOf(message.getChat().getId()))
         .through(channel().id());
   }
 
-  private void replyMessage(String id, String content) {
+  private void replyMessage(String id, Sendable object) {
     serviceRegistry.locate(MessageSender.class).one()
-        .send(content)
+        .send(object)
         .with("reply_to_message_id", message.getMessageId())
         .to(id)
         .through(channel().id());

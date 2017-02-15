@@ -27,6 +27,7 @@ package tools.devnull.boteco.channel.irc;
 import org.apache.camel.component.irc.IrcMessage;
 import org.schwering.irc.lib.IRCUser;
 import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.message.Sendable;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.boteco.message.CommandExtractor;
@@ -116,25 +117,25 @@ public class IrcIncomeMessage implements IncomeMessage {
   }
 
   @Override
-  public void reply(String content) {
+  public void reply(Sendable object) {
     if (isPrivate()) {
-      send(sender.mention(), content);
+      send(sender.mention(), object);
     } else {
-      send(target(), sender.mention() + ": " + content);
+      send(target(), object.prepend(sender.mention() + ": "));
     }
   }
 
   @Override
-  public void sendBack(String content) {
+  public void sendBack(Sendable object) {
     if (isPrivate()) {
-      send(sender().mention(), content);
+      send(sender().mention(), object);
     } else {
-      send(target(), content);
+      send(target(), object);
     }
   }
 
-  private void send(String target, String content) {
-    serviceRegistry.locate(MessageSender.class).one().send(content).to(target).through(channel().id());
+  private void send(String target, Sendable object) {
+    serviceRegistry.locate(MessageSender.class).one().send(object).to(target).through(channel().id());
   }
 
   private static class IrcSender implements Sender {

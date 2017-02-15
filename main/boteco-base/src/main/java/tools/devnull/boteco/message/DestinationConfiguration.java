@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -22,39 +22,37 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.event;
+package tools.devnull.boteco.message;
 
-import tools.devnull.boteco.message.Priority;
-
-import java.io.Serializable;
+import tools.devnull.boteco.MessageDestination;
 
 /**
- * Interface that represents something that can be notified through
- * the boteco's event system.
+ * Interface for configuring a message destination
  */
-public interface Notifiable extends Serializable {
+public interface DestinationConfiguration {
 
   /**
-   * Returns the message that describes this object. This message may be sent
-   * to subscribers and may contain format blocks.
+   * Sets the target of the message
    *
-   * @return the message that should be sent to the subscribers.
-   * @see tools.devnull.boteco.ContentFormatter
-   * @see tools.devnull.boteco.message.FormatExpressionParser
+   * @param target the target of the message
+   * @return a reference to this object
    */
-  String message();
-
-  String title();
-
-  String url();
+  DestinationConfiguration to(String target);
 
   /**
-   * Returns the priority of this notification.
+   * Sets the channel to send the message and sends the message
    *
-   * @return the priority of this notification.
+   * @param channel the id of the channel to send the message
    */
-  default Priority priority() {
-    return Priority.NORMAL;
+  void through(String channel);
+
+  /**
+   * Sends the message to the given destination.
+   *
+   * @param destination the destination that should receive the message.
+   */
+  default void to(MessageDestination destination) {
+    to(destination.target()).through(destination.channel());
   }
 
 }

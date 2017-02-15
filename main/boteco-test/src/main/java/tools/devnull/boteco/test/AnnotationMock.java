@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -22,31 +22,31 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.event;
+package tools.devnull.boteco.test;
 
-import tools.devnull.boteco.message.Sendable;
+import tools.devnull.trugger.reflection.Reflection;
 
-import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.List;
 
-/**
- * An interface that represents an event occurred.
- *
- * @param <E> the event object
- */
-public interface Event<E extends Sendable> extends Serializable {
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-  /**
-   * Returns this event's id
-   *
-   * @return this event's id
-   */
-  String id();
+public class AnnotationMock {
 
-  /**
-   * Returns this event's object
-   *
-   * @return this event's object
-   */
-  E object();
+  public static <T extends Annotation> T mockAnnotation(Class<T> annotationType) {
+    T annotation = mock(annotationType);
+    when(annotation.annotationType()).then(invocation -> annotationType);
+    List<Method> methods = Reflection.reflect().methods()
+        .filter(method -> method.getDefaultValue() != null)
+        .in(annotationType);
+    // maps the methods with default value
+    methods.stream().forEach(
+        method -> when(Reflection.invoke(method).in(annotation).withoutArgs())
+            .thenReturn(method.getDefaultValue())
+    );
+    return annotation;
+  }
 
 }
