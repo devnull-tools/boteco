@@ -25,15 +25,16 @@
 package tools.devnull.boteco.predicates;
 
 import org.junit.Test;
-import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.Predicates;
-import tools.devnull.kodo.TestScenario;
+import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.kodo.Spec;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static tools.devnull.boteco.TestHelper.accept;
 import static tools.devnull.boteco.TestHelper.notAccept;
-import static tools.devnull.kodo.Spec.should;
+import static tools.devnull.kodo.Expectation.it;
+import static tools.devnull.kodo.Expectation.to;
 
 public class ContentPredicateTest {
 
@@ -45,9 +46,9 @@ public class ContentPredicateTest {
 
   @Test
   public void test() {
-    TestScenario.given(Predicates.content("\\w+"))
-        .it(should(accept(newMessage("ping"))))
-        .it(should(notAccept(newMessage("other test message!"))));
+    Spec.given(Predicates.content("\\w+"))
+        .expect(it(), to(accept(newMessage("ping"))))
+        .expect(it(), to(notAccept(newMessage("other test message!"))));
   }
 
 }

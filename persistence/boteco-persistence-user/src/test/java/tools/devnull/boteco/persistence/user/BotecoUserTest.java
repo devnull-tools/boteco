@@ -30,14 +30,14 @@ import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.InvalidDestinationException;
 import tools.devnull.boteco.MessageDestination;
 import tools.devnull.boteco.user.User;
-import tools.devnull.kodo.TestScenario;
+import tools.devnull.kodo.Spec;
 
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import static tools.devnull.kodo.Reason.because;
-import static tools.devnull.kodo.Spec.should;
+import static tools.devnull.kodo.Expectation.because;
+import static tools.devnull.kodo.Expectation.to;
 
 public class BotecoUserTest {
 
@@ -55,53 +55,53 @@ public class BotecoUserTest {
 
   @Test
   public void testConstructor() {
-    TestScenario.given(user)
-        .then(User::id, should().be("user"))
-        .then(User::primaryDestination, should().be(primaryDestination))
-        .then(User::destinations, should().have(twoElements()))
-        .then(user -> user.destination("mychannel"), should().be(primaryDestination))
-        .then((Consumer<User>) user -> user.destination("foo"), should().raise(InvalidDestinationException.class));
+    Spec.given(user)
+        .expect(User::id, to().be("user"))
+        .expect(User::primaryDestination, to().be(primaryDestination))
+        .expect(User::destinations, to().have(twoElements()))
+        .expect(user -> user.destination("mychannel"), to().be(primaryDestination))
+        .expect((Consumer<User>) user -> user.destination("foo"), to().raise(InvalidDestinationException.class));
   }
 
   @Test
   public void testRemoveDestination() {
-    TestScenario.given(user)
-        .then(removing(primaryDestination), should().raise(InvalidDestinationException.class))
+    Spec.given(user)
+        .expect(removing(primaryDestination), to().raise(InvalidDestinationException.class))
 
         .when(removing(secondaryDestination))
-        .then(User::destinations, should().have(oneElement()));
+        .expect(User::destinations, to().have(oneElement()));
   }
 
   @Test
   public void testChangeDefaultDestination() {
-    TestScenario.given(user)
+    Spec.given(user)
         .when(primaryDestinationIsSetTo(secondaryDestination))
-        .then(User::primaryDestination, should().be(secondaryDestination))
+        .expect(User::primaryDestination, to().be(secondaryDestination))
 
-        .then(removing(primaryDestination), should().succeed())
+        .expect(removing(primaryDestination), to().succeed())
 
-        .then(User::destinations, should().have(oneElement()))
+        .expect(User::destinations, to().have(oneElement()))
 
-        .then(removing(secondaryDestination), should().raise(InvalidDestinationException.class))
+        .expect(removing(secondaryDestination), to().raise(InvalidDestinationException.class))
 
         .when(primaryDestinationIsSetTo(primaryDestination))
 
-        .then(User::destinations, should().have(twoElements()),
+        .expect(User::destinations, to().have(twoElements()),
             because("The destination should be created if a MessageDestination is passed"))
 
-        .then(User::primaryDestination, should().be(primaryDestination));
+        .expect(User::primaryDestination, to().be(primaryDestination));
 
-    TestScenario.given(user)
+    Spec.given(user)
         .when(primaryDestinationIsSetTo("secondary_channel"))
-        .then(User::primaryDestination, should().be(secondaryDestination))
+        .expect(User::primaryDestination, to().be(secondaryDestination))
 
-        .then(removing("mychannel"), should().succeed())
+        .expect(removing("mychannel"), to().succeed())
 
-        .then(User::destinations, should().have(oneElement()))
+        .expect(User::destinations, to().have(oneElement()))
 
-        .then(removing("secondary_channel"), should().raise(InvalidDestinationException.class))
+        .expect(removing("secondary_channel"), to().raise(InvalidDestinationException.class))
 
-        .then(settingPrimaryDestinationTo("mychannel"), should().raise(InvalidDestinationException.class));
+        .expect(settingPrimaryDestinationTo("mychannel"), to().raise(InvalidDestinationException.class));
   }
 
   private Consumer<User> primaryDestinationIsSetTo(MessageDestination destination) {

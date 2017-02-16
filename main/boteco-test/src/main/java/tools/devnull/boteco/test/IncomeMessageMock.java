@@ -63,9 +63,9 @@ public class IncomeMessageMock {
     return this;
   }
 
-  public IncomeMessageMock sentBy(String senderMention) {
+  public IncomeMessageMock sentBy(String senderId) {
     Sender sender = mock(Sender.class);
-    when(sender.mention()).thenReturn(senderMention);
+    when(sender.id()).thenReturn(senderId);
     return sentBy(sender);
   }
 

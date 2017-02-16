@@ -27,7 +27,7 @@ package tools.devnull.boteco.rest;
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.message.MessageSender;
-import tools.devnull.boteco.message.OutcomeMessageBuilder;
+import tools.devnull.boteco.message.OutcomeMessageConfiguration;
 import tools.devnull.boteco.message.Priority;
 
 import javax.ws.rs.Consumes;
@@ -60,17 +60,20 @@ public class ChannelService {
                               @PathParam("target") String target,
                               Message message) {
     Channel channel = serviceRegistry.locate(Channel.class).filter(id(channelId)).one();
-    OutcomeMessageBuilder builder = messageSender.send(message.getContent());
+    OutcomeMessageConfiguration configuration = messageSender.send(message.getContent());
 
-    message.getMetadata().entrySet().forEach(entry -> builder.with(entry.getKey(), entry.getValue()));
+    message.getMetadata().entrySet().forEach(entry -> configuration.with(entry.getKey(), entry.getValue()));
+
+    configuration.withTitle(message.getTitle());
+    configuration.withUrl(message.getUrl());
 
     try {
-      builder.withPriority(Priority.parse(message.getPriority()));
+      configuration.withPriority(Priority.parse(message.getPriority()));
     } catch (IllegalArgumentException e) {
       return Response.status(Response.Status.BAD_REQUEST).entity("Invalid priority").build();
     }
 
-    builder.to(target)
+    configuration.to(target)
         .through(channelId);
     // if the channel is present, then the message will be delivered as soon as the channel can process it
     // otherwise, the message will be delivered when the channel bundle starts

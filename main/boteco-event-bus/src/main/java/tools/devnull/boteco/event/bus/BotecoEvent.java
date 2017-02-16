@@ -25,7 +25,7 @@
 package tools.devnull.boteco.event.bus;
 
 import tools.devnull.boteco.event.Event;
-import tools.devnull.boteco.event.Notifiable;
+import tools.devnull.boteco.message.Sendable;
 
 /**
  * The default implementation of an event.
@@ -35,7 +35,7 @@ public class BotecoEvent implements Event {
   private static final long serialVersionUID = 5944459296393830211L;
 
   private final String id;
-  private final Notifiable object;
+  private final Sendable object;
 
   /**
    * Creates a new event based on the given parameters.
@@ -43,7 +43,7 @@ public class BotecoEvent implements Event {
    * @param id     the id of this event
    * @param object the object associated with this event
    */
-  public BotecoEvent(String id, Notifiable object) {
+  public BotecoEvent(String id, Sendable object) {
     this.id = id;
     this.object = object;
   }
@@ -54,7 +54,7 @@ public class BotecoEvent implements Event {
   }
 
   @Override
-  public Notifiable object() {
+  public Sendable object() {
     return object;
   }
 

@@ -31,14 +31,17 @@ import java.util.function.Consumer;
 /**
  * Class that defines a message that can be delivered through a channel.
  */
-public class OutcomeMessage implements Serializable {
+public class OutcomeMessage implements Serializable, Sendable {
 
   private static final long serialVersionUID = -6192434926707152224L;
 
   private final String content;
   private final String target;
   private final Priority priority;
+  private final String title;
+  private final String url;
   private final Map<String, Object> metadata;
+  private final String replyId;
 
   /**
    * Creates a new outcome message using the given parameters
@@ -47,12 +50,22 @@ public class OutcomeMessage implements Serializable {
    * @param content  the content of the message
    * @param priority the message priority
    * @param metadata the metadata map
+   * @param replyId  the id to reply (if applicable)
    */
-  public OutcomeMessage(String target, String content, Priority priority, Map<String, Object> metadata) {
+  public OutcomeMessage(String title,
+                        String url,
+                        String target,
+                        String content,
+                        Priority priority,
+                        Map<String, Object> metadata,
+                        String replyId) {
+    this.title = title;
+    this.url = url;
     this.content = content;
     this.target = target;
     this.priority = priority;
     this.metadata = metadata;
+    this.replyId = replyId;
   }
 
   public String getContent() {
@@ -75,8 +88,66 @@ public class OutcomeMessage implements Serializable {
     return priority == Priority.LOW;
   }
 
+  public boolean hasTitle() {
+    return this.title != null && !this.title.isEmpty();
+  }
+
+  public boolean hasUrl() {
+    return this.url != null && !this.url.isEmpty();
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public String getReplyId() {
+    return replyId;
+  }
+
+  public void ifTitle(Consumer<String> consumer) {
+    if (hasTitle()) {
+      consumer.accept(title);
+    }
+  }
+
+  public void ifUrl(Consumer<String> consumer) {
+    if (hasUrl()) {
+      consumer.accept(url);
+    }
+  }
+
+  public void ifReply(Consumer<String> consumer) {
+    if (replyId != null) {
+      consumer.accept(replyId);
+    }
+  }
+
   public void eachMetadata(Consumer<Map.Entry<String, Object>> consumer) {
     this.metadata.entrySet().forEach(consumer);
+  }
+
+  @Override
+  public String message() {
+    return this.content;
+  }
+
+  @Override
+  public String title() {
+    return this.title;
+  }
+
+  @Override
+  public String url() {
+    return this.url;
+  }
+
+  @Override
+  public Priority priority() {
+    return this.priority;
   }
 
 }

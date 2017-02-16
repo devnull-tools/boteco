@@ -28,30 +28,31 @@ import org.junit.Test;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.checker.Channel;
 import tools.devnull.boteco.message.checker.ChannelChecker;
-import tools.devnull.kodo.TestScenario;
+import tools.devnull.kodo.Spec;
 
 import java.lang.annotation.Annotation;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static tools.devnull.boteco.TestHelper.process;
-import static tools.devnull.kodo.Spec.should;
+import static tools.devnull.kodo.Expectation.it;
+import static tools.devnull.kodo.Expectation.to;
 
 public class ChannelCheckerTest {
 
   @Test
   public void testWithSingleChannel() {
-    TestScenario.given(new ChannelChecker(channels("channel1")))
-        .it(should(process(messageFrom("channel1"))))
-        .it(should().not(process(messageFrom("channel2"))));
+    Spec.given(new ChannelChecker(channels("channel1")))
+        .expect(it(), to(process(messageFrom("channel1"))))
+        .expect(it(), to().not(process(messageFrom("channel2"))));
   }
 
   @Test
   public void testWithMultipleChannels() {
-    TestScenario.given(new ChannelChecker(channels("channel1", "channel2")))
-        .it(should(process(messageFrom("channel1"))))
-        .it(should(process(messageFrom("channel2"))))
-        .it(should().not(process(messageFrom("channel3"))));
+    Spec.given(new ChannelChecker(channels("channel1", "channel2")))
+        .expect(it(), to(process(messageFrom("channel1"))))
+        .expect(it(), to(process(messageFrom("channel2"))))
+        .expect(it(), to().not(process(messageFrom("channel3"))));
   }
 
   private IncomeMessage messageFrom(String channelId) {

@@ -34,7 +34,7 @@
     <feature>camel-mail</feature>
 
     <bundle>mvn:org.mongodb/mongo-java-driver/3.0.4</bundle>
-    <bundle>wrap:mvn:tools.devnull/trugger/5.1.1</bundle>
+    <bundle>wrap:mvn:tools.devnull/trugger/${trugger.version}</bundle>
 
     <!-- main bundles -->
     <bundle>mvn:${project.groupId}/boteco-base/${project.version}</bundle>
@@ -56,6 +56,7 @@
     <bundle>mvn:${project.groupId}/boteco-plugin-user/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-stocks/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-request/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-xgh/${project.version}</bundle>
 
     <!-- persistence bundles -->
     <bundle>mvn:${project.groupId}/boteco-persistence-mongodb/${project.version}</bundle>

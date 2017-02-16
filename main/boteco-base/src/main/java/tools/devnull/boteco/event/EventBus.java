@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.event;
 
+import tools.devnull.boteco.message.Sendable;
+
 /**
  * A component that can be used to broadcast events.
  */
@@ -38,7 +40,7 @@ public interface EventBus {
    * @param object the object to broadcast.
    * @return a component to select the event
    */
-  EventSelector broadcast(Notifiable object);
+  EventSelector broadcast(Sendable object);
 
   /**
    * Broadcasts the given object as a Notifiable Object

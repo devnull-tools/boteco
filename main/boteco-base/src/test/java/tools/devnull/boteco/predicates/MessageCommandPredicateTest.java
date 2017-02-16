@@ -28,13 +28,13 @@ import org.junit.Test;
 import tools.devnull.boteco.Predicates;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageCommand;
-import tools.devnull.kodo.TestScenario;
 
 import java.util.function.Predicate;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static tools.devnull.kodo.Spec.to;
 
 public class MessageCommandPredicateTest {
 
@@ -58,11 +58,10 @@ public class MessageCommandPredicateTest {
   @Test
   public void test() {
     Predicate<IncomeMessage> predicate = Predicates.command("ping");
-    new TestScenario<>()
-        .expect(predicate.test(newCommand("ping")), to().be(true))
-        .expect(predicate.test(newCommand("PING")), to().be(true))
-        .expect(predicate.test(newMessage("ping")), to().be(false))
-        .expect(predicate.test(newCommand("pong")), to().be(false));
+    assertTrue(predicate.test(newCommand("ping")));
+    assertTrue(predicate.test(newCommand("PING")));
+    assertFalse(predicate.test(newMessage("ping")));
+    assertFalse(predicate.test(newCommand("pong")));
   }
 
 }

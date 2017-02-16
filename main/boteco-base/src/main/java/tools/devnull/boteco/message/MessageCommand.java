@@ -78,7 +78,18 @@ public interface MessageCommand {
    * @return a reference to this object
    * @see #execute()
    */
-  MessageCommand on(String actionName, Runnable action);
+  MessageCommand on(String actionName, Action action);
+
+  /**
+   * Maps an action to execute when {@link #execute()} method is called. The action
+   * will be instantiated using the income message content.
+   *
+   * @param actionName  the action name to map
+   * @param actionClass the action class to execute
+   * @return
+   * @see #on(String, Class, Consumer)
+   */
+  MessageCommand on(String actionName, Class<? extends Action> actionClass);
 
   /**
    * Do something if none of the actions matches the message

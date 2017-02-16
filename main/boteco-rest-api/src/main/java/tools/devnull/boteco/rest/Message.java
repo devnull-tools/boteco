@@ -31,6 +31,8 @@ public class Message {
 
   private String content;
   private String priority;
+  private String title;
+  private String url;
   private Map<String, String> metadata;
 
   public Map<String, String> getMetadata() {
@@ -58,6 +60,22 @@ public class Message {
 
   public void setPriority(String priority) {
     this.priority = priority;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
   }
 
 }

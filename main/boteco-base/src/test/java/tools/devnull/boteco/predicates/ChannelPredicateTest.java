@@ -29,13 +29,14 @@ import org.junit.Test;
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.Predicates;
-import tools.devnull.kodo.TestScenario;
+import tools.devnull.kodo.Spec;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static tools.devnull.boteco.TestHelper.accept;
 import static tools.devnull.boteco.TestHelper.notAccept;
-import static tools.devnull.kodo.Spec.should;
+import static tools.devnull.kodo.Expectation.it;
+import static tools.devnull.kodo.Expectation.to;
 
 public class ChannelPredicateTest {
 
@@ -67,10 +68,10 @@ public class ChannelPredicateTest {
 
   @Test
   public void test() {
-    TestScenario.given(Predicates.channel("my-channel"))
-        .it(should(accept(messageFromMyChannel)))
-        .it(should(notAccept(messageFromOtherChannel)))
-        .it(should(notAccept(messageFromUnknownChannel)));
+    Spec.given(Predicates.channel("my-channel"))
+        .expect(it(), to(accept(messageFromMyChannel)))
+        .expect(it(), to(notAccept(messageFromOtherChannel)))
+        .expect(it(), to(notAccept(messageFromUnknownChannel)));
   }
 
 }
