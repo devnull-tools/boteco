@@ -259,9 +259,8 @@ public class DefaultRestConfiguration implements RestConfiguration {
 
   @Override
   public <E> RestResult<List<E>> toListOf(Class<E> type) throws IOException {
-    Object array = (E[]) Array.newInstance(type, 0);
     try {
-      E[] result = (E[])gsonBuilder.create().fromJson(rawBody(), array.getClass());
+      E[] result = (E[]) gsonBuilder.create().fromJson(rawBody(), Array.newInstance(type, 0).getClass());
       return new DefaultRestResult<>(Arrays.asList(result));
     } catch (JsonSyntaxException e) {
       logger.error("Error while parsing JSON", e);
