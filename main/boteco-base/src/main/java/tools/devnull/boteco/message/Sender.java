@@ -52,12 +52,4 @@ public interface Sender extends Serializable {
    */
   String username();
 
-  /**
-   * Returns how the sender should be mentioned in a message (a nickname for IRC or
-   * the username for Telegram, for example)
-   *
-   * @return how the sender should be mentioned in a message
-   */
-  String mention();
-
 }

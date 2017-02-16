@@ -103,9 +103,9 @@ class TelegramIncomeMessage implements IncomeMessage {
   @Override
   public void reply(Sendable object) {
     if (isPrivate()) {
-      replyMessage(String.valueOf(message.getFrom().id()), object);
+      replyMessage(String.valueOf(message.getFrom().id()), object, null);
     } else {
-      replyMessage(String.valueOf(message.getChat().getId()), object.prepend(sender().mention() + ": "));
+      replyMessage(String.valueOf(message.getChat().getId()), object, String.valueOf(message.getMessageId()));
     }
   }
 
@@ -117,10 +117,10 @@ class TelegramIncomeMessage implements IncomeMessage {
         .through(channel().id());
   }
 
-  private void replyMessage(String id, Sendable object) {
+  private void replyMessage(String id, Sendable object, String replyId) {
     serviceRegistry.locate(MessageSender.class).one()
         .send(object)
-        .with("reply_to_message_id", message.getMessageId())
+        .replyingTo(replyId)
         .to(id)
         .through(channel().id());
   }

@@ -43,24 +43,6 @@ public class SendableTest {
         .expect(Sendable::priority, to().be(Priority.NORMAL));
   }
 
-  @Test
-  public void testAppend() {
-    Spec.given(Sendable.message("lorem ipsum").append(" dolor sit amet"))
-        .expect(Sendable::message, to().be("lorem ipsum dolor sit amet"))
-        .expect(Sendable::title, to(beNull()))
-        .expect(Sendable::url, to(beNull()))
-        .expect(Sendable::priority, to().be(Priority.NORMAL));
-  }
-
-  @Test
-  public void testPrepend() {
-    Spec.given(Sendable.message("dolor sit amet").prepend("lorem ipsum "))
-        .expect(Sendable::message, to().be("lorem ipsum dolor sit amet"))
-        .expect(Sendable::title, to(beNull()))
-        .expect(Sendable::url, to(beNull()))
-        .expect(Sendable::priority, to().be(Priority.NORMAL));
-  }
-
   private Predicate<String> beNull() {
     return Objects::isNull;
   }

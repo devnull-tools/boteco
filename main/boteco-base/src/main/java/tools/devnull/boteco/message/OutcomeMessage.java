@@ -41,6 +41,7 @@ public class OutcomeMessage implements Serializable {
   private final String title;
   private final String url;
   private final Map<String, Object> metadata;
+  private final String replyId;
 
   /**
    * Creates a new outcome message using the given parameters
@@ -49,19 +50,22 @@ public class OutcomeMessage implements Serializable {
    * @param content  the content of the message
    * @param priority the message priority
    * @param metadata the metadata map
+   * @param replyId  the id to reply (if applicable)
    */
   public OutcomeMessage(String title,
                         String url,
                         String target,
                         String content,
                         Priority priority,
-                        Map<String, Object> metadata) {
+                        Map<String, Object> metadata,
+                        String replyId) {
     this.title = title;
     this.url = url;
     this.content = content;
     this.target = target;
     this.priority = priority;
     this.metadata = metadata;
+    this.replyId = replyId;
   }
 
   public String getContent() {
@@ -100,6 +104,10 @@ public class OutcomeMessage implements Serializable {
     return url;
   }
 
+  public String getReplyId() {
+    return replyId;
+  }
+
   public void ifTitle(Consumer<String> consumer) {
     if (hasTitle()) {
       consumer.accept(title);
@@ -109,6 +117,12 @@ public class OutcomeMessage implements Serializable {
   public void ifUrl(Consumer<String> consumer) {
     if (hasUrl()) {
       consumer.accept(url);
+    }
+  }
+
+  public void ifReply(Consumer<String> consumer) {
+    if (replyId != null) {
+      consumer.accept(replyId);
     }
   }
 

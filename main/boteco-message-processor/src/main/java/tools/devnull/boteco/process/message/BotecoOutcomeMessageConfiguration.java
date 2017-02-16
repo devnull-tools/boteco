@@ -49,6 +49,7 @@ public class BotecoOutcomeMessageConfiguration implements OutcomeMessageConfigur
   private String target;
   private String title;
   private String url;
+  private String replyId;
 
   /**
    * Creates a new message builder based on the given parameters.
@@ -122,8 +123,14 @@ public class BotecoOutcomeMessageConfiguration implements OutcomeMessageConfigur
   }
 
   @Override
+  public OutcomeMessageConfiguration replyingTo(String id) {
+    this.replyId = id;
+    return this;
+  }
+
+  @Override
   public void through(String channel) {
-    client.send(new OutcomeMessage(title, url, target, content, priority, headers))
+    client.send(new OutcomeMessage(title, url, target, content, priority, headers, replyId))
         .to(queue(String.format(queueFormat, channel)));
   }
 

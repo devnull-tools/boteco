@@ -56,11 +56,17 @@ public class IrcOutcomeProcessor implements Processor {
     if (out != null) {
       exchange.getOut().setHeader(IrcConstants.IRC_TARGET, out.getTarget());
       exchange.getOut().setHeader(IrcConstants.IRC_MESSAGE_TYPE, "PRIVMSG");
+
       StringBuilder message = new StringBuilder();
-      out.ifTitle(title -> message.append("[a]").append(title).append(": [/a]"));
-      message.append(parser.parse(contentFormatter, out.getContent()));
+
+      out.ifReply(id -> message.append(id).append(", "));
+      out.ifTitle(title -> message.append(title).append(": "));
+
+      message.append(out.getContent());
+
       out.ifUrl(url -> message.append(" <").append(url).append(">"));
-      exchange.getOut().setBody(message.toString());
+
+      exchange.getOut().setBody(parser.parse(contentFormatter, message.toString()));
     }
   }
 

@@ -65,26 +65,6 @@ public interface Sendable extends Serializable {
   }
 
   /**
-   * Creates a new sendable object by appending the given content to its message.
-   *
-   * @param content the content to append
-   * @return a new sendable object
-   */
-  default Sendable append(String content) {
-    return new SendableObject(message() + content, title(), url(), priority());
-  }
-
-  /**
-   * Creates a new sendable object by prepending the given content to its message.
-   *
-   * @param content the content to prepend
-   * @return a new sendable object
-   */
-  default Sendable prepend(String content) {
-    return new SendableObject(content + message(), title(), url(), priority());
-  }
-
-  /**
    * Creates a new sendable object using the given content as the message.
    *
    * @param content the content of the message

@@ -62,9 +62,4 @@ public class EmailSender implements Sender {
     return this.email;
   }
 
-  @Override
-  public String mention() {
-    return this.email;
-  }
-
 }

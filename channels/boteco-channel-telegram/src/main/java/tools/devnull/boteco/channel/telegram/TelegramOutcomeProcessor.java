@@ -72,12 +72,19 @@ public class TelegramOutcomeProcessor implements Processor {
     if (!(message == null || message.getContent() == null || message.getContent().isEmpty())) {
       Map<String, String> body = new HashMap<>();
       StringBuilder content = new StringBuilder();
-      message.ifTitle(title -> content.append("[a]").append(title).append(": [/a]"));
+
+      message.ifTitle(title -> content.append(title).append("\n\n"));
+
       content.append(message.getContent());
-      message.ifUrl(url -> content.append(" ").append(url));
+
+      message.ifUrl(url -> content.append("\n\n").append(url));
+      message.ifReply(id -> body.put("reply_to_message_id", id));
+
       message.eachMetadata(header -> body.put(header.getKey(), String.valueOf(header.getValue())));
+
       body.put("chat_id", message.getTarget());
       body.put("parse_mode", "HTML");
+
       checkAndSend(body, content.toString());
     }
   }
