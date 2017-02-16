@@ -28,6 +28,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import tools.devnull.boteco.ContentFormatter;
+import tools.devnull.boteco.DefaultContentFormatter;
 import tools.devnull.boteco.message.FormatExpressionParser;
 import tools.devnull.boteco.message.OutcomeMessage;
 
@@ -56,7 +57,7 @@ public class EmailOutcomeProcessor implements Processor {
       Message out = exchange.getOut();
       message.eachMetadata(entry -> out.setHeader(entry.getKey(), entry.getValue()));
       out.setHeader("To", message.getTarget());
-      message.ifTitle(title -> out.setHeader("Subject", title));
+      message.ifTitle(title -> out.setHeader("Subject", parser.parse(new DefaultContentFormatter(), title)));
       StringBuilder content = new StringBuilder(message.getContent());
       message.ifUrl(url -> content.append("\n\n").append(url));
       out.setBody(parser.parse(contentFormatter, content.toString()).replaceAll("\\n", "<br>"));
