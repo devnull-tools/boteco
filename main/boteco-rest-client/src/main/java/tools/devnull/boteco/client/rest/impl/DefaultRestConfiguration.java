@@ -26,7 +26,6 @@ package tools.devnull.boteco.client.rest.impl;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -57,6 +56,7 @@ import tools.devnull.boteco.client.rest.RestResponse;
 import tools.devnull.boteco.client.rest.RestResult;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.net.SocketTimeoutException;
 import java.net.URI;
@@ -64,7 +64,7 @@ import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -259,9 +259,14 @@ public class DefaultRestConfiguration implements RestConfiguration {
 
   @Override
   public <E> RestResult<List<E>> toListOf(Class<E> type) throws IOException {
-    Type listType = new TypeToken<ArrayList<E>>() {
-    }.getType();
-    return to(listType);
+    Object array = (E[]) Array.newInstance(type, 0);
+    try {
+      E[] result = (E[])gsonBuilder.create().fromJson(rawBody(), array.getClass());
+      return new DefaultRestResult<>(Arrays.asList(result));
+    } catch (JsonSyntaxException e) {
+      logger.error("Error while parsing JSON", e);
+      return new DefaultRestResult<>(null);
+    }
   }
 
   private RestResponse getResponse(int retries) throws IOException {
