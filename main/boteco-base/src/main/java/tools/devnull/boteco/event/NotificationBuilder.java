@@ -25,6 +25,7 @@
 package tools.devnull.boteco.event;
 
 import tools.devnull.boteco.message.Priority;
+import tools.devnull.boteco.message.Sendable;
 
 /**
  * A class to create notifications
@@ -32,25 +33,47 @@ import tools.devnull.boteco.message.Priority;
 public class NotificationBuilder {
 
   private final String message;
+  private Priority priority = Priority.NORMAL;
+  private String title;
+  private String url;
 
   private NotificationBuilder(String message) {
     this.message = message;
   }
 
-  public Notifiable withPriority(Priority priority) {
-    return new Notification(message, priority);
+  public NotificationBuilder withPriority(Priority priority) {
+    this.priority = priority;
+    return this;
   }
 
-  private static class Notification implements Notifiable {
+  public NotificationBuilder withTitle(String title) {
+    this.title = title;
+    return this;
+  }
+
+  public NotificationBuilder withUrl(String url) {
+    this.url = url;
+    return this;
+  }
+
+  public Sendable build() {
+    return new Notification(message, priority, title, url);
+  }
+
+  private static class Notification implements Sendable {
 
     private static final long serialVersionUID = -4314808647779314529L;
 
     private final String message;
     private final Priority priority;
+    private final String title;
+    private final String url;
 
-    private Notification(String message, Priority priority) {
+    private Notification(String message, Priority priority, String title, String url) {
       this.message = message;
       this.priority = priority;
+      this.title = title;
+      this.url = url;
     }
 
     @Override
@@ -63,6 +86,15 @@ public class NotificationBuilder {
       return priority;
     }
 
+    @Override
+    public String title() {
+      return title;
+    }
+
+    @Override
+    public String url() {
+      return url;
+    }
   }
 
   public static NotificationBuilder notification(String message) {

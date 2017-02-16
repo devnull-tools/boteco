@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -22,35 +22,30 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.event;
+package tools.devnull.boteco.plugins.xgh;
 
-import tools.devnull.boteco.message.Priority;
+public class Axiom {
 
-import java.io.Serializable;
+  private final Integer number;
+  private final String title;
+  private final String description;
 
-/**
- * Interface that represents something that can be notified through
- * the boteco's event system.
- */
-public interface Notifiable extends Serializable {
+  public Axiom(Integer number, String title, String description) {
+    this.number = number;
+    this.title = title;
+    this.description = description;
+  }
 
-  /**
-   * Returns the message that describes this object. This message may be sent
-   * to subscribers and may contain format blocks.
-   *
-   * @return the message that should be sent to the subscribers.
-   * @see tools.devnull.boteco.ContentFormatter
-   * @see tools.devnull.boteco.message.FormatExpressionParser
-   */
-  String message();
+  public String getTitle() {
+    return title;
+  }
 
-  /**
-   * Returns the priority of this notification.
-   *
-   * @return the priority of this notification.
-   */
-  default Priority priority() {
-    return Priority.NORMAL;
+  public String getDescription() {
+    return description;
+  }
+
+  public Integer getNumber() {
+    return number;
   }
 
 }

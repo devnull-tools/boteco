@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -24,49 +24,54 @@
 
 package tools.devnull.boteco.message;
 
-import tools.devnull.boteco.MessageDestination;
+import java.io.Serializable;
 
 /**
- * Interface that defines a component for building
- * outcome messages to be sent.
+ * Interface that defines something that can be sent through boteco
+ * as a message.
  */
-public interface OutcomeMessageBuilder {
+public interface Sendable extends Serializable {
 
   /**
-   * Sets the target of the message
+   * Returns the message that describes this object.
    *
-   * @param target the target of the message
-   * @return a reference to this object
+   * @return the message that should be sent to the subscribers.
+   * @see tools.devnull.boteco.ContentFormatter
+   * @see tools.devnull.boteco.message.FormatExpressionParser
    */
-  OutcomeMessageBuilder to(String target);
+  String message();
 
   /**
-   * Adds a header to this message.
-   * <p>
-   * Headers can be used to customize the message in different channels.
+   * Returns the title of the message (if applicable).
    *
-   * @param headerName  the header name
-   * @param headerValue the header value
-   * @return a reference to this object
+   * @return the title of the message
    */
-  OutcomeMessageBuilder with(String headerName, Object headerValue);
-
-  OutcomeMessageBuilder withPriority(Priority priority);
+  String title();
 
   /**
-   * Sets the channel to send the message and sends the message
+   * Returns a url that points to the subject of the message (if applicable).
    *
-   * @param channel the id of the channel to send the message
+   * @return a url that points to the subject of the message.
    */
-  void through(String channel);
+  String url();
 
   /**
-   * Sends the message to the given destination.
+   * Returns the priority of this message.
    *
-   * @param destination the destination that should receive the message.
+   * @return the priority of this message.
    */
-  default void to(MessageDestination destination) {
-    to(destination.target()).through(destination.channel());
+  default Priority priority() {
+    return Priority.NORMAL;
+  }
+
+  /**
+   * Creates a new sendable object using the given content as the message.
+   *
+   * @param content the content of the message
+   * @return a new sendable object
+   */
+  static Sendable message(String content) {
+    return new SendableObject(content, null, null, Priority.NORMAL);
   }
 
 }

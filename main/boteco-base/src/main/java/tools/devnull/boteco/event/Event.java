@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.event;
 
+import tools.devnull.boteco.message.Sendable;
+
 import java.io.Serializable;
 
 /**
@@ -31,7 +33,7 @@ import java.io.Serializable;
  *
  * @param <E> the event object
  */
-public interface Event<E extends Notifiable> extends Serializable {
+public interface Event<E extends Sendable> extends Serializable {
 
   /**
    * Returns this event's id

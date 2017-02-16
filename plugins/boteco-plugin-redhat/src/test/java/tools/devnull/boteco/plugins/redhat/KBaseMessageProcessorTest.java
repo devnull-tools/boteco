@@ -29,13 +29,14 @@ import org.junit.Test;
 import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.kodo.TestScenario;
+import tools.devnull.kodo.Spec;
 
 import java.util.function.Predicate;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static tools.devnull.kodo.Spec.should;
+import static tools.devnull.kodo.Expectation.it;
+import static tools.devnull.kodo.Expectation.to;
 
 public class KBaseMessageProcessorTest {
 
@@ -55,9 +56,9 @@ public class KBaseMessageProcessorTest {
 
   @Test
   public void testAcceptance() {
-    TestScenario.given(processor)
-        .it(should(process(message("https://access.redhat.com/solutions/46437"))))
-        .it(should(process(message("hey, I found this solution: https://access.redhat.com/solutions/46437"))));
+    Spec.given(processor)
+        .expect(it(), to(process(message("https://access.redhat.com/solutions/46437"))))
+        .expect(it(), to(process(message("hey, I found this solution: https://access.redhat.com/solutions/46437"))));
   }
 
   private Predicate<MessageProcessor> process(IncomeMessage message) {

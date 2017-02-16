@@ -27,6 +27,7 @@ package tools.devnull.boteco.channel.irc;
 import org.apache.camel.component.irc.IrcMessage;
 import org.schwering.irc.lib.IRCUser;
 import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.message.Sendable;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.boteco.message.CommandExtractor;
@@ -116,38 +117,40 @@ public class IrcIncomeMessage implements IncomeMessage {
   }
 
   @Override
-  public void reply(String content) {
+  public void reply(Sendable object) {
     if (isPrivate()) {
-      send(sender.mention(), content);
+      send(sender.id(), object, null);
     } else {
-      send(target(), sender.mention() + ": " + content);
+      send(target(), object, sender.id());
     }
   }
 
   @Override
-  public void sendBack(String content) {
+  public void sendBack(Sendable object) {
     if (isPrivate()) {
-      send(sender().mention(), content);
+      send(sender().id(), object, null);
     } else {
-      send(target(), content);
+      send(target(), object, null);
     }
   }
 
-  private void send(String target, String content) {
-    serviceRegistry.locate(MessageSender.class).one().send(content).to(target).through(channel().id());
+  private void send(String target, Sendable object, String replyId) {
+    serviceRegistry.locate(MessageSender.class).one()
+        .send(object)
+        .replyingTo(replyId)
+        .to(target)
+        .through(channel().id());
   }
 
   private static class IrcSender implements Sender {
 
     private static final long serialVersionUID = 6728222816835888595L;
 
-    private final String id;
     private final String name;
     private final String username;
     private final String nickname;
 
     private IrcSender(IRCUser user) {
-      this.id = user.getNick();
       this.name = user.getUsername(); // IRCUser don't have this so use the username
       this.username = user.getUsername();
       this.nickname = user.getNick();
@@ -155,7 +158,7 @@ public class IrcIncomeMessage implements IncomeMessage {
 
     @Override
     public String id() {
-      return id;
+      return nickname;
     }
 
     @Override
@@ -169,13 +172,8 @@ public class IrcIncomeMessage implements IncomeMessage {
     }
 
     @Override
-    public String mention() {
-      return nickname;
-    }
-
-    @Override
     public String toString() {
-      return mention();
+      return nickname;
     }
 
   }

@@ -24,12 +24,10 @@
 
 package tools.devnull.boteco.message;
 
-import tools.devnull.boteco.event.Notifiable;
-
 /**
  * A class that represents an error while processing a message.
  */
-public class MessageProcessingError implements Notifiable {
+public class MessageProcessingError implements Sendable {
 
   private static final long serialVersionUID = -9080804000347525917L;
 
@@ -54,6 +52,16 @@ public class MessageProcessingError implements Notifiable {
    */
   public Throwable cause() {
     return this.cause;
+  }
+
+  @Override
+  public String title() {
+    return "Error while processing a message";
+  }
+
+  @Override
+  public String url() {
+    return null;
   }
 
   @Override

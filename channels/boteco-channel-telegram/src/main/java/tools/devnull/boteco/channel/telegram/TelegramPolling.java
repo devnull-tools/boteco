@@ -129,13 +129,8 @@ public class TelegramPolling {
     }
 
     @Override
-    public String mention() {
-      return username != null ? "@" + username : name();
-    }
-
-    @Override
     public String toString() {
-      return mention();
+      return username;
     }
   }
 

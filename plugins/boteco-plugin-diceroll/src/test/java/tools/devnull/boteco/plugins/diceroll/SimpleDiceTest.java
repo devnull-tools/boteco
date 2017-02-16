@@ -25,30 +25,29 @@
 package tools.devnull.boteco.plugins.diceroll;
 
 import org.junit.Test;
-import tools.devnull.kodo.TestScenario;
+import tools.devnull.kodo.Spec;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import static tools.devnull.kodo.Spec.should;
+import static tools.devnull.kodo.Expectation.to;
 
 public class SimpleDiceTest {
 
   @Test
   public void testDice() {
-    for (int i : new int[]{4, 6, 8, 10, 12, 20}) {
-      TestScenario.given(new SimpleDice(i))
-          .it(should(rollProperly()));
-    }
+    Spec.given(Arrays.asList(4, 6, 8, 10, 12, 20))
+        .each(Integer.class, spec -> spec
+            .expect(SimpleDice::new, to(rollProperly())));
   }
 
   @Test
   public void testInvalidSides() {
-    for (int i : new int[]{1, 2, 3, 5, 7, 9, 11, 13, 14, 15, 16, 17, 18, 19}) {
-      TestScenario.given(i)
-          .then(SimpleDice::new, should().raise(IllegalArgumentException.class));
-    }
+    Spec.given(Arrays.asList(1, 2, 3, 5, 7, 9, 11, 13, 14, 15, 16, 17, 18, 19))
+        .each(Integer.class, spec -> spec
+            .expect(SimpleDice::new, to().raise(IllegalArgumentException.class)));
   }
 
   private Predicate<SimpleDice> rollProperly() {

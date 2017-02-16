@@ -27,6 +27,7 @@ package tools.devnull.boteco.client.rest;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -189,22 +190,6 @@ public interface RestConfiguration {
   RestConfiguration extract(Function<String, String> function);
 
   /**
-   * Sets the date format to use when parsing the object.
-   *
-   * @param pattern the date format to use
-   * @return an instance of this object
-   */
-  RestConfiguration withDateFormat(String pattern);
-
-  /**
-   * Sets the date format to use when parsing the object.
-   *
-   * @param dateFormat the date format to use
-   * @return an instance of this object
-   */
-  RestConfiguration withDateFormat(DateFormat dateFormat);
-
-  /**
    * Sets the credentials to send as a basic authentication
    *
    * @param user     the username
@@ -228,6 +213,30 @@ public interface RestConfiguration {
    * @return the parsed result
    */
   <E> RestResult<E> to(Type type) throws IOException;
+
+  /**
+   * Invokes the rest url and parses the response into a list of objects of the given type.
+   *
+   * @param type the type of the objects in the list
+   * @return the parsed result
+   */
+  <E> RestResult<List<E>> toListOf(Class<E> type) throws IOException;
+
+  /**
+   * Sets the date format to use when parsing the object.
+   *
+   * @param pattern the date format to use
+   * @return an instance of this object
+   */
+  RestConfiguration withDateFormat(String pattern);
+
+  /**
+   * Sets the date format to use when parsing the object.
+   *
+   * @param dateFormat the date format to use
+   * @return an instance of this object
+   */
+  RestConfiguration withDateFormat(DateFormat dateFormat);
 
   /**
    * Invokes the rest url and returns the raw body without parsing

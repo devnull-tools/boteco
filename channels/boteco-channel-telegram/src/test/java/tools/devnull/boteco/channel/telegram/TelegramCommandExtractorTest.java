@@ -28,10 +28,10 @@ import org.junit.Test;
 import tools.devnull.boteco.message.CommandExtractor;
 import tools.devnull.boteco.message.ExpressionCommandExtractor;
 import tools.devnull.boteco.message.MessageCommand;
-import tools.devnull.kodo.TestScenario;
+import tools.devnull.kodo.Spec;
 
 import static tools.devnull.boteco.test.IncomeMessageMock.message;
-import static tools.devnull.kodo.Spec.should;
+import static tools.devnull.kodo.Expectation.to;
 
 public class TelegramCommandExtractorTest {
 
@@ -40,16 +40,16 @@ public class TelegramCommandExtractorTest {
 
   @Test
   public void testSimpleCommand() {
-    TestScenario.given(extractor.extract(message("/command arguments")))
-        .then(MessageCommand::name, should().be("command"))
-        .then(command -> command.as(String.class), should().be("arguments"));
+    Spec.given(extractor.extract(message("/command arguments")))
+        .expect(MessageCommand::name, to().be("command"))
+        .expect(command -> command.as(String.class), to().be("arguments"));
   }
 
   @Test
   public void testDirectCommand() {
-    TestScenario.given(extractor.extract(message("/command@mybot arguments")))
-        .then(MessageCommand::name, should().be("command"))
-        .then(command -> command.as(String.class), should().be("arguments"));
+    Spec.given(extractor.extract(message("/command@mybot arguments")))
+        .expect(MessageCommand::name, to().be("command"))
+        .expect(command -> command.as(String.class), to().be("arguments"));
   }
 
 }

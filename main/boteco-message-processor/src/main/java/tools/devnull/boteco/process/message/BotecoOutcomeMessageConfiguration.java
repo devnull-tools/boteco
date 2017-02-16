@@ -25,9 +25,10 @@
 package tools.devnull.boteco.process.message;
 
 import tools.devnull.boteco.message.OutcomeMessage;
-import tools.devnull.boteco.message.OutcomeMessageBuilder;
+import tools.devnull.boteco.message.OutcomeMessageConfiguration;
 import tools.devnull.boteco.client.jms.JmsClient;
 import tools.devnull.boteco.message.Priority;
+import tools.devnull.boteco.message.Sendable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +39,7 @@ import static tools.devnull.boteco.Destination.queue;
  * A default implementation to a message builder based on a queue format to send
  * the messages.
  */
-public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
+public class BotecoOutcomeMessageConfiguration implements OutcomeMessageConfiguration {
 
   private final JmsClient client;
   private final String queueFormat;
@@ -46,6 +47,9 @@ public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
   private final Map<String, Object> headers;
   private Priority priority = Priority.NORMAL;
   private String target;
+  private String title;
+  private String url;
+  private String replyId;
 
   /**
    * Creates a new message builder based on the given parameters.
@@ -57,34 +61,77 @@ public class BotecoOutcomeMessageBuilder implements OutcomeMessageBuilder {
    * @param queueFormat the queue format to generate the queue name
    * @param content     the content to send
    */
-  public BotecoOutcomeMessageBuilder(JmsClient client, String queueFormat, String content) {
+  public BotecoOutcomeMessageConfiguration(JmsClient client, String queueFormat, String content) {
     this.client = client;
     this.queueFormat = queueFormat;
     this.content = content;
     this.headers = new HashMap<>();
   }
 
+  /**
+   * Creates a new message builder based on the given parameters.
+   * <p>
+   * Since this class is based on a naming convention, the queue format
+   * must have a "%s" to represent the channel name in the queue's name.
+   * <p>
+   * The given object will be used to fill up the message properties based on
+   * the {@link Sendable} interface. You can override then by specific
+   * calling the methods to build the outcome message.
+   *
+   * @param client      the jms client to send the messages
+   * @param queueFormat the queue format to generate the queue name
+   * @param object      the object to send
+   */
+  public BotecoOutcomeMessageConfiguration(JmsClient client, String queueFormat, Sendable object) {
+    this.client = client;
+    this.queueFormat = queueFormat;
+    this.content = object.message();
+    this.headers = new HashMap<>();
+    this.url = object.url();
+    this.title = object.title();
+    this.priority = object.priority();
+  }
+
   @Override
-  public OutcomeMessageBuilder to(String target) {
+  public OutcomeMessageConfiguration to(String target) {
     this.target = target;
     return this;
   }
 
   @Override
-  public OutcomeMessageBuilder with(String headerName, Object headerValue) {
+  public OutcomeMessageConfiguration with(String headerName, Object headerValue) {
     this.headers.put(headerName, headerValue);
     return this;
   }
 
   @Override
-  public OutcomeMessageBuilder withPriority(Priority priority) {
+  public OutcomeMessageConfiguration withPriority(Priority priority) {
     this.priority = priority;
     return this;
   }
 
   @Override
+  public OutcomeMessageConfiguration withTitle(String title) {
+    this.title = title;
+    return this;
+  }
+
+  @Override
+  public OutcomeMessageConfiguration withUrl(String url) {
+    this.url = url;
+    return this;
+  }
+
+  @Override
+  public OutcomeMessageConfiguration replyingTo(String id) {
+    this.replyId = id;
+    return this;
+  }
+
+  @Override
   public void through(String channel) {
-    client.send(new OutcomeMessage(target, content, priority, headers)).to(queue(String.format(queueFormat, channel)));
+    client.send(new OutcomeMessage(title, url, target, content, priority, headers, replyId))
+        .to(queue(String.format(queueFormat, channel)));
   }
 
 }

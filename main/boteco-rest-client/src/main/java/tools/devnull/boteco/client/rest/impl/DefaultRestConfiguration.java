@@ -56,6 +56,7 @@ import tools.devnull.boteco.client.rest.RestResponse;
 import tools.devnull.boteco.client.rest.RestResult;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.net.SocketTimeoutException;
 import java.net.URI;
@@ -63,6 +64,7 @@ import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -156,6 +158,12 @@ public class DefaultRestConfiguration implements RestConfiguration {
   }
 
   @Override
+  public RestConfiguration withDateFormat(DateFormat dateFormat) {
+    this.gsonBuilder.registerTypeAdapter(Date.class, new DateTypeAdapter(dateFormat));
+    return this;
+  }
+
+  @Override
   public RestConfiguration withAuthentication(String user, String password) {
     // Create AuthCache instance
     AuthCache authCache = new BasicAuthCache();
@@ -171,12 +179,6 @@ public class DefaultRestConfiguration implements RestConfiguration {
     this.context.setCredentialsProvider(provider);
     this.context.setAuthCache(authCache);
 
-    return this;
-  }
-
-  @Override
-  public RestConfiguration withDateFormat(DateFormat dateFormat) {
-    this.gsonBuilder.registerTypeAdapter(Date.class, new DateTypeAdapter(dateFormat));
     return this;
   }
 
@@ -196,7 +198,7 @@ public class DefaultRestConfiguration implements RestConfiguration {
       public RestConfiguration asFormUrlEncoded() {
         List<BasicNameValuePair> pairs;
         if (object instanceof Map) {
-          pairs = ((Set<Map.Entry>)((Map) object).entrySet()).stream()
+          pairs = ((Set<Map.Entry>) ((Map) object).entrySet()).stream()
               .map(entry -> new BasicNameValuePair(entry.getKey().toString(), entry.getValue().toString()))
               .collect(Collectors.toList());
         } else {
@@ -249,6 +251,17 @@ public class DefaultRestConfiguration implements RestConfiguration {
   public <E> RestResult<E> to(Type type) throws IOException {
     try {
       return new DefaultRestResult<>(gsonBuilder.create().fromJson(rawBody(), type));
+    } catch (JsonSyntaxException e) {
+      logger.error("Error while parsing JSON", e);
+      return new DefaultRestResult<>(null);
+    }
+  }
+
+  @Override
+  public <E> RestResult<List<E>> toListOf(Class<E> type) throws IOException {
+    try {
+      E[] result = (E[]) gsonBuilder.create().fromJson(rawBody(), Array.newInstance(type, 0).getClass());
+      return new DefaultRestResult<>(Arrays.asList(result));
     } catch (JsonSyntaxException e) {
       logger.error("Error while parsing JSON", e);
       return new DefaultRestResult<>(null);

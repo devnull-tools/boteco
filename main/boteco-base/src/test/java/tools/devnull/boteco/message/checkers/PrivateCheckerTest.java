@@ -28,12 +28,13 @@ import org.junit.Before;
 import org.junit.Test;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.checker.PrivateChecker;
-import tools.devnull.kodo.TestScenario;
+import tools.devnull.kodo.Spec;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static tools.devnull.boteco.TestHelper.process;
-import static tools.devnull.kodo.Spec.should;
+import static tools.devnull.kodo.Expectation.it;
+import static tools.devnull.kodo.Expectation.to;
 
 public class PrivateCheckerTest {
 
@@ -51,9 +52,9 @@ public class PrivateCheckerTest {
 
   @Test
   public void test() {
-    TestScenario.given(new PrivateChecker())
-        .it(should(process(privateMessage)))
-        .it(should().not(process(groupMessage)));
+    Spec.given(new PrivateChecker())
+        .expect(it(), to(process(privateMessage)))
+        .expect(it(), to().not(process(groupMessage)));
   }
 
 }

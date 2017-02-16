@@ -28,7 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 import tools.devnull.boteco.ContentFormatter;
 import tools.devnull.boteco.message.FormatExpressionParser;
-import tools.devnull.kodo.TestScenario;
+import tools.devnull.kodo.Spec;
 
 import java.util.function.Function;
 
@@ -37,7 +37,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static tools.devnull.kodo.Spec.should;
+import static tools.devnull.kodo.Expectation.to;
 
 public class FormatExpressionParserTest {
 
@@ -62,20 +62,21 @@ public class FormatExpressionParserTest {
 
   @Test
   public void testExpressionBuild() {
-    TestScenario.given(parser)
-        .then(expression("[a]value[/a]"), should().be("accent: value"))
-        .then(expression("lorem ipsum [a]value[/a] dolor [/a]"), should().be("lorem ipsum accent: value dolor [/a]"))
+    Spec.given(parser)
+        .expect(expression("[a]value[/a]"), to().be("accent: value"))
+        .expect(expression("lorem ipsum [a]value[/a] dolor [/a]"),
+            to().be("lorem ipsum accent: value dolor [/a]"))
 
-        .then(expression("[aa]value[/aa]"), should().be("alternative_accent: value"))
+        .expect(expression("[aa]value[/aa]"), to().be("alternative_accent: value"))
 
-        .then(expression("[v]value[/v]"), should().be("value: value"))
-        .then(expression("[p]value[/p]"), should().be("positive: value"))
-        .then(expression("[n]value[/n]"), should().be("negative: value"))
-        .then(expression("[t]value[/t]"), should().be("tag: value"))
-        .then(expression("[e]value[/e]"), should().be("error: value"))
-        .then(expression("[l]title|url[/l]"), should().be("link: title - url"))
+        .expect(expression("[v]value[/v]"), to().be("value: value"))
+        .expect(expression("[p]value[/p]"), to().be("positive: value"))
+        .expect(expression("[n]value[/n]"), to().be("negative: value"))
+        .expect(expression("[t]value[/t]"), to().be("tag: value"))
+        .expect(expression("[e]value[/e]"), to().be("error: value"))
+        .expect(expression("[l]title|url[/l]"), to().be("link: title - url"))
 
-        .then(expression("[t]value[/a]"), should().be("[t]value[/a]"));
+        .expect(expression("[t]value[/a]"), to().be("[t]value[/a]"));
 
     verify(formatter, times(2)).accent("value");
     verify(formatter, times(1)).alternativeAccent("value");

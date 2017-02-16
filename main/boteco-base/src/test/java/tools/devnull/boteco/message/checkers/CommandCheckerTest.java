@@ -29,22 +29,23 @@ import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.boteco.message.checker.Command;
 import tools.devnull.boteco.message.checker.CommandChecker;
-import tools.devnull.kodo.TestScenario;
+import tools.devnull.kodo.Spec;
 
 import java.lang.annotation.Annotation;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static tools.devnull.boteco.TestHelper.process;
-import static tools.devnull.kodo.Spec.should;
+import static tools.devnull.kodo.Expectation.it;
+import static tools.devnull.kodo.Expectation.to;
 
 public class CommandCheckerTest {
 
   @Test
   public void test() {
-    TestScenario.given(new CommandChecker(command("command1")))
-        .it(should(process(messageWith("command1"))))
-        .it(should().not(process(messageWith("command2"))));
+    Spec.given(new CommandChecker(command("command1")))
+        .expect(it(), to(process(messageWith("command1"))))
+        .expect(it(), to().not(process(messageWith("command2"))));
   }
 
   private IncomeMessage messageWith(String commandName) {

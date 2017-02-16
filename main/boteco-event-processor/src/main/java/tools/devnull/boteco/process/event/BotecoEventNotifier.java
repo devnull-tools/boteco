@@ -61,8 +61,7 @@ public class BotecoEventNotifier implements EventListener {
               subscription.subscriber().channel(),
               subscription.subscriber().target(),
               event.id()));
-          messageSender.send(event.object().message())
-              .withPriority(event.object().priority())
+          messageSender.send(event.object())
               .to(subscription.subscriber().target())
               .through(subscription.subscriber().channel());
         });

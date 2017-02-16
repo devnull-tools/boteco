@@ -54,16 +54,18 @@ public class KarmaMessageProcessor implements MessageProcessor {
     Matcher matcher = pattern.matcher(message.content());
     StringBuilder replyMessage = new StringBuilder();
     Set<String> evaluated = new HashSet<>();
-    while (matcher.find()) {
-      String term = matcher.group("term");
-      String operation = matcher.group("operation");
-      if (!evaluated.contains(term.toLowerCase())) {
-        int value = update(term, operation);
-        replyMessage.append(buildReplyMessage(term, value)).append("\n");
-        evaluated.add(term.toLowerCase());
+    if (matcher.matches()) {
+      while (matcher.find()) {
+        String term = matcher.group("term");
+        String operation = matcher.group("operation");
+        if (!evaluated.contains(term.toLowerCase())) {
+          int value = update(term, operation);
+          replyMessage.append(buildReplyMessage(term, value)).append("\n");
+          evaluated.add(term.toLowerCase());
+        }
       }
+      message.sendBack(replyMessage.toString());
     }
-    message.sendBack(replyMessage.toString());
   }
 
   private int update(String term, String operation) {

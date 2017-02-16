@@ -27,15 +27,16 @@ package tools.devnull.boteco.plugins.ping;
 import org.junit.Before;
 import org.junit.Test;
 import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.kodo.TestScenario;
+import tools.devnull.kodo.Spec;
 
 import static tools.devnull.boteco.test.IncomeMessageConsumers.reply;
 import static tools.devnull.boteco.test.IncomeMessageMock.message;
 import static tools.devnull.boteco.test.Predicates.accept;
 import static tools.devnull.boteco.test.Predicates.notAccept;
 import static tools.devnull.boteco.test.Predicates.receive;
-import static tools.devnull.kodo.Spec.should;
-import static tools.devnull.kodo.Spec.to;
+import static tools.devnull.kodo.Expectation.it;
+import static tools.devnull.kodo.Expectation.to;
+import static tools.devnull.kodo.Expectation.value;
 
 public class PingProcessorTest {
 
@@ -55,18 +56,18 @@ public class PingProcessorTest {
 
   @Test
   public void testAcceptance() {
-    TestScenario.given(new PingMessageProcessor())
-        .it(should(accept(pingMessage)))
-        .it(should(notAccept(pongMessage)))
+    Spec.given(new PingMessageProcessor())
+        .expect(it(), to(accept(pingMessage)))
+        .expect(it(), to(notAccept(pongMessage)))
         // only accepts messages with command
-        .it(should(notAccept(message("ping"))));
+        .expect(it(), to(notAccept(message("ping"))));
   }
 
   @Test
   public void testProcessing() {
-    TestScenario.given(new PingMessageProcessor())
+    Spec.given(new PingMessageProcessor())
         .when(processor -> processor.process(pingMessage))
-        .expect(pingMessage, to(receive(reply("pong"))));
+        .expect(value(pingMessage), to(receive(reply("pong"))));
   }
 
 }
