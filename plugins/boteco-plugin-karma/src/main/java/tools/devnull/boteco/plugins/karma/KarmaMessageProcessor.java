@@ -63,7 +63,6 @@ public class KarmaMessageProcessor implements MessageProcessor {
         evaluated.add(term.toLowerCase());
       }
     }
-    message.sendBack(replyMessage.toString());
     if (replyMessage.length() > 0) {
       message.sendBack(replyMessage.toString());
     }
