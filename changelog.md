@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.5.0
+## v0.5.0 (2017-02-16)
 
 - Improvements on Rest Client DSL
 - Added support for title and url in messages and events
