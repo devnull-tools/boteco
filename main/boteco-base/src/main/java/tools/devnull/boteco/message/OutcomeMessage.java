@@ -31,7 +31,7 @@ import java.util.function.Consumer;
 /**
  * Class that defines a message that can be delivered through a channel.
  */
-public class OutcomeMessage implements Serializable {
+public class OutcomeMessage implements Serializable, Sendable {
 
   private static final long serialVersionUID = -6192434926707152224L;
 
@@ -128,6 +128,26 @@ public class OutcomeMessage implements Serializable {
 
   public void eachMetadata(Consumer<Map.Entry<String, Object>> consumer) {
     this.metadata.entrySet().forEach(consumer);
+  }
+
+  @Override
+  public String message() {
+    return this.content;
+  }
+
+  @Override
+  public String title() {
+    return this.title;
+  }
+
+  @Override
+  public String url() {
+    return this.url;
+  }
+
+  @Override
+  public Priority priority() {
+    return this.priority;
   }
 
 }
