@@ -126,7 +126,7 @@ public interface IncomeMessage extends Serializable {
   }
 
   default void sendBack(String content) {
-    reply(Sendable.message(content));
+    sendBack(Sendable.message(content));
   }
 
   /**
