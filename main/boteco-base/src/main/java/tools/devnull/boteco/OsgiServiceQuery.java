@@ -70,7 +70,7 @@ public class OsgiServiceQuery<T> implements ServiceQuery<T> {
             .filter(this.predicate)
             .findFirst()
             .map(this.bundleContext::getService)
-            .orElseGet(null);
+            .orElse(null);
       } catch (InvalidSyntaxException e) {
         throw new BotException(e);
       }
