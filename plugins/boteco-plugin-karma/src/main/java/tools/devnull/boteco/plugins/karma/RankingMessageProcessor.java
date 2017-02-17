@@ -47,7 +47,7 @@ public class RankingMessageProcessor implements MessageProcessor {
       message.reply("[e]No karmas found[/e]");
     } else {
       message.reply(result.stream()
-          .map(Karma::describe)
+          .map(Karma::message)
           .collect(Collectors.joining("\n")));
     }
   }

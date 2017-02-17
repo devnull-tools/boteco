@@ -60,11 +60,6 @@ public class MessageProcessingError implements Sendable {
   }
 
   @Override
-  public String url() {
-    return null;
-  }
-
-  @Override
   public String message() {
     return String.format("[%s@%s] %s",
         incomeMessage.sender(),

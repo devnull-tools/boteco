@@ -46,14 +46,18 @@ public interface Sendable extends Serializable {
    *
    * @return the title of the message
    */
-  String title();
+  default String title() {
+    return null;
+  };
 
   /**
    * Returns a url that points to the subject of the message (if applicable).
    *
    * @return a url that points to the subject of the message.
    */
-  String url();
+  default String url() {
+    return null;
+  }
 
   /**
    * Returns the priority of this message.
