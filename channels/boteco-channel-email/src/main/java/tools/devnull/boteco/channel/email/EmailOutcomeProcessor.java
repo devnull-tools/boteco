@@ -52,14 +52,20 @@ public class EmailOutcomeProcessor implements Processor {
 
   @Override
   public void process(Exchange exchange) throws Exception {
-    OutcomeMessage message = exchange.getIn().getBody(OutcomeMessage.class);
-    if (message != null) {
+    OutcomeMessage outcomeMessage = exchange.getIn().getBody(OutcomeMessage.class);
+    if (outcomeMessage != null) {
       Message out = exchange.getOut();
-      message.eachMetadata(entry -> out.setHeader(entry.getKey(), entry.getValue()));
-      out.setHeader("To", message.getTarget());
-      message.ifTitle(title -> out.setHeader("Subject", parser.parse(new DefaultContentFormatter(), title)));
-      StringBuilder content = new StringBuilder(message.getContent());
-      message.ifUrl(url -> content.append("\n\n").append(url));
+      outcomeMessage.eachMetadata(entry -> out.setHeader(entry.getKey(), entry.getValue()));
+
+      StringBuilder content = new StringBuilder(outcomeMessage.getContent());
+
+      out.setHeader("To", outcomeMessage.getTarget());
+
+      outcomeMessage.ifTitle(title ->
+          // removes format tag from title
+          out.setHeader("Subject", parser.parse(new DefaultContentFormatter(), title)));
+      outcomeMessage.ifUrl(url -> content.append("\n\n").append(url));
+
       out.setBody(parser.parse(contentFormatter, content.toString()).replaceAll("\\n", "<br>"));
     }
   }
