@@ -26,72 +26,115 @@ package tools.devnull.boteco.plugins.karma;
 
 import org.junit.Before;
 import org.junit.Test;
-import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.kodo.Spec;
 
 import java.util.Properties;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static tools.devnull.boteco.test.IncomeMessageMock.message;
+import static tools.devnull.boteco.test.Consumers.process;
+import static tools.devnull.kodo.Expectation.the;
 import static tools.devnull.kodo.Expectation.to;
 
 public class KarmaMessageProcessorTest {
 
-  private MessageProcessor processor;
   private KarmaRepository repository;
-  private Karma karma;
+  private Karma testKarma;
+  private Karma otherKarma;
 
   @Before
   public void initialize() {
-    karma = new Karma("test");
+    testKarma = new Karma("test");
+    otherKarma = new Karma("other");
 
     repository = mock(KarmaRepository.class);
-    when(repository.find("test")).thenReturn(karma);
-
-    processor = new KarmaMessageProcessor(repository, new Properties());
+    when(repository.find("test")).thenReturn(testKarma);
+    when(repository.find("other")).thenReturn(otherKarma);
   }
 
   @Test
   public void testRaise() {
-    Spec.given(karma)
-        .expect(Karma::value, to().be(0))
+    Spec.given(new KarmaMessageProcessor(repository, new Properties()))
+        .expect(the(testKarma.value()), to().be(0))
+        .expect(the(otherKarma.value()), to().be(0))
 
-        .when(() -> processor.process(message("test++")))
-        .expect(Karma::value, to().be(1))
+        .when(process("test++"))
+        .expect(the(testKarma.value()), to().be(1))
+        .expect(the(otherKarma.value()), to().be(0))
 
-        .when(() -> processor.process(message("lorem ipsum test++, dolor")))
-        .expect(Karma::value, to().be(2))
+        .when(process("lorem ipsum test++, dolor"))
+        .expect(the(testKarma.value()), to().be(2))
+        .expect(the(otherKarma.value()), to().be(0))
 
-        .when(() -> processor.process(message("lorem ipsum test++. dolor")))
-        .expect(Karma::value, to().be(3))
+        .when(process("lorem ipsum test++. dolor"))
+        .expect(the(testKarma.value()), to().be(3))
+        .expect(the(otherKarma.value()), to().be(0))
 
-        .when(() -> processor.process(message("lorem ipsum test++! dolor")))
-        .expect(Karma::value, to().be(4))
+        .when(process("lorem ipsum test++! dolor"))
+        .expect(the(testKarma.value()), to().be(4))
+        .expect(the(otherKarma.value()), to().be(0))
 
-        .when(() -> processor.process(message("lorem ipsum test++ test++ dolor")))
-        .expect(Karma::value, to().be(5));
+        .when(process("lorem ipsum test++ test++ dolor"))
+        .expect(the(testKarma.value()), to().be(5))
+        .expect(the(otherKarma.value()), to().be(0));
   }
 
   @Test
   public void testLower() {
-    Spec.given(karma)
-        .expect(Karma::value, to().be(0))
+    Spec.given(new KarmaMessageProcessor(repository, new Properties()))
+        .expect(the(testKarma.value()), to().be(0))
+        .expect(the(otherKarma.value()), to().be(0))
 
-        .when(() -> processor.process(message("test--")))
-        .expect(Karma::value, to().be(-1))
+        .when(process("test--"))
+        .expect(the(testKarma.value()), to().be(-1))
+        .expect(the(otherKarma.value()), to().be(0))
 
-        .when(() -> processor.process(message("lorem ipsum test--, dolor")))
-        .expect(Karma::value, to().be(-2))
+        .when(process("lorem ipsum test--, dolor"))
+        .expect(the(testKarma.value()), to().be(-2))
+        .expect(the(otherKarma.value()), to().be(0))
 
-        .when(() -> processor.process(message("lorem ipsum test--. dolor")))
-        .expect(Karma::value, to().be(-3))
+        .when(process("lorem ipsum test--. dolor"))
+        .expect(the(testKarma.value()), to().be(-3))
+        .expect(the(otherKarma.value()), to().be(0))
 
-        .when(() -> processor.process(message("lorem ipsum test--! dolor")))
-        .expect(Karma::value, to().be(-4))
+        .when(process("lorem ipsum test--! dolor"))
+        .expect(the(testKarma.value()), to().be(-4))
+        .expect(the(otherKarma.value()), to().be(0))
 
-        .when(() -> processor.process(message("lorem ipsum test-- test-- dolor")))
-        .expect(Karma::value, to().be(-5));
+        .when(process("lorem ipsum test-- test-- dolor"))
+        .expect(the(testKarma.value()), to().be(-5))
+        .expect(the(otherKarma.value()), to().be(0));
+  }
+
+  @Test
+  public void testMultiple() {
+    Spec.given(new KarmaMessageProcessor(repository, new Properties()))
+        .expect(the(testKarma.value()), to().be(0))
+        .expect(the(otherKarma.value()), to().be(0))
+
+        .when(process("test-- other++"))
+        .expect(the(testKarma.value()), to().be(-1))
+        .expect(the(otherKarma.value()), to().be(1))
+
+        .when(process("test-- other++"))
+        .expect(the(testKarma.value()), to().be(-2))
+        .expect(the(otherKarma.value()), to().be(2))
+
+        .when(process("test-- other--"))
+        .expect(the(testKarma.value()), to().be(-3))
+        .expect(the(otherKarma.value()), to().be(1))
+
+        .when(process("test++ other++"))
+        .expect(the(testKarma.value()), to().be(-2))
+        .expect(the(otherKarma.value()), to().be(2))
+
+        .when(process("test++ other--"))
+        .expect(the(testKarma.value()), to().be(-1))
+        .expect(the(otherKarma.value()), to().be(1))
+
+        .when(process("test++ other--"))
+        .expect(the(testKarma.value()), to().be(0))
+        .expect(the(otherKarma.value()), to().be(0));
   }
 
 }

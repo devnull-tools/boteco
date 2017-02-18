@@ -29,6 +29,8 @@ import tools.devnull.boteco.message.MessageProcessor;
 
 import java.util.function.Consumer;
 
+import static tools.devnull.boteco.test.IncomeMessageMock.message;
+
 /**
  * A class that holds consumers for using with test scenarios.
  */
@@ -36,6 +38,10 @@ public class Consumers {
 
   public static Consumer<MessageProcessor> process(IncomeMessage message) {
     return messageProcessor -> messageProcessor.process(message);
+  }
+
+  public static Consumer<MessageProcessor> process(String message) {
+    return p -> p.process(message(message));
   }
 
 }
