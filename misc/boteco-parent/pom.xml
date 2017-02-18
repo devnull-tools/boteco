@@ -39,7 +39,7 @@
     <fuse.version>6.3.0.redhat-187</fuse.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <trugger.version>5.2</trugger.version>
-    <kodo.version>3.0.1</kodo.version>
+    <kodo.version>3.1.0-SNAPSHOT</kodo.version>
     <junit.version>4.11</junit.version>
     <mockito.version>1.10.19</mockito.version>
     <maven-compiler-plugin-version>3.3</maven-compiler-plugin-version>
