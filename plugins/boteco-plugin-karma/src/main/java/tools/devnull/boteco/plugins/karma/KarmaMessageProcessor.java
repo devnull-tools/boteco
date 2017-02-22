@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
 public class KarmaMessageProcessor implements MessageProcessor {
 
   private final Pattern pattern =
-      Pattern.compile("(?<term>\\S+)(?<operation>\\+\\+|\\-\\-)(\\s|[,.:;!?]|$)");
+      Pattern.compile("(?<term>\\S+)(?<operation>\\+\\+|--)(\\s|[,.:;!?]|$)");
 
   private final KarmaRepository repository;
   private final Properties properties;
