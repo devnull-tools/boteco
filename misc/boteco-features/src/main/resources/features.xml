@@ -46,24 +46,71 @@
     <bundle>mvn:${project.groupId}/boteco-event-bus/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-rest-api/${project.version}</bundle>
 
-    <!-- plugins -->
-    <bundle>mvn:${project.groupId}/boteco-plugin-ping/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-plugin-weather/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-plugin-redhat/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-plugin-karma/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-plugin-diceroll/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-plugin-subscription/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-plugin-user/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-plugin-stocks/${project.version}</bundle>
+    <!-- main plugins -->
     <bundle>mvn:${project.groupId}/boteco-plugin-request/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-plugin-xgh/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-subscription/${project.version}</bundle>
 
-    <!-- persistence bundles -->
+    <!-- main persistence bundles -->
     <bundle>mvn:${project.groupId}/boteco-persistence-mongodb/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-persistence-karma/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-persistence-subscription/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-persistence-user/${project.version}</bundle>
+
     <bundle>mvn:${project.groupId}/boteco-persistence-request/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-ping"
+           description="Ping plugin for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-plugin-ping/${project.version}</bundle>
+  </feature>
+  <feature version="${project.version}" name="boteco-weather"
+           description="Weather plugin for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-plugin-weather/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-redhat"
+           description="Red Hat KBase utility plugin for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-plugin-redhat/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-karma"
+           description="Karma plugin for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-plugin-karma/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-persistence-karma/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-diceroll"
+           description="Dice roll plugin for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-plugin-diceroll/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-stocks"
+           description="Stocks plugin for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-plugin-stocks/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-xgh"
+           description="eXtreme Go Horse plugin for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-plugin-xgh/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-norris"
+           description="Chuck Norris plugin for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-plugin-norris/${project.version}</bundle>
   </feature>
 
   <feature version="${project.version}" name="boteco-irc"
@@ -98,15 +145,35 @@
     <feature>boteco</feature>
 
     <bundle>mvn:${project.groupId}/boteco-channel-user/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-user/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-persistence-user/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-plugins"
+           description="Bundled plugins for boteco">
+    <feature>boteco</feature>
+    <feature>boteco-ping</feature>
+    <feature>boteco-weather</feature>
+    <feature>boteco-redhat</feature>
+    <feature>boteco-karma</feature>
+    <feature>boteco-diceroll</feature>
+    <feature>boteco-stocks</feature>
+    <feature>boteco-xgh</feature>
   </feature>
 
   <feature version="${project.version}" name="boteco-all"
            description="boteco with all plugins and channels">
+    <!-- main feature -->
     <feature>boteco</feature>
+
+    <!-- channel features -->
     <feature>boteco-irc</feature>
     <feature>boteco-pushover</feature>
     <feature>boteco-telegram</feature>
     <feature>boteco-email</feature>
     <feature>boteco-user</feature>
+
+    <!-- bundled plugins -->
+    <feature>boteco-plugins</feature>
   </feature>
 </features>
