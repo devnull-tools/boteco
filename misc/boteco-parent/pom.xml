@@ -114,6 +114,15 @@
     </dependency>
   </dependencies>
 
+  <profiles>
+    <profile>
+      <id>no-version</id>
+      <build>
+        <finalName>${project.name}</finalName>
+      </build>
+    </profile>
+  </profiles>
+
   <build>
     <plugins>
       <plugin>
