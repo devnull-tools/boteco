@@ -31,7 +31,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.function.Function;
 
-import static tools.devnull.kodo.Expectation.performing;
+import static tools.devnull.kodo.Expectation.the;
 import static tools.devnull.kodo.Expectation.to;
 
 public class ParameterBinderTest {
@@ -40,49 +40,49 @@ public class ParameterBinderTest {
   public void testStringBind() {
     Spec.given(new ParameterBinder<>(String.class))
         .expect(binding("some string"), to().be("some string"))
-        .expect(performing(binding("")), to().raise(IllegalArgumentException.class));
+        .expect(the(binding("")), to().raise(IllegalArgumentException.class));
   }
 
   @Test
   public void testDateBind() {
     Spec.given(new ParameterBinder<>(Date.class))
         .expect(binding("2017-02-04"), to().equal(new Date(2017 - 1900, 1, 4)))
-        .expect(performing(binding("")), to().raise(IllegalArgumentException.class))
-        .expect(performing(binding("string")), to().raise(IllegalArgumentException.class));
+        .expect(the(binding("")), to().raise(IllegalArgumentException.class))
+        .expect(the(binding("string")), to().raise(IllegalArgumentException.class));
   }
 
   @Test
   public void testLocalDateBind() {
     Spec.given(new ParameterBinder<>(LocalDate.class))
         .expect(binding("2017-02-04"), to().equal(LocalDate.of(2017, 2, 4)))
-        .expect(performing(binding("")), to().raise(IllegalArgumentException.class))
-        .expect(performing(binding("string")), to().raise(IllegalArgumentException.class));
+        .expect(the(binding("")), to().raise(IllegalArgumentException.class))
+        .expect(the(binding("string")), to().raise(IllegalArgumentException.class));
   }
 
   @Test
   public void testIntegerBind() {
     Spec.given(new ParameterBinder<>(Integer.class))
         .expect(binding("10"), to().be(10))
-        .expect(performing(binding("")), to().raise(IllegalArgumentException.class))
-        .expect(performing(binding("string")), to().raise(IllegalArgumentException.class));
+        .expect(the(binding("")), to().raise(IllegalArgumentException.class))
+        .expect(the(binding("string")), to().raise(IllegalArgumentException.class));
 
     Spec.given(new ParameterBinder<>(int.class))
         .expect(binding("10"), to().be(10))
-        .expect(performing(binding("")), to().raise(IllegalArgumentException.class))
-        .expect(performing(binding("string")), to().raise(IllegalArgumentException.class));
+        .expect(the(binding("")), to().raise(IllegalArgumentException.class))
+        .expect(the(binding("string")), to().raise(IllegalArgumentException.class));
   }
 
   @Test
   public void testLongBind() {
     Spec.given(new ParameterBinder<>(Long.class))
         .expect(binding("10000000000"), to().be(10000000000L))
-        .expect(performing(binding("")), to().raise(IllegalArgumentException.class))
-        .expect(performing(binding("string")), to().raise(IllegalArgumentException.class));
+        .expect(the(binding("")), to().raise(IllegalArgumentException.class))
+        .expect(the(binding("string")), to().raise(IllegalArgumentException.class));
 
     Spec.given(new ParameterBinder<>(long.class))
         .expect(binding("10000000000"), to().be(10000000000L))
-        .expect(performing(binding("")), to().raise(IllegalArgumentException.class))
-        .expect(performing(binding("string")), to().raise(IllegalArgumentException.class));
+        .expect(the(binding("")), to().raise(IllegalArgumentException.class))
+        .expect(the(binding("string")), to().raise(IllegalArgumentException.class));
   }
 
   private <E> Function<ParameterBinder<E>, E> binding(String content) {
