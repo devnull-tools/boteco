@@ -30,29 +30,15 @@ public class ChuckNorrisFact implements Sendable {
 
   private static final long serialVersionUID = -2791001971425417274L;
 
-  private String id;
-  private String url;
   private String value;
 
-  public ChuckNorrisFact(String id, String url, String value) {
-    this.id = id;
-    this.url = url;
+  public ChuckNorrisFact(String value) {
     this.value = value;
   }
 
   @Override
   public String message() {
     return this.value;
-  }
-
-  @Override
-  public String title() {
-    return "Chuck Norris Fact #" + this.id;
-  }
-
-  @Override
-  public String url() {
-    return this.url;
   }
 
 }

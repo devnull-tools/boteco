@@ -46,8 +46,7 @@ import static tools.devnull.kodo.Expectation.to;
 public class ChuckNorrisMessageProcessorTest {
 
   private MessageProcessor messageProcessor;
-  private ChuckNorrisFact fact = new ChuckNorrisFact("42", "http://www.example.com/norris",
-      "Lorem ipsum non sit id magna occaecat.");
+  private ChuckNorrisFact fact = new ChuckNorrisFact("Lorem ipsum non sit id magna occaecat.");
 
   @Before
   public void initialize() throws Exception {
