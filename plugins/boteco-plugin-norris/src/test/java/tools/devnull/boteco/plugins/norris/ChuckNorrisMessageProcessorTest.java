@@ -70,25 +70,25 @@ public class ChuckNorrisMessageProcessorTest {
         .expect(messageProcessor::canProcess, to().be(true))
 
         .when(messageProcessor::process)
-        .expect(it(), to(receive(sendBack())));
+        .expect(it(), to(receive(reply())));
 
     Spec.given(message("lorem Chuck Norris ipsum"))
         .expect(messageProcessor::canProcess, to().be(true))
 
         .when(messageProcessor::process)
-        .expect(it(), to(receive(sendBack())));
+        .expect(it(), to(receive(reply())));
 
     Spec.given(message("lorem chucknorris ipsum"))
         .expect(messageProcessor::canProcess, to().be(true))
 
         .when(messageProcessor::process)
-        .expect(it(), to(receive(sendBack())));
+        .expect(it(), to(receive(reply())));
 
     Spec.given(message("lorem #chucknorris ipsum"))
         .expect(messageProcessor::canProcess, to().be(true))
 
         .when(messageProcessor::process)
-        .expect(it(), to(receive(sendBack())));
+        .expect(it(), to(receive(reply())));
   }
 
   @Test
@@ -100,8 +100,8 @@ public class ChuckNorrisMessageProcessorTest {
         .expect(messageProcessor::canProcess, to().be(false));
   }
 
-  private Consumer<IncomeMessage> sendBack() {
-    return message -> message.sendBack(fact);
+  private Consumer<IncomeMessage> reply() {
+    return message -> message.reply(fact);
   }
 
 }

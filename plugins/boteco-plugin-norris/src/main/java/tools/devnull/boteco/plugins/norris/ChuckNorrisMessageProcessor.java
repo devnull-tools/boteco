@@ -57,7 +57,7 @@ public class ChuckNorrisMessageProcessor implements MessageProcessor {
     try {
       rest.get("https://api.chucknorris.io/jokes/random")
           .to(ChuckNorrisFact.class)
-          .and(message::sendBack);
+          .and(message::reply);
     } catch (IOException e) {
       logger.error("Error while fetching Chuck Norris fact", e);
     }
