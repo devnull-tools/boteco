@@ -35,7 +35,6 @@
     <cm:default-properties>
       <cm:property name="income.enable" value="false"/>
       <cm:property name="outcome.enable" value="false"/>
-      <cm:property name="trace" value="false"/>
 
       <!-- The bot's token -->
       <cm:property name="bot.token" value=""/>
@@ -52,6 +51,9 @@
         don't want to process older messages.
       -->
       <cm:property name="poll.initial-offset" value="0"/>
+
+      <cm:property name="trace" value="false"/>
+      <cm:property name="shutdown.time" value="10"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
@@ -102,6 +104,10 @@
   </service>
 
   <bean id="converter" class="tools.devnull.boteco.channel.telegram.converters.TelegramIncomeConverter"/>
+
+  <bean id="shutdown" class="org.apache.camel.impl.DefaultShutdownStrategy">
+    <property name="timeout" value="{{shutdown.time}}"/>
+  </bean>
 
   <camelContext id="boteco-channel-telegram"
                 trace="{{trace}}"

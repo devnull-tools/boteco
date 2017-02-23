@@ -50,6 +50,8 @@
       <cm:property name="outcome.from" value=""/>
 
       <cm:property name="trace" value="false"/>
+
+      <cm:property name="shutdown.time" value="10"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
@@ -75,6 +77,10 @@
     <argument>
       <reference interface="tools.devnull.boteco.message.FormatExpressionParser"/>
     </argument>
+  </bean>
+
+  <bean id="shutdown" class="org.apache.camel.impl.DefaultShutdownStrategy">
+    <property name="timeout" value="{{shutdown.time}}"/>
   </bean>
 
   <camelContext id="boteco-channel-email"

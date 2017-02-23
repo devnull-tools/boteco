@@ -50,6 +50,7 @@
       <cm:property name="irc.options" value=""/>
 
       <cm:property name="trace" value="false"/>
+      <cm:property name="shutdown.time" value="10"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
@@ -114,7 +115,7 @@
   </bean>
 
   <bean id="shutdown" class="org.apache.camel.impl.DefaultShutdownStrategy">
-    <property name="timeout" value="30"/>
+    <property name="timeout" value="{{shutdown.time}}"/>
   </bean>
 
   <camelContext id="boteco-channel-irc"
