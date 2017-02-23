@@ -28,7 +28,7 @@ import tools.devnull.boteco.message.Sendable;
 
 public class ChuckNorrisFact implements Sendable {
 
-  private static final long serialVersionUID = -2791001971425417273L;
+  private static final long serialVersionUID = -2791001971425417274L;
 
   private String value;
 
