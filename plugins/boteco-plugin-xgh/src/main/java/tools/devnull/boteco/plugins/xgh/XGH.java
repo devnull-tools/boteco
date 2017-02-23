@@ -61,8 +61,4 @@ public class XGH {
     return axioms.get(number - 1);
   }
 
-  public List<Axiom> axioms() {
-    return new ArrayList<>(axioms);
-  }
-
 }
