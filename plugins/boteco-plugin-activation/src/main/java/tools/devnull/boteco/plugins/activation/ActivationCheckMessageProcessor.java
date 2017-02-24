@@ -26,23 +26,29 @@ package tools.devnull.boteco.plugins.activation;
 
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.InvocationRule;
+import tools.devnull.boteco.message.checker.Command;
 import tools.devnull.boteco.plugins.activation.spi.MessageProcessorActivationManager;
 
 /**
- * A Rule that can control a plugin activation
+ * A message processor that shows if a location is activated or not
  */
-public class ActivationRule implements InvocationRule {
+@Command("active?")
+public class ActivationCheckMessageProcessor implements MessageProcessor {
 
   private final MessageProcessorActivationManager activator;
 
-  public ActivationRule(MessageProcessorActivationManager activator) {
+  public ActivationCheckMessageProcessor(MessageProcessorActivationManager activator) {
     this.activator = activator;
   }
 
   @Override
-  public boolean accept(MessageProcessor messageProcessor, IncomeMessage message) {
-    return activator.isActive(messageProcessor.name(), message.location());
+  public void process(IncomeMessage message) {
+    boolean active = activator.isActive(message.command().as(String.class), message.location());
+    if (active) {
+      message.reply("[p]Yes[/p]");
+    } else {
+      message.reply("[n]No[/n]");
+    }
   }
 
 }

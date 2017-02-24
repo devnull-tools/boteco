@@ -22,20 +22,30 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.activation.spi;
+package tools.devnull.boteco.plugins.activation;
 
-import tools.devnull.boteco.MessageLocation;
+import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.message.checker.Command;
+import tools.devnull.boteco.plugins.activation.spi.MessageProcessorActivationManager;
 
 /**
- * Interface that defines a blacklist for preventing message processors to
- * execute on specific destinations.
+ * A message processor that controls the activation of message processors.
  */
-public interface MessageProcessorBlacklistRepository {
+@Command("activate")
+public class ActivatorMessageProcessor implements MessageProcessor {
 
-  void add(String messageProcessorKey, MessageLocation location);
+  private final MessageProcessorActivationManager activator;
 
-  boolean contains(String messageProcessorKey, MessageLocation location);
+  public ActivatorMessageProcessor(MessageProcessorActivationManager activator) {
+    this.activator = activator;
+  }
 
-  void remove(String messageProcessorKey, MessageLocation location);
+  @Override
+  public void process(IncomeMessage message) {
+    message.command().asList()
+        .forEach(name -> activator.activate(name, message.location()));
+    message.reply("Activation successful!");
+  }
 
 }

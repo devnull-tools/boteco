@@ -22,27 +22,42 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.activation;
+package tools.devnull.boteco.plugins.activation.spi;
 
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.InvocationRule;
-import tools.devnull.boteco.plugins.activation.spi.MessageProcessorActivationManager;
+import tools.devnull.boteco.MessageLocation;
 
 /**
- * A Rule that can control a plugin activation
+ * Interface that defines a blacklist for preventing message processors to
+ * execute on specific destinations.
  */
-public class ActivationRule implements InvocationRule {
+public interface MessageProcessorActivationManager {
 
-  private final MessageProcessorActivationManager activator;
+  /**
+   * Blacklists the given message processor name to not run
+   * in messages arriving from the given location.
+   *
+   * @param name     the name of the message processor
+   * @param location the message location to refer to
+   */
+  void deactivate(String name, MessageLocation location);
 
-  public ActivationRule(MessageProcessorActivationManager activator) {
-    this.activator = activator;
-  }
+  /**
+   * Returns {@code true} if the given message processor's name is active
+   * for the given location.
+   *
+   * @param name     the name of the message processor
+   * @param location the message location to refer to
+   * @return {@code true} if the referring parameters represents an active message processor
+   */
+  boolean isActive(String name, MessageLocation location);
 
-  @Override
-  public boolean accept(MessageProcessor messageProcessor, IncomeMessage message) {
-    return activator.isActive(messageProcessor.name(), message.location());
-  }
+  /**
+   * Removes the given message processor's name from the blacklist, allowing it
+   * to process messages from the given location.
+   *
+   * @param name     the name of the message processor
+   * @param location the message location to refer to
+   */
+  void activate(String name, MessageLocation location);
 
 }

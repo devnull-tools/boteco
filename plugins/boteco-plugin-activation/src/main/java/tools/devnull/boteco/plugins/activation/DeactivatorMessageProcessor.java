@@ -26,23 +26,26 @@ package tools.devnull.boteco.plugins.activation;
 
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.InvocationRule;
+import tools.devnull.boteco.message.checker.Command;
 import tools.devnull.boteco.plugins.activation.spi.MessageProcessorActivationManager;
 
 /**
- * A Rule that can control a plugin activation
+ * A message processor that controls the deactivation of message processors.
  */
-public class ActivationRule implements InvocationRule {
+@Command("deactivate")
+public class DeactivatorMessageProcessor implements MessageProcessor {
 
   private final MessageProcessorActivationManager activator;
 
-  public ActivationRule(MessageProcessorActivationManager activator) {
+  public DeactivatorMessageProcessor(MessageProcessorActivationManager activator) {
     this.activator = activator;
   }
 
   @Override
-  public boolean accept(MessageProcessor messageProcessor, IncomeMessage message) {
-    return activator.isActive(messageProcessor.name(), message.location());
+  public void process(IncomeMessage message) {
+    message.command().asList()
+        .forEach(name -> activator.deactivate(name, message.location()));
+    message.reply("Deactivation successful!");
   }
 
 }
