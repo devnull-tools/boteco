@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -22,43 +22,17 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.message;
+package tools.devnull.boteco;
 
-import tools.devnull.boteco.message.checker.MessageProcessorChecker;
+import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessor;
 
 /**
- * Interface that defines a plugin that can process a message.
+ * An interface that defines a rule that can be applied to a
+ * message processor invocation.
  */
-public interface MessageProcessor {
+public interface InvocationRule {
 
-  /**
-   * Returns this message processor key. The key doesn't need to be unique and
-   * can be used to any operations such as logging or applying rules.
-   *
-   * @return the key of this message processor
-   */
-  default String key() {
-    return null;
-  }
-
-  /**
-   * Checks if this processor can process the given message.
-   * <p>
-   * The default implementation uses the {@link MessageProcessorChecker} to
-   * process annotations
-   *
-   * @param message the message to process
-   * @return <code>true</code> if this processor can process the given message.
-   */
-  default boolean canProcess(IncomeMessage message) {
-    return new MessageProcessorChecker().canProcess(this, message);
-  }
-
-  /**
-   * Process the given message.
-   *
-   * @param message the message to process.
-   */
-  void process(IncomeMessage message);
+  boolean accept(MessageProcessor messageProcessor, IncomeMessage message);
 
 }

@@ -22,17 +22,20 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.processor.message.spi;
+package tools.devnull.boteco.plugins.activation.spi;
 
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.MessageLocation;
 
 /**
- * An interface that defines a rule that can be applied to a
- * message processor invocation.
+ * Interface that defines a blacklist for preventing message processors to
+ * execute on specific destinations.
  */
-public interface InvocationRule {
+public interface MessageProcessorBlacklistRepository {
 
-  boolean accept(MessageProcessor messageProcessor, IncomeMessage message);
+  void add(String messageProcessorKey, MessageLocation location);
+
+  boolean contains(String messageProcessorKey, MessageLocation location);
+
+  void remove(String messageProcessorKey, MessageLocation location);
 
 }

@@ -2,7 +2,7 @@
 <!--
   ~ The MIT License
   ~
-  ~ Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+  ~ Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
   ~
   ~ Permission  is hereby granted, free of charge, to any person obtaining
   ~ a  copy  of  this  software  and  associated  documentation files (the
@@ -27,29 +27,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <artifactId>boteco-parent</artifactId>
+    <artifactId>boteco-bundle-parent</artifactId>
     <groupId>tools.devnull</groupId>
     <version>0.6.0-SNAPSHOT</version>
-    <relativePath>../misc/boteco-parent/pom.xml</relativePath>
+    <relativePath>../../misc/boteco-bundle-parent/pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
+  <packaging>bundle</packaging>
 
-  <artifactId>boteco-plugins</artifactId>
-  <packaging>pom</packaging>
-
-  <modules>
-    <module>boteco-plugin-ping</module>
-    <module>boteco-plugin-weather</module>
-    <module>boteco-plugin-redhat</module>
-    <module>boteco-plugin-karma</module>
-    <module>boteco-plugin-diceroll</module>
-    <module>boteco-plugin-stocks</module>
-    <module>boteco-plugin-subscription</module>
-    <module>boteco-plugin-user</module>
-    <module>boteco-plugin-request</module>
-    <module>boteco-plugin-xgh</module>
-    <module>boteco-plugin-norris</module>
-    <module>boteco-plugin-activation</module>
-  </modules>
+  <artifactId>boteco-plugin-activation</artifactId>
 
 </project>

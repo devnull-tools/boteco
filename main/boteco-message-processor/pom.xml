@@ -39,8 +39,4 @@
   <artifactId>boteco-message-processor</artifactId>
   <packaging>bundle</packaging>
 
-  <properties>
-    <osgi.export.packages>tools.devnull.boteco.processor.message.spi</osgi.export.packages>
-  </properties>
-
 </project>

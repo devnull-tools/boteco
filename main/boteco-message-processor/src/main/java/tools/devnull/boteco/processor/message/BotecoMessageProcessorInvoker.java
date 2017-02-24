@@ -36,7 +36,7 @@ import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessingError;
 import tools.devnull.boteco.message.MessageProcessingException;
 import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.processor.message.spi.InvocationRule;
+import tools.devnull.boteco.InvocationRule;
 
 /**
  * A processor that invokes a {@link MessageProcessor} to process
