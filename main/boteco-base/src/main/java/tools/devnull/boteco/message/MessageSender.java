@@ -43,7 +43,7 @@ public interface MessageSender extends Serializable {
    * Sends the object as the message.
    *
    * @param object the object to send
-   * @return a component to configure the message and destination.
+   * @return a component to configure the message and location.
    */
   OutcomeMessageConfiguration send(Sendable object);
 

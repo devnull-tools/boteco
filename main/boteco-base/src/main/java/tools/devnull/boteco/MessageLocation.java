@@ -25,14 +25,14 @@
 package tools.devnull.boteco;
 
 /**
- * Interface that defines a destination for a message.
+ * Interface that defines a location for a message.
  */
 public interface MessageLocation {
 
   /**
-   * Returns the channel of this destination.
+   * Returns the channel of this location.
    *
-   * @return the channel of this destination.
+   * @return the channel of this location.
    */
   String channel();
 

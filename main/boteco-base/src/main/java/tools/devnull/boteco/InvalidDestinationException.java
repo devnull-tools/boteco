@@ -25,7 +25,7 @@
 package tools.devnull.boteco;
 
 /**
- * Exception thrown when an attempt to use an invalid destination is made.
+ * Exception thrown when an attempt to use an invalid location is made.
  */
 public class InvalidDestinationException extends DomainException {
 

@@ -118,13 +118,19 @@ public interface IncomeMessage extends Serializable {
   void sendBack(Sendable object);
 
   /**
+   * Wraps the given content as a {@link Sendable} and sends it as a reply to this message
    *
-   * @param content
+   * @param content the content to reply
    */
   default void reply(String content) {
     reply(Sendable.message(content));
   }
 
+  /**
+   * Wraps the given content as a {@link Sendable} and sends it back to the same channel.
+   *
+   * @param content the content to reply
+   */
   default void sendBack(String content) {
     sendBack(Sendable.message(content));
   }
@@ -152,12 +158,12 @@ public interface IncomeMessage extends Serializable {
   }
 
   /**
-   * Returns a message destination based on this message. If you send a message to this
-   * destination, the sender will receive it.
+   * Returns a message location based on this message. If you send a message to this
+   * location, the sender will receive it.
    *
-   * @return the message destination for sending messages to the sender
+   * @return the message location for sending messages to the sender
    */
-  default MessageLocation destination() {
+  default MessageLocation location() {
     return Destination.channel(channel().id()).to(sender().id());
   }
 

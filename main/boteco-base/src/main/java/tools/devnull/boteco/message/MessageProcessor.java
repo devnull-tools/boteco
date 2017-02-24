@@ -32,13 +32,14 @@ import tools.devnull.boteco.message.checker.MessageProcessorChecker;
 public interface MessageProcessor {
 
   /**
-   * Returns this message processor key. The key doesn't need to be unique and
-   * can be used to any operations such as logging or applying rules.
+   * Returns the name of this message processor. The name doesn't need to
+   * be unique and can be used to any operations such as logging or applying
+   * rules.
    *
-   * @return the key of this message processor
+   * @return the name of this message processor
    */
-  default String key() {
-    return null;
+  default String name() {
+    return "message-processor";
   }
 
   /**

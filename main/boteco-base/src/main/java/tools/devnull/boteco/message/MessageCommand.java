@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.message;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -45,6 +46,13 @@ public interface MessageCommand {
    * @return an object that represents the input parameters of this command.
    */
   <E> E as(Class<E> target);
+
+  /**
+   * Returns the input as a list of arguments.
+   *
+   * @return a list of the arguments
+   */
+  List<String> asList();
 
   /**
    * Maps an action to execute when {@link #execute()} method is called. The parameters

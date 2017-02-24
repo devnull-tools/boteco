@@ -30,6 +30,7 @@ import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.util.ParameterBinder;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -67,6 +68,11 @@ public class ExtractedCommand implements MessageCommand {
     return convert(rawArguments, type);
   }
 
+  @Override
+  public List<String> asList() {
+    return as(List.class);
+  }
+
   private <T> T convert(String string, Class<T> type) {
     try {
       return new ParameterBinder<>(type)
@@ -80,7 +86,7 @@ public class ExtractedCommand implements MessageCommand {
                 .use(this.incomeMessage.sender())
                 .when(type(Sender.class))
 
-                .use(this.incomeMessage.destination())
+                .use(this.incomeMessage.location())
                 .when(type(MessageLocation.class));
 
             if (this.incomeMessage.user() != null) {
