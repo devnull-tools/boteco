@@ -49,7 +49,7 @@ public class UserMessageProcessor implements MessageProcessor {
   public void process(IncomeMessage message) {
     message.command()
         .on("new", userId -> {
-          userManager.create(userId, message.destination());
+          userManager.create(userId, message.location());
           message.reply("User created");
         })
         .on("link", LinkRequest.class, request -> {
