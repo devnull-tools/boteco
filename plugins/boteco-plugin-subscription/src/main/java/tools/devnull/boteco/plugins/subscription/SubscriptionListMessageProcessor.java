@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.plugins.subscription;
 
+import tools.devnull.boteco.AlwaysActive;
 import tools.devnull.boteco.event.Subscription;
 import tools.devnull.boteco.event.SubscriptionManager;
 import tools.devnull.boteco.message.IncomeMessage;
@@ -34,6 +35,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Command("subscriptions")
+@AlwaysActive
 public class SubscriptionListMessageProcessor implements MessageProcessor {
 
   private final SubscriptionManager subscriptionManager;

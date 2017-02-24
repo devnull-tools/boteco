@@ -24,12 +24,14 @@
 
 package tools.devnull.boteco.plugins.diceroll;
 
+import tools.devnull.boteco.Name;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessingException;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Command;
 
 @Command("roll")
+@Name("dice-roll")
 public class DiceRollMessageProcessor implements MessageProcessor {
 
   private final DiceRoll diceRoll;

@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.message;
 
+import tools.devnull.boteco.Name;
 import tools.devnull.boteco.message.checker.MessageProcessorChecker;
 
 /**
@@ -35,10 +36,16 @@ public interface MessageProcessor {
    * Returns the name of this message processor. The name doesn't need to
    * be unique and can be used to any operations such as logging or applying
    * rules.
+   * <p>
+   * The default implementation checks for a {@link Name} annotation, if it's
+   * not present, the default value {@code message-processor} is returned.
    *
    * @return the name of this message processor
    */
   default String name() {
+    if (this.getClass().isAnnotationPresent(Name.class)) {
+      return this.getClass().getAnnotation(Name.class).value();
+    }
     return "message-processor";
   }
 

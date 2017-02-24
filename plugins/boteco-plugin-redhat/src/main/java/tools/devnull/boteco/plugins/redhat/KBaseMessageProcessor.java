@@ -27,6 +27,7 @@ package tools.devnull.boteco.plugins.redhat;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.devnull.boteco.Name;
 import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
@@ -36,6 +37,7 @@ import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Name("redhat-kbase")
 public class KBaseMessageProcessor implements MessageProcessor {
 
   private static final Logger logger = LoggerFactory.getLogger(KBaseMessageProcessor.class);

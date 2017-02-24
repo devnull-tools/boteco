@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.plugins.xgh;
 
+import tools.devnull.boteco.Name;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessingException;
 import tools.devnull.boteco.message.MessageProcessor;
@@ -31,6 +32,7 @@ import tools.devnull.boteco.message.MessageProcessor;
 import static tools.devnull.boteco.Predicates.command;
 import static tools.devnull.boteco.message.MessageChecker.check;
 
+@Name("xgh")
 public class XghMessageProcessor implements MessageProcessor {
 
   private final XGH xgh;

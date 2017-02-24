@@ -25,6 +25,7 @@
 package tools.devnull.boteco.plugins.stocks;
 
 import tools.devnull.boteco.BotException;
+import tools.devnull.boteco.Name;
 import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
@@ -35,6 +36,7 @@ import java.util.Properties;
 import java.util.function.Function;
 
 @Command("stock")
+@Name("stocks")
 public class StocksMessageProcessor implements MessageProcessor {
 
   private final RestClient restClient;

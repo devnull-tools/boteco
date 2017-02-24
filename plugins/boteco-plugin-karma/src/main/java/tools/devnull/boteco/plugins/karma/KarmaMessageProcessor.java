@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.plugins.karma;
 
+import tools.devnull.boteco.Name;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Group;
@@ -36,6 +37,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Group
+@Name("karma")
 public class KarmaMessageProcessor implements MessageProcessor {
 
   private final Pattern pattern =

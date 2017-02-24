@@ -49,12 +49,13 @@
     <!-- main plugins -->
     <bundle>mvn:${project.groupId}/boteco-plugin-request/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-subscription/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-activation/${project.version}</bundle>
 
     <!-- main persistence bundles -->
     <bundle>mvn:${project.groupId}/boteco-persistence-mongodb/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-persistence-subscription/${project.version}</bundle>
-
     <bundle>mvn:${project.groupId}/boteco-persistence-request/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-persistence-activation/${project.version}</bundle>
   </feature>
 
   <feature version="${project.version}" name="boteco-ping"
@@ -159,6 +160,7 @@
     <feature>boteco-diceroll</feature>
     <feature>boteco-stocks</feature>
     <feature>boteco-xgh</feature>
+    <feature>boteco-norris</feature>
   </feature>
 
   <feature version="${project.version}" name="boteco-all"

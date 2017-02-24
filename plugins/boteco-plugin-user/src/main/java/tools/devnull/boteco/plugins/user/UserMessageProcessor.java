@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.plugins.user;
 
+import tools.devnull.boteco.AlwaysActive;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessingException;
 import tools.devnull.boteco.message.MessageProcessor;
@@ -35,6 +36,7 @@ import tools.devnull.boteco.user.UserManager;
  * A message processor for user operations.
  */
 @Command("user")
+@AlwaysActive
 public class UserMessageProcessor implements MessageProcessor {
 
   private final UserManager userManager;

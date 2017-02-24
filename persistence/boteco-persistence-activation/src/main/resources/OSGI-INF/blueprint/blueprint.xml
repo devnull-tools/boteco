@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ The MIT License
   ~
-  ~ Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+  ~ Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
   ~
   ~ Permission  is hereby granted, free of charge, to any person obtaining
   ~ a  copy  of  this  software  and  associated  documentation files (the
@@ -23,28 +22,17 @@
   ~ SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <parent>
-    <artifactId>boteco-parent</artifactId>
-    <groupId>tools.devnull</groupId>
-    <version>0.6.0-SNAPSHOT</version>
-    <relativePath>../misc/boteco-parent/pom.xml</relativePath>
-  </parent>
-  <modelVersion>4.0.0</modelVersion>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
+                               http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
-  <artifactId>boteco-persistence</artifactId>
-  <packaging>pom</packaging>
+  <reference id="database" interface="com.mongodb.client.MongoDatabase"/>
 
-  <modules>
-    <module>boteco-persistence-karma</module>
-    <module>boteco-persistence-mongodb</module>
-    <module>boteco-persistence-irc</module>
-    <module>boteco-persistence-subscription</module>
-    <module>boteco-persistence-user</module>
-    <module>boteco-persistence-request</module>
-    <module>boteco-persistence-activation</module>
-  </modules>
+  <service interface="tools.devnull.boteco.plugins.activation.spi.MessageProcessorActivationManager">
+    <bean class="tools.devnull.boteco.persistence.activation.MongoActivationManager">
+      <argument ref="database"/>
+    </bean>
+  </service>
 
-</project>
+</blueprint>

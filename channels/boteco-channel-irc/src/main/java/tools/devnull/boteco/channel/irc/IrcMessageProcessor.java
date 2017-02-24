@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.channel.irc;
 
+import tools.devnull.boteco.AlwaysActive;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Command;
@@ -34,6 +35,7 @@ import java.util.stream.Collectors;
  * A message processor that can adjust how the bot behaves on the IRC.
  */
 @Command("irc")
+@AlwaysActive
 public class IrcMessageProcessor implements MessageProcessor {
 
   private final IrcIgnoreList ignoreList;

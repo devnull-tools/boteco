@@ -24,12 +24,14 @@
 
 package tools.devnull.boteco.plugins.subscription;
 
+import tools.devnull.boteco.AlwaysActive;
 import tools.devnull.boteco.event.SubscriptionManager;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Command;
 
 @Command("unsubscribe")
+@AlwaysActive
 public class SubscriptionRemoveMessageProcessor implements MessageProcessor {
 
   private final SubscriptionManager subscriptionManager;

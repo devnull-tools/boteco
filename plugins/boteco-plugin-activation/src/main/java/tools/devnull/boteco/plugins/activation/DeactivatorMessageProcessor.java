@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.plugins.activation;
 
+import tools.devnull.boteco.AlwaysActive;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Command;
@@ -33,6 +34,7 @@ import tools.devnull.boteco.plugins.activation.spi.MessageProcessorActivationMan
  * A message processor that controls the deactivation of message processors.
  */
 @Command("deactivate")
+@AlwaysActive
 public class DeactivatorMessageProcessor implements MessageProcessor {
 
   private final MessageProcessorActivationManager activator;

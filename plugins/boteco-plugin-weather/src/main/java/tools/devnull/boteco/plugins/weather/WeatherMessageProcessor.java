@@ -24,11 +24,13 @@
 
 package tools.devnull.boteco.plugins.weather;
 
+import tools.devnull.boteco.Name;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Command;
 
 @Command("weather")
+@Name("weather")
 public class WeatherMessageProcessor implements MessageProcessor {
 
   private final WeatherSearcher searcher;

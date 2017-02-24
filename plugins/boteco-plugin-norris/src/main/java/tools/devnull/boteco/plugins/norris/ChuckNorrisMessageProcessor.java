@@ -26,6 +26,7 @@ package tools.devnull.boteco.plugins.norris;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.devnull.boteco.Name;
 import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
@@ -36,6 +37,7 @@ import java.io.IOException;
  * A message processor that listens to mentions of "Chuck Norris"
  * and responds with facts
  */
+@Name("chuck-norris")
 public class ChuckNorrisMessageProcessor implements MessageProcessor {
 
   private static final Logger logger = LoggerFactory.getLogger(ChuckNorrisMessageProcessor.class);

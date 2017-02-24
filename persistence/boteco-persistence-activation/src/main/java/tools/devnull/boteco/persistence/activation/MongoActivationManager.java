@@ -22,29 +22,44 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.activation;
+package tools.devnull.boteco.persistence.activation;
 
-import tools.devnull.boteco.AlwaysActive;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.InvocationRule;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.plugins.activation.spi.MessageProcessorActivationManager;
 
 /**
- * A Rule that can control a plugin activation
+ * An activation manager that uses MongoDB to store data.
  */
-public class ActivationRule implements InvocationRule {
+public class MongoActivationManager implements MessageProcessorActivationManager {
 
-  private final MessageProcessorActivationManager activator;
+  private final MongoCollection<Document> blacklist;
 
-  public ActivationRule(MessageProcessorActivationManager activator) {
-    this.activator = activator;
+  public MongoActivationManager(MongoDatabase database) {
+    this.blacklist = database.getCollection("processorBlacklist");
   }
 
   @Override
-  public boolean accept(MessageProcessor messageProcessor, IncomeMessage message) {
-    return messageProcessor.getClass().isAnnotationPresent(AlwaysActive.class) ||
-        activator.isActive(messageProcessor.name(), message.location());
+  public void deactivate(String name, MessageLocation location) {
+    this.blacklist.insertOne(createDocument(name, location));
+  }
+
+  @Override
+  public boolean isActive(String name, MessageLocation location) {
+    return this.blacklist.find(createDocument(name, location)).first() == null;
+  }
+
+  @Override
+  public void activate(String name, MessageLocation location) {
+    this.blacklist.deleteOne(createDocument(name, location));
+  }
+
+  private Document createDocument(String name, MessageLocation location) {
+    return new Document("processor", name)
+        .append("channel", location.channel())
+        .append("target", location.target());
   }
 
 }

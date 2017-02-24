@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -22,34 +22,25 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.request;
+package tools.devnull.boteco;
 
-import tools.devnull.boteco.AlwaysActive;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.message.checker.Command;
-import tools.devnull.boteco.request.RequestManager;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * A message processor that confirms requests.
+ * Maps a name to a component.
  */
-@Command("confirm")
-@AlwaysActive
-public class RequestMessageProcessor implements MessageProcessor {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@Documented
+public @interface Name {
 
-  private final RequestManager requestManager;
+  /**
+   * @return the name mapped
+   */
+  String value();
 
-  public RequestMessageProcessor(RequestManager requestManager) {
-    this.requestManager = requestManager;
-  }
-
-  @Override
-  public void process(IncomeMessage message) {
-    String token = message.command().as(String.class);
-    if (this.requestManager.confirm(token)) {
-      message.reply("Confirmation OK!");
-    } else {
-      message.reply("[e]Invalid token[/e]");
-    }
-  }
 }
