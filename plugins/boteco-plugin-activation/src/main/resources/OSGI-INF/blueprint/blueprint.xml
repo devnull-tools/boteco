@@ -28,6 +28,8 @@
                                http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
   <reference id="activator" interface="tools.devnull.boteco.plugins.activation.spi.MessageProcessorActivationManager"/>
+  <reference id="activation-manager"
+             interface="tools.devnull.boteco.plugins.activation.spi.MessageProcessorActivationManager"/>
 
   <service id="activation-rule" interface="tools.devnull.boteco.InvocationRule">
     <bean class="tools.devnull.boteco.plugins.activation.ActivationRule">
@@ -35,6 +37,22 @@
     </bean>
   </service>
 
+  <service interface="tools.devnull.boteco.message.MessageProcessor">
+    <bean class="tools.devnull.boteco.plugins.activation.ActivationCheckMessageProcessor">
+      <argument ref="activation-manager"/>
+    </bean>
+  </service>
 
+  <service interface="tools.devnull.boteco.message.MessageProcessor">
+    <bean class="tools.devnull.boteco.plugins.activation.ActivatorMessageProcessor">
+      <argument ref="activation-manager"/>
+    </bean>
+  </service>
+
+  <service interface="tools.devnull.boteco.message.MessageProcessor">
+    <bean class="tools.devnull.boteco.plugins.activation.DeactivatorMessageProcessor">
+      <argument ref="activation-manager"/>
+    </bean>
+  </service>
 
 </blueprint>
