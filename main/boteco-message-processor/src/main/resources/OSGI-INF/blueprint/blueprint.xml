@@ -42,7 +42,7 @@
 
   <service id="message-sender"
            interface="tools.devnull.boteco.message.MessageSender">
-    <bean class="tools.devnull.boteco.process.message.BotecoMessageSender">
+    <bean class="tools.devnull.boteco.processor.message.BotecoMessageSender">
       <argument ref="client"/>
       <argument value="boteco.message.%s"/>
     </bean>
@@ -50,28 +50,29 @@
 
   <service id="message-dispatcher"
            interface="tools.devnull.boteco.message.MessageDispatcher">
-    <bean class="tools.devnull.boteco.process.message.BotecoMessageDispatcher">
+    <bean class="tools.devnull.boteco.processor.message.BotecoMessageDispatcher">
       <argument ref="client"/>
       <argument ref="service-registry"/>
       <argument value="boteco.process"/>
     </bean>
   </service>
 
-  <bean id="message-processor-finder" class="tools.devnull.boteco.process.message.BotecoMessageProcessorFinder">
+  <bean id="message-processor-finder" class="tools.devnull.boteco.processor.message.BotecoMessageProcessorFinder">
     <argument ref="service-registry"/>
   </bean>
 
-  <bean id="message-processor-invoker" class="tools.devnull.boteco.process.message.BotecoMessageProcessorInvoker">
+  <bean id="message-processor-invoker" class="tools.devnull.boteco.processor.message.BotecoMessageProcessorInvoker">
     <argument>
       <reference interface="tools.devnull.boteco.event.EventBus"/>
     </argument>
+    <argument ref="service-registry"/>
   </bean>
 
   <service interface="tools.devnull.boteco.event.EventListener">
     <service-properties>
       <entry key="event" value="error.message-processor"/>
     </service-properties>
-    <bean class="tools.devnull.boteco.process.message.BotecoMessageProcessingHandler"/>
+    <bean class="tools.devnull.boteco.processor.message.BotecoMessageProcessingHandler"/>
   </service>
 
   <camelContext id="boteco-content-processing-strategy"
