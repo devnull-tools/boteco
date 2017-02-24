@@ -25,6 +25,7 @@
 package tools.devnull.boteco.test;
 
 import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.boteco.message.Sender;
@@ -58,6 +59,12 @@ public class IncomeMessageMock {
     return this;
   }
 
+  public IncomeMessageMock from(MessageLocation location) {
+    when(mock.location()).thenReturn(location);
+    return from(location.channel()).
+        from(location.target());
+  }
+
   public IncomeMessageMock sentBy(Sender sender) {
     when(mock.sender()).thenReturn(sender);
     return this;
@@ -75,21 +82,31 @@ public class IncomeMessageMock {
     StringBuilder arg = new StringBuilder();
     Arrays.stream(args).forEach(s -> arg.append(s).append(" "));
     when(command.as(String.class)).thenReturn(arg.toString().trim());
+    when(command.asList()).thenReturn(Arrays.asList(args));
     when(mock.command()).thenReturn(command);
     when(mock.hasCommand()).thenReturn(true);
     return this;
   }
 
+  public static IncomeMessage message(Consumer<IncomeMessageMock> consumer) {
+    IncomeMessageMock incomeMessageMock = new IncomeMessageMock("");
+    consumer.accept(incomeMessageMock);
+    return incomeMessageMock.mock;
+  }
+
   public static IncomeMessage message(String content) {
-    return message(content, mock -> {});
+    return message(content, mock -> {
+    });
   }
 
   public static IncomeMessage privateMessage(String content) {
-    return privateMessage(content, mock -> {});
+    return privateMessage(content, mock -> {
+    });
   }
 
   public static IncomeMessage groupMessage(String content) {
-    return groupMessage(content, mock -> {});
+    return groupMessage(content, mock -> {
+    });
   }
 
   public static IncomeMessage message(String content, Consumer<IncomeMessageMock> config) {
