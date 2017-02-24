@@ -39,16 +39,8 @@
   <artifactId>boteco-message-processor</artifactId>
   <packaging>bundle</packaging>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-blueprint</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-camel</artifactId>
-    </dependency>
-  </dependencies>
+  <properties>
+    <osgi.export.packages>tools.devnull.boteco.processor.message.spi</osgi.export.packages>
+  </properties>
 
 </project>
