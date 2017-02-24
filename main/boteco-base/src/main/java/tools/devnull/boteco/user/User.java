@@ -25,7 +25,7 @@
 package tools.devnull.boteco.user;
 
 import tools.devnull.boteco.InvalidDestinationException;
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.MessageLocation;
 
 import java.io.Serializable;
 import java.util.List;
@@ -37,19 +37,19 @@ public interface User extends Serializable {
 
   String id();
 
-  List<MessageDestination> destinations();
+  List<MessageLocation> destinations();
 
-  MessageDestination primaryDestination();
+  MessageLocation primaryDestination();
 
-  MessageDestination destination(String channel);
+  MessageLocation destination(String channel);
 
-  void setPrimaryDestination(MessageDestination primaryDestination);
+  void setPrimaryDestination(MessageLocation primaryDestination);
 
   void setPrimaryDestination(String channel);
 
-  void addDestination(MessageDestination destination);
+  void addDestination(MessageLocation destination);
 
-  void removeDestination(MessageDestination destination) throws InvalidDestinationException;
+  void removeDestination(MessageLocation destination) throws InvalidDestinationException;
 
   void removeDestination(String channel) throws InvalidDestinationException;
 

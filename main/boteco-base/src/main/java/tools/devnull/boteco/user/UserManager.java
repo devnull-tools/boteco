@@ -24,7 +24,7 @@
 
 package tools.devnull.boteco.user;
 
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.message.IncomeMessage;
 
 /**
@@ -38,7 +38,7 @@ public interface UserManager {
    * @param destination the user destination
    * @return the user that has the given destination linked to it
    */
-  User find(MessageDestination destination);
+  User find(MessageLocation destination);
 
   /**
    * Finds the user by its ID
@@ -56,7 +56,7 @@ public interface UserManager {
    * @return the created user
    * @throws UserAlreadyExistException if an user with this id is already registered
    */
-  User create(String userId, MessageDestination primaryDestination) throws UserAlreadyExistException;
+  User create(String userId, MessageLocation primaryDestination) throws UserAlreadyExistException;
 
   /**
    * Links the given destination to a user.

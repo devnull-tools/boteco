@@ -24,16 +24,16 @@
 
 package tools.devnull.boteco.plugins.user;
 
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.user.User;
 
 public interface UserRepository {
 
-  User find(MessageDestination destination);
+  User find(MessageLocation destination);
 
   User find(String userId);
 
-  User create(String userId, MessageDestination primaryDestination);
+  User create(String userId, MessageLocation primaryDestination);
 
   void update(User user);
 

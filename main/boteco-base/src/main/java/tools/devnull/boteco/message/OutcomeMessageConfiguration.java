@@ -24,7 +24,7 @@
 
 package tools.devnull.boteco.message;
 
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.MessageLocation;
 
 /**
  * Interface that defines a component for building
@@ -99,7 +99,7 @@ public interface OutcomeMessageConfiguration {
    *
    * @param destination the destination that should receive the message.
    */
-  default void to(MessageDestination destination) {
+  default void to(MessageLocation destination) {
     to(destination.target()).through(destination.channel());
   }
 

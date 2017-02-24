@@ -24,7 +24,7 @@
 
 package tools.devnull.boteco.plugins.user;
 
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.user.User;
 
 /**
@@ -41,7 +41,7 @@ public class UnlinkRequest {
     this.channel = channel;
   }
 
-  public UnlinkRequest(User user, MessageDestination source) {
+  public UnlinkRequest(User user, MessageLocation source) {
     this.user = user;
     this.channel = source.channel();
   }

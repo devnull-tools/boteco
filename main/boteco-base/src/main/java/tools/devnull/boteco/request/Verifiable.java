@@ -24,7 +24,7 @@
 
 package tools.devnull.boteco.request;
 
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.MessageLocation;
 
 /**
  * Interface that defines an object that should be verified by a confirmation.
@@ -36,6 +36,6 @@ public interface Verifiable {
    *
    * @return the destination to send instructions.
    */
-  MessageDestination tokenDestination();
+  MessageLocation tokenDestination();
 
 }

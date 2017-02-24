@@ -26,7 +26,7 @@ package tools.devnull.boteco.plugins.request;
 
 import org.junit.Before;
 import org.junit.Test;
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.message.OutcomeMessageConfiguration;
@@ -60,7 +60,7 @@ public class RequestManagerTest {
   @Test
   public void testCreate() {
     Verifiable verifiable = mock(Verifiable.class);
-    MessageDestination destination = mock(MessageDestination.class);
+    MessageLocation destination = mock(MessageLocation.class);
     when(verifiable.tokenDestination()).thenReturn(destination);
     when(messageSender.send(anyString())).thenReturn(configuration);
     when(configuration.withTitle(anyString())).thenReturn(configuration);

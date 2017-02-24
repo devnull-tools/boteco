@@ -27,7 +27,7 @@ package tools.devnull.boteco;
 /**
  * Interface that defines a destination for a message.
  */
-public interface MessageDestination {
+public interface MessageLocation {
 
   /**
    * Returns the channel of this destination.

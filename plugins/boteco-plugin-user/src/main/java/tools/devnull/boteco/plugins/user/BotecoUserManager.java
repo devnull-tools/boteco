@@ -25,7 +25,7 @@
 package tools.devnull.boteco.plugins.user;
 
 import tools.devnull.boteco.Destination;
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.request.RequestManager;
 import tools.devnull.boteco.user.PrimaryDestinationRequest;
@@ -43,7 +43,7 @@ public class BotecoUserManager implements UserManager {
   }
 
   @Override
-  public User find(MessageDestination destination) {
+  public User find(MessageLocation destination) {
     return repository.find(destination);
   }
 
@@ -53,7 +53,7 @@ public class BotecoUserManager implements UserManager {
   }
 
   @Override
-  public User create(String userId, MessageDestination destination) {
+  public User create(String userId, MessageLocation destination) {
     return repository.create(userId, destination);
   }
 

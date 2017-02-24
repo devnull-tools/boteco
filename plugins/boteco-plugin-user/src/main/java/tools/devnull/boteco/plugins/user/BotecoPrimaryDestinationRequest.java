@@ -26,7 +26,7 @@ package tools.devnull.boteco.plugins.user;
 
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.Destination;
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.user.PrimaryDestinationRequest;
 import tools.devnull.boteco.user.User;
 
@@ -59,7 +59,7 @@ public class BotecoPrimaryDestinationRequest implements PrimaryDestinationReques
   }
 
   @Override
-  public MessageDestination tokenDestination() {
+  public MessageLocation tokenDestination() {
     return Destination.channel("user").to(user);
   }
 

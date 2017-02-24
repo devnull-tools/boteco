@@ -28,7 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.InvalidDestinationException;
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.user.User;
 import tools.devnull.kodo.Spec;
 
@@ -42,8 +42,8 @@ import static tools.devnull.kodo.Expectation.to;
 public class BotecoUserTest {
 
   private User user;
-  private MessageDestination primaryDestination;
-  private MessageDestination secondaryDestination;
+  private MessageLocation primaryDestination;
+  private MessageLocation secondaryDestination;
 
   @Before
   public void initialize() {
@@ -87,7 +87,7 @@ public class BotecoUserTest {
         .when(primaryDestinationIsSetTo(primaryDestination))
 
         .expect(User::destinations, to().have(twoElements()),
-            because("The destination should be created if a MessageDestination is passed"))
+            because("The destination should be created if a MessageLocation is passed"))
 
         .expect(User::primaryDestination, to().be(primaryDestination));
 
@@ -104,7 +104,7 @@ public class BotecoUserTest {
         .expect(settingPrimaryDestinationTo("mychannel"), to().raise(InvalidDestinationException.class));
   }
 
-  private Consumer<User> primaryDestinationIsSetTo(MessageDestination destination) {
+  private Consumer<User> primaryDestinationIsSetTo(MessageLocation destination) {
     return u -> u.setPrimaryDestination(destination);
   }
 
@@ -124,7 +124,7 @@ public class BotecoUserTest {
     return list -> list.size() == 2;
   }
 
-  private Consumer<User> removing(MessageDestination destination) {
+  private Consumer<User> removing(MessageLocation destination) {
     return u -> u.removeDestination(destination);
   }
 

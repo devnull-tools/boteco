@@ -25,7 +25,7 @@
 package tools.devnull.boteco.message;
 
 import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.util.ParameterBinder;
 
@@ -81,7 +81,7 @@ public class ExtractedCommand implements MessageCommand {
                 .when(type(Sender.class))
 
                 .use(this.incomeMessage.destination())
-                .when(type(MessageDestination.class));
+                .when(type(MessageLocation.class));
 
             if (this.incomeMessage.user() != null) {
               context.use(parameter -> this.incomeMessage.user())

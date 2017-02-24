@@ -26,7 +26,7 @@ package tools.devnull.boteco.message;
 
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.Destination;
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.user.User;
 
 import java.io.Serializable;
@@ -157,7 +157,7 @@ public interface IncomeMessage extends Serializable {
    *
    * @return the message destination for sending messages to the sender
    */
-  default MessageDestination destination() {
+  default MessageLocation destination() {
     return Destination.channel(channel().id()).to(sender().id());
   }
 

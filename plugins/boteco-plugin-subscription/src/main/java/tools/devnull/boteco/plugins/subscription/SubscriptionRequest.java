@@ -25,7 +25,7 @@
 package tools.devnull.boteco.plugins.subscription;
 
 import tools.devnull.boteco.Destination;
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.request.Verifiable;
 
 /**
@@ -55,7 +55,7 @@ public class SubscriptionRequest implements Verifiable {
     return target;
   }
 
-  public MessageDestination tokenDestination() {
+  public MessageLocation tokenDestination() {
     return Destination.channel(channel).to(target);
   }
 

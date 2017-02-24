@@ -30,15 +30,12 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import tools.devnull.boteco.UserMessageDestination;
-import tools.devnull.boteco.request.RequestManager;
+import tools.devnull.boteco.UserMessageLocation;
 import tools.devnull.boteco.event.Subscription;
 import tools.devnull.boteco.plugins.subscription.SubscriptionRepository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 public class MongoSubscriptionRepository implements SubscriptionRepository {
@@ -77,13 +74,13 @@ public class MongoSubscriptionRepository implements SubscriptionRepository {
 
   @Override
   public void insert(String eventId, String channel, String target) {
-    Subscription subscription = new BotecoSubscription(eventId, new UserMessageDestination(channel, target));
+    Subscription subscription = new BotecoSubscription(eventId, new UserMessageLocation(channel, target));
     subscriptions.insertOne(Document.parse(gson.toJson(subscription)));
   }
 
   @Override
   public void delete(String eventId, String channel, String target) {
-    Subscription subscription = new BotecoSubscription(eventId, new UserMessageDestination(channel, target));
+    Subscription subscription = new BotecoSubscription(eventId, new UserMessageLocation(channel, target));
     subscriptions.deleteOne(Document.parse(gson.toJson(subscription)));
   }
 

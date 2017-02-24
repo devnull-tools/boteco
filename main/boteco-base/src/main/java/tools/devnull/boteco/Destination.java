@@ -57,8 +57,8 @@ public interface Destination {
    * @param channelId the channel id of the destination
    * @return a component to select the target of the destination
    */
-  static TargetResultSelector<String, MessageDestination> channel(String channelId) {
-    return target -> new UserMessageDestination(channelId, target);
+  static TargetResultSelector<String, MessageLocation> channel(String channelId) {
+    return target -> new UserMessageLocation(channelId, target);
   }
 
 }
