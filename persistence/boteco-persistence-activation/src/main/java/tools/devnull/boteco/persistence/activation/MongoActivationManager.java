@@ -30,29 +30,42 @@ import org.bson.Document;
 import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.plugins.activation.spi.MessageProcessorActivationManager;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * An activation manager that uses MongoDB to store data.
  */
 public class MongoActivationManager implements MessageProcessorActivationManager {
 
   private final MongoCollection<Document> blacklist;
+  private final Map<String, Boolean> cache;
 
   public MongoActivationManager(MongoDatabase database) {
     this.blacklist = database.getCollection("processorBlacklist");
+    this.cache = new ConcurrentHashMap<>(100);
   }
 
   @Override
   public void deactivate(String name, MessageLocation location) {
+    this.cache.put(key(name, location), false);
     this.blacklist.insertOne(createDocument(name, location));
   }
 
   @Override
   public boolean isActive(String name, MessageLocation location) {
-    return this.blacklist.find(createDocument(name, location)).first() == null;
+    String key = key(name, location);
+    if (this.cache.containsKey(key)) {
+      return this.cache.get(key);
+    }
+    boolean active = this.blacklist.find(createDocument(name, location)).first() == null;
+    this.cache.put(key, active);
+    return active;
   }
 
   @Override
   public void activate(String name, MessageLocation location) {
+    this.cache.put(key(name, location), true);
     this.blacklist.deleteOne(createDocument(name, location));
   }
 
@@ -60,6 +73,10 @@ public class MongoActivationManager implements MessageProcessorActivationManager
     return new Document("processor", name)
         .append("channel", location.channel())
         .append("target", location.target());
+  }
+
+  private String key(String name, MessageLocation location) {
+    return name + location.channel() + location.target();
   }
 
 }
