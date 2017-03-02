@@ -43,9 +43,13 @@ public class IncomeMessageMock {
 
   private final IncomeMessage mock;
 
-  private IncomeMessageMock(String message) {
+  private IncomeMessageMock() {
     this.mock = mock(IncomeMessage.class);
+  }
+
+  public IncomeMessageMock withMessage(String message) {
     when(mock.content()).thenReturn(message);
+    return this;
   }
 
   public IncomeMessageMock from(String channelId) {
@@ -61,8 +65,7 @@ public class IncomeMessageMock {
 
   public IncomeMessageMock from(MessageLocation location) {
     when(mock.location()).thenReturn(location);
-    return from(location.channel()).
-        from(location.target());
+    return this;
   }
 
   public IncomeMessageMock sentBy(Sender sender) {
@@ -89,7 +92,7 @@ public class IncomeMessageMock {
   }
 
   public static IncomeMessage message(Consumer<IncomeMessageMock> consumer) {
-    IncomeMessageMock incomeMessageMock = new IncomeMessageMock("");
+    IncomeMessageMock incomeMessageMock = new IncomeMessageMock();
     consumer.accept(incomeMessageMock);
     return incomeMessageMock.mock;
   }
@@ -110,20 +113,20 @@ public class IncomeMessageMock {
   }
 
   public static IncomeMessage message(String content, Consumer<IncomeMessageMock> config) {
-    IncomeMessageMock incomeMessageMock = new IncomeMessageMock(content);
+    IncomeMessageMock incomeMessageMock = new IncomeMessageMock().withMessage(content);
     config.accept(incomeMessageMock);
     return incomeMessageMock.mock;
   }
 
   public static IncomeMessage privateMessage(String content, Consumer<IncomeMessageMock> config) {
-    IncomeMessageMock incomeMessageMock = new IncomeMessageMock(content);
+    IncomeMessageMock incomeMessageMock = new IncomeMessageMock().withMessage(content);
     config.accept(incomeMessageMock);
     when(incomeMessageMock.mock.isPrivate()).thenReturn(true);
     return incomeMessageMock.mock;
   }
 
   public static IncomeMessage groupMessage(String content, Consumer<IncomeMessageMock> config) {
-    IncomeMessageMock incomeMessageMock = new IncomeMessageMock(content);
+    IncomeMessageMock incomeMessageMock = new IncomeMessageMock().withMessage(content);
     config.accept(incomeMessageMock);
     when(incomeMessageMock.mock.isGroup()).thenReturn(true);
     return incomeMessageMock.mock;
