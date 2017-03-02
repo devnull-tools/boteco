@@ -22,7 +22,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.activation;
+package tools.devnull.boteco.plugins.manager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +31,7 @@ import tools.devnull.boteco.InvocationRule;
 import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.plugins.activation.spi.PluginManager;
+import tools.devnull.boteco.plugins.manager.spi.PluginManager;
 import tools.devnull.kodo.Spec;
 
 import java.util.function.Predicate;

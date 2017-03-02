@@ -22,29 +22,48 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.activation;
+package tools.devnull.boteco.plugins.manager;
 
 import tools.devnull.boteco.AlwaysActive;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.InvocationRule;
-import tools.devnull.boteco.plugins.activation.spi.PluginManager;
+import tools.devnull.boteco.message.checker.Command;
+import tools.devnull.boteco.plugins.manager.spi.PluginManager;
+
+import java.util.List;
 
 /**
- * A Rule that can control a plugin activation
+ * A message processor that can manage plugins for a specific channel and target.
  */
-public class ActivationRule implements InvocationRule {
+@AlwaysActive
+@Command("plugin")
+public class PluginManagerMessageProcessor implements MessageProcessor {
 
   private final PluginManager activator;
 
-  public ActivationRule(PluginManager activator) {
+  public PluginManagerMessageProcessor(PluginManager activator) {
     this.activator = activator;
   }
 
   @Override
-  public boolean accept(MessageProcessor messageProcessor, IncomeMessage message) {
-    return messageProcessor.getClass().isAnnotationPresent(AlwaysActive.class) ||
-        activator.isEnabled(messageProcessor.name(), message.location());
+  public void process(IncomeMessage message) {
+    message.command()
+        .on("enabled", String.class, (name) -> {
+          boolean active = activator.isEnabled(name, message.location());
+          if (active) {
+            message.reply("[p]Yes, the plugin is enabled for this channel[/p]");
+          } else {
+            message.reply("[n]No, the plugin is disabled for this channel[/n]");
+          }
+        })
+        .on("disable", List.class, (plugins) -> {
+          plugins.forEach(name -> activator.disable(name.toString(), message.location()));
+          message.reply("Plugin(s) disabled successfully!");
+        })
+        .on("enable", List.class, (plugins) -> {
+          plugins.forEach(name -> activator.enable(name.toString(), message.location()));
+          message.reply("Plugin(s) enabled successfully!");
+        }).execute();
   }
 
 }

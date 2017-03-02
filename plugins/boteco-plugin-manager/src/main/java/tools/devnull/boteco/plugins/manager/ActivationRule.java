@@ -22,41 +22,29 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.activation.spi;
+package tools.devnull.boteco.plugins.manager;
 
-import tools.devnull.boteco.MessageLocation;
+import tools.devnull.boteco.AlwaysActive;
+import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.InvocationRule;
+import tools.devnull.boteco.plugins.manager.spi.PluginManager;
 
 /**
- * Interface that defines a plugin manager that acts for specific channels.
- * <p>
- * Note that for global management, the best is to use the runtime platform itself.
+ * A Rule that can control a plugin activation
  */
-public interface PluginManager {
+public class ActivationRule implements InvocationRule {
 
-  /**
-   * Disables the given plugin name to run for the given message location
-   *
-   * @param name     the name of the message processor
-   * @param location the message location to refer to
-   */
-  void disable(String name, MessageLocation location);
+  private final PluginManager activator;
 
-  /**
-   * Returns {@code true} if the given message processor's name is active
-   * for the given location.
-   *
-   * @param name     the name of the message processor
-   * @param location the message location to refer to
-   * @return {@code true} if the referring parameters represents an active message processor
-   */
-  boolean isEnabled(String name, MessageLocation location);
+  public ActivationRule(PluginManager activator) {
+    this.activator = activator;
+  }
 
-  /**
-   * Enables the given plugin name to run for the given message location
-   *
-   * @param name     the name of the message processor
-   * @param location the message location to refer to
-   */
-  void enable(String name, MessageLocation location);
+  @Override
+  public boolean accept(MessageProcessor messageProcessor, IncomeMessage message) {
+    return messageProcessor.getClass().isAnnotationPresent(AlwaysActive.class) ||
+        activator.isEnabled(messageProcessor.name(), message.location());
+  }
 
 }

@@ -27,18 +27,18 @@
            xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
                                http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
-  <reference id="activator" interface="tools.devnull.boteco.plugins.activation.spi.PluginManager"/>
+  <reference id="activator" interface="tools.devnull.boteco.plugins.manager.spi.PluginManager"/>
   <reference id="activation-manager"
-             interface="tools.devnull.boteco.plugins.activation.spi.PluginManager"/>
+             interface="tools.devnull.boteco.plugins.manager.spi.PluginManager"/>
 
   <service id="activation-rule" interface="tools.devnull.boteco.InvocationRule">
-    <bean class="tools.devnull.boteco.plugins.activation.ActivationRule">
+    <bean class="tools.devnull.boteco.plugins.manager.ActivationRule">
       <argument ref="activator"/>
     </bean>
   </service>
 
   <service interface="tools.devnull.boteco.message.MessageProcessor">
-    <bean class="tools.devnull.boteco.plugins.activation.PluginManagerMessageProcessor">
+    <bean class="tools.devnull.boteco.plugins.manager.PluginManagerMessageProcessor">
       <argument ref="activation-manager"/>
     </bean>
   </service>

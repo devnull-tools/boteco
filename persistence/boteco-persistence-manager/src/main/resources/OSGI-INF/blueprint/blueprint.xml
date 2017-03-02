@@ -29,8 +29,8 @@
 
   <reference id="database" interface="com.mongodb.client.MongoDatabase"/>
 
-  <service interface="tools.devnull.boteco.plugins.activation.spi.PluginManager">
-    <bean class="tools.devnull.boteco.persistence.activation.MongoActivationManager">
+  <service interface="tools.devnull.boteco.plugins.manager.spi.PluginManager">
+    <bean class="tools.devnull.boteco.persistence.activation.MongoPluginManager">
       <argument ref="database"/>
     </bean>
   </service>

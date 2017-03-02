@@ -28,20 +28,20 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import tools.devnull.boteco.MessageLocation;
-import tools.devnull.boteco.plugins.activation.spi.PluginManager;
+import tools.devnull.boteco.plugins.manager.spi.PluginManager;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * An activation manager that uses MongoDB to store data.
+ * A plugin manager that uses MongoDB to store data.
  */
-public class MongoActivationManager implements PluginManager {
+public class MongoPluginManager implements PluginManager {
 
   private final MongoCollection<Document> blacklist;
   private final Map<String, Boolean> cache;
 
-  public MongoActivationManager(MongoDatabase database) {
+  public MongoPluginManager(MongoDatabase database) {
     this.blacklist = database.getCollection("processorBlacklist");
     this.cache = new ConcurrentHashMap<>(100);
   }

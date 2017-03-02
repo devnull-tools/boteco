@@ -22,7 +22,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.activation;
+package tools.devnull.boteco.plugins.manager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +32,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.plugins.activation.spi.PluginManager;
+import tools.devnull.boteco.plugins.manager.spi.PluginManager;
 import tools.devnull.kodo.Spec;
 
 import java.util.function.Consumer;
@@ -48,7 +48,7 @@ import static tools.devnull.kodo.Expectation.the;
 import static tools.devnull.kodo.Expectation.to;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MessageProcessorTest {
+public class ManagerMessageProcessorTest {
 
   @Mock(answer = Answers.RETURNS_MOCKS)
   private PluginManager activationManager;
@@ -90,13 +90,13 @@ public class MessageProcessorTest {
 
   @Test
   public void testQuery() {
-    Spec.given(message(m -> m.withCommand("active?", processorName).from(location)))
+    Spec.given(message(m -> m.withCommand("plugin", "enabled", processorName).from(location)))
         .expect(messageProcessor::canProcess)
         .when(messageProcessor::process)
         .expect(it(), to(receive(reply("[p]Yes, the plugin is enabled for this channel[/p]"))))
         .expect(the(activationManager), to(receive(isActive(processorName))));
 
-    Spec.given(message(m -> m.withCommand("active?", "other-processor").from(location)))
+    Spec.given(message(m -> m.withCommand("plugin", "enabled", "other-processor").from(location)))
         .expect(messageProcessor::canProcess)
         .when(messageProcessor::process)
         .expect(it(), to(receive(reply("[n]No, the plugin is disabled for this channel[/n]"))))
