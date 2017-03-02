@@ -79,8 +79,8 @@ public class ActivationRuleTest {
     when(allowedProcessor.name()).thenReturn("some-other-name");
 
     when(manager.isActive(any(), any())).thenAnswer(
-        invocation -> !forbiddenProcessorName.equals(invocation.getArgumentAt(0, String.class))
-            || forbiddenLocation != invocation.getArgumentAt(1, MessageLocation.class)
+        invocation -> !forbiddenProcessorName.equals(invocation.getArgument(0))
+            || forbiddenLocation != invocation.getArgument(1)
     );
   }
 

@@ -29,7 +29,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.plugins.activation.spi.MessageProcessorActivationManager;
@@ -70,7 +70,7 @@ public class MessageProcessorTest {
     activationCheckMessageProcessor = new ActivationCheckMessageProcessor(activationManager);
 
     when(activationManager.isActive(anyString(), eq(location))).thenAnswer(
-        i -> processorName.equals(i.getArgumentAt(0, String.class))
+        i -> processorName.equals(i.getArgument(0))
     );
   }
 
