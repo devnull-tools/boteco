@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.6.0
+
+- API improvements
+- More tests added (please don't freak out)
+- Chuck Norris plugin
+- Features file is now more organized
+- Added a shutdown time for Camel routes
+- Added an invocation rule
+- Added a way to disable plugins for specific channels
+
 ## v0.5.0 (2017-02-16)
 
 - Improvements on Rest Client DSL
