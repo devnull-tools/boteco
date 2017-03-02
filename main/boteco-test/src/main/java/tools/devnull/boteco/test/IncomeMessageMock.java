@@ -26,6 +26,7 @@ package tools.devnull.boteco.test;
 
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.MessageLocation;
+import tools.devnull.boteco.message.ExtractedCommand;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.boteco.message.Sender;
@@ -80,12 +81,9 @@ public class IncomeMessageMock {
   }
 
   public IncomeMessageMock withCommand(String name, String... args) {
-    MessageCommand command = mock(MessageCommand.class);
-    when(command.name()).thenReturn(name);
     StringBuilder arg = new StringBuilder();
     Arrays.stream(args).forEach(s -> arg.append(s).append(" "));
-    when(command.as(String.class)).thenReturn(arg.toString().trim());
-    when(command.asList()).thenReturn(Arrays.asList(args));
+    MessageCommand command = new ExtractedCommand(this.mock, name, arg.toString().trim());
     when(mock.command()).thenReturn(command);
     when(mock.hasCommand()).thenReturn(true);
     return this;
