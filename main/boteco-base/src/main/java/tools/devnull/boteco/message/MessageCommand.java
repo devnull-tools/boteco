@@ -121,7 +121,7 @@ public interface MessageCommand {
    *
    * @see #on(String, Class, Consumer)
    * @see #on(String, Consumer)
-   * @see #on(String, Runnable)
+   * @see #on(String, Action)
    */
   void execute();
 
