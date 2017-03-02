@@ -44,7 +44,7 @@
     <module>boteco-persistence-subscription</module>
     <module>boteco-persistence-user</module>
     <module>boteco-persistence-request</module>
-    <module>boteco-persistence-activation</module>
+    <module>boteco-persistence-manager</module>
   </modules>
 
 </project>
