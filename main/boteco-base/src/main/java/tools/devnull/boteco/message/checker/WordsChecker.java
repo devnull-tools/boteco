@@ -38,8 +38,8 @@ public class WordsChecker implements IncomeMessageChecker {
 
   private final List<Pattern> patterns;
 
-  public WordsChecker(String... value) {
-    patterns = Arrays.stream(value)
+  public WordsChecker(String... words) {
+    patterns = Arrays.stream(words)
         .map(word -> Pattern.compile("\\p{Punct}?" + word + "\\p{Punct}?", Pattern.CASE_INSENSITIVE))
         .collect(Collectors.toList());
   }

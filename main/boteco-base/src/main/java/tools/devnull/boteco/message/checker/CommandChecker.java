@@ -36,8 +36,8 @@ public class CommandChecker implements IncomeMessageChecker {
 
   private final String acceptedCommand;
 
-  public CommandChecker(String value) {
-    this.acceptedCommand = value;
+  public CommandChecker(String commandName) {
+    this.acceptedCommand = commandName;
   }
 
   @Override
