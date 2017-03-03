@@ -30,6 +30,7 @@ import tools.devnull.boteco.Name;
 import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.message.checker.Words;
 
 import java.io.IOException;
 
@@ -38,6 +39,7 @@ import java.io.IOException;
  * and responds with facts
  */
 @Name("chuck-norris")
+@Words({"chuck norris", "chucknorris"})
 public class ChuckNorrisMessageProcessor implements MessageProcessor {
 
   private static final Logger logger = LoggerFactory.getLogger(ChuckNorrisMessageProcessor.class);
@@ -46,12 +48,6 @@ public class ChuckNorrisMessageProcessor implements MessageProcessor {
 
   public ChuckNorrisMessageProcessor(RestClient restClient) {
     this.rest = restClient;
-  }
-
-  @Override
-  public boolean canProcess(IncomeMessage message) {
-    String content = message.content().toLowerCase();
-    return content.contains("chuck norris") || content.contains("chucknorris");
   }
 
   @Override
