@@ -31,9 +31,9 @@
 
   <parent>
     <groupId>tools.devnull</groupId>
-    <artifactId>boteco-bundle-parent</artifactId>
+    <artifactId>boteco-persistence</artifactId>
     <version>0.6.0-SNAPSHOT</version>
-    <relativePath>../../misc/boteco-bundle-parent/pom.xml</relativePath>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>boteco-persistence-karma</artifactId>
@@ -44,12 +44,6 @@
       <groupId>tools.devnull</groupId>
       <artifactId>boteco-plugin-karma</artifactId>
       <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mongodb</groupId>
-      <artifactId>mongo-java-driver</artifactId>
-      <version>3.0.4</version>
     </dependency>
   </dependencies>
 

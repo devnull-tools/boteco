@@ -31,12 +31,27 @@
 
   <parent>
     <groupId>tools.devnull</groupId>
-    <artifactId>boteco-bundle-parent</artifactId>
+    <artifactId>boteco-main</artifactId>
     <version>0.6.0-SNAPSHOT</version>
-    <relativePath>../../misc/boteco-bundle-parent/pom.xml</relativePath>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>boteco-message-processor</artifactId>
   <packaging>bundle</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>tools.devnull</groupId>
+      <artifactId>boteco-base</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>tools.devnull</groupId>
+      <artifactId>boteco-test</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
 </project>
