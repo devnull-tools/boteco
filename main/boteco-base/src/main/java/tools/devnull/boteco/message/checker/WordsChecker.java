@@ -46,7 +46,7 @@ public class WordsChecker implements IncomeMessageChecker {
 
   @Override
   public boolean canProcess(IncomeMessage message) {
-    return patterns.stream()
+    return !message.hasCommand() && patterns.stream()
         .anyMatch(pattern -> pattern.matcher(message.content()).find());
   }
 

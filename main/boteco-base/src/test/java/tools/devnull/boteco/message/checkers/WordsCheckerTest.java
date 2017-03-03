@@ -40,6 +40,14 @@ import static tools.devnull.kodo.Expectation.to;
 public class WordsCheckerTest {
 
   @Test
+  public void testCommand() {
+    Spec.given(new WordsChecker("lorem"))
+        .expect(it(), to().not(accept(messageWithCommand("lorem"))))
+        .expect(it(), to().not(accept(messageWithCommand("lorem ipsum"))))
+        .expect(it(), to().not(accept(messageWithCommand("ipsum lorem"))));
+  }
+
+  @Test
   public void testSimpleMatch() {
     Spec.given(new WordsChecker("lorem"))
         .expect(it(), to(accept(message("lorem"))))
@@ -66,6 +74,12 @@ public class WordsCheckerTest {
   private IncomeMessage message(String content) {
     IncomeMessage message = mock(IncomeMessage.class);
     when(message.content()).thenReturn(content);
+    return message;
+  }
+
+  private IncomeMessage messageWithCommand(String content) {
+    IncomeMessage message = message(content);
+    when(message.hasCommand()).thenReturn(true);
     return message;
   }
 
