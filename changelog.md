@@ -9,6 +9,7 @@
 - Added a shutdown time for Camel routes
 - Added an invocation rule
 - Added a way to disable plugins for specific channels
+- Project reorganization
 
 ## v0.5.0 (2017-02-16)
 
