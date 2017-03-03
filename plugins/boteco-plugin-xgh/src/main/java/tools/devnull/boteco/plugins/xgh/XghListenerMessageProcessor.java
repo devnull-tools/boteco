@@ -26,7 +26,6 @@ package tools.devnull.boteco.plugins.xgh;
 
 import tools.devnull.boteco.Name;
 import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessingException;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Words;
 
@@ -42,7 +41,7 @@ public class XghListenerMessageProcessor implements MessageProcessor {
 
   @Override
   public void process(IncomeMessage message) {
-    message.reply(xgh.randomAxiom());
+    message.reply(xgh.randomAxiom().title());
   }
 
 }
