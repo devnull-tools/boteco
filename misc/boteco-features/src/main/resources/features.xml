@@ -26,7 +26,6 @@
           xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
   <feature version="${project.version}" name="boteco"
            description="Contains base bundles and plugins">
-    <feature>activemq-camel</feature>
     <feature>camel-irc</feature>
     <feature>camel-http4</feature>
     <feature>camel-gson</feature>
