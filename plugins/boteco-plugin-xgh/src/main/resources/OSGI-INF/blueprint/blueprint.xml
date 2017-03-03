@@ -46,4 +46,10 @@
     </bean>
   </service>
 
+  <service interface="tools.devnull.boteco.message.MessageProcessor">
+    <bean class="tools.devnull.boteco.plugins.xgh.XghListenerMessageProcessor">
+      <argument ref="xgh"/>
+    </bean>
+  </service>
+
 </blueprint>

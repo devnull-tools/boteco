@@ -24,45 +24,25 @@
 
 package tools.devnull.boteco.plugins.xgh;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import tools.devnull.boteco.Name;
+import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessingException;
+import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.message.checker.Words;
 
-public class XGH {
+@Name("xgh")
+@Words({"xgh", "extreme go horse"})
+public class XghListenerMessageProcessor implements MessageProcessor {
 
-  private final List<Axiom> axioms = new ArrayList<>(30);
+  private final XGH xgh;
 
-  public XGH(String lang) {
-    initialize(new Locale(lang));
+  public XghListenerMessageProcessor(XGH xgh) {
+    this.xgh = xgh;
   }
 
-  public XGH() {
-    initialize(Locale.getDefault());
-  }
-
-  private void initialize(Locale locale) {
-    ResourceBundle bundle = ResourceBundle.getBundle("tools.devnull.boteco.plugins.xgh.axioms", locale);
-    int size = bundle.keySet().size() / 2; // title and description for each axiom
-    String format = "axiom.%d.%s";
-    for (int i = 1; i <= size; i++) { // axioms starts at 1
-      axioms.add(new Axiom(
-          i,
-          bundle.getString(String.format(format, i, "title")),
-          bundle.getString(String.format(format, i, "description"))
-      ));
-    }
-  }
-
-  public Axiom axiom(int number) {
-    if (number < 1 || number > axioms.size()) {
-      throw new IllegalArgumentException(String.format("Axiom %d is not defined", number));
-    }
-    return axioms.get(number - 1);
-  }
-
-  public Axiom randomAxiom() {
-    return axioms.get((int) (Math.random() * axioms.size()));
+  @Override
+  public void process(IncomeMessage message) {
+    message.reply(xgh.randomAxiom());
   }
 
 }
