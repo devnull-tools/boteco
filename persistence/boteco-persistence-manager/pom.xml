@@ -34,7 +34,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>boteco-persistence-activation</artifactId>
+  <artifactId>boteco-persistence-manager</artifactId>
   <packaging>bundle</packaging>
 
   <dependencies>
