@@ -1,4 +1,4 @@
-= Weather Plugin
+# Weather Plugin
 
 This is a plugin that queries weathers based on the `weather` command.
 
