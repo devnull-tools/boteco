@@ -37,8 +37,8 @@ public class ChannelChecker implements IncomeMessageChecker {
 
   private final Set<String> acceptedChannels;
 
-  public ChannelChecker(Channel channel) {
-    this.acceptedChannels = Arrays.stream(channel.value()).collect(Collectors.toSet());
+  public ChannelChecker(String... value) {
+    this.acceptedChannels = Arrays.stream(value).collect(Collectors.toSet());
   }
 
   @Override

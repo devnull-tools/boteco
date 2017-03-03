@@ -25,12 +25,10 @@
 package tools.devnull.boteco.message.checkers;
 
 import org.junit.Test;
+import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.checker.Channel;
 import tools.devnull.boteco.message.checker.ChannelChecker;
 import tools.devnull.kodo.Spec;
-
-import java.lang.annotation.Annotation;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -42,14 +40,14 @@ public class ChannelCheckerTest {
 
   @Test
   public void testWithSingleChannel() {
-    Spec.given(new ChannelChecker(channels("channel1")))
+    Spec.given(new ChannelChecker("channel1"))
         .expect(it(), to(process(messageFrom("channel1"))))
         .expect(it(), to().not(process(messageFrom("channel2"))));
   }
 
   @Test
   public void testWithMultipleChannels() {
-    Spec.given(new ChannelChecker(channels("channel1", "channel2")))
+    Spec.given(new ChannelChecker("channel1", "channel2"))
         .expect(it(), to(process(messageFrom("channel1"))))
         .expect(it(), to(process(messageFrom("channel2"))))
         .expect(it(), to().not(process(messageFrom("channel3"))));
@@ -57,25 +55,10 @@ public class ChannelCheckerTest {
 
   private IncomeMessage messageFrom(String channelId) {
     IncomeMessage message = mock(IncomeMessage.class);
-    tools.devnull.boteco.Channel channel = mock(tools.devnull.boteco.Channel.class);
+    Channel channel = mock(Channel.class);
     when(channel.id()).thenReturn(channelId);
     when(message.channel()).thenReturn(channel);
     return message;
-  }
-
-  private Channel channels(String... channels) {
-    return new Channel() {
-
-      @Override
-      public Class<? extends Annotation> annotationType() {
-        return Channel.class;
-      }
-
-      @Override
-      public String[] value() {
-        return channels;
-      }
-    };
   }
 
 }

@@ -27,11 +27,8 @@ package tools.devnull.boteco.message.checkers;
 import org.junit.Test;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageCommand;
-import tools.devnull.boteco.message.checker.Command;
 import tools.devnull.boteco.message.checker.CommandChecker;
 import tools.devnull.kodo.Spec;
-
-import java.lang.annotation.Annotation;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -43,7 +40,7 @@ public class CommandCheckerTest {
 
   @Test
   public void test() {
-    Spec.given(new CommandChecker(command("command1")))
+    Spec.given(new CommandChecker("command1"))
         .expect(it(), to(process(messageWith("command1"))))
         .expect(it(), to().not(process(messageWith("command2"))));
   }
@@ -55,21 +52,6 @@ public class CommandCheckerTest {
     when(message.hasCommand()).thenReturn(true);
     when(message.command()).thenReturn(command);
     return message;
-  }
-
-  private Command command(String commandName) {
-    return new Command() {
-
-      @Override
-      public Class<? extends Annotation> annotationType() {
-        return Command.class;
-      }
-
-      @Override
-      public String value() {
-        return commandName;
-      }
-    };
   }
 
 }
