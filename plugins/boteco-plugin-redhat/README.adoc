@@ -1,3 +1,0 @@
-= Red Hat Plugin
-
-This is a plugin that fetches information about Red Hat's KBase links that arrives on channels.
