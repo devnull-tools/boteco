@@ -26,14 +26,17 @@ package tools.devnull.boteco.plugins.subscription;
 
 import tools.devnull.boteco.message.IncomeMessage;
 
+import java.util.Arrays;
+import java.util.function.Consumer;
+
 public class SubscriptionParameters {
 
-  private final String event;
+  private final String[] events;
   private final String channel;
   private final String target;
   private final boolean requestConfirmation;
 
-  public SubscriptionParameters(IncomeMessage message, String event) {
+  public SubscriptionParameters(IncomeMessage message, String[] events) {
     if (message.user() != null && !message.isGroup()) {
       this.target = message.user().id();
       this.channel = "user";
@@ -41,19 +44,19 @@ public class SubscriptionParameters {
       this.target = message.isGroup() ? message.target() : message.sender().id();
       this.channel = message.channel().id();
     }
-    this.event = event.toLowerCase();
+    this.events = events;
     this.requestConfirmation = false;
   }
 
-  public SubscriptionParameters(String event, String channel, String target) {
-    this.event = event.toLowerCase();
+  public SubscriptionParameters(String[] events, String channel, String target) {
+    this.events = events;
     this.target = target;
     this.channel = channel;
     this.requestConfirmation = true;
   }
 
-  public String event() {
-    return event;
+  public void each(Consumer<String> consumer) {
+    Arrays.stream(events).forEach(consumer);
   }
 
   public String channel() {

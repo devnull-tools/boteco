@@ -31,6 +31,8 @@ import tools.devnull.kodo.Spec;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertTrue;
 import static tools.devnull.kodo.Expectation.to;
 
 public class ParameterBinderTest {
@@ -75,6 +77,20 @@ public class ParameterBinderTest {
 
   }
 
+  public static class TestObject3 {
+
+    private String[] value;
+
+    public TestObject3(String[] value) {
+      this.value = value;
+    }
+
+    public String[] value() {
+      return this.value;
+    }
+
+  }
+
   @Test
   public void testParameterValues() {
     ParameterBinder<TestObject1> converter = new ParameterBinder<>(TestObject1.class);
@@ -109,6 +125,19 @@ public class ParameterBinderTest {
     Spec.given(converter.apply("1 3"))
         .expect(TestObject2::x, to().be(1))
         .expect(TestObject2::y, to().be(3));
+  }
+
+  @Test
+  public void testStringArrayParameterValues() {
+    ParameterBinder<TestObject3> converter = new ParameterBinder<>(TestObject3.class);
+
+    Spec.given(converter)
+        .expect(converting("1,2,3"), to().succeed());
+
+    String[] array = converter.apply("1,2,3").value();
+
+    assertTrue(array.length == 3);
+    assertArrayEquals(array, new String[]{"1", "2", "3"});
   }
 
   private Consumer<Function> converting(String value) {

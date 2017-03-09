@@ -43,22 +43,24 @@ public class SubscriptionRemoveMessageProcessor implements MessageProcessor {
   @Override
   public void process(IncomeMessage message) {
     SubscriptionParameters parameters = message.command().as(SubscriptionParameters.class);
-    if (parameters.shouldRequestConfirmation()) {
-      this.subscriptionManager
-          .unsubscribe()
-          .target(parameters.target())
-          .ofChannel(parameters.channel())
-          .withConfirmation()
-          .fromEvent(parameters.event());
-      message.reply("The subscription will be removed after confirmation!");
-    } else {
-      this.subscriptionManager
-          .unsubscribe()
-          .target(parameters.target())
-          .ofChannel(parameters.channel())
-          .fromEvent(parameters.event());
-      message.reply("Subscription removed!");
-    }
+    parameters.each(event -> {
+      if (parameters.shouldRequestConfirmation()) {
+        this.subscriptionManager
+            .unsubscribe()
+            .target(parameters.target())
+            .ofChannel(parameters.channel())
+            .withConfirmation()
+            .fromEvent(event);
+        message.reply("The subscription %s will be removed after confirmation!", event);
+      } else {
+        this.subscriptionManager
+            .unsubscribe()
+            .target(parameters.target())
+            .ofChannel(parameters.channel())
+            .fromEvent(event);
+        message.reply("Subscription %s removed!", event);
+      }
+    });
   }
 
 }

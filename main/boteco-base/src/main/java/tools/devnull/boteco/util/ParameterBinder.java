@@ -94,6 +94,7 @@ public class ParameterBinder<E> implements Function<String, E> {
     this.functions.put(Double.class, Double::parseDouble);
     this.functions.put(double.class, Double::parseDouble);
     this.functions.put(List.class, splitter::apply);
+    this.functions.put(String[].class, content -> content.split(","));
     this.functions.put(Date.class, content -> {
       try {
         return dateFormat.parse(content);
