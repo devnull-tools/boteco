@@ -33,11 +33,31 @@
                                http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
   <reference id="rest-client" interface="tools.devnull.boteco.client.rest.RestClient"/>
+  <reference id="event-bus" interface="tools.devnull.boteco.event.EventBus"/>
 
   <service id="kbase-plugin" interface="tools.devnull.boteco.message.MessageProcessor">
     <bean class="tools.devnull.boteco.plugins.redhat.KBaseMessageProcessor">
       <argument ref="rest-client"/>
     </bean>
   </service>
+
+  <bean id="rss-processor" class="com.redhat.boteco.plugins.poll.RssProcessor">
+    <argument ref="event-bus"/>
+    <argument value="10"/>
+  </bean>
+
+  <camelContext id="boteco-redhat"
+                xmlns="http://camel.apache.org/schema/blueprint">
+
+    <route id="boteco.status.poll">
+      <from uri="timer:status?period=10m"/>
+      <to uri="http4:status.redhat.com/history.rss"/>
+      <split>
+        <xpath>//item</xpath>
+        <to uri="bean:rss-processor"/>
+      </split>
+    </route>
+
+  </camelContext>
 
 </blueprint>
