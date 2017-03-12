@@ -41,7 +41,7 @@
     </bean>
   </service>
 
-  <bean id="rss-processor" class="com.redhat.boteco.plugins.poll.RssProcessor">
+  <bean id="rss-processor" class="tools.devnull.boteco.plugins.redhat.StatusRssProcessor">
     <argument ref="event-bus"/>
     <argument value="10"/>
   </bean>
