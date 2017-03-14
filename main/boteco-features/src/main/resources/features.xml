@@ -34,6 +34,7 @@
 
     <bundle>mvn:org.mongodb/mongo-java-driver/3.0.4</bundle>
     <bundle>wrap:mvn:tools.devnull/trugger/${trugger.version}</bundle>
+    <bundle>wrap:mvn:org.jsoup/jsoup/1.10.2</bundle>
 
     <!-- main bundles -->
     <bundle>mvn:${project.groupId}/boteco-base/${project.version}</bundle>

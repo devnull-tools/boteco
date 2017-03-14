@@ -24,37 +24,44 @@
 
 package tools.devnull.boteco.plugins.redhat;
 
-import org.apache.camel.Handler;
-import org.apache.camel.language.XPath;
-import tools.devnull.boteco.event.EventBus;
+import tools.devnull.boteco.message.Priority;
+import tools.devnull.boteco.message.Sendable;
 
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
+/**
+ * A class that represents a status from status.redhat.com
+ */
+public class Status implements Sendable {
 
-public class StatusRssProcessor {
+  private final String title;
+  private final String description;
+  private final String url;
+  private final Priority priority;
 
-  private final EventBus bus;
-  private final int threshold;
-  private final RssDescriptionParser parser;
-
-  public StatusRssProcessor(EventBus bus, int threshold) {
-    this.bus = bus;
-    this.threshold = threshold;
-    this.parser = new RssDescriptionParser();
+  public Status(String title, String date, String description, String status, String url) {
+    this.title = String.format("[t]%s[/t] [a]%s[/a]", status, title);
+    this.description = String.format("[aa]%s[/aa]: %s", date, description);
+    this.priority = "resolved".equals(status.toLowerCase()) ? Priority.NORMAL : Priority.HIGH;
+    this.url = url;
   }
 
-  @Handler
-  public void process(@XPath("//title") String title,
-                      @XPath("//description") String description,
-                      @XPath("//pubDate") String pubDate,
-                      @XPath("//link") String link) {
-    ZonedDateTime published = ZonedDateTime.parse(pubDate, DateTimeFormatter.RFC_1123_DATE_TIME);
-    if (ChronoUnit.MINUTES.between(published,
-        ZonedDateTime.now()) <= threshold) {
-      bus.broadcast(parser.parse(description, title, link))
-          .as("status.redhat");
-    }
+  @Override
+  public String message() {
+    return description;
+  }
+
+  @Override
+  public String title() {
+    return title;
+  }
+
+  @Override
+  public String url() {
+    return url;
+  }
+
+  @Override
+  public Priority priority() {
+    return priority;
   }
 
 }

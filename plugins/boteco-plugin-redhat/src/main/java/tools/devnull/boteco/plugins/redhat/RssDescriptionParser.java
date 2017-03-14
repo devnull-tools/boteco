@@ -24,37 +24,22 @@
 
 package tools.devnull.boteco.plugins.redhat;
 
-import org.apache.camel.Handler;
-import org.apache.camel.language.XPath;
-import tools.devnull.boteco.event.EventBus;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
+/**
+ * A class to parse RSS entries from status.redhat.com
+ */
+public class RssDescriptionParser {
 
-public class StatusRssProcessor {
-
-  private final EventBus bus;
-  private final int threshold;
-  private final RssDescriptionParser parser;
-
-  public StatusRssProcessor(EventBus bus, int threshold) {
-    this.bus = bus;
-    this.threshold = threshold;
-    this.parser = new RssDescriptionParser();
-  }
-
-  @Handler
-  public void process(@XPath("//title") String title,
-                      @XPath("//description") String description,
-                      @XPath("//pubDate") String pubDate,
-                      @XPath("//link") String link) {
-    ZonedDateTime published = ZonedDateTime.parse(pubDate, DateTimeFormatter.RFC_1123_DATE_TIME);
-    if (ChronoUnit.MINUTES.between(published,
-        ZonedDateTime.now()) <= threshold) {
-      bus.broadcast(parser.parse(description, title, link))
-          .as("status.redhat");
-    }
+  public Status parse(String content, String title, String link) {
+    Document doc = Jsoup.parse(content);
+    Element element = doc.select("p").first();
+    String description = element.ownText().replaceFirst("^[-]\\s+", "");
+    String date = element.select("small").last().ownText();
+    String status = element.select("strong").last().ownText();
+    return new Status(title, date, description, status, link);
   }
 
 }
