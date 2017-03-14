@@ -37,7 +37,7 @@
     <bundle>wrap:mvn:org.jsoup/jsoup/1.10.2</bundle>
 
     <!-- main bundles -->
-    <bundle>mvn:${project.groupId}/boteco-base/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-message-formatter/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-rest-client/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-amq-client/${project.version}</bundle>

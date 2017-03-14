@@ -38,7 +38,7 @@
   <dependencies>
     <dependency>
       <groupId>tools.devnull</groupId>
-      <artifactId>boteco-base</artifactId>
+      <artifactId>boteco</artifactId>
       <version>${project.version}</version>
     </dependency>
 

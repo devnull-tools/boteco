@@ -27,7 +27,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <artifactId>boteco</artifactId>
+    <artifactId>boteco-parent</artifactId>
     <groupId>tools.devnull</groupId>
     <version>0.6.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
@@ -38,7 +38,7 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>boteco-base</module>
+    <module>boteco</module>
     <module>boteco-test</module>
     <module>boteco-features</module>
     <module>boteco-message-formatter</module>
