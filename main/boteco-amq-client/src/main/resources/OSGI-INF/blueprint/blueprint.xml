@@ -36,7 +36,7 @@
     <cm:default-properties>
       <cm:property name="jms.user" value="admin"/>
       <cm:property name="jms.password" value="admin"/>
-      <cm:property name="jms.connectionUrl" value="vm://amq"/>
+      <cm:property name="jms.connectionUrl" value="tcp://localhost:61616"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
