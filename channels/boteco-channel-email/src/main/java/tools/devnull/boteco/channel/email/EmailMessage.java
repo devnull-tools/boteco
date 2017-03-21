@@ -25,27 +25,19 @@
 package tools.devnull.boteco.channel.email;
 
 import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.ServiceRegistry;
-import tools.devnull.boteco.message.Sendable;
-import tools.devnull.boteco.user.User;
-import tools.devnull.boteco.message.CommandExtractor;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageCommand;
-import tools.devnull.boteco.message.MessageSender;
+import tools.devnull.boteco.message.Message;
 import tools.devnull.boteco.message.Sender;
-import tools.devnull.boteco.message.SimpleCommandExtractor;
+import tools.devnull.boteco.user.User;
 
 /**
- * An abstraction for an email income message
+ * An abstraction for an email message
  */
-public class EmailIncomeMessage implements IncomeMessage {
+public class EmailMessage implements Message {
 
   private static final long serialVersionUID = 8180521354784182482L;
 
-  private final ServiceRegistry serviceRegistry;
   private final User user;
-  private final CommandExtractor extractor;
-  private final Channel channel = new EmailChannel();
+  private final Channel channel;
   private final String content;
   private final Sender sender;
   private final String target;
@@ -53,23 +45,21 @@ public class EmailIncomeMessage implements IncomeMessage {
   /**
    * Creates a new message using the given parameters
    *
-   * @param serviceRegistry the service locator for fetching a {@link MessageSender} component
-   * @param content         the content of the email
-   * @param sender          the sender of the email
-   * @param target          the target of the email
-   * @param user            the user associated with this message (may be {@code null})
+   * @param content the content of the email
+   * @param sender  the sender of the email
+   * @param target  the target of the email
+   * @param user    the user associated with this message (may be {@code null})
    */
-  public EmailIncomeMessage(ServiceRegistry serviceRegistry,
-                            String content,
-                            EmailSender sender,
-                            String target,
-                            User user) {
+  public EmailMessage(Channel channel,
+                      String content,
+                      EmailSender sender,
+                      String target,
+                      User user) {
+    this.channel = channel;
     this.content = content;
     this.sender = sender;
     this.target = target;
-    this.serviceRegistry = serviceRegistry;
     this.user = user;
-    this.extractor = new SimpleCommandExtractor();
   }
 
   @Override
@@ -108,27 +98,8 @@ public class EmailIncomeMessage implements IncomeMessage {
   }
 
   @Override
-  public boolean hasCommand() {
-    return this.extractor.isCommand(this);
-  }
-
-  @Override
-  public MessageCommand command() {
-    return this.extractor.extract(this);
-  }
-
-  @Override
-  public void reply(Sendable object) {
-    this.serviceRegistry.locate(MessageSender.class).one()
-        .send(content)
-        .with("Subject", object.title() != null ? object.title() : "Re: " + this.content)
-        .to(sender().id())
-        .through(channel().id());
-  }
-
-  @Override
-  public void sendBack(Sendable object) {
-    reply(content);
+  public String replyTo() {
+    return null;
   }
 
 }

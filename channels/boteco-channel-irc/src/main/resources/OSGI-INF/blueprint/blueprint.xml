@@ -65,11 +65,18 @@
     </bean>
   </service>
 
-  <service id="irc-channel" interface="tools.devnull.boteco.Channel">
+  <bean id="command-extractor" class="tools.devnull.boteco.message.PrefixCommandExtractor">
+    <argument value="{{bot.command.prefix}}"/>
+  </bean>
+
+  <bean id="channel" class="tools.devnull.boteco.channel.irc.IrcChannel">
+    <argument ref="command-extractor"/>
+  </bean>
+
+  <service interface="tools.devnull.boteco.Channel" ref="channel">
     <service-properties>
       <entry key="id" value="irc"/>
     </service-properties>
-    <bean class="tools.devnull.boteco.channel.irc.IrcChannel"/>
   </service>
 
   <service interface="tools.devnull.boteco.message.MessageProcessor">
@@ -78,20 +85,13 @@
     </bean>
   </service>
 
-  <bean id="command-extractor" class="tools.devnull.boteco.message.PrefixCommandExtractor">
-    <argument value="{{bot.command.prefix}}"/>
-  </bean>
-
   <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>
-
-  <bean id="service-registry" class="tools.devnull.boteco.OsgiServiceRegistry"/>
 
   <reference id="user-manager" interface="tools.devnull.boteco.user.UserManager"/>
 
   <bean id="irc-income-processor" class="tools.devnull.boteco.channel.irc.IrcIncomeProcessor">
-    <argument ref="command-extractor"/>
+    <argument ref="channel"/>
     <argument ref="message-dispatcher"/>
-    <argument ref="service-registry"/>
     <argument ref="user-manager"/>
   </bean>
 
@@ -157,6 +157,6 @@
 
   </camelContext>
 
-  <reference id="activemq" interface="org.apache.camel.Component" filter="(component=activemq)"/>
+  <reference id="activemq" interface="org.apache.camel.Component" filter="&amp;(component=activemq)(bundle=boteco)"/>
 
 </blueprint>

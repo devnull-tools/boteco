@@ -55,12 +55,13 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <service id="email-channel" interface="tools.devnull.boteco.Channel">
+  <service interface="tools.devnull.boteco.Channel" ref="channel">
     <service-properties>
       <entry key="id" value="email"/>
     </service-properties>
-    <bean class="tools.devnull.boteco.channel.email.EmailChannel"/>
   </service>
+
+  <bean id="channel" class="tools.devnull.boteco.channel.email.EmailChannel"/>
 
   <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>
   <bean id="service-registry" class="tools.devnull.boteco.OsgiServiceRegistry"/>
@@ -69,7 +70,7 @@
 
   <bean id="income-processor" class="tools.devnull.boteco.channel.email.EmailIncomeProcessor">
     <argument ref="message-dispatcher"/>
-    <argument ref="service-registry"/>
+    <argument ref="channel"/>
     <argument ref="user-manager"/>
   </bean>
 
@@ -102,6 +103,6 @@
 
   </camelContext>
 
-  <reference id="activemq" interface="org.apache.camel.Component" filter="(component=activemq)"/>
+  <reference id="activemq" interface="org.apache.camel.Component" filter="&amp;(component=activemq)(bundle=boteco)"/>
 
 </blueprint>

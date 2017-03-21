@@ -26,42 +26,37 @@ package tools.devnull.boteco.channel.telegram;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.Destination;
+import tools.devnull.boteco.message.MessageDispatcher;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.user.UserManager;
-import tools.devnull.boteco.message.CommandExtractor;
-import tools.devnull.boteco.ServiceRegistry;
-import tools.devnull.boteco.message.MessageDispatcher;
 
 /**
  * A processor that deals with income messages from Telegram.
  */
 public class TelegramIncomeProcessor implements Processor {
 
-  private final CommandExtractor extractor;
+  private final Channel channel;
   private final TelegramOffsetManager offsetManager;
   private final MessageDispatcher dispatcher;
-  private final ServiceRegistry serviceRegistry;
   private final UserManager userManager;
 
   /**
    * Creates a new processor based on the given parameters
    *
-   * @param extractor       a component for extracting commands from messages
+   * @param channel the channel implementation
    * @param offsetManager   a component to manager the current offset in poll operations
    * @param dispatcher      a component to dispatch messages to be processed
-   * @param serviceRegistry a service locator for lookup purposes
    * @param userManager     a user manager to fetch user information
    */
-  public TelegramIncomeProcessor(CommandExtractor extractor,
+  public TelegramIncomeProcessor(Channel channel,
                                  TelegramOffsetManager offsetManager,
                                  MessageDispatcher dispatcher,
-                                 ServiceRegistry serviceRegistry,
                                  UserManager userManager) {
-    this.extractor = extractor;
+    this.channel = channel;
     this.offsetManager = offsetManager;
     this.dispatcher = dispatcher;
-    this.serviceRegistry = serviceRegistry;
     this.userManager = userManager;
   }
 
@@ -71,7 +66,7 @@ public class TelegramIncomeProcessor implements Processor {
         pooling -> {
           String senderId = pooling.getMessage().getChat().getId().toString();
           User user = this.userManager.find(Destination.channel(TelegramChannel.ID).to(senderId));
-          dispatcher.dispatch(new TelegramIncomeMessage(extractor, pooling.getMessage(), serviceRegistry, user));
+          dispatcher.dispatch(new TelegramIncomeMessage(channel, pooling.getMessage(), user));
         });
   }
 

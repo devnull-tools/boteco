@@ -25,6 +25,7 @@
 package tools.devnull.boteco.channel.user;
 
 import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.message.CommandExtractor;
 
 /**
  * The implementation of the User Channel
@@ -36,6 +37,16 @@ public class UserChannel implements Channel {
   public static final String ID = "user";
 
   @Override
+  public boolean canSend() {
+    return true;
+  }
+
+  @Override
+  public boolean canReceive() {
+    return false;
+  }
+
+  @Override
   public String name() {
     return "User";
   }
@@ -43,6 +54,11 @@ public class UserChannel implements Channel {
   @Override
   public String id() {
     return ID;
+  }
+
+  @Override
+  public CommandExtractor commandExtractor() {
+    return null;
   }
 
 }

@@ -25,6 +25,7 @@
 package tools.devnull.boteco.channel.pushover;
 
 import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.message.CommandExtractor;
 
 /**
  * The Pushover Channel implementation
@@ -34,6 +35,16 @@ public class PushoverChannel implements Channel {
   private static final long serialVersionUID = 189869244755568254L;
 
   @Override
+  public boolean canSend() {
+    return true;
+  }
+
+  @Override
+  public boolean canReceive() {
+    return false;
+  }
+
+  @Override
   public String name() {
     return "Pushover";
   }
@@ -41,6 +52,12 @@ public class PushoverChannel implements Channel {
   @Override
   public String id() {
     return "pushover";
+  }
+
+  @Override
+  public CommandExtractor commandExtractor() {
+    // this is not an In channel, so, no command extractor
+    return null;
   }
 
 }

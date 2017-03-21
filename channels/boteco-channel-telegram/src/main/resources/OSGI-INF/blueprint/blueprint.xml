@@ -72,10 +72,9 @@
   <reference id="user-manager" interface="tools.devnull.boteco.user.UserManager"/>
 
   <bean id="telegram-income-processor" class="tools.devnull.boteco.channel.telegram.TelegramIncomeProcessor">
-    <argument ref="command-extractor"/>
+    <argument ref="channel"/>
     <argument ref="offset-manager"/>
     <argument ref="message-dispatcher"/>
-    <argument ref="service-registry"/>
     <argument ref="user-manager"/>
   </bean>
 
@@ -92,11 +91,14 @@
     <argument value="{{bot.token}}"/>
   </bean>
 
-  <service id="telegram-channel" interface="tools.devnull.boteco.Channel">
+  <bean id="channel" class="tools.devnull.boteco.channel.telegram.TelegramChannel">
+    <argument ref="command-extractor"/>
+  </bean>
+
+  <service interface="tools.devnull.boteco.Channel" ref="channel">
     <service-properties>
       <entry key="id" value="telegram"/>
     </service-properties>
-    <bean class="tools.devnull.boteco.channel.telegram.TelegramChannel"/>
   </service>
 
   <service interface="tools.devnull.boteco.message.MessageProcessor">
@@ -138,6 +140,6 @@
 
   </camelContext>
 
-  <reference id="activemq" interface="org.apache.camel.Component" filter="(component=activemq)"/>
+  <reference id="activemq" interface="org.apache.camel.Component" filter="&amp;(component=activemq)(bundle=boteco)"/>
 
 </blueprint>

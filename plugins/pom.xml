@@ -50,6 +50,7 @@
     <module>boteco-plugin-request</module>
     <module>boteco-plugin-xgh</module>
     <module>boteco-plugin-norris</module>
+    <module>boteco-plugin-validator</module>
   </modules>
 
   <dependencies>

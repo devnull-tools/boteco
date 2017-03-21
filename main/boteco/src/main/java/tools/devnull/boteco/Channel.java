@@ -24,12 +24,28 @@
 
 package tools.devnull.boteco;
 
+import tools.devnull.boteco.message.CommandExtractor;
+
 import java.io.Serializable;
 
 /**
  * Interface that defines a channel.
  */
 public interface Channel extends Serializable {
+
+  /**
+   * Tells if this channel can send messages.
+   *
+   * @return {@code true} if this channel can send messages.
+   */
+  boolean canSend();
+
+  /**
+   * Tells if this channel can receive messages.
+   *
+   * @return {@code true} if this channel can receive messages.
+   */
+  boolean canReceive();
 
   /**
    * Returns the name of the channel
@@ -45,5 +61,15 @@ public interface Channel extends Serializable {
    * @return the id of the channel
    */
   String id();
+
+  /**
+   * Returns the command extractor for this channel.
+   * <p>
+   * This is only needed if the Channel can {@link #canReceive()} receive}
+   * messages.
+   *
+   * @return the command extractor for this channel.
+   */
+  CommandExtractor commandExtractor();
 
 }

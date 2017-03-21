@@ -27,25 +27,18 @@ package tools.devnull.boteco.channel.irc;
 import org.apache.camel.component.irc.IrcMessage;
 import org.schwering.irc.lib.IRCUser;
 import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.message.Sendable;
-import tools.devnull.boteco.user.User;
-import tools.devnull.boteco.message.MessageCommand;
-import tools.devnull.boteco.message.CommandExtractor;
-import tools.devnull.boteco.ServiceRegistry;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageSender;
+import tools.devnull.boteco.message.Message;
 import tools.devnull.boteco.message.Sender;
+import tools.devnull.boteco.user.User;
 
 /**
  * An abstraction of an IRC message.
  */
-public class IrcIncomeMessage implements IncomeMessage {
+public class BotecoIrcMessage implements Message {
 
   private static final long serialVersionUID = -4838114200533219628L;
 
-  private final Channel channel = new IrcChannel();
-  private final CommandExtractor commandExtractor;
-  private final ServiceRegistry serviceRegistry;
+  private final Channel channel;
   private final User user;
   private final String message;
   private final Sender sender;
@@ -54,20 +47,17 @@ public class IrcIncomeMessage implements IncomeMessage {
   /**
    * Creates a new message using the given parameters
    *
-   * @param income           the actual IRC message
-   * @param commandExtractor the component to extract commands from this message
-   * @param serviceRegistry  the service locator to find a {@link MessageSender} when necessary
-   * @param user             the user associated with this message (may be {@code null})
+   * @param channel the channel implementation
+   * @param income  the actual IRC message
+   * @param user    the user associated with this message (may be {@code null})
    */
-  public IrcIncomeMessage(IrcMessage income,
-                          CommandExtractor commandExtractor,
-                          ServiceRegistry serviceRegistry,
+  public BotecoIrcMessage(Channel channel,
+                          IrcMessage income,
                           User user) {
-    this.commandExtractor = commandExtractor;
     this.message = income.getMessage();
     this.sender = new IrcSender(income.getUser());
     this.target = income.getTarget();
-    this.serviceRegistry = serviceRegistry;
+    this.channel = channel;
     this.user = user;
   }
 
@@ -93,7 +83,7 @@ public class IrcIncomeMessage implements IncomeMessage {
 
   @Override
   public String target() {
-    return target;
+    return isPrivate() ? this.sender.id() : target;
   }
 
   @Override
@@ -103,43 +93,12 @@ public class IrcIncomeMessage implements IncomeMessage {
 
   @Override
   public boolean isGroup() {
-    return target().startsWith("#");
+    return target.startsWith("#");
   }
 
   @Override
-  public boolean hasCommand() {
-    return commandExtractor.isCommand(this);
-  }
-
-  @Override
-  public MessageCommand command() {
-    return commandExtractor.extract(this);
-  }
-
-  @Override
-  public void reply(Sendable object) {
-    if (isPrivate()) {
-      send(sender.id(), object, null);
-    } else {
-      send(target(), object, sender.id());
-    }
-  }
-
-  @Override
-  public void sendBack(Sendable object) {
-    if (isPrivate()) {
-      send(sender().id(), object, null);
-    } else {
-      send(target(), object, null);
-    }
-  }
-
-  private void send(String target, Sendable object, String replyId) {
-    serviceRegistry.locate(MessageSender.class).one()
-        .send(object)
-        .replyingTo(replyId)
-        .to(target)
-        .through(channel().id());
+  public String replyTo() {
+    return sender.id();
   }
 
   private static class IrcSender implements Sender {

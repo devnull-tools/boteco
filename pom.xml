@@ -43,10 +43,11 @@
 
     <fuse.version>6.3.0.redhat-187</fuse.version>
 
-    <trugger.version>5.2.1</trugger.version>
+    <trugger.version>5.3.0</trugger.version>
     <kodo.version>3.1.0</kodo.version>
     <junit.version>4.11</junit.version>
     <mockito.version>2.7.13</mockito.version>
+    <hibernate-validator.version>5.4.0.Final</hibernate-validator.version>
 
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -148,6 +149,12 @@
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient-osgi</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>${hibernate-validator.version}</version>
     </dependency>
 
     <dependency>

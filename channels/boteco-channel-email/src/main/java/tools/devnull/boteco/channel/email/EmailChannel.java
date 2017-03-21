@@ -25,6 +25,8 @@
 package tools.devnull.boteco.channel.email;
 
 import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.message.CommandExtractor;
+import tools.devnull.boteco.message.SimpleCommandExtractor;
 
 /**
  * The Email Channel implementation
@@ -36,6 +38,16 @@ public class EmailChannel implements Channel {
   public static String ID = "email";
 
   @Override
+  public boolean canSend() {
+    return true;
+  }
+
+  @Override
+  public boolean canReceive() {
+    return true;
+  }
+
+  @Override
   public String name() {
     return "Email";
   }
@@ -43,6 +55,11 @@ public class EmailChannel implements Channel {
   @Override
   public String id() {
     return ID;
+  }
+
+  @Override
+  public CommandExtractor commandExtractor() {
+    return new SimpleCommandExtractor();
   }
 
 }

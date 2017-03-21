@@ -35,6 +35,6 @@ public interface MessageDispatcher {
    *
    * @param message the message to dispatch
    */
-  void dispatch(IncomeMessage message);
+  void dispatch(Message message);
 
 }

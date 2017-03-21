@@ -25,6 +25,7 @@
 package tools.devnull.boteco.channel.telegram;
 
 import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.message.CommandExtractor;
 
 /**
  * A class that represents the Telegram Channel.
@@ -35,6 +36,22 @@ public class TelegramChannel implements Channel {
 
   public static final String ID = "telegram";
 
+  private final CommandExtractor commandExtractor;
+
+  public TelegramChannel(CommandExtractor commandExtractor) {
+    this.commandExtractor = commandExtractor;
+  }
+
+  @Override
+  public boolean canSend() {
+    return true;
+  }
+
+  @Override
+  public boolean canReceive() {
+    return true;
+  }
+
   @Override
   public String name() {
     return "Telegram";
@@ -43,6 +60,11 @@ public class TelegramChannel implements Channel {
   @Override
   public String id() {
     return ID;
+  }
+
+  @Override
+  public CommandExtractor commandExtractor() {
+    return this.commandExtractor;
   }
 
 }

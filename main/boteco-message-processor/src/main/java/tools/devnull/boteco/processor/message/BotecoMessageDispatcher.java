@@ -28,6 +28,7 @@ import tools.devnull.boteco.Rule;
 import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.client.jms.JmsClient;
 import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.Message;
 import tools.devnull.boteco.message.MessageDispatcher;
 
 import java.util.List;
@@ -66,7 +67,8 @@ public class BotecoMessageDispatcher implements MessageDispatcher {
   }
 
   @Override
-  public void dispatch(IncomeMessage incomeMessage) {
+  public void dispatch(Message message) {
+    IncomeMessage incomeMessage = new BotecoIncomeMessage(serviceRegistry, message);
     List<Rule> rules = serviceRegistry.locate(Rule.class)
         .filter(serviceProperty("channel", eq("all").or(eq(incomeMessage.channel().id()))))
         .all();

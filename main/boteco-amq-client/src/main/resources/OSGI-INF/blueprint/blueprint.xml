@@ -49,6 +49,7 @@
   <service id="activemq-component" interface="org.apache.camel.Component">
     <service-properties>
       <entry key="component" value="activemq"/>
+      <entry key="bundle" value="boteco"/>
     </service-properties>
     <bean class="org.apache.activemq.camel.component.ActiveMQComponent">
       <property name="connectionFactory" ref="connection-factory"/>
