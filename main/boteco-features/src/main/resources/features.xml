@@ -33,8 +33,8 @@
     <feature>camel-mail</feature>
 
     <bundle>mvn:org.mongodb/mongo-java-driver/3.0.4</bundle>
-    <bundle>wrap:mvn:tools.devnull/trugger/${trugger.version}</bundle>
     <bundle>wrap:mvn:org.jsoup/jsoup/1.10.2</bundle>
+    <bundle>mvn:tools.devnull/trugger/${trugger.version}</bundle>
 
     <!-- hibernate validator -->
     <bundle>mvn:org.hibernate/hibernate-validator/5.4.0.Final</bundle>
@@ -42,7 +42,7 @@
     <bundle>mvn:org.jboss.logging/jboss-logging/3.3.0.Final</bundle>
     <bundle>mvn:com.fasterxml/classmate/1.3.1</bundle>
     <bundle>mvn:org.glassfish/javax.el/3.0.1-b08</bundle>
-    <bundle>mvn:org.jsoup/jsoup/1.8.3</bundle>
+    <!--<bundle>mvn:org.jsoup/jsoup/1.8.3</bundle>-->
     <bundle>mvn:joda-time/joda-time/2.9.5</bundle>
     <bundle>mvn:javax.money/money-api/1.0.1</bundle>
     <bundle>mvn:org.javamoney/moneta/1.1</bundle>
