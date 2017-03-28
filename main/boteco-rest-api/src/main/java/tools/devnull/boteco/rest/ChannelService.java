@@ -62,7 +62,7 @@ public class ChannelService {
     Channel channel = serviceRegistry.locate(Channel.class).filter(id(channelId)).one();
     OutcomeMessageConfiguration configuration = messageSender.send(message.getContent());
 
-    message.getMetadata().entrySet().forEach(entry -> configuration.with(entry.getKey(), entry.getValue()));
+    message.getMetadata().forEach(configuration::with);
 
     configuration.withTitle(message.getTitle());
     configuration.withUrl(message.getUrl());
@@ -97,8 +97,7 @@ public class ChannelService {
   public Response getAvailableChannel(@PathParam("channel") String channelId) {
     Channel channel = serviceRegistry.locate(Channel.class).filter(id(channelId)).one();
     if (channel != null) {
-      return Response.ok(new AvailableChannel(channel))
-          .build();
+      return Response.ok(new AvailableChannel(channel)).build();
     } else {
       return Response.status(Response.Status.NOT_FOUND).build();
     }
