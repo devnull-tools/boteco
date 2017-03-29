@@ -44,7 +44,7 @@
     <fuse.version>6.3.0.redhat-187</fuse.version>
 
     <trugger.version>5.3.0</trugger.version>
-    <kodo.version>3.1.0</kodo.version>
+    <kodo.version>3.2.0</kodo.version>
     <junit.version>4.11</junit.version>
     <mockito.version>2.7.13</mockito.version>
     <hibernate-validator.version>5.4.0.Final</hibernate-validator.version>
@@ -96,6 +96,13 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <modules>
+    <module>main</module>
+    <module>channels</module>
+    <module>plugins</module>
+    <module>persistence</module>
+  </modules>
 
   <profiles>
     <profile>
@@ -269,12 +276,5 @@
       </snapshots>
     </pluginRepository>
   </pluginRepositories>
-
-  <modules>
-    <module>main</module>
-    <module>channels</module>
-    <module>plugins</module>
-    <module>persistence</module>
-  </modules>
 
 </project>
