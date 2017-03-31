@@ -46,6 +46,14 @@ public interface ServiceQuery<T> {
   ServiceQuery<T> filter(Predicate<ServiceReference> predicate);
 
   /**
+   * Uses the given query to filter the services.
+   *
+   * @param filterQuery the query to filter
+   * @return a new query that uses the given predicate
+   */
+  ServiceQuery<T> filter(String filterQuery);
+
+  /**
    * Return just one service found by this query, no matter
    * if there is more than one.
    *

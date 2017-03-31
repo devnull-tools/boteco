@@ -40,50 +40,56 @@ public class OsgiServiceQuery<T> implements ServiceQuery<T> {
   private final BundleContext bundleContext;
   private final Class<T> serviceClass;
   private final Predicate<ServiceReference> predicate;
+  private final String filter;
 
   public OsgiServiceQuery(BundleContext bundleContext, Class<T> serviceClass) {
     this.bundleContext = bundleContext;
     this.serviceClass = serviceClass;
+    this.filter = null;
     this.predicate = null;
   }
 
   public OsgiServiceQuery(BundleContext bundleContext, Class<T> serviceClass,
-                          Predicate<ServiceReference> predicate) {
+                          Predicate<ServiceReference> predicate, String filter) {
     this.bundleContext = bundleContext;
     this.serviceClass = serviceClass;
     this.predicate = predicate;
+    this.filter = filter;
   }
 
   @Override
   public ServiceQuery<T> filter(Predicate<ServiceReference> predicate) {
     return this.predicate == null ?
-        new OsgiServiceQuery<>(this.bundleContext, this.serviceClass, predicate) :
-        new OsgiServiceQuery<>(this.bundleContext, this.serviceClass, this.predicate.and(predicate));
+        new OsgiServiceQuery<>(this.bundleContext, this.serviceClass, predicate, this.filter) :
+        new OsgiServiceQuery<>(this.bundleContext, this.serviceClass, this.predicate.and(predicate), this.filter);
+  }
+
+  @Override
+  public ServiceQuery<T> filter(String filterQuery) {
+    return new OsgiServiceQuery<>(this.bundleContext, this.serviceClass, this.predicate, filterQuery);
   }
 
   @Override
   public T one() {
-    if (this.predicate != null) {
-      try {
-        Collection<ServiceReference<T>> references = this.bundleContext.getServiceReferences(serviceClass, null);
-        return references.stream()
-            .filter(this.predicate)
-            .findFirst()
-            .map(this.bundleContext::getService)
-            .orElse(null);
-      } catch (InvalidSyntaxException e) {
-        throw new BotException(e);
+    try {
+      Collection<ServiceReference<T>> references = this.bundleContext.getServiceReferences(serviceClass, this.filter);
+      Stream<ServiceReference<T>> stream = references.stream();
+      if (this.predicate != null) {
+        stream = stream.filter(this.predicate);
       }
-    } else {
-      ServiceReference<T> reference = this.bundleContext.getServiceReference(serviceClass);
-      return this.bundleContext.getService(reference);
+      return stream
+          .findFirst()
+          .map(this.bundleContext::getService)
+          .orElse(null);
+    } catch (InvalidSyntaxException e) {
+      throw new BotException(e);
     }
   }
 
   @Override
   public List<T> all() {
     try {
-      Collection<ServiceReference<T>> references = this.bundleContext.getServiceReferences(serviceClass, null);
+      Collection<ServiceReference<T>> references = this.bundleContext.getServiceReferences(serviceClass, this.filter);
       Stream<ServiceReference<T>> stream = references.stream();
       if (this.predicate != null) {
         stream = stream.filter(this.predicate);
