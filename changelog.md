@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.6.0
+
+- `IncomeMessage` now doesn't need to be implement by channels, only a smaller `Message` interface
+- More tests added (please don't freak out, I'll add even more later... I hope)
+- Chuck Norris plugin
+- Features file is now more organized
+- Added a shutdown time for Camel routes
+- Added an invocation rule
+- Added a way to disable plugins for specific channels
+- Project reorganization
+- Subscription commands now take multiple events separated by commas
+- Included a parser for the RSS from `status.redhat.com` in order to broadcast events
+- Added hibernate validator to validate command parameter objects
+
 ## v0.5.0 (2017-02-16)
 
 - Improvements on Rest Client DSL

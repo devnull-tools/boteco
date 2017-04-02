@@ -30,7 +30,7 @@ import tools.devnull.kodo.Spec;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static tools.devnull.kodo.Expectation.exec;
+import static tools.devnull.kodo.Expectation.doing;
 import static tools.devnull.kodo.Expectation.to;
 
 public class XGHTest {
@@ -38,9 +38,9 @@ public class XGHTest {
   @Test
   public void testAxioms() {
     Spec.given(new XGH())
-        .expect(exec(xgh -> xgh.axiom(1)), to().succeed())
-        .expect(exec(xgh -> xgh.axiom(23)), to().fail())
-        .expect(exec(xgh -> xgh.axiom(0)), to().fail());
+        .expect(doing(xgh -> xgh.axiom(1)), to().succeed())
+        .expect(doing(xgh -> xgh.axiom(23)), to().fail())
+        .expect(doing(xgh -> xgh.axiom(0)), to().fail());
 
     for (int i = 1 ; i <= 22 ; i++) {
       Spec.given(new XGH())

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.plugins.karma;
 
+import tools.devnull.boteco.Name;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Group;
@@ -36,10 +37,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Group
+@Name("karma")
 public class KarmaMessageProcessor implements MessageProcessor {
 
   private final Pattern pattern =
-      Pattern.compile("(?<term>\\S+)(?<operation>\\+\\+|\\-\\-)(\\s|[,.:;!?]|$)");
+      Pattern.compile("(?<term>\\S+)(?<operation>\\+\\+|--)(\\s|[,.:;!?]|$)");
 
   private final KarmaRepository repository;
   private final Properties properties;

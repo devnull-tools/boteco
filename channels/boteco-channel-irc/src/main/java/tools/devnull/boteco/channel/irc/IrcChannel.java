@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -25,6 +25,7 @@
 package tools.devnull.boteco.channel.irc;
 
 import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.message.CommandExtractor;
 
 /**
  * Implementation of the IRC Channel
@@ -36,6 +37,22 @@ public class IrcChannel implements Channel {
    */
   public static final String ID = "irc";
 
+  private final CommandExtractor commandExtractor;
+
+  public IrcChannel(CommandExtractor commandExtractor) {
+    this.commandExtractor = commandExtractor;
+  }
+
+  @Override
+  public boolean canSend() {
+    return true;
+  }
+
+  @Override
+  public boolean canReceive() {
+    return true;
+  }
+
   @Override
   public String name() {
     return "IRC";
@@ -44,6 +61,11 @@ public class IrcChannel implements Channel {
   @Override
   public String id() {
     return ID;
+  }
+
+  @Override
+  public CommandExtractor commandExtractor() {
+    return this.commandExtractor;
   }
 
 }

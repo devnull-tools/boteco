@@ -26,13 +26,29 @@
            xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
                                http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
+  <bean id="xgh" class="tools.devnull.boteco.plugins.xgh.XGH"/>
+
+  <bean id="xgh-pt" class="tools.devnull.boteco.plugins.xgh.XGH">
+    <argument value="pt"/>
+  </bean>
+
   <service interface="tools.devnull.boteco.message.MessageProcessor">
-    <bean class="tools.devnull.boteco.plugins.xgh.XghMessageProcessor"/>
+    <bean class="tools.devnull.boteco.plugins.xgh.XghMessageProcessor">
+      <argument ref="xgh"/>
+      <argument value="xgh"/>
+    </bean>
   </service>
 
   <service interface="tools.devnull.boteco.message.MessageProcessor">
     <bean class="tools.devnull.boteco.plugins.xgh.XghMessageProcessor">
-      <argument value="pt"/>
+      <argument ref="xgh-pt"/>
+      <argument value="xgh-pt"/>
+    </bean>
+  </service>
+
+  <service interface="tools.devnull.boteco.message.MessageProcessor">
+    <bean class="tools.devnull.boteco.plugins.xgh.XghListenerMessageProcessor">
+      <argument ref="xgh"/>
     </bean>
   </service>
 

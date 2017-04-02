@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.plugins.user;
 
+import tools.devnull.boteco.AlwaysActive;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessingException;
 import tools.devnull.boteco.message.MessageProcessor;
@@ -35,6 +36,7 @@ import tools.devnull.boteco.user.UserManager;
  * A message processor for user operations.
  */
 @Command("user")
+@AlwaysActive
 public class UserMessageProcessor implements MessageProcessor {
 
   private final UserManager userManager;
@@ -49,7 +51,7 @@ public class UserMessageProcessor implements MessageProcessor {
   public void process(IncomeMessage message) {
     message.command()
         .on("new", userId -> {
-          userManager.create(userId, message.destination());
+          userManager.create(userId, message.location());
           message.reply("User created");
         })
         .on("link", LinkRequest.class, request -> {

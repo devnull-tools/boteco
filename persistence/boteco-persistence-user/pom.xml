@@ -2,7 +2,7 @@
 <!--
   ~ The MIT License
   ~
-  ~ Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+  ~ Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
   ~
   ~ Permission  is hereby granted, free of charge, to any person obtaining
   ~ a  copy  of  this  software  and  associated  documentation files (the
@@ -27,10 +27,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <artifactId>boteco-bundle-parent</artifactId>
+    <artifactId>boteco-persistence</artifactId>
     <groupId>tools.devnull</groupId>
-    <version>0.6.0-SNAPSHOT</version>
-    <relativePath>../../misc/boteco-bundle-parent/pom.xml</relativePath>
+    <version>0.6.0</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -42,12 +42,6 @@
       <groupId>tools.devnull</groupId>
       <artifactId>boteco-plugin-user</artifactId>
       <version>${project.version}</version>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.mongodb</groupId>
-      <artifactId>mongo-java-driver</artifactId>
-      <version>3.0.4</version>
     </dependency>
   </dependencies>
 

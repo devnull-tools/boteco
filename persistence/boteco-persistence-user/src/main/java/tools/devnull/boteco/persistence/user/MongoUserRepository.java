@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -27,11 +27,10 @@ package tools.devnull.boteco.persistence.user;
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import tools.devnull.boteco.InvalidDestinationException;
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.user.UserAlreadyExistException;
 import tools.devnull.boteco.plugins.user.UserRepository;
@@ -47,7 +46,7 @@ public class MongoUserRepository implements UserRepository {
   }
 
   @Override
-  public User find(MessageDestination destination) {
+  public User find(MessageLocation destination) {
     Document document = this.users.find(
         new BasicDBObject("destinations." + destination.channel(), destination.target())
     ).first();
@@ -67,7 +66,7 @@ public class MongoUserRepository implements UserRepository {
   }
 
   @Override
-  public User create(String userId, MessageDestination primaryDestination) {
+  public User create(String userId, MessageLocation primaryDestination) {
     if (find(userId) != null) {
       throw new UserAlreadyExistException("User " + userId + " already exists");
     }

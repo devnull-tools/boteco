@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -24,16 +24,16 @@
 
 package tools.devnull.boteco.persistence.subscription;
 
-import tools.devnull.boteco.MessageDestination;
-import tools.devnull.boteco.UserMessageDestination;
+import tools.devnull.boteco.MessageLocation;
+import tools.devnull.boteco.UserMessageLocation;
 import tools.devnull.boteco.event.Subscription;
 
 public class BotecoSubscription implements Subscription {
 
   private final String eventId;
-  private final UserMessageDestination subscriber;
+  private final UserMessageLocation subscriber;
 
-  public BotecoSubscription(String eventId, UserMessageDestination subscriber) {
+  public BotecoSubscription(String eventId, UserMessageLocation subscriber) {
     this.eventId = eventId;
     this.subscriber = subscriber;
   }
@@ -44,7 +44,7 @@ public class BotecoSubscription implements Subscription {
   }
 
   @Override
-  public MessageDestination subscriber() {
+  public MessageLocation subscriber() {
     return subscriber;
   }
 

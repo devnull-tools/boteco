@@ -1,7 +1,7 @@
 <!--
   ~ The MIT License
   ~
-  ~ Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+  ~ Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
   ~
   ~ Permission  is hereby granted, free of charge, to any person obtaining
   ~ a  copy  of  this  software  and  associated  documentation files (the
@@ -50,15 +50,18 @@
       <cm:property name="outcome.from" value=""/>
 
       <cm:property name="trace" value="false"/>
+
+      <cm:property name="shutdown.time" value="10"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <service id="email-channel" interface="tools.devnull.boteco.Channel">
+  <service interface="tools.devnull.boteco.Channel" ref="channel">
     <service-properties>
       <entry key="id" value="email"/>
     </service-properties>
-    <bean class="tools.devnull.boteco.channel.email.EmailChannel"/>
   </service>
+
+  <bean id="channel" class="tools.devnull.boteco.channel.email.EmailChannel"/>
 
   <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>
   <bean id="service-registry" class="tools.devnull.boteco.OsgiServiceRegistry"/>
@@ -67,7 +70,7 @@
 
   <bean id="income-processor" class="tools.devnull.boteco.channel.email.EmailIncomeProcessor">
     <argument ref="message-dispatcher"/>
-    <argument ref="service-registry"/>
+    <argument ref="channel"/>
     <argument ref="user-manager"/>
   </bean>
 
@@ -75,6 +78,10 @@
     <argument>
       <reference interface="tools.devnull.boteco.message.FormatExpressionParser"/>
     </argument>
+  </bean>
+
+  <bean id="shutdown" class="org.apache.camel.impl.DefaultShutdownStrategy">
+    <property name="timeout" value="{{shutdown.time}}"/>
   </bean>
 
   <camelContext id="boteco-channel-email"
@@ -96,6 +103,6 @@
 
   </camelContext>
 
-  <reference id="activemq" interface="org.apache.camel.Component" filter="(component=activemq)"/>
+  <reference id="activemq" interface="org.apache.camel.Component" filter="&amp;(component=activemq)(bundle=boteco)"/>
 
 </blueprint>

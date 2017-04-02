@@ -24,7 +24,11 @@
 
 package tools.devnull.boteco.plugins.xgh;
 
-public class Axiom {
+import tools.devnull.boteco.message.Sendable;
+
+public class Axiom implements Sendable {
+
+  private static final long serialVersionUID = -7688804133515896748L;
 
   private final Integer number;
   private final String title;
@@ -36,16 +40,18 @@ public class Axiom {
     this.description = description;
   }
 
-  public String getTitle() {
-    return title;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
   public Integer getNumber() {
     return number;
+  }
+
+  @Override
+  public String title() {
+    return String.format("[a]#%d - %s[/a]", number, title);
+  }
+
+  @Override
+  public String message() {
+    return description;
   }
 
 }

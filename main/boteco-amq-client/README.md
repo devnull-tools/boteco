@@ -8,4 +8,4 @@ Just use the config `tools.devnull.boteco.client.jms`. The supported properties 
 
 - `jms.user`: the broker user (defaults to `admin`)
 - `jms.password`: the broker password (defaults to `admin`)
-- `jms.connectionUrl`: the broker url (defaults to `vm://amq`)
+- `jms.connectionUrl`: the broker url (defaults to `tcp://localhost:61616`)

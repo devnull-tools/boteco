@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -26,12 +26,10 @@ package tools.devnull.boteco.channel.irc;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import org.apache.camel.component.irc.IrcMessage;
+import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.user.UserManager;
-import tools.devnull.boteco.message.CommandExtractor;
-import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.message.MessageDispatcher;
 
 /**
@@ -39,35 +37,31 @@ import tools.devnull.boteco.message.MessageDispatcher;
  */
 public class IrcIncomeProcessor implements Processor {
 
-  private final CommandExtractor extractor;
+  private final Channel channel;
   private final MessageDispatcher dispatcher;
-  private final ServiceRegistry serviceRegistry;
   private final UserManager userManager;
 
   /**
    * Creates a new processor based on the giving parameters
    *
-   * @param extractor       the component to extract commands from the messages
-   * @param dispatcher      the component to dispatch the messages to be processed
-   * @param serviceRegistry the service locator for component lookup
-   * @param userManager     the user manager to retrieve the registered users
+   * @param channel     the channel implementation
+   * @param dispatcher  the component to dispatch the messages to be processed
+   * @param userManager the user manager to retrieve the registered users
    */
-  public IrcIncomeProcessor(CommandExtractor extractor,
+  public IrcIncomeProcessor(Channel channel,
                             MessageDispatcher dispatcher,
-                            ServiceRegistry serviceRegistry,
                             UserManager userManager) {
-    this.extractor = extractor;
+    this.channel = channel;
     this.dispatcher = dispatcher;
-    this.serviceRegistry = serviceRegistry;
     this.userManager = userManager;
   }
 
   @Override
   public void process(Exchange exchange) throws Exception {
-    IrcMessage income = exchange.getIn(IrcMessage.class);
+    org.apache.camel.component.irc.IrcMessage income = exchange.getIn(org.apache.camel.component.irc.IrcMessage.class);
     if (income.getMessage() != null && !income.getMessage().isEmpty()) {
       User user = this.userManager.find(Destination.channel(IrcChannel.ID).to(income.getUser().getNick()));
-      dispatcher.dispatch(new IrcIncomeMessage(income, extractor, serviceRegistry, user));
+      dispatcher.dispatch(new BotecoIrcMessage(channel, income, user));
     }
   }
 
