@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -25,6 +25,8 @@
 package tools.devnull.boteco.test;
 
 import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.MessageLocation;
+import tools.devnull.boteco.message.ExtractedCommand;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.boteco.message.Sender;
@@ -42,9 +44,13 @@ public class IncomeMessageMock {
 
   private final IncomeMessage mock;
 
-  private IncomeMessageMock(String message) {
+  private IncomeMessageMock() {
     this.mock = mock(IncomeMessage.class);
+  }
+
+  public IncomeMessageMock withMessage(String message) {
     when(mock.content()).thenReturn(message);
+    return this;
   }
 
   public IncomeMessageMock from(String channelId) {
@@ -55,6 +61,11 @@ public class IncomeMessageMock {
 
   public IncomeMessageMock from(Channel channel) {
     when(mock.channel()).thenReturn(channel);
+    return this;
+  }
+
+  public IncomeMessageMock from(MessageLocation location) {
+    when(mock.location()).thenReturn(location);
     return this;
   }
 
@@ -70,43 +81,50 @@ public class IncomeMessageMock {
   }
 
   public IncomeMessageMock withCommand(String name, String... args) {
-    MessageCommand command = mock(MessageCommand.class);
-    when(command.name()).thenReturn(name);
     StringBuilder arg = new StringBuilder();
     Arrays.stream(args).forEach(s -> arg.append(s).append(" "));
-    when(command.as(String.class)).thenReturn(arg.toString().trim());
+    MessageCommand command = new ExtractedCommand(this.mock, name, arg.toString().trim());
     when(mock.command()).thenReturn(command);
     when(mock.hasCommand()).thenReturn(true);
     return this;
   }
 
+  public static IncomeMessage message(Consumer<IncomeMessageMock> consumer) {
+    IncomeMessageMock incomeMessageMock = new IncomeMessageMock();
+    consumer.accept(incomeMessageMock);
+    return incomeMessageMock.mock;
+  }
+
   public static IncomeMessage message(String content) {
-    return message(content, mock -> {});
+    return message(content, mock -> {
+    });
   }
 
   public static IncomeMessage privateMessage(String content) {
-    return privateMessage(content, mock -> {});
+    return privateMessage(content, mock -> {
+    });
   }
 
   public static IncomeMessage groupMessage(String content) {
-    return groupMessage(content, mock -> {});
+    return groupMessage(content, mock -> {
+    });
   }
 
   public static IncomeMessage message(String content, Consumer<IncomeMessageMock> config) {
-    IncomeMessageMock incomeMessageMock = new IncomeMessageMock(content);
+    IncomeMessageMock incomeMessageMock = new IncomeMessageMock().withMessage(content);
     config.accept(incomeMessageMock);
     return incomeMessageMock.mock;
   }
 
   public static IncomeMessage privateMessage(String content, Consumer<IncomeMessageMock> config) {
-    IncomeMessageMock incomeMessageMock = new IncomeMessageMock(content);
+    IncomeMessageMock incomeMessageMock = new IncomeMessageMock().withMessage(content);
     config.accept(incomeMessageMock);
     when(incomeMessageMock.mock.isPrivate()).thenReturn(true);
     return incomeMessageMock.mock;
   }
 
   public static IncomeMessage groupMessage(String content, Consumer<IncomeMessageMock> config) {
-    IncomeMessageMock incomeMessageMock = new IncomeMessageMock(content);
+    IncomeMessageMock incomeMessageMock = new IncomeMessageMock().withMessage(content);
     config.accept(incomeMessageMock);
     when(incomeMessageMock.mock.isGroup()).thenReturn(true);
     return incomeMessageMock.mock;

@@ -1,7 +1,7 @@
 <!--
   ~ The MIT License
   ~
-  ~ Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+  ~ Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
   ~
   ~ Permission  is hereby granted, free of charge, to any person obtaining
   ~ a  copy  of  this  software  and  associated  documentation files (the
@@ -36,6 +36,7 @@
       <cm:property name="outcome.enable" value="false"/>
       <cm:property name="pushover.token" value=""/>
       <cm:property name="trace" value="false"/>
+      <cm:property name="shutdown.time" value="10"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
@@ -59,6 +60,10 @@
     <argument value="{{pushover.token}}"/>
   </bean>
 
+  <bean id="shutdown" class="org.apache.camel.impl.DefaultShutdownStrategy">
+    <property name="timeout" value="{{shutdown.time}}"/>
+  </bean>
+
   <camelContext id="boteco-channel-pushover"
                 trace="{{trace}}"
                 xmlns="http://camel.apache.org/schema/blueprint">
@@ -73,6 +78,6 @@
 
   </camelContext>
 
-  <reference id="activemq" interface="org.apache.camel.Component" filter="(component=activemq)"/>
+  <reference id="activemq" interface="org.apache.camel.Component" filter="&amp;(component=activemq)(bundle=boteco)"/>
 
 </blueprint>

@@ -1,7 +1,7 @@
 <!--
   ~ The MIT License
   ~
-  ~ Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+  ~ Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
   ~
   ~ Permission  is hereby granted, free of charge, to any person obtaining
   ~ a  copy  of  this  software  and  associated  documentation files (the
@@ -36,7 +36,7 @@
     <cm:default-properties>
       <cm:property name="jms.user" value="admin"/>
       <cm:property name="jms.password" value="admin"/>
-      <cm:property name="jms.connectionUrl" value="vm://amq"/>
+      <cm:property name="jms.connectionUrl" value="tcp://localhost:61616"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
@@ -49,6 +49,7 @@
   <service id="activemq-component" interface="org.apache.camel.Component">
     <service-properties>
       <entry key="component" value="activemq"/>
+      <entry key="bundle" value="boteco"/>
     </service-properties>
     <bean class="org.apache.activemq.camel.component.ActiveMQComponent">
       <property name="connectionFactory" ref="connection-factory"/>

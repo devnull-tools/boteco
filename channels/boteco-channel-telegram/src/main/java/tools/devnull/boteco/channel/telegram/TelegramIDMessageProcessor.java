@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.channel.telegram;
 
+import tools.devnull.boteco.AlwaysActive;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Channel;
@@ -34,6 +35,7 @@ import tools.devnull.boteco.message.checker.Command;
  */
 @Command("id")
 @Channel("telegram")
+@AlwaysActive
 public class TelegramIDMessageProcessor implements MessageProcessor {
 
   @Override

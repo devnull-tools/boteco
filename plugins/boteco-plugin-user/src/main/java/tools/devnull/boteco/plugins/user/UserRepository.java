@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -24,16 +24,16 @@
 
 package tools.devnull.boteco.plugins.user;
 
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.user.User;
 
 public interface UserRepository {
 
-  User find(MessageDestination destination);
+  User find(MessageLocation destination);
 
   User find(String userId);
 
-  User create(String userId, MessageDestination primaryDestination);
+  User create(String userId, MessageLocation primaryDestination);
 
   void update(User user);
 

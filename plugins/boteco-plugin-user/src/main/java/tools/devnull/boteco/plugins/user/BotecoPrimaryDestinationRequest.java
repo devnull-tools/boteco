@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -26,7 +26,7 @@ package tools.devnull.boteco.plugins.user;
 
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.Destination;
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.user.PrimaryDestinationRequest;
 import tools.devnull.boteco.user.User;
 
@@ -59,7 +59,7 @@ public class BotecoPrimaryDestinationRequest implements PrimaryDestinationReques
   }
 
   @Override
-  public MessageDestination tokenDestination() {
+  public MessageLocation tokenDestination() {
     return Destination.channel("user").to(user);
   }
 

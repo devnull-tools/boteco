@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -58,24 +58,7 @@ public class BotecoEventBus implements EventBus {
 
   @Override
   public EventSelector broadcast(String message) {
-    return broadcast(new Sendable() {
-      private static final long serialVersionUID = 7895898641225035972L;
-
-      @Override
-      public String message() {
-        return message;
-      }
-
-      @Override
-      public String title() {
-        return null;
-      }
-
-      @Override
-      public String url() {
-        return null;
-      }
-    });
+    return broadcast(Sendable.message(message));
   }
 
 }

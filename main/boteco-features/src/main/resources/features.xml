@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  ~ The MIT License
+  ~
+  ~ Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+  ~
+  ~ Permission  is hereby granted, free of charge, to any person obtaining
+  ~ a  copy  of  this  software  and  associated  documentation files (the
+  ~ "Software"),  to  deal  in the Software without restriction, including
+  ~ without  limitation  the  rights to use, copy, modify, merge, publish,
+  ~ distribute,  sublicense,  and/or  sell  copies of the Software, and to
+  ~ permit  persons to whom the Software is furnished to do so, subject to
+  ~ the following conditions:
+  ~ The  above  copyright  notice  and  this  permission  notice  shall be
+  ~ included  in  all  copies  or  substantial  portions  of the Software.
+  ~
+  ~ THE  SOFTWARE  IS  PROVIDED  "AS  IS",  WITHOUT  WARRANTY OF ANY KIND,
+  ~ EXPRESS  OR  IMPLIED,  INCLUDING  BUT NOT LIMITED TO THE WARRANTIES OF
+  ~ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+  ~ IN  NO  EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+  ~ CLAIM,  DAMAGES  OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+  ~ TORT  OR  OTHERWISE,  ARISING  FROM,  OUT OF OR IN CONNECTION WITH THE
+  ~ SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
+  -->
+<features name="tools.devnull.boteco"
+          xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
+  <feature version="${project.version}" name="boteco"
+           description="Contains base bundles and plugins">
+    <feature>camel-gson</feature>
+    <feature>camel-jsonpath</feature>
+    <feature>camel-http4</feature>
+    <feature>activemq-camel</feature>
+
+    <bundle>mvn:org.mongodb/mongo-java-driver/${mongo-java-driver.version}</bundle>
+    <bundle>wrap:mvn:org.jsoup/jsoup/${jsoup.version}</bundle>
+    <bundle>mvn:tools.devnull/trugger/${trugger.version}</bundle>
+
+    <!-- hibernate validator -->
+    <bundle>mvn:org.hibernate/hibernate-validator/${hibernate-validator.version}</bundle>
+    <bundle>mvn:javax.validation/validation-api/${validation-api.version}</bundle>
+    <bundle>mvn:org.jboss.logging/jboss-logging/3.3.0.Final</bundle>
+    <bundle>mvn:com.fasterxml/classmate/${classmate.version}</bundle>
+    <!-- END -->
+
+    <!-- main bundles -->
+    <bundle>mvn:${project.groupId}/boteco/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-message-formatter/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-rest-client/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-amq-client/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-message-processor/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-event-bus/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-event-processor/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-rest-api/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-channel-user/${project.version}</bundle>
+
+    <!-- main plugins -->
+    <bundle>mvn:${project.groupId}/boteco-plugin-request/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-subscription/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-manager/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-validator/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-user/${project.version}</bundle>
+
+    <!-- main persistence bundles -->
+    <bundle>mvn:${project.groupId}/boteco-persistence-mongodb/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-persistence-subscription/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-persistence-request/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-persistence-manager/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-persistence-user/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-irc"
+           description="IRC Channel for boteco">
+    <feature>camel-irc</feature>
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-channel-irc/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-persistence-irc/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-pushover"
+           description="Pushover Channel for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-channel-pushover/${project.version}</bundle>
+  </feature>
+  <feature version="${project.version}" name="boteco-telegram"
+           description="Telegram Channel for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-channel-telegram/${project.version}</bundle>
+  </feature>
+  <feature version="${project.version}" name="boteco-email"
+           description="Email Channel for boteco">
+    <feature>camel-mail</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-channel-email/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-ping"
+           description="Ping plugin for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-plugin-ping/${project.version}</bundle>
+  </feature>
+  <feature version="${project.version}" name="boteco-weather"
+           description="Weather plugin for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-plugin-weather/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-redhat"
+           description="Red Hat KBase and Status utility plugin for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-plugin-redhat/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-karma"
+           description="Karma plugin for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-plugin-karma/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-persistence-karma/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-diceroll"
+           description="Dice roll plugin for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-plugin-diceroll/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-stocks"
+           description="Stocks plugin for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-plugin-stocks/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-xgh"
+           description="eXtreme Go Horse plugin for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-plugin-xgh/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-norris"
+           description="Chuck Norris plugin for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-plugin-norris/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-plugins"
+           description="Bundled plugins for boteco">
+    <feature>boteco</feature>
+    <feature>boteco-ping</feature>
+    <feature>boteco-weather</feature>
+    <feature>boteco-redhat</feature>
+    <feature>boteco-karma</feature>
+    <feature>boteco-diceroll</feature>
+    <feature>boteco-stocks</feature>
+    <feature>boteco-xgh</feature>
+    <feature>boteco-norris</feature>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-all"
+           description="boteco with all plugins and channels">
+    <!-- main feature -->
+    <feature>boteco</feature>
+
+    <!-- channel features -->
+    <feature>boteco-irc</feature>
+    <feature>boteco-pushover</feature>
+    <feature>boteco-telegram</feature>
+    <feature>boteco-email</feature>
+
+    <!-- bundled plugins -->
+    <feature>boteco-plugins</feature>
+  </feature>
+</features>

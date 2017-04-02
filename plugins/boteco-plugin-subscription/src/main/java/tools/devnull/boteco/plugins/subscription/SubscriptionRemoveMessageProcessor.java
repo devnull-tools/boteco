@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -24,12 +24,14 @@
 
 package tools.devnull.boteco.plugins.subscription;
 
+import tools.devnull.boteco.AlwaysActive;
 import tools.devnull.boteco.event.SubscriptionManager;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Command;
 
 @Command("unsubscribe")
+@AlwaysActive
 public class SubscriptionRemoveMessageProcessor implements MessageProcessor {
 
   private final SubscriptionManager subscriptionManager;
@@ -41,22 +43,24 @@ public class SubscriptionRemoveMessageProcessor implements MessageProcessor {
   @Override
   public void process(IncomeMessage message) {
     SubscriptionParameters parameters = message.command().as(SubscriptionParameters.class);
-    if (parameters.shouldRequestConfirmation()) {
-      this.subscriptionManager
-          .unsubscribe()
-          .target(parameters.target())
-          .ofChannel(parameters.channel())
-          .withConfirmation()
-          .fromEvent(parameters.event());
-      message.reply("The subscription will be removed after confirmation!");
-    } else {
-      this.subscriptionManager
-          .unsubscribe()
-          .target(parameters.target())
-          .ofChannel(parameters.channel())
-          .fromEvent(parameters.event());
-      message.reply("Subscription removed!");
-    }
+    parameters.each(event -> {
+      if (parameters.shouldRequestConfirmation()) {
+        this.subscriptionManager
+            .unsubscribe()
+            .target(parameters.target())
+            .ofChannel(parameters.channel())
+            .withConfirmation()
+            .fromEvent(event);
+        message.reply("The subscription %s will be removed after confirmation!", event);
+      } else {
+        this.subscriptionManager
+            .unsubscribe()
+            .target(parameters.target())
+            .ofChannel(parameters.channel())
+            .fromEvent(event);
+        message.reply("Subscription %s removed!", event);
+      }
+    });
   }
 
 }

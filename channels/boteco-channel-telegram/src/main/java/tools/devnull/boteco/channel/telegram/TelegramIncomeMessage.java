@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -25,32 +25,23 @@
 package tools.devnull.boteco.channel.telegram;
 
 import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.message.Sendable;
-import tools.devnull.boteco.user.User;
-import tools.devnull.boteco.message.MessageCommand;
-import tools.devnull.boteco.message.CommandExtractor;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.ServiceRegistry;
-import tools.devnull.boteco.message.MessageSender;
+import tools.devnull.boteco.message.Message;
 import tools.devnull.boteco.message.Sender;
+import tools.devnull.boteco.user.User;
 
-class TelegramIncomeMessage implements IncomeMessage {
+class TelegramIncomeMessage implements Message {
 
   private static final long serialVersionUID = -7037612529067018573L;
 
-  private final CommandExtractor extractor;
   private final TelegramPolling.Message message;
-  private final Channel channel = new TelegramChannel();
-  private final ServiceRegistry serviceRegistry;
+  private final Channel channel;
   private final User user;
 
-  TelegramIncomeMessage(CommandExtractor extractor,
+  TelegramIncomeMessage(Channel channel,
                         TelegramPolling.Message message,
-                        ServiceRegistry serviceRegistry,
                         User user) {
-    this.extractor = extractor;
+    this.channel = channel;
     this.message = message;
-    this.serviceRegistry = serviceRegistry;
     this.user = user;
   }
 
@@ -91,38 +82,8 @@ class TelegramIncomeMessage implements IncomeMessage {
   }
 
   @Override
-  public boolean hasCommand() {
-    return extractor.isCommand(this);
-  }
-
-  @Override
-  public MessageCommand command() {
-    return extractor.extract(this);
-  }
-
-  @Override
-  public void reply(Sendable object) {
-    if (isPrivate()) {
-      replyMessage(String.valueOf(message.getFrom().id()), object, null);
-    } else {
-      replyMessage(String.valueOf(message.getChat().getId()), object, String.valueOf(message.getMessageId()));
-    }
-  }
-
-  @Override
-  public void sendBack(Sendable object) {
-    serviceRegistry.locate(MessageSender.class).one()
-        .send(object)
-        .to(String.valueOf(message.getChat().getId()))
-        .through(channel().id());
-  }
-
-  private void replyMessage(String id, Sendable object, String replyId) {
-    serviceRegistry.locate(MessageSender.class).one()
-        .send(object)
-        .replyingTo(replyId)
-        .to(id)
-        .through(channel().id());
+  public String replyTo() {
+    return String.valueOf(message.getMessageId());
   }
 
 }

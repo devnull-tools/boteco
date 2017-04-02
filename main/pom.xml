@@ -2,7 +2,7 @@
 <!--
   ~ The MIT License
   ~
-  ~ Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+  ~ Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
   ~
   ~ Permission  is hereby granted, free of charge, to any person obtaining
   ~ a  copy  of  this  software  and  associated  documentation files (the
@@ -29,8 +29,8 @@
   <parent>
     <artifactId>boteco-parent</artifactId>
     <groupId>tools.devnull</groupId>
-    <version>0.5.0</version>
-    <relativePath>../misc/boteco-parent/pom.xml</relativePath>
+    <version>0.6.0</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -38,8 +38,9 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>boteco-base</module>
+    <module>boteco</module>
     <module>boteco-test</module>
+    <module>boteco-features</module>
     <module>boteco-message-formatter</module>
     <module>boteco-message-processor</module>
     <module>boteco-rest-api</module>

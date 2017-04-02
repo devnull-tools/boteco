@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -24,8 +24,8 @@
 
 package tools.devnull.boteco.plugins.user;
 
-import tools.devnull.boteco.MessageDestination;
-import tools.devnull.boteco.UserMessageDestination;
+import tools.devnull.boteco.MessageLocation;
+import tools.devnull.boteco.UserMessageLocation;
 import tools.devnull.boteco.request.Verifiable;
 
 public class UserRequest implements Verifiable {
@@ -33,20 +33,20 @@ public class UserRequest implements Verifiable {
   private final String user;
   private final String channel;
   private final String target;
-  private final UserMessageDestination tokenDestination;
+  private final UserMessageLocation tokenDestination;
 
-  public UserRequest(String user, String channel, String target, MessageDestination tokenDestination) {
+  public UserRequest(String user, String channel, String target, MessageLocation tokenDestination) {
     this.user = user;
     this.channel = channel;
     this.target = target;
-    this.tokenDestination = UserMessageDestination.of(tokenDestination);
+    this.tokenDestination = UserMessageLocation.of(tokenDestination);
   }
 
   public UserRequest(String user, String channel) {
     this.user = user;
     this.channel = channel;
     this.target = null;
-    this.tokenDestination = new UserMessageDestination("user", user);
+    this.tokenDestination = new UserMessageLocation("user", user);
   }
 
   public String getUser() {
@@ -61,7 +61,7 @@ public class UserRequest implements Verifiable {
     return target;
   }
 
-  public MessageDestination tokenDestination() {
+  public MessageLocation tokenDestination() {
     return this.tokenDestination;
   }
 

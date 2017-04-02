@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -26,12 +26,11 @@ package tools.devnull.boteco.channel.email;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.Destination;
-import tools.devnull.boteco.ServiceRegistry;
+import tools.devnull.boteco.message.MessageDispatcher;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.user.UserManager;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageDispatcher;
 
 import javax.mail.internet.MimeUtility;
 
@@ -41,19 +40,19 @@ import javax.mail.internet.MimeUtility;
 public class EmailIncomeProcessor implements Processor {
 
   private final MessageDispatcher dispatcher;
-  private final ServiceRegistry serviceRegistry;
   private final UserManager userManager;
+  private final Channel channel;
 
   /**
    * Creates a new processor using the given parameters
    *
-   * @param dispatcher      the component to dispatch the messages to be processed
-   * @param serviceRegistry the service locator for component lookup
-   * @param userManager     the user manager for fetching registered users
+   * @param dispatcher  the component to dispatch the messages to be processed
+   * @param channel     the channel implementation
+   * @param userManager the user manager for fetching registered users
    */
-  public EmailIncomeProcessor(MessageDispatcher dispatcher, ServiceRegistry serviceRegistry, UserManager userManager) {
+  public EmailIncomeProcessor(MessageDispatcher dispatcher, Channel channel, UserManager userManager) {
     this.dispatcher = dispatcher;
-    this.serviceRegistry = serviceRegistry;
+    this.channel = channel;
     this.userManager = userManager;
   }
 
@@ -69,8 +68,7 @@ public class EmailIncomeProcessor implements Processor {
     if (!content.isEmpty()) {
       EmailSender emailSender = new EmailSender(sender);
       User user = this.userManager.find(Destination.channel(EmailChannel.ID).to(emailSender.id()));
-      IncomeMessage message = new EmailIncomeMessage(this.serviceRegistry, content, emailSender, target, user);
-      this.dispatcher.dispatch(message);
+      this.dispatcher.dispatch(new EmailMessage(channel, content, emailSender, target, user));
     }
   }
 

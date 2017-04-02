@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -25,10 +25,9 @@
 package tools.devnull.boteco.plugins.karma;
 
 import com.google.gson.annotations.SerializedName;
+import tools.devnull.boteco.message.Sendable;
 
-import java.io.Serializable;
-
-public class Karma implements Serializable {
+public class Karma implements Sendable {
 
   private static final long serialVersionUID = 2646677579622620059L;
 
@@ -60,7 +59,7 @@ public class Karma implements Serializable {
     this.value = value;
   }
 
-  public String describe() {
+  public String message() {
     String tag = value < 0 ? "n" : "p";
     return String.format("[a]%s[/a] ([%s]%d[/%s])", name, tag, value, tag);
   }

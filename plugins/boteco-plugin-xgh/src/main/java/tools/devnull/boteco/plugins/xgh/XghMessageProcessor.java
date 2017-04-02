@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.plugins.xgh;
 
+import tools.devnull.boteco.Name;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessingException;
 import tools.devnull.boteco.message.MessageProcessor;
@@ -31,19 +32,15 @@ import tools.devnull.boteco.message.MessageProcessor;
 import static tools.devnull.boteco.Predicates.command;
 import static tools.devnull.boteco.message.MessageChecker.check;
 
+@Name("xgh")
 public class XghMessageProcessor implements MessageProcessor {
 
   private final XGH xgh;
   private final String commandName;
 
-  public XghMessageProcessor(String lang) {
-    this.xgh = new XGH(lang);
-    this.commandName = "xgh-" + lang;
-  }
-
-  public XghMessageProcessor() {
-    this.xgh = new XGH();
-    this.commandName = "xgh";
+  public XghMessageProcessor(XGH xgh, String commandName) {
+    this.xgh = xgh;
+    this.commandName = commandName;
   }
 
   @Override
@@ -55,8 +52,7 @@ public class XghMessageProcessor implements MessageProcessor {
   public void process(IncomeMessage message) {
     Integer axiomNumber = message.command().as(Integer.class);
     try {
-      Axiom axiom = xgh.axiom(axiomNumber);
-      message.reply("[a]Axiom #%d: [/a][aa]%s[/aa]%n%n%s", axiom.getNumber(), axiom.getTitle(), axiom.getDescription());
+      message.reply(xgh.axiom(axiomNumber));
     } catch (IllegalArgumentException e) {
       throw new MessageProcessingException(e.getMessage(), e);
     }

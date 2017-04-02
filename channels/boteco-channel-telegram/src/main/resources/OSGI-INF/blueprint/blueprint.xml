@@ -1,7 +1,7 @@
 <!--
   ~ The MIT License
   ~
-  ~ Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+  ~ Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
   ~
   ~ Permission  is hereby granted, free of charge, to any person obtaining
   ~ a  copy  of  this  software  and  associated  documentation files (the
@@ -35,7 +35,6 @@
     <cm:default-properties>
       <cm:property name="income.enable" value="false"/>
       <cm:property name="outcome.enable" value="false"/>
-      <cm:property name="trace" value="false"/>
 
       <!-- The bot's token -->
       <cm:property name="bot.token" value=""/>
@@ -52,6 +51,9 @@
         don't want to process older messages.
       -->
       <cm:property name="poll.initial-offset" value="0"/>
+
+      <cm:property name="trace" value="false"/>
+      <cm:property name="shutdown.time" value="10"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
@@ -70,10 +72,9 @@
   <reference id="user-manager" interface="tools.devnull.boteco.user.UserManager"/>
 
   <bean id="telegram-income-processor" class="tools.devnull.boteco.channel.telegram.TelegramIncomeProcessor">
-    <argument ref="command-extractor"/>
+    <argument ref="channel"/>
     <argument ref="offset-manager"/>
     <argument ref="message-dispatcher"/>
-    <argument ref="service-registry"/>
     <argument ref="user-manager"/>
   </bean>
 
@@ -90,11 +91,14 @@
     <argument value="{{bot.token}}"/>
   </bean>
 
-  <service id="telegram-channel" interface="tools.devnull.boteco.Channel">
+  <bean id="channel" class="tools.devnull.boteco.channel.telegram.TelegramChannel">
+    <argument ref="command-extractor"/>
+  </bean>
+
+  <service interface="tools.devnull.boteco.Channel" ref="channel">
     <service-properties>
       <entry key="id" value="telegram"/>
     </service-properties>
-    <bean class="tools.devnull.boteco.channel.telegram.TelegramChannel"/>
   </service>
 
   <service interface="tools.devnull.boteco.message.MessageProcessor">
@@ -102,6 +106,10 @@
   </service>
 
   <bean id="converter" class="tools.devnull.boteco.channel.telegram.converters.TelegramIncomeConverter"/>
+
+  <bean id="shutdown" class="org.apache.camel.impl.DefaultShutdownStrategy">
+    <property name="timeout" value="{{shutdown.time}}"/>
+  </bean>
 
   <camelContext id="boteco-channel-telegram"
                 trace="{{trace}}"
@@ -132,6 +140,6 @@
 
   </camelContext>
 
-  <reference id="activemq" interface="org.apache.camel.Component" filter="(component=activemq)"/>
+  <reference id="activemq" interface="org.apache.camel.Component" filter="&amp;(component=activemq)(bundle=boteco)"/>
 
 </blueprint>

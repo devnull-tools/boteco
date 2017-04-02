@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -27,7 +27,7 @@ package tools.devnull.boteco.persistence.user;
 import com.google.gson.annotations.SerializedName;
 import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.InvalidDestinationException;
-import tools.devnull.boteco.MessageDestination;
+import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.user.User;
 
 import java.util.HashMap;
@@ -44,7 +44,7 @@ public class BotecoUser implements User {
   private final Map<String, String> destinations;
   private String primaryDestination;
 
-  public BotecoUser(String id, MessageDestination primaryDestination) {
+  public BotecoUser(String id, MessageLocation primaryDestination) {
     this.id = id;
     this.primaryDestination = primaryDestination.channel();
     this.destinations = new HashMap<>();
@@ -57,19 +57,19 @@ public class BotecoUser implements User {
   }
 
   @Override
-  public List<MessageDestination> destinations() {
+  public List<MessageLocation> destinations() {
     return this.destinations.entrySet().stream()
         .map(entry -> Destination.channel(entry.getKey()).to(entry.getValue()))
         .collect(Collectors.toList());
   }
 
   @Override
-  public MessageDestination primaryDestination() {
+  public MessageLocation primaryDestination() {
     return Destination.channel(this.primaryDestination).to(this.destinations.get(this.primaryDestination));
   }
 
   @Override
-  public MessageDestination destination(String channel) {
+  public MessageLocation destination(String channel) {
     if (this.destinations.containsKey(channel)) {
       return Destination.channel(channel).to(this.destinations.get(channel));
     }
@@ -77,12 +77,12 @@ public class BotecoUser implements User {
   }
 
   @Override
-  public void addDestination(MessageDestination destination) {
+  public void addDestination(MessageLocation destination) {
     this.destinations.put(destination.channel(), destination.target());
   }
 
   @Override
-  public void removeDestination(MessageDestination destination) {
+  public void removeDestination(MessageLocation destination) {
     if (destination.channel().equals(this.primaryDestination)) {
       throw new InvalidDestinationException("Can't remove default destination");
     }
@@ -98,7 +98,7 @@ public class BotecoUser implements User {
     removeDestination(destination(channel));
   }
 
-  public void setPrimaryDestination(MessageDestination primaryDestination) {
+  public void setPrimaryDestination(MessageLocation primaryDestination) {
     addDestination(primaryDestination);
     this.primaryDestination = primaryDestination.channel();
   }

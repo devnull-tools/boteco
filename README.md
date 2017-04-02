@@ -109,7 +109,8 @@ Both codes will run exactly the same way.
 
 Your Message Processor doesn't need to know how to send a content, but the Channel needs. A Channel is the integration between the chat platform and the Boteco runtime, a _camel route_ is the most obvious thought.
 
-A Channel needs to receive a content, wraps it in an instance of `IncomeMessage` and then send to the `MessageProcessor`.
+A Channel needs to receive a content, wraps it in an instance of `Message` (a lightweight `IncomeMessage`) and then
+send to the `MessageProcessor`.
 
 Boteco comes with some channel implementations. Look for the `channels` folder to see how they are implemented and how
 you can configure them.
