@@ -26,27 +26,20 @@
           xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
   <feature version="${project.version}" name="boteco"
            description="Contains base bundles and plugins">
-    <feature>camel-irc</feature>
-    <feature>camel-http4</feature>
     <feature>camel-gson</feature>
     <feature>camel-jsonpath</feature>
-    <feature>camel-mail</feature>
+    <feature>camel-http4</feature>
+    <feature>activemq-camel</feature>
 
-    <bundle>mvn:org.mongodb/mongo-java-driver/3.0.4</bundle>
-    <bundle>wrap:mvn:org.jsoup/jsoup/1.10.2</bundle>
+    <bundle>mvn:org.mongodb/mongo-java-driver/${mongo-java-driver.version}</bundle>
+    <bundle>wrap:mvn:org.jsoup/jsoup/${jsoup.version}</bundle>
     <bundle>mvn:tools.devnull/trugger/${trugger.version}</bundle>
 
     <!-- hibernate validator -->
-    <bundle>mvn:org.hibernate/hibernate-validator/5.4.0.Final</bundle>
-    <bundle>mvn:javax.validation/validation-api/1.1.0.Final</bundle>
+    <bundle>mvn:org.hibernate/hibernate-validator/${hibernate-validator.version}</bundle>
+    <bundle>mvn:javax.validation/validation-api/${validation-api.version}</bundle>
     <bundle>mvn:org.jboss.logging/jboss-logging/3.3.0.Final</bundle>
-    <bundle>mvn:com.fasterxml/classmate/1.3.1</bundle>
-    <bundle>mvn:org.glassfish/javax.el/3.0.1-b08</bundle>
-    <!--<bundle>mvn:org.jsoup/jsoup/1.8.3</bundle>-->
-    <bundle>mvn:joda-time/joda-time/2.9.5</bundle>
-    <bundle>mvn:javax.money/money-api/1.0.1</bundle>
-    <bundle>mvn:org.javamoney/moneta/1.1</bundle>
-    <bundle>mvn:javax.annotation/javax.annotation-api/1.3</bundle>
+    <bundle>mvn:com.fasterxml/classmate/${classmate.version}</bundle>
     <!-- END -->
 
     <!-- main bundles -->
@@ -55,21 +48,52 @@
     <bundle>mvn:${project.groupId}/boteco-rest-client/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-amq-client/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-message-processor/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-event-processor/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-event-bus/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-event-processor/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-rest-api/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-channel-user/${project.version}</bundle>
 
     <!-- main plugins -->
     <bundle>mvn:${project.groupId}/boteco-plugin-request/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-subscription/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-manager/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-validator/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-user/${project.version}</bundle>
 
     <!-- main persistence bundles -->
     <bundle>mvn:${project.groupId}/boteco-persistence-mongodb/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-persistence-subscription/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-persistence-request/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-persistence-manager/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-persistence-user/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-irc"
+           description="IRC Channel for boteco">
+    <feature>camel-irc</feature>
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-channel-irc/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-persistence-irc/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-pushover"
+           description="Pushover Channel for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-channel-pushover/${project.version}</bundle>
+  </feature>
+  <feature version="${project.version}" name="boteco-telegram"
+           description="Telegram Channel for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-channel-telegram/${project.version}</bundle>
+  </feature>
+  <feature version="${project.version}" name="boteco-email"
+           description="Email Channel for boteco">
+    <feature>camel-mail</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-channel-email/${project.version}</bundle>
   </feature>
 
   <feature version="${project.version}" name="boteco-ping"
@@ -86,7 +110,7 @@
   </feature>
 
   <feature version="${project.version}" name="boteco-redhat"
-           description="Red Hat KBase utility plugin for boteco">
+           description="Red Hat KBase and Status utility plugin for boteco">
     <feature>boteco</feature>
 
     <bundle>mvn:${project.groupId}/boteco-plugin-redhat/${project.version}</bundle>
@@ -128,42 +152,6 @@
     <bundle>mvn:${project.groupId}/boteco-plugin-norris/${project.version}</bundle>
   </feature>
 
-  <feature version="${project.version}" name="boteco-irc"
-           description="IRC Channel for boteco">
-    <feature>boteco</feature>
-
-    <bundle>mvn:${project.groupId}/boteco-channel-irc/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-persistence-irc/${project.version}</bundle>
-  </feature>
-
-  <feature version="${project.version}" name="boteco-pushover"
-           description="Pushover Channel for boteco">
-    <feature>boteco</feature>
-
-    <bundle>mvn:${project.groupId}/boteco-channel-pushover/${project.version}</bundle>
-  </feature>
-  <feature version="${project.version}" name="boteco-telegram"
-           description="Telegram Channel for boteco">
-    <feature>boteco</feature>
-
-    <bundle>mvn:${project.groupId}/boteco-channel-telegram/${project.version}</bundle>
-  </feature>
-  <feature version="${project.version}" name="boteco-email"
-           description="Email Channel for boteco">
-    <feature>boteco</feature>
-
-    <bundle>mvn:${project.groupId}/boteco-channel-email/${project.version}</bundle>
-  </feature>
-
-  <feature version="${project.version}" name="boteco-user"
-           description="User Channel for boteco">
-    <feature>boteco</feature>
-
-    <bundle>mvn:${project.groupId}/boteco-channel-user/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-plugin-user/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-persistence-user/${project.version}</bundle>
-  </feature>
-
   <feature version="${project.version}" name="boteco-plugins"
            description="Bundled plugins for boteco">
     <feature>boteco</feature>
@@ -187,7 +175,6 @@
     <feature>boteco-pushover</feature>
     <feature>boteco-telegram</feature>
     <feature>boteco-email</feature>
-    <feature>boteco-user</feature>
 
     <!-- bundled plugins -->
     <feature>boteco-plugins</feature>

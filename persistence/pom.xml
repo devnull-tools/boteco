@@ -37,10 +37,6 @@
   <artifactId>boteco-persistence</artifactId>
   <packaging>pom</packaging>
 
-  <properties>
-    <mongo-java-driver.version>3.0.4</mongo-java-driver.version>
-  </properties>
-
   <modules>
     <module>boteco-persistence-karma</module>
     <module>boteco-persistence-mongodb</module>
@@ -63,12 +59,6 @@
       <artifactId>boteco-test</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mongodb</groupId>
-      <artifactId>mongo-java-driver</artifactId>
-      <version>${mongo-java-driver.version}</version>
     </dependency>
   </dependencies>
 

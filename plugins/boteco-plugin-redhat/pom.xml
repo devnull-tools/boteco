@@ -39,12 +39,4 @@
   <artifactId>boteco-plugin-redhat</artifactId>
   <packaging>bundle</packaging>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.jsoup</groupId>
-      <artifactId>jsoup</artifactId>
-      <version>1.10.2</version>
-    </dependency>
-  </dependencies>
-
 </project>
