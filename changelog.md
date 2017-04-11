@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.7.0
+
+- Added an expiration time for events
+
 ## v0.6.0 (2017-04-02)
 
 - `IncomeMessage` now doesn't need to be implement by channels, only a smaller `Message` interface

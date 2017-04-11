@@ -24,26 +24,13 @@
 
 package tools.devnull.boteco.client.jms;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import tools.devnull.boteco.TargetSelector;
-
-import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
-import javax.jms.DeliveryMode;
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.MessageProducer;
-import javax.jms.ObjectMessage;
-import javax.jms.Session;
 import java.io.Serializable;
 
 /**
  * The AMQ implementation for the JMS Client
  */
 public class DefaultJmsClient implements JmsClient {
-
-  private static Logger logger = LoggerFactory.getLogger(DefaultJmsClient.class);
 
   private final ConnectionFactory connectionFactory;
 
@@ -57,26 +44,7 @@ public class DefaultJmsClient implements JmsClient {
   }
 
   @Override
-  public TargetSelector<JmsDestination> send(Serializable object) {
-    return target -> {
-      try {
-        Connection connection = connectionFactory.createConnection();
-        connection.start();
-
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-        Destination destination = target.createDestination(session);
-
-        MessageProducer producer = session.createProducer(destination);
-        producer.setDeliveryMode(DeliveryMode.PERSISTENT);
-
-        ObjectMessage message = session.createObjectMessage(object);
-        producer.send(message);
-
-        session.close();
-        connection.close();
-      } catch (JMSException e) {
-        logger.error("Error while sending object to AMQ destination", e);
-      }
-    };
+  public JmsMessageConfiguration send(Serializable object) {
+    return new DefaultJmsMessageConfiguration(connectionFactory, object);
   }
 }
