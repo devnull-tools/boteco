@@ -29,6 +29,8 @@ import tools.devnull.boteco.event.EventBus;
 import tools.devnull.boteco.event.EventSelector;
 import tools.devnull.boteco.message.Sendable;
 
+import java.util.concurrent.TimeUnit;
+
 import static tools.devnull.boteco.Destination.topic;
 
 /**
@@ -53,7 +55,9 @@ public class BotecoEventBus implements EventBus {
 
   @Override
   public EventSelector broadcast(Sendable object) {
-    return id -> client.send(new BotecoEvent(id, object)).to(topic("boteco.event." + id));
+    return id -> client.send(new BotecoEvent(id, object))
+        .expiringIn(30, TimeUnit.SECONDS)
+        .to(topic("boteco.event." + id));
   }
 
   @Override

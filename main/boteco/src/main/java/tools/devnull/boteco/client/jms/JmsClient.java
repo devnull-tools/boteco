@@ -24,8 +24,6 @@
 
 package tools.devnull.boteco.client.jms;
 
-import tools.devnull.boteco.TargetSelector;
-
 import java.io.Serializable;
 
 /**
@@ -34,11 +32,11 @@ import java.io.Serializable;
 public interface JmsClient {
 
   /**
-   * Sends the given object to a {@lik JmsDestination destination}.
+   * Sends the given object to a JMS destination.
    *
    * @param object the object to send
-   * @return a component for defining the destination.
+   * @return a component for configuring the message.
    */
-  TargetSelector<JmsDestination> send(Serializable object);
+  JmsMessageConfiguration send(Serializable object);
 
 }
