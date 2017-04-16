@@ -65,6 +65,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -261,7 +262,7 @@ public class DefaultRestConfiguration implements RestConfiguration {
   public <E> RestResult<List<E>> toListOf(Class<E> type) throws IOException {
     try {
       E[] result = (E[]) gsonBuilder.create().fromJson(rawBody(), Array.newInstance(type, 0).getClass());
-      return new DefaultRestResult<>(Arrays.asList(result));
+      return new DefaultRestResult<>(result != null ? Arrays.asList(result) : Collections.emptyList());
     } catch (JsonSyntaxException e) {
       logger.error("Error while parsing JSON", e);
       return new DefaultRestResult<>(null);
