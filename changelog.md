@@ -3,6 +3,7 @@
 ## v0.7.0
 
 - Added an expiration time for events
+- Fixed a NPE in `DefaultRestConfiguration`
 
 ## v0.6.0 (2017-04-02)
 
