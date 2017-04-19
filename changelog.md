@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.7.0 (2017-04-19)
+
+- Support for broadcasting events arriving by email
+- Configured timeout for routes in `boteco-plugin-redhat`
+
 ## v0.6.1 (2017-04-16)
 
 - Added an expiration time for events

@@ -49,6 +49,8 @@
       <cm:property name="outcome.options" value=""/>
       <cm:property name="outcome.from" value=""/>
 
+      <cm:property name="income.event.pattern" value="^\s*\[(?&lt;id&gt;\S+)\]\s*(?&lt;title&gt;.+)$"/>
+
       <cm:property name="trace" value="false"/>
 
       <cm:property name="shutdown.time" value="10"/>
@@ -64,7 +66,7 @@
   <bean id="channel" class="tools.devnull.boteco.channel.email.EmailChannel"/>
 
   <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>
-  <bean id="service-registry" class="tools.devnull.boteco.OsgiServiceRegistry"/>
+  <reference id="event-bus" interface="tools.devnull.boteco.event.EventBus"/>
 
   <reference id="user-manager" interface="tools.devnull.boteco.user.UserManager"/>
 
@@ -72,6 +74,11 @@
     <argument ref="message-dispatcher"/>
     <argument ref="channel"/>
     <argument ref="user-manager"/>
+  </bean>
+
+  <bean id="event-processor" class="tools.devnull.boteco.channel.email.EmailEventProcessor">
+    <argument ref="event-bus"/>
+    <argument value="{{income.event.pattern}}"/>
   </bean>
 
   <bean id="outcome-processor" class="tools.devnull.boteco.channel.email.EmailOutcomeProcessor">
@@ -89,7 +96,17 @@
                 xmlns="http://camel.apache.org/schema/blueprint">
     <route id="boteco.message.from.email" autoStartup="{{income.enabled}}">
       <from uri="{{income.protocol}}://{{income.host}}?{{income.options}}"/>
-      <process ref="income-processor"/>
+      <choice>
+        <when>
+          <simple>
+            ${in.header.subject} regex ${properties:income.event.pattern}
+          </simple>
+          <process ref="event-processor"/>
+        </when>
+        <otherwise>
+          <process ref="income-processor"/>
+        </otherwise>
+      </choice>
     </route>
 
     <route id="boteco.message.to.email" autoStartup="{{outcome.enabled}}">
