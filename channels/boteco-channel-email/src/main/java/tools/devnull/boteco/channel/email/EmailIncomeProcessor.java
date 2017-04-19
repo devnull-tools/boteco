@@ -58,7 +58,7 @@ public class EmailIncomeProcessor implements Processor {
 
   @Override
   public void process(Exchange exchange) throws Exception {
-    String content = MimeUtility.decodeText(exchange.getIn().getHeader("Subject").toString().trim());
+    String content = MimeUtility.decodeText(exchange.getIn().getHeader("Subject", String.class).trim());
     if (content.isEmpty()) {
       content = exchange.getIn().getBody(String.class).trim();
     }
