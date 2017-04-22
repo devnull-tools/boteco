@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.7.1 (2017-04-22)
+
+- Changed priority for status.redhat notifications
+
 ## v0.7.0 (2017-04-19)
 
 - Support for broadcasting events arriving by email

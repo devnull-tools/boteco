@@ -40,7 +40,7 @@ public class Status implements Sendable {
   public Status(String title, String date, String description, String status, String url) {
     this.title = String.format("[t]%s[/t] [a]%s[/a]", status, title);
     this.description = String.format("[aa]%s[/aa]: %s", date, description);
-    this.priority = "resolved".equals(status.toLowerCase()) ? Priority.NORMAL : Priority.HIGH;
+    this.priority = "investigating".equalsIgnoreCase(status) ? Priority.HIGH : Priority.NORMAL;
     this.url = url;
   }
 
