@@ -52,6 +52,7 @@
     <module>boteco-plugin-norris</module>
     <module>boteco-plugin-validator</module>
     <module>boteco-plugin-definitions</module>
+    <module>boteco-plugin-urbandictionary</module>
   </modules>
 
   <dependencies>

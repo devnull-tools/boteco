@@ -34,7 +34,7 @@ public class Lookup {
 
   public List<Definition> lookup() {
     List<Definition> result;
-    if (provider != null) {
+    if (provider == null) {
       result = registry.locate(DefinitionProvider.class).all()
           .stream()
           .map(p -> p.lookup(term))

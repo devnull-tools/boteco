@@ -29,7 +29,7 @@ public interface Definition extends Sendable {
   String description();
 
   default String title() {
-    return String.format("Definition for %s based on %s", term(), source());
+    return String.format("Definition for [a]%s[/a] based on [aa]%s[/aa]", term(), source());
   }
 
   default String message() {

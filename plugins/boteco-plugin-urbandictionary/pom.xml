@@ -9,11 +9,15 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>boteco-plugin-definitions</artifactId>
+  <artifactId>boteco-plugin-urbandictionary</artifactId>
   <packaging>bundle</packaging>
 
-  <properties>
-    <osgi.export.packages>tools.devnull.boteco.plugins.definition.spi</osgi.export.packages>
-  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>tools.devnull</groupId>
+      <artifactId>boteco-plugin-definitions</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 
 </project>
