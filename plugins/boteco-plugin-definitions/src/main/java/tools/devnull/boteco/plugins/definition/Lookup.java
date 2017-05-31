@@ -6,6 +6,7 @@ import tools.devnull.boteco.plugins.definition.spi.DefinitionProvider;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static tools.devnull.boteco.Predicates.id;
@@ -38,6 +39,7 @@ public class Lookup {
       result = registry.locate(DefinitionProvider.class).all()
           .stream()
           .map(p -> p.lookup(term))
+          .filter(Objects::nonNull)
           .collect(Collectors.toList());
     } else {
       DefinitionProvider definitionProvider = registry.locate(DefinitionProvider.class)
