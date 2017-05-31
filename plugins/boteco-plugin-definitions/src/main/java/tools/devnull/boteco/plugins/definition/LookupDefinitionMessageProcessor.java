@@ -14,9 +14,13 @@ public class LookupDefinitionMessageProcessor implements MessageProcessor {
 
   @Override
   public void process(IncomeMessage message) {
-    List<Definition> definitions = message.command().as(Lookup.class).lookup();
-    definitions.stream()
-      .map(definition -> "");
+    Lookup command = message.command().as(Lookup.class);
+    List<Definition> definitions = command.lookup();
+    if (definitions.isEmpty()) {
+      message.reply("Cannot find definitions for term " + command.term());
+    } else {
+      definitions.forEach(message::reply);
+    }
   }
 
 }

@@ -28,6 +28,10 @@ public class Lookup {
     this.term = term;
   }
 
+  public String term() {
+    return term;
+  }
+
   public List<Definition> lookup() {
     List<Definition> result;
     if (provider != null) {

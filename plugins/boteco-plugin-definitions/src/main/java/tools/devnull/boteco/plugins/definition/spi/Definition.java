@@ -1,9 +1,11 @@
 package tools.devnull.boteco.plugins.definition.spi;
 
+import tools.devnull.boteco.message.Sendable;
+
 /**
  * Interface that describes a definition.
  */
-public interface Definition {
+public interface Definition extends Sendable {
 
   /**
    * Returns the term defined by this definition.
@@ -25,5 +27,13 @@ public interface Definition {
    * @return the definition itself.
    */
   String description();
+
+  default String title() {
+    return String.format("Definition for %s based on %s", term(), source());
+  }
+
+  default String message() {
+    return description();
+  }
 
 }
