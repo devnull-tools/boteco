@@ -76,6 +76,7 @@
               tools.devnull.boteco.client.jms,
               tools.devnull.boteco.client.rest,
               tools.devnull.boteco.user,
+              tools.devnull.boteco.util,
               tools.devnull.boteco.request
             </Export-Package>
           </instructions>
