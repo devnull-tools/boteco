@@ -12,7 +12,7 @@
     <service-properties>
       <entry key="bundle" value="boteco"/>
     </service-properties>
-    <bean class="tools.devnul.boteco.plugins.validator.ValidatorProvider" factory-method="create"/>
+    <bean class="tools.devnull.boteco.plugins.validator.ValidatorProvider" factory-method="create"/>
   </service>
 
 </blueprint>
