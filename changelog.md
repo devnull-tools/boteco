@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.8.0
+
+- Added the definition plugin
+- Added a parameter resolver that uses the OSGi Registry (useful for creating objects from message commands)
+- Fixed package name for validator plugin /o\
+
 ## v0.7.1 (2017-04-22)
 
 - Changed priority for status.redhat notifications
