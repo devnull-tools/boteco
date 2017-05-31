@@ -26,7 +26,10 @@ package tools.devnull.boteco.message;
 
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.MessageLocation;
+import tools.devnull.boteco.OsgiServiceRegistry;
+import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.user.User;
+import tools.devnull.boteco.util.OsgiParameterResolver;
 import tools.devnull.boteco.util.ParameterBinder;
 
 import java.util.HashMap;
@@ -77,6 +80,9 @@ public class ExtractedCommand implements MessageCommand {
     try {
       return new ParameterBinder<>(type)
           .context(context -> {
+            OsgiServiceRegistry registry = new OsgiServiceRegistry();
+            OsgiParameterResolver osgiResolver = new OsgiParameterResolver(registry);
+
             context.use(this.incomeMessage)
                 .when(type(IncomeMessage.class))
 
@@ -87,7 +93,14 @@ public class ExtractedCommand implements MessageCommand {
                 .when(type(Sender.class))
 
                 .use(this.incomeMessage.location())
-                .when(type(MessageLocation.class));
+                .when(type(MessageLocation.class))
+
+                .use(registry)
+                .when(type(ServiceRegistry.class))
+
+                // try to lookup implementations by default using the osgi registry
+                .use(osgiResolver)
+                .byDefault();
 
             if (this.incomeMessage.user() != null) {
               context.use(parameter -> this.incomeMessage.user())
