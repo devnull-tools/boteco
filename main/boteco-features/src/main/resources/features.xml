@@ -162,6 +162,7 @@
     <feature>boteco-diceroll</feature>
     <feature>boteco-stocks</feature>
     <feature>boteco-xgh</feature>
+    <feature>boteco-definitions</feature>
     <feature>boteco-norris</feature>
   </feature>
 
