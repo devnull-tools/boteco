@@ -45,7 +45,12 @@ public class Lookup {
       DefinitionProvider definitionProvider = registry.locate(DefinitionProvider.class)
           .filter(id(provider))
           .one();
-      result = Collections.singletonList(definitionProvider.lookup(term));
+      Definition lookup = definitionProvider.lookup(term);
+      if (lookup != null) {
+        result = Collections.singletonList(lookup);
+      } else {
+        result = Collections.emptyList();
+      }
     }
     return result;
   }
