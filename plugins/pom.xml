@@ -29,7 +29,7 @@
   <parent>
     <artifactId>boteco-parent</artifactId>
     <groupId>tools.devnull</groupId>
-    <version>0.7.1</version>
+    <version>0.8.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -51,6 +51,7 @@
     <module>boteco-plugin-xgh</module>
     <module>boteco-plugin-norris</module>
     <module>boteco-plugin-validator</module>
+    <module>boteco-plugin-definitions</module>
   </modules>
 
   <dependencies>
