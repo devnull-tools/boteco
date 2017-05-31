@@ -1,12 +1,10 @@
-package tools.devnul.boteco.plugins.validator;
+package tools.devnull.boteco.plugins.validator;
 
 import org.hibernate.validator.HibernateValidator;
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 import tools.devnull.boteco.OsgiServiceRegistry;
 
 import javax.validation.Configuration;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorFactory;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
