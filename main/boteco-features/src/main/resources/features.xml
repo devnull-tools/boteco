@@ -152,6 +152,20 @@
     <bundle>mvn:${project.groupId}/boteco-plugin-norris/${project.version}</bundle>
   </feature>
 
+  <feature version="${project.version}" name="boteco-definitions"
+           description="Definitions plugin for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-plugin-definitions/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-urbandictionary"
+           description="Urban Dictionary plugin for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-plugin-urbandictionary/${project.version}</bundle>
+  </feature>
+
   <feature version="${project.version}" name="boteco-plugins"
            description="Bundled plugins for boteco">
     <feature>boteco</feature>
@@ -162,6 +176,8 @@
     <feature>boteco-diceroll</feature>
     <feature>boteco-stocks</feature>
     <feature>boteco-xgh</feature>
+    <feature>boteco-definitions</feature>
+    <feature>boteco-urbandictionary</feature>
     <feature>boteco-norris</feature>
   </feature>
 

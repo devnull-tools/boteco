@@ -32,7 +32,7 @@
   <parent>
     <groupId>tools.devnull</groupId>
     <artifactId>boteco-main</artifactId>
-    <version>0.7.1</version>
+    <version>0.8.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -76,6 +76,7 @@
               tools.devnull.boteco.client.jms,
               tools.devnull.boteco.client.rest,
               tools.devnull.boteco.user,
+              tools.devnull.boteco.util,
               tools.devnull.boteco.request
             </Export-Package>
           </instructions>
