@@ -1,5 +1,6 @@
 package tools.devnull.boteco.plugins.definition;
 
+import tools.devnull.boteco.BotException;
 import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.plugins.definition.spi.Definition;
 import tools.devnull.boteco.plugins.definition.spi.DefinitionProvider;
@@ -45,6 +46,9 @@ public class Lookup {
       DefinitionProvider definitionProvider = registry.locate(DefinitionProvider.class)
           .filter(id(provider))
           .one();
+      if (definitionProvider == null) {
+        throw new BotException("Provider " + provider + " not found");
+      }
       Definition lookup = definitionProvider.lookup(term);
       if (lookup != null) {
         result = Collections.singletonList(lookup);

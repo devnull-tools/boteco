@@ -17,7 +17,7 @@ public class LookupDefinitionMessageProcessor implements MessageProcessor {
     Lookup command = message.command().as(Lookup.class);
     List<Definition> definitions = command.lookup();
     if (definitions.isEmpty()) {
-      message.reply("Cannot find definitions for term " + command.term());
+      message.reply("Cannot find a definition for term " + command.term());
     } else {
       definitions.forEach(message::reply);
     }
