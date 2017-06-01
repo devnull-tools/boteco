@@ -10,6 +10,8 @@ import java.lang.annotation.RetentionPolicy;
  * If you're creating, for example, a Constraint Validator and needs
  * a OSGi service, you can annotate the constructor parameter with
  * this annotation and specify the OSGi filter to fetch the service.
+ *
+ * @see tools.devnull.boteco.util.OsgiParameterResolver
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
