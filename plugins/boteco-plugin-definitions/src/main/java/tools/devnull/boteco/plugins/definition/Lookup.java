@@ -1,6 +1,6 @@
 package tools.devnull.boteco.plugins.definition;
 
-import tools.devnull.boteco.BotException;
+import tools.devnull.boteco.DomainException;
 import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.plugins.definition.spi.Definition;
 import tools.devnull.boteco.plugins.definition.spi.DefinitionProvider;
@@ -47,7 +47,7 @@ public class Lookup {
           .filter(id(provider))
           .one();
       if (definitionProvider == null) {
-        throw new BotException("Provider " + provider + " not found");
+        throw new DomainException("Provider " + provider + " not found");
       }
       Definition lookup = definitionProvider.lookup(term);
       if (lookup != null) {
