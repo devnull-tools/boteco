@@ -25,7 +25,6 @@
 package tools.devnull.boteco;
 
 import tools.devnull.boteco.message.Priority;
-import tools.devnull.boteco.message.SendableObject;
 
 import java.io.Serializable;
 

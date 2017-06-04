@@ -2,6 +2,7 @@ package tools.devnull.boteco.message;
 
 import tools.devnull.boteco.Builder;
 import tools.devnull.boteco.Sendable;
+import tools.devnull.boteco.SendableObject;
 
 /**
  * A class used to configure a message.

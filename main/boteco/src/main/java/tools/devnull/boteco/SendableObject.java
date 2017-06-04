@@ -22,9 +22,10 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.message;
+package tools.devnull.boteco;
 
 import tools.devnull.boteco.Sendable;
+import tools.devnull.boteco.message.Priority;
 
 /**
  * A default implementation of the Sendable interface

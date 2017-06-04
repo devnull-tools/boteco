@@ -27,7 +27,7 @@ package tools.devnull.boteco.rest;
 import tools.devnull.boteco.Builder;
 import tools.devnull.boteco.message.Priority;
 import tools.devnull.boteco.Sendable;
-import tools.devnull.boteco.message.SendableObject;
+import tools.devnull.boteco.SendableObject;
 
 import java.util.Collections;
 import java.util.Map;
