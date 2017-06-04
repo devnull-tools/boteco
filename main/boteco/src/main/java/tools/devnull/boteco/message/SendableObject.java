@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.message;
 
+import tools.devnull.boteco.Sendable;
+
 /**
  * A default implementation of the Sendable interface
  */

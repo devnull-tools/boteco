@@ -24,7 +24,7 @@
 
 package tools.devnull.boteco.plugins.norris;
 
-import tools.devnull.boteco.message.Sendable;
+import tools.devnull.boteco.Sendable;
 
 public class ChuckNorrisFact implements Sendable {
 

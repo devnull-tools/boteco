@@ -28,7 +28,7 @@ import tools.devnull.boteco.Builder;
 import tools.devnull.boteco.client.jms.JmsClient;
 import tools.devnull.boteco.event.EventBus;
 import tools.devnull.boteco.event.EventSelector;
-import tools.devnull.boteco.message.Sendable;
+import tools.devnull.boteco.Sendable;
 
 import java.util.concurrent.TimeUnit;
 

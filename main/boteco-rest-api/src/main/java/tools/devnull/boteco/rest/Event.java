@@ -25,7 +25,7 @@
 package tools.devnull.boteco.rest;
 
 import tools.devnull.boteco.message.Priority;
-import tools.devnull.boteco.message.Sendable;
+import tools.devnull.boteco.Sendable;
 
 public class Event implements Sendable {
 

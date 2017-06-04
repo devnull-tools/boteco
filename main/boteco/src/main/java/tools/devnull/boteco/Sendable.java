@@ -22,7 +22,10 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.message;
+package tools.devnull.boteco;
+
+import tools.devnull.boteco.message.Priority;
+import tools.devnull.boteco.message.SendableObject;
 
 import java.io.Serializable;
 

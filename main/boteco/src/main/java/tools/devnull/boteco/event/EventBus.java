@@ -25,7 +25,7 @@
 package tools.devnull.boteco.event;
 
 import tools.devnull.boteco.Builder;
-import tools.devnull.boteco.message.Sendable;
+import tools.devnull.boteco.Sendable;
 
 /**
  * A component that can be used to broadcast events.

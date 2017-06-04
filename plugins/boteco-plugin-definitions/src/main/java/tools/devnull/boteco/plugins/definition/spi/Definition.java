@@ -1,6 +1,6 @@
 package tools.devnull.boteco.plugins.definition.spi;
 
-import tools.devnull.boteco.message.Sendable;
+import tools.devnull.boteco.Sendable;
 
 /**
  * Interface that describes a definition.

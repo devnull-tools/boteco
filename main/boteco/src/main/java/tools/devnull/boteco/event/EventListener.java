@@ -24,7 +24,7 @@
 
 package tools.devnull.boteco.event;
 
-import tools.devnull.boteco.message.Sendable;
+import tools.devnull.boteco.Sendable;
 
 /**
  * Interface that represents a listener for specific events.

@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.message;
 
+import tools.devnull.boteco.Sendable;
+
 import java.util.Map;
 import java.util.function.Consumer;
 

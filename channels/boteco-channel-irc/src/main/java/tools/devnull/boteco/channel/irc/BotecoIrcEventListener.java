@@ -36,7 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.event.EventBus;
 
-import static tools.devnull.boteco.message.Sendable.message;
+import static tools.devnull.boteco.Sendable.message;
 
 /**
  * A class that listens to IRC events.

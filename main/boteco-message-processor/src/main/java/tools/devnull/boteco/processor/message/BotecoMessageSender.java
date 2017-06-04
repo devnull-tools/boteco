@@ -28,7 +28,7 @@ import tools.devnull.boteco.Builder;
 import tools.devnull.boteco.client.jms.JmsClient;
 import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.message.OutcomeMessageConfiguration;
-import tools.devnull.boteco.message.Sendable;
+import tools.devnull.boteco.Sendable;
 
 /**
  * The default implementation of a message sender component based on

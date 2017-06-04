@@ -27,7 +27,7 @@ package tools.devnull.boteco.processor.message;
 import tools.devnull.boteco.client.jms.JmsClient;
 import tools.devnull.boteco.message.OutcomeMessage;
 import tools.devnull.boteco.message.OutcomeMessageConfiguration;
-import tools.devnull.boteco.message.Sendable;
+import tools.devnull.boteco.Sendable;
 
 import java.util.HashMap;
 import java.util.Map;

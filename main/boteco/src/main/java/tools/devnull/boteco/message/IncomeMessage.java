@@ -26,6 +26,7 @@ package tools.devnull.boteco.message;
 
 import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.MessageLocation;
+import tools.devnull.boteco.Sendable;
 
 /**
  * Interface that defines a message that arrives from a channel.

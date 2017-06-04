@@ -6,7 +6,7 @@ import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.Message;
 import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.boteco.message.MessageSender;
-import tools.devnull.boteco.message.Sendable;
+import tools.devnull.boteco.Sendable;
 import tools.devnull.boteco.message.Sender;
 import tools.devnull.boteco.user.User;
 

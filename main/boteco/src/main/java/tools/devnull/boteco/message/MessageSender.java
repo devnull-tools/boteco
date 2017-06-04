@@ -25,6 +25,7 @@
 package tools.devnull.boteco.message;
 
 import tools.devnull.boteco.Builder;
+import tools.devnull.boteco.Sendable;
 
 import java.io.Serializable;
 
