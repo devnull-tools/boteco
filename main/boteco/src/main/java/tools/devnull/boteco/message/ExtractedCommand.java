@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.message;
 
+import tools.devnull.boteco.Action;
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.OsgiServiceRegistry;

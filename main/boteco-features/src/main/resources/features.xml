@@ -145,11 +145,11 @@
     <bundle>mvn:${project.groupId}/boteco-plugin-xgh/${project.version}</bundle>
   </feature>
 
-  <feature version="${project.version}" name="boteco-norris"
-           description="Chuck Norris plugin for boteco">
+  <feature version="${project.version}" name="boteco-chucknorris"
+           description="Chuck Norris facts provider for boteco">
     <feature>boteco</feature>
 
-    <bundle>mvn:${project.groupId}/boteco-plugin-norris/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-provider-chucknorris/${project.version}</bundle>
   </feature>
 
   <feature version="${project.version}" name="boteco-definitions"
@@ -159,11 +159,18 @@
     <bundle>mvn:${project.groupId}/boteco-plugin-definitions/${project.version}</bundle>
   </feature>
 
-  <feature version="${project.version}" name="boteco-urbandictionary"
-           description="Urban Dictionary plugin for boteco">
+  <feature version="${project.version}" name="boteco-facts"
+           description="Facts plugin for boteco">
     <feature>boteco</feature>
 
-    <bundle>mvn:${project.groupId}/boteco-plugin-urbandictionary/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-facts/${project.version}</bundle>
+  </feature>
+
+  <feature version="${project.version}" name="boteco-urbandictionary"
+           description="Urban Dictionary provider for boteco">
+    <feature>boteco</feature>
+
+    <bundle>mvn:${project.groupId}/boteco-provider-urbandictionary/${project.version}</bundle>
   </feature>
 
   <feature version="${project.version}" name="boteco-plugins"
@@ -177,8 +184,9 @@
     <feature>boteco-stocks</feature>
     <feature>boteco-xgh</feature>
     <feature>boteco-definitions</feature>
+    <feature>boteco-facts</feature>
     <feature>boteco-urbandictionary</feature>
-    <feature>boteco-norris</feature>
+    <feature>boteco-chucknorris</feature>
   </feature>
 
   <feature version="${project.version}" name="boteco-all"

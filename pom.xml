@@ -103,6 +103,7 @@
     <module>main</module>
     <module>channels</module>
     <module>plugins</module>
+    <module>providers</module>
     <module>persistence</module>
   </modules>
 

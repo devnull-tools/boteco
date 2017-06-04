@@ -22,54 +22,16 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.client.rest;
-
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+package tools.devnull.boteco;
 
 /**
- * Interface that defines a result to a REST invocation
- *
- * @param <E> The type of the result
+ * Interface that defines an action that can be executed.
  */
-public interface RestResult<E> {
+public interface Action {
 
   /**
-   * Returns the result of the rest invocation.
-   *
-   * @return the result of the rest invocation.
+   * Executes the action
    */
-  E result();
-
-  /**
-   * Invokes the given consumer passing the result.
-   *
-   * @param consumer the consumer to use
-   * @return an instance of this object.
-   */
-  RestResult and(Consumer<E> consumer);
-
-  /**
-   * Executes the given action in case of no result from the REST invocation
-   *
-   * @param action the action to execute.
-   */
-  void orElse(Runnable action);
-
-  /**
-   * Uses the given supplier to return a value in case of no result from the REST invocation
-   *
-   * @param supplier the supplier to use for retrieving the result
-   * @return the value returned by the supplier.
-   */
-  E orElse(Supplier<E> supplier);
-
-  /**
-   * Throws the supplied exception if case of no result from the REST invocation
-   *
-   * @param exceptionSupplier the exception supplier
-   * @return the result
-   */
-  E orElseThrow(Supplier<? extends RuntimeException> exceptionSupplier);
+  void execute();
 
 }

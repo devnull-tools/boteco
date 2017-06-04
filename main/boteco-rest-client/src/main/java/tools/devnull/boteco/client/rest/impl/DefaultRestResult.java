@@ -61,4 +61,13 @@ public class DefaultRestResult<E> implements RestResult<E> {
   public E orElse(Supplier<E> supplier) {
     return result != null ? result : supplier.get();
   }
+
+  @Override
+  public E orElseThrow(Supplier<? extends RuntimeException> exceptionSupplier) {
+    if (result == null) {
+      throw exceptionSupplier.get();
+    }
+    return result;
+  }
+
 }

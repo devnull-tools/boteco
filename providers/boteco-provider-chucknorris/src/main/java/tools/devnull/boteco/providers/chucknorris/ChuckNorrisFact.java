@@ -22,54 +22,23 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.client.rest;
+package tools.devnull.boteco.providers.chucknorris;
 
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import tools.devnull.boteco.plugins.facts.spi.Fact;
 
-/**
- * Interface that defines a result to a REST invocation
- *
- * @param <E> The type of the result
- */
-public interface RestResult<E> {
+public class ChuckNorrisFact implements Fact {
 
-  /**
-   * Returns the result of the rest invocation.
-   *
-   * @return the result of the rest invocation.
-   */
-  E result();
+  private static final long serialVersionUID = -2791001971425417274L;
 
-  /**
-   * Invokes the given consumer passing the result.
-   *
-   * @param consumer the consumer to use
-   * @return an instance of this object.
-   */
-  RestResult and(Consumer<E> consumer);
+  private String value;
 
-  /**
-   * Executes the given action in case of no result from the REST invocation
-   *
-   * @param action the action to execute.
-   */
-  void orElse(Runnable action);
+  public ChuckNorrisFact(String value) {
+    this.value = value;
+  }
 
-  /**
-   * Uses the given supplier to return a value in case of no result from the REST invocation
-   *
-   * @param supplier the supplier to use for retrieving the result
-   * @return the value returned by the supplier.
-   */
-  E orElse(Supplier<E> supplier);
-
-  /**
-   * Throws the supplied exception if case of no result from the REST invocation
-   *
-   * @param exceptionSupplier the exception supplier
-   * @return the result
-   */
-  E orElseThrow(Supplier<? extends RuntimeException> exceptionSupplier);
+  @Override
+  public String message() {
+    return this.value;
+  }
 
 }

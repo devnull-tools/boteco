@@ -22,54 +22,37 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.client.rest;
+package tools.devnull.boteco.providers.chucknorris;
 
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import tools.devnull.boteco.BotException;
+import tools.devnull.boteco.client.rest.RestClient;
+import tools.devnull.boteco.plugins.facts.spi.Fact;
+import tools.devnull.boteco.plugins.facts.spi.FactsProvider;
 
-/**
- * Interface that defines a result to a REST invocation
- *
- * @param <E> The type of the result
- */
-public interface RestResult<E> {
+import java.io.IOException;
 
-  /**
-   * Returns the result of the rest invocation.
-   *
-   * @return the result of the rest invocation.
-   */
-  E result();
+public class ChuckNorrisFactsProvider implements FactsProvider {
 
-  /**
-   * Invokes the given consumer passing the result.
-   *
-   * @param consumer the consumer to use
-   * @return an instance of this object.
-   */
-  RestResult and(Consumer<E> consumer);
+  private final RestClient rest;
 
-  /**
-   * Executes the given action in case of no result from the REST invocation
-   *
-   * @param action the action to execute.
-   */
-  void orElse(Runnable action);
+  public ChuckNorrisFactsProvider(RestClient restClient) {
+    this.rest = restClient;
+  }
 
-  /**
-   * Uses the given supplier to return a value in case of no result from the REST invocation
-   *
-   * @param supplier the supplier to use for retrieving the result
-   * @return the value returned by the supplier.
-   */
-  E orElse(Supplier<E> supplier);
+  @Override
+  public String id() {
+    return "chucknorris";
+  }
 
-  /**
-   * Throws the supplied exception if case of no result from the REST invocation
-   *
-   * @param exceptionSupplier the exception supplier
-   * @return the result
-   */
-  E orElseThrow(Supplier<? extends RuntimeException> exceptionSupplier);
+  @Override
+  public Fact get() {
+    try {
+      return rest.get("https://api.chucknorris.io/jokes/random")
+          .to(ChuckNorrisFact.class)
+          .result();
+    } catch (IOException e) {
+      throw new BotException(e);
+    }
+  }
 
 }

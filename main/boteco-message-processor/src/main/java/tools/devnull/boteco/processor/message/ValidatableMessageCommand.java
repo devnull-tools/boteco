@@ -1,6 +1,6 @@
 package tools.devnull.boteco.processor.message;
 
-import tools.devnull.boteco.message.Action;
+import tools.devnull.boteco.Action;
 import tools.devnull.boteco.message.MessageCommand;
 
 import javax.validation.ConstraintViolation;
