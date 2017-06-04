@@ -48,7 +48,9 @@ public interface Sendable extends Serializable {
    */
   default String title() {
     return null;
-  };
+  }
+
+  ;
 
   /**
    * Returns a url that points to the subject of the message (if applicable).
@@ -75,7 +77,7 @@ public interface Sendable extends Serializable {
    * @return a new sendable object
    */
   static Sendable message(String content) {
-    return new SendableObject(content, null, null, Priority.NORMAL);
+    return new SendableObject(content, null, null);
   }
 
 }

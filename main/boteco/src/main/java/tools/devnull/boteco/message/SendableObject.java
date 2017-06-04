@@ -35,6 +35,10 @@ public class SendableObject implements Sendable {
   private final String url;
   private final Priority priority;
 
+  public SendableObject(String message, String title, String url) {
+    this(message, title, url, Priority.NORMAL);
+  }
+
   public SendableObject(String message, String title, String url, Priority priority) {
     this.message = message;
     this.title = title;

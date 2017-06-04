@@ -1,6 +1,11 @@
 # Changelog
 
-## v0.8.0
+## v0.9.0
+
+- API refactor
+- Code improvements and minor fixes
+
+## v0.8.0 (2017-06-01)
 
 - Added the definition plugin
 - Added a parameter resolver that uses the OSGi Registry (useful for creating objects from message commands)

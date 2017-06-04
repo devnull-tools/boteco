@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.event;
 
+import tools.devnull.boteco.Builder;
 import tools.devnull.boteco.message.Sendable;
 
 /**
@@ -43,11 +44,11 @@ public interface EventBus {
   EventSelector broadcast(Sendable object);
 
   /**
-   * Broadcasts the given object as a Notifiable Object
+   * Broadcasts the object build by the given builder
    *
-   * @param message the message to broadcast
+   * @param builder the builder to use
    * @return a component to select the event
    */
-  EventSelector broadcast(String message);
+  EventSelector broadcast(Builder<Sendable> builder);
 
 }

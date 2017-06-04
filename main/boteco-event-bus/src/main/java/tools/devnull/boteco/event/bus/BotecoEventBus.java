@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.event.bus;
 
+import tools.devnull.boteco.Builder;
 import tools.devnull.boteco.client.jms.JmsClient;
 import tools.devnull.boteco.event.EventBus;
 import tools.devnull.boteco.event.EventSelector;
@@ -61,8 +62,8 @@ public class BotecoEventBus implements EventBus {
   }
 
   @Override
-  public EventSelector broadcast(String message) {
-    return broadcast(Sendable.message(message));
+  public EventSelector broadcast(Builder<Sendable> builder) {
+    return broadcast(builder.build());
   }
 
 }

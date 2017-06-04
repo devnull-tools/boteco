@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.message;
 
+import tools.devnull.boteco.Builder;
+
 import java.io.Serializable;
 
 /**
@@ -32,19 +34,19 @@ import java.io.Serializable;
 public interface MessageSender extends Serializable {
 
   /**
-   * Sends the given content.
-   *
-   * @param content the content of the message to send
-   * @return a component to configure the message and destination.
-   */
-  OutcomeMessageConfiguration send(String content);
-
-  /**
    * Sends the object as the message.
    *
    * @param object the object to send
-   * @return a component to configure the message and location.
+   * @return a component to configure the message
    */
   OutcomeMessageConfiguration send(Sendable object);
+
+  /**
+   * Sends the object built by the given builder.
+   *
+   * @param builder the builder to build the sendable object
+   * @return a component to configure the message
+   */
+  OutcomeMessageConfiguration send(Builder<Sendable> builder);
 
 }

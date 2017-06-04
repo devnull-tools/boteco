@@ -36,6 +36,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.event.EventBus;
 
+import static tools.devnull.boteco.message.Sendable.message;
+
 /**
  * A class that listens to IRC events.
  * <p>
@@ -118,11 +120,11 @@ public class BotecoIrcEventListener implements IRCEventListener {
 
   @Override
   public void onInvite(String chan, IRCUser user, String passiveNick) {
-    String message = user.getNick() + " invited me to join " + chan;
-    logger.info(message);
+    String content = user.getNick() + " invited me to join " + chan;
+    logger.info(content);
     joinChannel(chan);
     this.repository.add(chan);
-    this.bus.broadcast(message).as("irc.invited");
+    this.bus.broadcast(message(content)).as("irc.invited");
   }
 
   @Override
@@ -133,9 +135,9 @@ public class BotecoIrcEventListener implements IRCEventListener {
   @Override
   public void onKick(String chan, IRCUser user, String passiveNick, String msg) {
     if (passiveNick.equals(configuration.getNickname())) {
-      String message = user.getNick() + " kicked me from " + chan;
-      logger.info(message);
-      this.bus.broadcast(message).as("irc.kicked");
+      String content = user.getNick() + " kicked me from " + chan;
+      logger.info(content);
+      this.bus.broadcast(message(content)).as("irc.kicked");
       this.repository.remove(chan);
     }
   }

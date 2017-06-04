@@ -68,21 +68,21 @@ public class TelegramOutcomeProcessor implements Processor {
 
   @Override
   public void process(Exchange exchange) throws Exception {
-    OutcomeMessage message = exchange.getIn().getBody(OutcomeMessage.class);
-    if (!(message == null || message.getContent() == null || message.getContent().isEmpty())) {
+    OutcomeMessage outcomeMessage = exchange.getIn().getBody(OutcomeMessage.class);
+    if (!(outcomeMessage == null || outcomeMessage.message() == null || outcomeMessage.message().isEmpty())) {
       Map<String, String> body = new HashMap<>();
       StringBuilder content = new StringBuilder();
 
-      message.ifTitle(title -> content.append(title).append("\n\n"));
+      outcomeMessage.ifTitle(title -> content.append(title).append("\n\n"));
 
-      content.append(message.getContent());
+      content.append(outcomeMessage.message());
 
-      message.ifUrl(url -> content.append("\n\n").append(url));
-      message.ifReply(id -> body.put("reply_to_message_id", id));
+      outcomeMessage.ifUrl(url -> content.append("\n\n").append(url));
+      outcomeMessage.ifReply(id -> body.put("reply_to_message_id", id));
 
-      message.eachMetadata(header -> body.put(header.getKey(), String.valueOf(header.getValue())));
+      outcomeMessage.eachMetadata(header -> body.put(header.getKey(), String.valueOf(header.getValue())));
 
-      body.put("chat_id", message.getTarget());
+      body.put("chat_id", outcomeMessage.getTarget());
       body.put("parse_mode", "HTML");
 
       checkAndSend(body, content.toString());

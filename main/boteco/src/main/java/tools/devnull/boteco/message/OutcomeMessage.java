@@ -24,99 +24,72 @@
 
 package tools.devnull.boteco.message;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.function.Consumer;
 
 /**
  * Class that defines a message that can be delivered through a channel.
  */
-public class OutcomeMessage implements Serializable, Sendable {
+public class OutcomeMessage implements Sendable {
 
   private static final long serialVersionUID = -6192434926707152224L;
 
-  private final String content;
+  private final Sendable object;
   private final String target;
-  private final Priority priority;
-  private final String title;
-  private final String url;
   private final Map<String, Object> metadata;
   private final String replyId;
 
   /**
    * Creates a new outcome message using the given parameters
    *
+   * @param object   the object that represents the message to send
    * @param target   the target of the message
-   * @param content  the content of the message
-   * @param priority the message priority
    * @param metadata the metadata map
    * @param replyId  the id to reply (if applicable)
    */
-  public OutcomeMessage(String title,
-                        String url,
+  public OutcomeMessage(Sendable object,
                         String target,
-                        String content,
-                        Priority priority,
                         Map<String, Object> metadata,
                         String replyId) {
-    this.title = title;
-    this.url = url;
-    this.content = content;
+    this.object = object;
     this.target = target;
-    this.priority = priority;
     this.metadata = metadata;
     this.replyId = replyId;
-  }
-
-  public String getContent() {
-    return content;
   }
 
   public String getTarget() {
     return target;
   }
 
-  public Priority getPriority() {
-    return priority;
-  }
-
   public boolean isHighPriority() {
-    return priority == Priority.HIGH;
+    return priority() == Priority.HIGH;
   }
 
   public boolean isLowPriority() {
-    return priority == Priority.LOW;
+    return priority() == Priority.LOW;
   }
 
   public boolean hasTitle() {
-    return this.title != null && !this.title.isEmpty();
+    return this.title() != null && !this.title().isEmpty();
   }
 
   public boolean hasUrl() {
-    return this.url != null && !this.url.isEmpty();
+    return this.url() != null && !this.url().isEmpty();
   }
 
-  public String getTitle() {
-    return title;
-  }
-
-  public String getUrl() {
-    return url;
-  }
-
-  public String getReplyId() {
+  public String replyId() {
     return replyId;
   }
 
   public void ifTitle(Consumer<String> consumer) {
     if (hasTitle()) {
-      consumer.accept(title);
+      consumer.accept(title());
     }
   }
 
   public void ifUrl(Consumer<String> consumer) {
     if (hasUrl()) {
-      consumer.accept(url);
+      consumer.accept(url());
     }
   }
 
@@ -132,22 +105,22 @@ public class OutcomeMessage implements Serializable, Sendable {
 
   @Override
   public String message() {
-    return this.content;
+    return object.message();
   }
 
   @Override
   public String title() {
-    return this.title;
+    return object.title();
   }
 
   @Override
   public String url() {
-    return this.url;
+    return object.url();
   }
 
   @Override
   public Priority priority() {
-    return this.priority;
+    return object.priority();
   }
 
 }

@@ -8,7 +8,7 @@ import javax.mail.internet.MimeUtility;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static tools.devnull.boteco.event.NotificationBuilder.notification;
+import static tools.devnull.boteco.message.MessageBuilder.message;
 
 /**
  * A processor for events arriving through email messages
@@ -31,9 +31,8 @@ public class EmailEventProcessor implements Processor {
     if (matcher.find()) {
       String id = matcher.group("id");
       String title = matcher.group("title");
-      eventBus.broadcast(notification(content)
-          .withTitle(title)
-          .build())
+      eventBus.broadcast(message(content)
+          .withTitle(title))
           .as(id);
     }
   }

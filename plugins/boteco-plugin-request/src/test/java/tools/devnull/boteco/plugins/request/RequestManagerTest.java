@@ -26,6 +26,7 @@ package tools.devnull.boteco.plugins.request;
 
 import org.junit.Before;
 import org.junit.Test;
+import tools.devnull.boteco.Builder;
 import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.message.MessageSender;
@@ -33,9 +34,7 @@ import tools.devnull.boteco.message.OutcomeMessageConfiguration;
 import tools.devnull.boteco.request.Verifiable;
 import tools.devnull.kodo.Spec;
 
-import java.util.function.Consumer;
-
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static tools.devnull.boteco.test.Predicates.receive;
@@ -62,8 +61,7 @@ public class RequestManagerTest {
     Verifiable verifiable = mock(Verifiable.class);
     MessageLocation destination = mock(MessageLocation.class);
     when(verifiable.tokenDestination()).thenReturn(destination);
-    when(messageSender.send(anyString())).thenReturn(configuration);
-    when(configuration.withTitle(anyString())).thenReturn(configuration);
+    when(messageSender.send(any(Builder.class))).thenReturn(configuration);
 
     String type = "test";
     String description = "Lorem ipsum cillum nulla sit esse sed";
@@ -72,14 +70,9 @@ public class RequestManagerTest {
         .when(m -> m.create(verifiable, type, description))
 
         .expect(the(repository), to(receive(r -> r.create(verifiable, type))))
-        .expect(the(configuration), to(receive(withTitle("Please confirm your request"))))
         .expect(the(configuration), to(receive(c -> c.to(destination))))
         .expect(the(verifiable), to(receive(Verifiable::tokenDestination)));
 
-  }
-
-  private Consumer<OutcomeMessageConfiguration> withTitle(String title) {
-    return c -> c.withTitle(title);
   }
 
 }

@@ -24,10 +24,15 @@
 
 package tools.devnull.boteco.rest;
 
+import tools.devnull.boteco.Builder;
+import tools.devnull.boteco.message.Priority;
+import tools.devnull.boteco.message.Sendable;
+import tools.devnull.boteco.message.SendableObject;
+
 import java.util.Collections;
 import java.util.Map;
 
-public class Message {
+public class Message implements Builder<Sendable> {
 
   private String content;
   private String priority;
@@ -76,6 +81,11 @@ public class Message {
 
   public void setUrl(String url) {
     this.url = url;
+  }
+
+  @Override
+  public Sendable build() {
+    return new SendableObject(getContent(), getTitle(), getUrl(), Priority.parse(getPriority()));
   }
 
 }

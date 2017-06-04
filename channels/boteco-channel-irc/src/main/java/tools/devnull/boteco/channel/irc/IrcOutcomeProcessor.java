@@ -62,7 +62,7 @@ public class IrcOutcomeProcessor implements Processor {
       out.ifReply(id -> message.append(id).append(", "));
       out.ifTitle(title -> message.append(title).append(": "));
 
-      message.append(out.getContent());
+      message.append(out.message());
 
       out.ifUrl(url -> message.append(" <").append(url).append(">"));
 
