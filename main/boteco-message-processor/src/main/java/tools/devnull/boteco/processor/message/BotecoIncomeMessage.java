@@ -82,8 +82,8 @@ public class BotecoIncomeMessage implements IncomeMessage {
   }
 
   @Override
-  public String replyTo() {
-    return message.replyTo();
+  public String replyId() {
+    return message.replyId();
   }
 
   @Override
@@ -101,7 +101,7 @@ public class BotecoIncomeMessage implements IncomeMessage {
   public void reply(Sendable object) {
     getMessageSender()
         .send(object)
-        .replyingTo(isPrivate() ? null : replyTo())
+        .replyingTo(isPrivate() ? null : replyId())
         .to(target())
         .through(channel().id());
   }

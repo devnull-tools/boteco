@@ -84,11 +84,12 @@ public interface Message extends Serializable {
   boolean isGroup();
 
   /**
-   * Return the id for replying to this message (if applicable).
+   * Return the id of this message for replying purposes. This may
+   * be null depending on the channel.
    *
    * @return the id for replying to this message.
    * @see OutcomeMessageConfiguration#replyingTo(String)
    */
-  String replyTo();
+  String replyId();
 
 }
