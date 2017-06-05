@@ -54,7 +54,7 @@ public class UserOutcomeProcessor implements Processor {
   public void process(Exchange exchange) throws Exception {
     OutcomeMessage message = exchange.getIn().getBody(OutcomeMessage.class);
     if (message != null) {
-      User user = this.userManager.find(message.getTarget());
+      User user = this.userManager.find(message.target());
       if (user != null) {
         this.messageSender.send(message).to(user.primaryDestination());
       }

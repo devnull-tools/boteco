@@ -148,6 +148,7 @@
   <feature version="${project.version}" name="boteco-chucknorris"
            description="Chuck Norris facts provider for boteco">
     <feature>boteco</feature>
+    <feature>boteco-facts</feature>
 
     <bundle>mvn:${project.groupId}/boteco-provider-chucknorris/${project.version}</bundle>
   </feature>
@@ -169,6 +170,7 @@
   <feature version="${project.version}" name="boteco-urbandictionary"
            description="Urban Dictionary provider for boteco">
     <feature>boteco</feature>
+    <feature>boteco-definitions</feature>
 
     <bundle>mvn:${project.groupId}/boteco-provider-urbandictionary/${project.version}</bundle>
   </feature>

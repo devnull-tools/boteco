@@ -59,7 +59,7 @@ public class OutcomeMessage implements Sendable {
     this.replyId = replyId;
   }
 
-  public String getTarget() {
+  public String target() {
     return target;
   }
 

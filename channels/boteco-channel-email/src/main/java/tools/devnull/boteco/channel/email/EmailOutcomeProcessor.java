@@ -59,7 +59,7 @@ public class EmailOutcomeProcessor implements Processor {
 
       StringBuilder content = new StringBuilder(outcomeMessage.message());
 
-      out.setHeader("To", outcomeMessage.getTarget());
+      out.setHeader("To", outcomeMessage.target());
 
       outcomeMessage.ifTitle(title ->
           // removes format tag from title

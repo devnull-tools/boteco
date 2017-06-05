@@ -54,7 +54,7 @@ public class IrcOutcomeProcessor implements Processor {
   public void process(Exchange exchange) throws Exception {
     OutcomeMessage out = exchange.getIn().getBody(OutcomeMessage.class);
     if (out != null) {
-      exchange.getOut().setHeader(IrcConstants.IRC_TARGET, out.getTarget());
+      exchange.getOut().setHeader(IrcConstants.IRC_TARGET, out.target());
       exchange.getOut().setHeader(IrcConstants.IRC_MESSAGE_TYPE, "PRIVMSG");
 
       StringBuilder message = new StringBuilder();
