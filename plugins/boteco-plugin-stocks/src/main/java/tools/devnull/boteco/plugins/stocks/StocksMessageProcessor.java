@@ -61,7 +61,7 @@ public class StocksMessageProcessor implements MessageProcessor {
       restClient.get(url)
           .extract(json())
           .to(StockResult.class)
-          .ifPresent(stock -> stock.reply(message))
+          .and(stock -> stock.reply(message))
           .orElse(() -> message.reply("I didn't find results for [a]%s[/a]", query));
     } catch (IOException e) {
       throw new BotException(e.getMessage(), e);

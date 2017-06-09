@@ -26,6 +26,7 @@ package tools.devnull.boteco;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -43,23 +44,54 @@ public interface Result<E> {
   E value();
 
   /**
-   * Invokes the given consumer passing the result.
+   * Filters this result by testing the value against the
+   * given predicate.
+   * <p>
+   * If the predicate matches the value, then the same instance
+   * will be returned.
    *
-   * @param consumer the consumer to use
-   * @return an instance of this object.
+   * @param predicate the predicate to test
+   * @return an empty result if the predicate doesn't matches the value
    */
-  default Result ifPresent(Consumer<E> consumer) {
-    E result = value();
-    if (result != null) {
-      consumer.accept(result);
+  default Result<E> filter(Predicate<? super E> predicate) {
+    E value = value();
+    if (value != null) {
+      return predicate.test(value) ? this : Result.empty();
     }
     return this;
   }
 
+  /**
+   * Invokes the given consumer passing the result.
+   * <p>
+   * The consumer will be invoked only if this result
+   * contains a non-null value.
+   *
+   * @param consumer the consumer to use
+   * @return an instance of this object.
+   */
+  default Result<E> and(Consumer<E> consumer) {
+    E value = value();
+    if (value != null) {
+      consumer.accept(value);
+    }
+    return this;
+  }
+
+  /**
+   * Maps the value using the given function and return a new
+   * result containing the new value.
+   * <p>
+   * The function will be invoked only if this result
+   * contains a non-null value.
+   *
+   * @param function the function to map the value
+   * @return a result containing the new value
+   */
   default <T> Result<T> map(Function<? super E, ? extends T> function) {
-    E result = value();
-    if (result != null) {
-      return Result.of(function.apply(result));
+    E value = value();
+    if (value != null) {
+      return Result.of(function.apply(value));
     }
     return Result.empty();
   }
@@ -82,8 +114,8 @@ public interface Result<E> {
    * @return the value returned by the supplier.
    */
   default E orElseReturn(Supplier<E> supplier) {
-    E result = value();
-    return result != null ? result : supplier.get();
+    E value = value();
+    return value != null ? value : supplier.get();
   }
 
   /**
@@ -93,11 +125,11 @@ public interface Result<E> {
    * @return the result
    */
   default E orElseThrow(Supplier<? extends RuntimeException> exceptionSupplier) {
-    E result = value();
-    if (result == null) {
+    E value = value();
+    if (value == null) {
       throw exceptionSupplier.get();
     }
-    return result;
+    return value;
   }
 
   /**
@@ -113,14 +145,18 @@ public interface Result<E> {
   /**
    * Wraps the given supplier as a Result object.
    *
-   * @param supplier
-   * @param <E>
-   * @return
+   * @param supplier the supplier to get the value
+   * @return the given supplier wrapped as a result.
    */
   static <E> Result<E> of(Supplier<E> supplier) {
     return supplier::get;
   }
 
+  /**
+   * Creates a result of a null value.
+   *
+   * @return a result of a null value.
+   */
   static <E> Result<E> empty() {
     return () -> null;
   }
