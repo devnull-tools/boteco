@@ -47,7 +47,7 @@ public interface Result<E> {
    * @param consumer the consumer to use
    * @return an instance of this object.
    */
-  default Result and(Consumer<E> consumer) {
+  default Result ifPresent(Consumer<E> consumer) {
     E result = value();
     if (result != null) {
       consumer.accept(result);
