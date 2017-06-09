@@ -25,6 +25,7 @@
 package tools.devnull.boteco;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -53,6 +54,14 @@ public interface Result<E> {
       consumer.accept(result);
     }
     return this;
+  }
+
+  default <T> Result<T> map(Function<? super E, ? extends T> function) {
+    E result = value();
+    if (result != null) {
+      return Result.of(function.apply(result));
+    }
+    return Result.empty();
   }
 
   /**
@@ -89,6 +98,31 @@ public interface Result<E> {
       throw exceptionSupplier.get();
     }
     return result;
+  }
+
+  /**
+   * Creates a simple result containing the given value
+   *
+   * @param value the value of the result
+   * @return a result object that holds the given value
+   */
+  static <E> Result<E> of(E value) {
+    return () -> value;
+  }
+
+  /**
+   * Wraps the given supplier as a Result object.
+   *
+   * @param supplier
+   * @param <E>
+   * @return
+   */
+  static <E> Result<E> of(Supplier<E> supplier) {
+    return supplier::get;
+  }
+
+  static <E> Result<E> empty() {
+    return () -> null;
   }
 
 }

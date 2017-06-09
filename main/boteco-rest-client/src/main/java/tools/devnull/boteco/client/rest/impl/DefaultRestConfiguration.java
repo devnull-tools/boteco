@@ -241,20 +241,20 @@ public class DefaultRestConfiguration implements RestConfiguration {
   @Override
   public <E> Result<E> to(Class<? extends E> type) throws IOException {
     try {
-      return new DefaultResult<>(gsonBuilder.create().fromJson(rawBody(), type));
+      return Result.of(gsonBuilder.create().fromJson(rawBody(), type));
     } catch (JsonSyntaxException e) {
       logger.error("Error while parsing JSON", e);
-      return new DefaultResult<>(null);
+      return Result.empty();
     }
   }
 
   @Override
   public <E> Result<E> to(Type type) throws IOException {
     try {
-      return new DefaultResult<>(gsonBuilder.create().fromJson(rawBody(), type));
+      return Result.of(gsonBuilder.create().fromJson(rawBody(), type));
     } catch (JsonSyntaxException e) {
       logger.error("Error while parsing JSON", e);
-      return new DefaultResult<>(null);
+      return Result.empty();
     }
   }
 
@@ -262,10 +262,10 @@ public class DefaultRestConfiguration implements RestConfiguration {
   public <E> Result<List<E>> toListOf(Class<E> type) throws IOException {
     try {
       E[] result = (E[]) gsonBuilder.create().fromJson(rawBody(), Array.newInstance(type, 0).getClass());
-      return new DefaultResult<>(result != null ? Arrays.asList(result) : Collections.emptyList());
+      return Result.of(result != null ? Arrays.asList(result) : Collections.emptyList());
     } catch (JsonSyntaxException e) {
       logger.error("Error while parsing JSON", e);
-      return new DefaultResult<>(null);
+      return Result.empty();
     }
   }
 
