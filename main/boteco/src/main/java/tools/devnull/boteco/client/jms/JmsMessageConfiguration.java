@@ -24,12 +24,23 @@
 
 package tools.devnull.boteco.client.jms;
 
+import javax.jms.Connection;
+import javax.jms.Session;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 /**
  * Interface that configures a message for sending.
  */
 public interface JmsMessageConfiguration {
+
+  /**
+   * Customizes how the Session needs to be created.
+   *
+   * @param creationFunction the function to use
+   * @return an instance of this class
+   */
+  JmsMessageConfiguration withSession(Function<Connection, Session> creationFunction);
 
   /**
    * Sets the expiration time for this message.

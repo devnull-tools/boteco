@@ -26,6 +26,7 @@ package tools.devnull.boteco.client.jms;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.devnull.boteco.BotException;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -37,6 +38,7 @@ import javax.jms.ObjectMessage;
 import javax.jms.Session;
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 /**
  * The default implementation of a JmsMessageConfiguration
@@ -48,24 +50,33 @@ public class DefaultJmsMessageConfiguration implements JmsMessageConfiguration {
   private final ConnectionFactory connectionFactory;
   private final Serializable object;
   private final Long expirationTime;
+  private final Function<Connection, Session> createFunction;
 
   public DefaultJmsMessageConfiguration(ConnectionFactory connectionFactory, Serializable object) {
     this.connectionFactory = connectionFactory;
     this.object = object;
     this.expirationTime = null;
+    this.createFunction = defaultCreateFunction();
   }
 
   public DefaultJmsMessageConfiguration(ConnectionFactory connectionFactory,
                                         Serializable object,
-                                        Long expirationTime) {
+                                        Long expirationTime,
+                                        Function<Connection, Session> createFunction) {
     this.connectionFactory = connectionFactory;
     this.object = object;
     this.expirationTime = expirationTime;
+    this.createFunction = createFunction;
+  }
+
+  @Override
+  public JmsMessageConfiguration withSession(Function<Connection, Session> creationFunction) {
+    return new DefaultJmsMessageConfiguration(this.connectionFactory, this.object, this.expirationTime, creationFunction);
   }
 
   @Override
   public JmsMessageConfiguration expiringIn(long amount, TimeUnit unit) {
-    return new DefaultJmsMessageConfiguration(this.connectionFactory, this.object, unit.toMillis(amount));
+    return new DefaultJmsMessageConfiguration(this.connectionFactory, this.object, unit.toMillis(amount), this.createFunction);
   }
 
   @Override
@@ -74,7 +85,7 @@ public class DefaultJmsMessageConfiguration implements JmsMessageConfiguration {
       Connection connection = connectionFactory.createConnection();
       connection.start();
 
-      Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+      Session session = createFunction.apply(connection);
       Destination destination = target.createDestination(session);
 
       MessageProducer producer = session.createProducer(destination);
@@ -92,4 +103,16 @@ public class DefaultJmsMessageConfiguration implements JmsMessageConfiguration {
       logger.error("Error while sending object to AMQ destination", e);
     }
   }
+
+  private Function<Connection, Session> defaultCreateFunction() {
+    return connection -> {
+      try {
+        return connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+      } catch (JMSException e) {
+        logger.error("Error while creating session: " + e.getMessage(), e);
+        throw new BotException(e);
+      }
+    };
+  }
+
 }
