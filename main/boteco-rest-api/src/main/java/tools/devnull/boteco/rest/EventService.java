@@ -44,8 +44,8 @@ public class EventService {
   @POST
   @Path("/{event}")
   @Consumes("application/json")
-  public Response broadcast(@PathParam("event") String eventId, Event event) {
-    eventBus.broadcast(event).as(eventId);
+  public Response broadcast(@PathParam("event") String eventId, Message message) {
+    eventBus.broadcast(message).as(eventId);
     return Response.ok().build();
   }
 

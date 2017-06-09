@@ -22,48 +22,69 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.client.rest.impl;
-
-import tools.devnull.boteco.client.rest.RestResult;
+package tools.devnull.boteco;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class DefaultRestResult<E> implements RestResult<E> {
+/**
+ * Interface that defines a result of an operation.
+ *
+ * @param <E> The type of the result
+ */
+public interface Result<E> {
 
-  private final E result;
+  /**
+   * Returns the result of the rest invocation.
+   *
+   * @return the result of the rest invocation.
+   */
+  E value();
 
-  public DefaultRestResult(E result) {
-    this.result = result;
-  }
-
-  @Override
-  public E result() {
-    return result;
-  }
-
-  @Override
-  public RestResult and(Consumer<E> consumer) {
+  /**
+   * Invokes the given consumer passing the result.
+   *
+   * @param consumer the consumer to use
+   * @return an instance of this object.
+   */
+  default Result and(Consumer<E> consumer) {
+    E result = value();
     if (result != null) {
       consumer.accept(result);
     }
     return this;
   }
 
-  @Override
-  public void orElse(Runnable action) {
-    if (result == null) {
-      action.run();
+  /**
+   * Executes the given action in case of no result from the REST invocation
+   *
+   * @param action the action to execute.
+   */
+  default void orElse(Action action) {
+    if (value() == null) {
+      action.execute();
     }
   }
 
-  @Override
-  public E orElse(Supplier<E> supplier) {
+  /**
+   * Uses the given supplier to return a value in case of no result from the REST invocation
+   *
+   * @param supplier the supplier to use for retrieving the result
+   * @return the value returned by the supplier.
+   */
+  default E orElseReturn(Supplier<E> supplier) {
+    E result = value();
     return result != null ? result : supplier.get();
   }
 
-  @Override
-  public E orElseThrow(Supplier<? extends RuntimeException> exceptionSupplier) {
+  /**
+   * Throws the supplied exception if case of no result from the REST invocation
+   *
+   * @param exceptionSupplier the exception supplier
+   * @return the result
+   */
+  default E orElseThrow(Supplier<? extends RuntimeException> exceptionSupplier) {
+    E result = value();
     if (result == null) {
       throw exceptionSupplier.get();
     }

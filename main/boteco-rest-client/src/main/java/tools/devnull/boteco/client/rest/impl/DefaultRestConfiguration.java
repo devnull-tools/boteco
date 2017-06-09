@@ -53,7 +53,7 @@ import tools.devnull.boteco.BotException;
 import tools.devnull.boteco.client.rest.ContentTypeSelector;
 import tools.devnull.boteco.client.rest.RestConfiguration;
 import tools.devnull.boteco.client.rest.RestResponse;
-import tools.devnull.boteco.client.rest.RestResult;
+import tools.devnull.boteco.Result;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -239,33 +239,33 @@ public class DefaultRestConfiguration implements RestConfiguration {
   }
 
   @Override
-  public <E> RestResult<E> to(Class<? extends E> type) throws IOException {
+  public <E> Result<E> to(Class<? extends E> type) throws IOException {
     try {
-      return new DefaultRestResult<>(gsonBuilder.create().fromJson(rawBody(), type));
+      return new DefaultResult<>(gsonBuilder.create().fromJson(rawBody(), type));
     } catch (JsonSyntaxException e) {
       logger.error("Error while parsing JSON", e);
-      return new DefaultRestResult<>(null);
+      return new DefaultResult<>(null);
     }
   }
 
   @Override
-  public <E> RestResult<E> to(Type type) throws IOException {
+  public <E> Result<E> to(Type type) throws IOException {
     try {
-      return new DefaultRestResult<>(gsonBuilder.create().fromJson(rawBody(), type));
+      return new DefaultResult<>(gsonBuilder.create().fromJson(rawBody(), type));
     } catch (JsonSyntaxException e) {
       logger.error("Error while parsing JSON", e);
-      return new DefaultRestResult<>(null);
+      return new DefaultResult<>(null);
     }
   }
 
   @Override
-  public <E> RestResult<List<E>> toListOf(Class<E> type) throws IOException {
+  public <E> Result<List<E>> toListOf(Class<E> type) throws IOException {
     try {
       E[] result = (E[]) gsonBuilder.create().fromJson(rawBody(), Array.newInstance(type, 0).getClass());
-      return new DefaultRestResult<>(result != null ? Arrays.asList(result) : Collections.emptyList());
+      return new DefaultResult<>(result != null ? Arrays.asList(result) : Collections.emptyList());
     } catch (JsonSyntaxException e) {
       logger.error("Error while parsing JSON", e);
-      return new DefaultRestResult<>(null);
+      return new DefaultResult<>(null);
     }
   }
 

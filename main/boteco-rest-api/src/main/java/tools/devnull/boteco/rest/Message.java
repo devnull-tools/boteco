@@ -34,7 +34,7 @@ import java.util.Map;
 
 public class Message implements Builder<Sendable> {
 
-  private String content;
+  private String text;
   private String priority;
   private String title;
   private String url;
@@ -51,12 +51,12 @@ public class Message implements Builder<Sendable> {
     this.metadata = metadata;
   }
 
-  public String getContent() {
-    return content;
+  public String getText() {
+    return text;
   }
 
-  public void setContent(String content) {
-    this.content = content;
+  public void setText(String text) {
+    this.text = text;
   }
 
   public String getPriority() {
@@ -85,7 +85,7 @@ public class Message implements Builder<Sendable> {
 
   @Override
   public Sendable build() {
-    return new SendableObject(getContent(), getTitle(), getUrl(), Priority.parse(getPriority()));
+    return new SendableObject(getText(), getTitle(), getUrl(), Priority.parse(getPriority()));
   }
 
 }

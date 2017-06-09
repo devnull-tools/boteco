@@ -49,7 +49,7 @@ public class ChuckNorrisFactsProvider implements FactsProvider {
     try {
       return rest.get("https://api.chucknorris.io/jokes/random")
           .to(ChuckNorrisFact.class)
-          .result();
+          .value();
     } catch (IOException e) {
       throw new BotException(e);
     }

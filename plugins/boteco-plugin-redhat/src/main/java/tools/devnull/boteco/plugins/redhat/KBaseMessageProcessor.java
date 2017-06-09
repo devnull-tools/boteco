@@ -74,7 +74,7 @@ public class KBaseMessageProcessor implements MessageProcessor {
       KBaseSearchResult result = restClient.get(uri)
           .withHeader("Accept", "application/vnd.redhat.solr+json")
           .to(KBaseSearchResult.class)
-          .result();
+          .value();
 
       KBaseSearchResult.Doc document = result.results().stream()
           .filter(rightSolution(number))

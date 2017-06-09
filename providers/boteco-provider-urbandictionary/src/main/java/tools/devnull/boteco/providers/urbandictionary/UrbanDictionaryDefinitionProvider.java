@@ -52,7 +52,7 @@ public class UrbanDictionaryDefinitionProvider implements DefinitionProvider {
           .setPath("/v0/define")
           .addParameter("term", term).build())
           .to(UrbanDictionaryResponse.class)
-          .result().list.stream()
+          .value().list.stream()
           .max(Comparator.comparingInt(_Definition::rate))
           .map(def -> new UrbanDictionaryDefinition(def.word, def.definition, def.permalink))
           .orElse(null);

@@ -53,7 +53,7 @@ public class YahooWeather implements WeatherSearcher {
               "(select woeid from geo.places(1) where text=\"" +
               query + "\") and u=\"c\"")
           .build();
-      WeatherResults results = client.get(uri).to(WeatherResults.class).result();
+      WeatherResults results = client.get(uri).to(WeatherResults.class).value();
       return results.hasResult() ? results : null;
     } catch (Exception e) {
       logger.error("Error while querying weather", e);
