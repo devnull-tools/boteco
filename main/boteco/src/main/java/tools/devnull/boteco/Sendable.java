@@ -52,8 +52,6 @@ public interface Sendable extends Serializable {
     return null;
   }
 
-  ;
-
   /**
    * Returns a url that points to the subject of the message (if applicable).
    *
