@@ -3,7 +3,8 @@
 ## v0.9.0
 
 - API refactor
-- Code improvements and minor fixes
+- Chuck Norris' plugin is now part of the Facts Plugin (as a Facts Provider)
+- Lookup Plugin (with a provider for the Urban Dictionary)
 
 ## v0.8.0 (2017-06-01)
 
