@@ -53,7 +53,7 @@ import tools.devnull.boteco.BotException;
 import tools.devnull.boteco.client.rest.ContentTypeSelector;
 import tools.devnull.boteco.client.rest.RestConfiguration;
 import tools.devnull.boteco.client.rest.RestResponse;
-import tools.devnull.boteco.Result;
+import tools.devnull.trugger.Optional;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -239,33 +239,33 @@ public class DefaultRestConfiguration implements RestConfiguration {
   }
 
   @Override
-  public <E> Result<E> to(Class<? extends E> type) throws IOException {
+  public <E> Optional<E> to(Class<? extends E> type) throws IOException {
     try {
-      return Result.of(gsonBuilder.create().fromJson(rawBody(), type));
+      return Optional.of(gsonBuilder.create().fromJson(rawBody(), type));
     } catch (JsonSyntaxException e) {
       logger.error("Error while parsing JSON", e);
-      return Result.empty();
+      return Optional.empty();
     }
   }
 
   @Override
-  public <E> Result<E> to(Type type) throws IOException {
+  public <E> Optional<E> to(Type type) throws IOException {
     try {
-      return Result.of(gsonBuilder.create().fromJson(rawBody(), type));
+      return Optional.of(gsonBuilder.create().fromJson(rawBody(), type));
     } catch (JsonSyntaxException e) {
       logger.error("Error while parsing JSON", e);
-      return Result.empty();
+      return Optional.empty();
     }
   }
 
   @Override
-  public <E> Result<List<E>> toListOf(Class<E> type) throws IOException {
+  public <E> Optional<List<E>> toListOf(Class<E> type) throws IOException {
     try {
       E[] result = (E[]) gsonBuilder.create().fromJson(rawBody(), Array.newInstance(type, 0).getClass());
-      return Result.of(result != null ? Arrays.asList(result) : Collections.emptyList());
+      return Optional.of(result != null ? Arrays.asList(result) : Collections.emptyList());
     } catch (JsonSyntaxException e) {
       logger.error("Error while parsing JSON", e);
-      return Result.empty();
+      return Optional.empty();
     }
   }
 

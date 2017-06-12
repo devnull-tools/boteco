@@ -54,7 +54,6 @@ public class UrbanDictionaryDefinitionProvider implements DefinitionProvider {
           .to(UrbanDictionaryResponse.class)
           .value().list.stream()
           .max(Comparator.comparingInt(_Definition::rate))
-          .map(def -> new UrbanDictionaryDefinition(def.word, def.definition, def.permalink))
           .orElse(null);
     } catch (Exception e) {
       throw new BotException(e);
@@ -72,7 +71,7 @@ public class UrbanDictionaryDefinitionProvider implements DefinitionProvider {
 
   }
 
-  public static class _Definition {
+  public static class _Definition implements Definition {
     @SerializedName("defid")
     private int id;
 
@@ -104,6 +103,25 @@ public class UrbanDictionaryDefinitionProvider implements DefinitionProvider {
       return thumbsUp - thumbsDown;
     }
 
+    @Override
+    public String term() {
+      return word;
+    }
+
+    @Override
+    public String source() {
+      return "Urban Dictionary";
+    }
+
+    @Override
+    public String description() {
+      return definition;
+    }
+
+    @Override
+    public String url() {
+      return permalink;
+    }
   }
 
 }
