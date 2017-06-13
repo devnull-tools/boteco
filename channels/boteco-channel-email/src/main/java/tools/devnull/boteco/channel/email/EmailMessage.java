@@ -98,7 +98,7 @@ public class EmailMessage implements Message {
   }
 
   @Override
-  public String replyTo() {
+  public String replyId() {
     return null;
   }
 

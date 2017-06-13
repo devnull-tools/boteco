@@ -25,7 +25,7 @@
 package tools.devnull.boteco.plugins.redhat;
 
 import tools.devnull.boteco.message.Priority;
-import tools.devnull.boteco.message.Sendable;
+import tools.devnull.boteco.Sendable;
 
 /**
  * A class that represents a status from status.redhat.com

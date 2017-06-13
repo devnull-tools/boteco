@@ -97,7 +97,7 @@ public class BotecoIrcMessage implements Message {
   }
 
   @Override
-  public String replyTo() {
+  public String replyId() {
     return sender.id();
   }
 

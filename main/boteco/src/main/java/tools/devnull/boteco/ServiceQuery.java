@@ -83,6 +83,14 @@ public interface ServiceQuery<T> {
   T orElse(Supplier<T> supplier);
 
   /**
+   * If no object is found, then throw the supplied exception.
+   *
+   * @param exceptionSupplier the supplier that will provide the exception to throw
+   * @return the found service
+   */
+  T orElseThrow(Supplier<? extends RuntimeException> exceptionSupplier);
+
+  /**
    * Return all services found by this query
    *
    * @return all services found by this query

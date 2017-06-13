@@ -82,7 +82,7 @@ class TelegramIncomeMessage implements Message {
   }
 
   @Override
-  public String replyTo() {
+  public String replyId() {
     return String.valueOf(message.getMessageId());
   }
 

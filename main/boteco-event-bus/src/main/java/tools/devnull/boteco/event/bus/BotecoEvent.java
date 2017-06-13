@@ -25,7 +25,7 @@
 package tools.devnull.boteco.event.bus;
 
 import tools.devnull.boteco.event.Event;
-import tools.devnull.boteco.message.Sendable;
+import tools.devnull.boteco.Sendable;
 
 /**
  * The default implementation of an event.

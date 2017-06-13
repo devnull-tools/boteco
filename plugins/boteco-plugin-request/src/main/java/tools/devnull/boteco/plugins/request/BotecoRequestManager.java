@@ -34,6 +34,7 @@ import tools.devnull.boteco.request.Verifiable;
 
 import static tools.devnull.boteco.Predicates.eq;
 import static tools.devnull.boteco.Predicates.serviceProperty;
+import static tools.devnull.boteco.message.MessageBuilder.message;
 
 /**
  * The default implementation for a {@link RequestManager}.
@@ -57,10 +58,9 @@ public class BotecoRequestManager implements RequestManager {
   @Override
   public String create(Verifiable object, String type, String description) {
     String token = this.repository.create(object, type);
-    //TODO externalize this to allow customization of the text
-    messageSender.send("To confirm '[aa]" + description + "[/aa]' use the token '[a]" + token + "[/a]'.\n" +
-        "If you didn't request this, just ignore this message.")
-        .withTitle("Please confirm your request")
+    messageSender.send(message("To confirm '[aa]" + description + "[/aa]' use the token '[a]" + token +
+        "[/a]'.\n" + "If you didn't request this, just ignore this message.")
+        .withTitle("Please confirm your request"))
         .to(object.tokenDestination());
     return token;
   }

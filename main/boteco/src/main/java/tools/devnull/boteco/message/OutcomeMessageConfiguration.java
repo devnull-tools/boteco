@@ -26,6 +26,8 @@ package tools.devnull.boteco.message;
 
 import tools.devnull.boteco.MessageLocation;
 
+import java.util.Map;
+
 /**
  * Interface that defines a component for building
  * outcome messages to be sent.
@@ -44,30 +46,15 @@ public interface OutcomeMessageConfiguration {
   OutcomeMessageConfiguration with(String headerName, Object headerValue);
 
   /**
-   * Sets the priority.
-   * <p>
-   * Note that not all channels support priorities.
+   * Adds the given map values as headers to this outcome message.
    *
-   * @param priority the priority to set
+   * @param headers the headers to add
    * @return a reference to this object
    */
-  OutcomeMessageConfiguration withPriority(Priority priority);
-
-  /**
-   * Sets the title
-   *
-   * @param title the title to set
-   * @return a reference to this object
-   */
-  OutcomeMessageConfiguration withTitle(String title);
-
-  /**
-   * Sets the url
-   *
-   * @param url the url to set
-   * @return a reference to this object
-   */
-  OutcomeMessageConfiguration withUrl(String url);
+  default OutcomeMessageConfiguration with(Map<String, ?> headers) {
+    headers.forEach(this::with);
+    return this;
+  }
 
   /**
    * Sets the target of the message

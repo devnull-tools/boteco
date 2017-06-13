@@ -57,9 +57,9 @@ public class EmailOutcomeProcessor implements Processor {
       Message out = exchange.getOut();
       outcomeMessage.eachMetadata(entry -> out.setHeader(entry.getKey(), entry.getValue()));
 
-      StringBuilder content = new StringBuilder(outcomeMessage.getContent());
+      StringBuilder content = new StringBuilder(outcomeMessage.message());
 
-      out.setHeader("To", outcomeMessage.getTarget());
+      out.setHeader("To", outcomeMessage.target());
 
       outcomeMessage.ifTitle(title ->
           // removes format tag from title

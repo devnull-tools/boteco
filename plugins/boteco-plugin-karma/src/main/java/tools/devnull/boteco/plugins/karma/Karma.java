@@ -25,7 +25,7 @@
 package tools.devnull.boteco.plugins.karma;
 
 import com.google.gson.annotations.SerializedName;
-import tools.devnull.boteco.message.Sendable;
+import tools.devnull.boteco.Sendable;
 
 public class Karma implements Sendable {
 

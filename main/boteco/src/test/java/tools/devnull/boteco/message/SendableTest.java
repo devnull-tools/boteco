@@ -25,6 +25,7 @@
 package tools.devnull.boteco.message;
 
 import org.junit.Test;
+import tools.devnull.boteco.Sendable;
 import tools.devnull.kodo.Spec;
 
 import java.util.Objects;
