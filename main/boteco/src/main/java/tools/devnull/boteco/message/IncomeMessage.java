@@ -112,7 +112,7 @@ public interface IncomeMessage extends Message {
    * @return the message location for sending messages to the sender
    */
   default MessageLocation location() {
-    return Destination.channel(channel().id()).to(sender().id());
+    return Destination.channel(channel().id()).to(target());
   }
 
 }
