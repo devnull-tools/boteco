@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.9.0
+## v0.9.0 (2017-06-12)
 
 - API refactor
 - Chuck Norris' plugin is now part of the Facts Plugin (as a Facts Provider)
