@@ -69,8 +69,8 @@ public class PushoverOutcomeProcessor implements Processor {
     Map<String, String> body = new HashMap<>();
 
     body.put("token", token);
-    body.put("user", out.getTarget());
-    body.put("message", parser.parse(formatter, out.getContent()));
+    body.put("user", out.target());
+    body.put("message", parser.parse(formatter, out.message()));
     out.ifTitle(title -> body.put("title", parser.parse(formatter, title)));
     out.ifUrl(url -> body.put("url", url));
 

@@ -24,7 +24,7 @@
 
 package tools.devnull.boteco.plugins.xgh;
 
-import tools.devnull.boteco.message.Sendable;
+import tools.devnull.boteco.Sendable;
 
 public class Axiom implements Sendable {
 

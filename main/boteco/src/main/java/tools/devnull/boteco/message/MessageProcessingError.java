@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.message;
 
+import tools.devnull.boteco.Sendable;
+
 /**
  * A class that represents an error while processing a message.
  */

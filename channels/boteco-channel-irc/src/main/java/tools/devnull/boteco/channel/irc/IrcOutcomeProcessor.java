@@ -54,7 +54,7 @@ public class IrcOutcomeProcessor implements Processor {
   public void process(Exchange exchange) throws Exception {
     OutcomeMessage out = exchange.getIn().getBody(OutcomeMessage.class);
     if (out != null) {
-      exchange.getOut().setHeader(IrcConstants.IRC_TARGET, out.getTarget());
+      exchange.getOut().setHeader(IrcConstants.IRC_TARGET, out.target());
       exchange.getOut().setHeader(IrcConstants.IRC_MESSAGE_TYPE, "PRIVMSG");
 
       StringBuilder message = new StringBuilder();
@@ -62,7 +62,7 @@ public class IrcOutcomeProcessor implements Processor {
       out.ifReply(id -> message.append(id).append(", "));
       out.ifTitle(title -> message.append(title).append(": "));
 
-      message.append(out.getContent());
+      message.append(out.message());
 
       out.ifUrl(url -> message.append(" <").append(url).append(">"));
 

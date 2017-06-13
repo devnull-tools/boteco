@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.client.rest;
 
+import tools.devnull.trugger.Optional;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
@@ -204,7 +206,7 @@ public interface RestConfiguration {
    * @param type the type of the result
    * @return the parsed result
    */
-  <E> RestResult<E> to(Class<? extends E> type) throws IOException;
+  <E> Optional<E> to(Class<? extends E> type) throws IOException;
 
   /**
    * Invokes the rest url and parses the response into an object of the given type.
@@ -212,7 +214,7 @@ public interface RestConfiguration {
    * @param type the type of the result
    * @return the parsed result
    */
-  <E> RestResult<E> to(Type type) throws IOException;
+  <E> Optional<E> to(Type type) throws IOException;
 
   /**
    * Invokes the rest url and parses the response into a list of objects of the given type.
@@ -220,7 +222,7 @@ public interface RestConfiguration {
    * @param type the type of the objects in the list
    * @return the parsed result
    */
-  <E> RestResult<List<E>> toListOf(Class<E> type) throws IOException;
+  <E> Optional<List<E>> toListOf(Class<E> type) throws IOException;
 
   /**
    * Sets the date format to use when parsing the object.

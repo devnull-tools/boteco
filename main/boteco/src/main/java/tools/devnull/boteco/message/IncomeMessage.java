@@ -26,6 +26,7 @@ package tools.devnull.boteco.message;
 
 import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.MessageLocation;
+import tools.devnull.boteco.Sendable;
 
 /**
  * Interface that defines a message that arrives from a channel.
@@ -111,7 +112,7 @@ public interface IncomeMessage extends Message {
    * @return the message location for sending messages to the sender
    */
   default MessageLocation location() {
-    return Destination.channel(channel().id()).to(sender().id());
+    return Destination.channel(channel().id()).to(target());
   }
 
 }

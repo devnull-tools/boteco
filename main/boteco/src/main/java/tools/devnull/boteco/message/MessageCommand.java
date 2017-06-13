@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.message;
 
+import tools.devnull.boteco.Action;
+
 import java.util.List;
 import java.util.function.Consumer;
 

@@ -26,7 +26,6 @@ package tools.devnull.boteco.rest;
 
 import tools.devnull.boteco.request.RequestManager;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -43,7 +42,6 @@ public class ConfirmationService {
 
   @POST
   @Path("/{token}")
-  @Consumes("application/json")
   public Response confirm(@PathParam("token") String token) {
     return this.requestManager.confirm(token) ?
         Response.ok().build() :

@@ -112,4 +112,13 @@ public class OsgiServiceQuery<T> implements ServiceQuery<T> {
     return service != null ? service : supplier.get();
   }
 
+  @Override
+  public T orElseThrow(Supplier<? extends RuntimeException> exceptionSupplier) {
+    T service = one();
+    if (service == null) {
+      throw exceptionSupplier.get();
+    }
+    return service;
+  }
+
 }

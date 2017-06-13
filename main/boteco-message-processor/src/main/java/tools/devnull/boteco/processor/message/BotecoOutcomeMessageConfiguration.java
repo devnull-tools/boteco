@@ -24,14 +24,14 @@
 
 package tools.devnull.boteco.processor.message;
 
+import tools.devnull.boteco.client.jms.JmsClient;
 import tools.devnull.boteco.message.OutcomeMessage;
 import tools.devnull.boteco.message.OutcomeMessageConfiguration;
-import tools.devnull.boteco.client.jms.JmsClient;
-import tools.devnull.boteco.message.Priority;
-import tools.devnull.boteco.message.Sendable;
+import tools.devnull.boteco.Sendable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static tools.devnull.boteco.Destination.queue;
 
@@ -43,30 +43,10 @@ public class BotecoOutcomeMessageConfiguration implements OutcomeMessageConfigur
 
   private final JmsClient client;
   private final String queueFormat;
-  private final String content;
   private final Map<String, Object> headers;
-  private Priority priority = Priority.NORMAL;
   private String target;
-  private String title;
-  private String url;
   private String replyId;
-
-  /**
-   * Creates a new message builder based on the given parameters.
-   * <p>
-   * Since this class is based on a naming convention, the queue format
-   * must have a "%s" to represent the channel name in the queue's name.
-   *
-   * @param client      the jms client to send the messages
-   * @param queueFormat the queue format to generate the queue name
-   * @param content     the content to send
-   */
-  public BotecoOutcomeMessageConfiguration(JmsClient client, String queueFormat, String content) {
-    this.client = client;
-    this.queueFormat = queueFormat;
-    this.content = content;
-    this.headers = new HashMap<>();
-  }
+  private Sendable object;
 
   /**
    * Creates a new message builder based on the given parameters.
@@ -85,11 +65,8 @@ public class BotecoOutcomeMessageConfiguration implements OutcomeMessageConfigur
   public BotecoOutcomeMessageConfiguration(JmsClient client, String queueFormat, Sendable object) {
     this.client = client;
     this.queueFormat = queueFormat;
-    this.content = object.message();
     this.headers = new HashMap<>();
-    this.url = object.url();
-    this.title = object.title();
-    this.priority = object.priority();
+    this.object = object;
   }
 
   @Override
@@ -105,24 +82,6 @@ public class BotecoOutcomeMessageConfiguration implements OutcomeMessageConfigur
   }
 
   @Override
-  public OutcomeMessageConfiguration withPriority(Priority priority) {
-    this.priority = priority;
-    return this;
-  }
-
-  @Override
-  public OutcomeMessageConfiguration withTitle(String title) {
-    this.title = title;
-    return this;
-  }
-
-  @Override
-  public OutcomeMessageConfiguration withUrl(String url) {
-    this.url = url;
-    return this;
-  }
-
-  @Override
   public OutcomeMessageConfiguration replyingTo(String id) {
     this.replyId = id;
     return this;
@@ -130,7 +89,8 @@ public class BotecoOutcomeMessageConfiguration implements OutcomeMessageConfigur
 
   @Override
   public void through(String channel) {
-    client.send(new OutcomeMessage(title, url, target, content, priority, headers, replyId))
+    client.send(new OutcomeMessage(object, target, headers, replyId))
+        .expiringIn(5, TimeUnit.MINUTES)
         .to(queue(String.format(queueFormat, channel)));
   }
 
