@@ -33,6 +33,7 @@ import tools.devnull.boteco.message.checker.Command;
 
 import java.io.IOException;
 import java.util.Properties;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 @Command("stock")
@@ -49,6 +50,7 @@ public class StocksMessageProcessor implements MessageProcessor {
 
   @Override
   public void process(IncomeMessage message) {
+    Consumer<StockResult> reply = stock -> stock.reply(message);
     String arg = message.command().as(String.class);
     String query;
     if (!arg.contains(":") && configuration.containsKey("query.defaults.exchange")) {
@@ -61,8 +63,8 @@ public class StocksMessageProcessor implements MessageProcessor {
       restClient.get(url)
           .extract(json())
           .to(StockResult.class)
-          .and(stock -> stock.reply(message))
-          .orElse(() -> message.reply("I didn't find results for [a]%s[/a]", query));
+          .and(reply)
+          .orElseDo(() -> message.reply("I didn't find results for [a]%s[/a]", query));
     } catch (IOException e) {
       throw new BotException(e.getMessage(), e);
     }
