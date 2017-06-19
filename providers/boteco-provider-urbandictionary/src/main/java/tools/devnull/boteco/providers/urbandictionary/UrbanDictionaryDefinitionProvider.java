@@ -30,7 +30,10 @@ import tools.devnull.boteco.BotException;
 import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.plugins.definition.spi.Definition;
 import tools.devnull.boteco.plugins.definition.spi.DefinitionProvider;
+import tools.devnull.trugger.Optional;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Comparator;
 import java.util.List;
 
@@ -46,16 +49,16 @@ public class UrbanDictionaryDefinitionProvider implements DefinitionProvider {
   }
 
   @Override
-  public Definition lookup(String term) {
+  public Optional<Definition> lookup(String term) {
     try {
-      return client.get(new URIBuilder("http://api.urbandictionary.com")
+      return Optional.of(client.get(new URIBuilder("http://api.urbandictionary.com")
           .setPath("/v0/define")
           .addParameter("term", term).build())
           .to(UrbanDictionaryResponse.class)
           .value().list.stream()
           .max(Comparator.comparingInt(_Definition::rate))
-          .orElse(null);
-    } catch (Exception e) {
+          .orElse(null));
+    } catch (IOException | URISyntaxException e) {
       throw new BotException(e);
     }
   }

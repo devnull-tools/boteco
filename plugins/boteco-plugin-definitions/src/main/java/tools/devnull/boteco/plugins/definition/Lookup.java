@@ -63,17 +63,14 @@ public class Lookup {
     if (provider == null) {
       result = registry.locate(DefinitionProvider.class).all()
           .stream()
-          .map(p -> p.lookup(term))
+          .map(p -> p.lookup(term).value())
           .filter(Objects::nonNull)
           .collect(Collectors.toList());
     } else {
       DefinitionProvider definitionProvider = registry.locate(DefinitionProvider.class)
           .filter(id(provider))
-          .one();
-      if (definitionProvider == null) {
-        throw new DomainException("Provider " + provider + " not found");
-      }
-      Definition lookup = definitionProvider.lookup(term);
+          .orElseThrow(() -> new DomainException("Provider " + provider + " not found"));
+      Definition lookup = definitionProvider.lookup(term).value();
       if (lookup != null) {
         result = Collections.singletonList(lookup);
       } else {

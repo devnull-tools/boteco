@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.plugins.definition.spi;
 
+import tools.devnull.trugger.Optional;
+
 /**
  * Interface that defines a provider for a definition. Examples may include
  * the Urban Dictionary, Wikipedia, etc.
@@ -36,6 +38,6 @@ public interface DefinitionProvider {
    * @param term the term to search
    * @return the definition found by this provider
    */
-  Definition lookup(String term);
+  Optional<Definition> lookup(String term);
 
 }

@@ -122,7 +122,7 @@ public class ParameterBinder<E> implements Function<String, E> {
       }
       return (E) this.functions.get(type).apply(content);
     }
-    List<Constructor<?>> constructors = Reflection.reflect().constructors().in(type);
+    List<Constructor<?>> constructors = Reflection.reflect().constructors().from(type);
     List<String> values = splitter.apply(content);
     for (Constructor constructor : constructors) {
       int stringParameters = bindableParameters(constructor);

@@ -40,10 +40,10 @@ public class AnnotationMock {
     when(annotation.annotationType()).then(invocation -> annotationType);
     List<Method> methods = Reflection.reflect().methods()
         .filter(method -> method.getDefaultValue() != null)
-        .in(annotationType);
+        .from(annotationType);
     // maps the methods with default value
     methods.stream().forEach(
-        method -> when(Reflection.invoke(method).in(annotation).withoutArgs())
+        method -> when(Reflection.invoke(method).on(annotation).withoutArgs())
             .thenReturn(method.getDefaultValue())
     );
     return annotation;
