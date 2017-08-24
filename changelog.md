@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.10.0
+
+- Updated Fuse version
+- Removed Validator for command parameters
+
 ## v0.9.0 (2017-06-12)
 
 - API refactor

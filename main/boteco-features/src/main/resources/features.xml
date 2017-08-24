@@ -35,13 +35,6 @@
     <bundle>wrap:mvn:org.jsoup/jsoup/${jsoup.version}</bundle>
     <bundle>mvn:tools.devnull/trugger/${trugger.version}</bundle>
 
-    <!-- hibernate validator -->
-    <bundle>mvn:org.hibernate/hibernate-validator/${hibernate-validator.version}</bundle>
-    <bundle>mvn:javax.validation/validation-api/${validation-api.version}</bundle>
-    <bundle>mvn:org.jboss.logging/jboss-logging/3.3.0.Final</bundle>
-    <bundle>mvn:com.fasterxml/classmate/${classmate.version}</bundle>
-    <!-- END -->
-
     <!-- main bundles -->
     <bundle>mvn:${project.groupId}/boteco/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-message-formatter/${project.version}</bundle>
@@ -57,7 +50,6 @@
     <bundle>mvn:${project.groupId}/boteco-plugin-request/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-subscription/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-manager/${project.version}</bundle>
-    <bundle>mvn:${project.groupId}/boteco-plugin-validator/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-user/${project.version}</bundle>
 
     <!-- main persistence bundles -->
