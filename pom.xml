@@ -48,11 +48,8 @@
     <kodo.version>3.4.0</kodo.version>
     <junit.version>4.11</junit.version>
     <mockito.version>2.7.13</mockito.version>
-    <hibernate-validator.version>5.4.0.Final</hibernate-validator.version>
-    <validation-api.version>1.1.0.Final</validation-api.version>
     <jsoup.version>1.10.2</jsoup.version>
     <mongo-java-driver.version>3.0.4</mongo-java-driver.version>
-    <classmate.version>1.3.3</classmate.version>
 
     <maven-compiler-plugin-version>3.3</maven-compiler-plugin-version>
     <maven-resources-plugin-version>2.5</maven-resources-plugin-version>
@@ -152,31 +149,13 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-camel</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient-osgi</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-validator</artifactId>
-      <version>${hibernate-validator.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>javax.validation</groupId>
-      <artifactId>validation-api</artifactId>
-      <version>${validation-api.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml</groupId>
-      <artifactId>classmate</artifactId>
-      <version>${classmate.version}</version>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
     </dependency>
 
     <dependency>

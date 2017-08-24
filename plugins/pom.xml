@@ -49,7 +49,6 @@
     <module>boteco-plugin-user</module>
     <module>boteco-plugin-request</module>
     <module>boteco-plugin-xgh</module>
-    <module>boteco-plugin-validator</module>
     <module>boteco-plugin-definitions</module>
     <module>boteco-plugin-facts</module>
   </modules>

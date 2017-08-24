@@ -52,16 +52,6 @@
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
-
-    <dependency>
-      <groupId>org.osgi</groupId>
-      <artifactId>org.osgi.core</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-    </dependency>
   </dependencies>
 
 </project>

@@ -34,8 +34,6 @@ import tools.devnull.boteco.Sendable;
 import tools.devnull.boteco.message.Sender;
 import tools.devnull.boteco.user.User;
 
-import javax.validation.Validator;
-
 public class BotecoIncomeMessage implements IncomeMessage {
 
   private final ServiceRegistry registry;
@@ -93,8 +91,7 @@ public class BotecoIncomeMessage implements IncomeMessage {
 
   @Override
   public MessageCommand command() {
-    return new ValidatableMessageCommand(registry.locate(Validator.class).one(),
-        channel().commandExtractor().extract(this));
+    return channel().commandExtractor().extract(this);
   }
 
   @Override
