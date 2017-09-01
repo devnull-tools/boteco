@@ -36,13 +36,13 @@ public class MongoDatabaseFactory {
   /**
    * Creates a new MongoDatabase object using the given uri and database name.
    *
-   * @param uri      the mongo uri
-   * @param database the database to access
+   * @param uri the mongo uri
    * @return a new MongoDatabase
    */
-  public static MongoDatabase createDatabase(String uri, String database) {
-    MongoClient client = new MongoClient(new MongoClientURI(uri));
-    return client.getDatabase(database);
+  public static MongoDatabase createDatabase(String uri) {
+    MongoClientURI mongoClientURI = new MongoClientURI(uri);
+    MongoClient client = new MongoClient(mongoClientURI);
+    return client.getDatabase(mongoClientURI.getDatabase());
   }
 
 }
