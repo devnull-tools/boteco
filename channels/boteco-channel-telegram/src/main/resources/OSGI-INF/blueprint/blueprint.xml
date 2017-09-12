@@ -115,7 +115,7 @@
                 trace="{{trace}}"
                 xmlns="http://camel.apache.org/schema/blueprint">
 
-    <route id="boteco.message.from.telegram" autoStartup="{{income.enabled}}">
+    <route id="boteco.message.from.telegram" autoStartup="{{income.enable}}">
       <from uri="timer:telegram?period={{poll.interval}}"/>
       <log message="Pooling Telegram for new messages"
            logName="boteco-message-telegram"
@@ -130,7 +130,7 @@
       </split>
     </route>
 
-    <route id="boteco.message.to.telegram" autoStartup="{{outcome.enabled}}">
+    <route id="boteco.message.to.telegram" autoStartup="{{outcome.enable}}">
       <from uri="activemq:queue:boteco.message.telegram?concurrentConsumers=10"/>
       <log logName="boteco-channel-telegram"
            loggingLevel="INFO"
