@@ -33,8 +33,8 @@
                            placeholder-prefix="{{"
                            placeholder-suffix="}}">
     <cm:default-properties>
-      <cm:property name="income.enabled" value="false"/>
-      <cm:property name="outcome.enabled" value="false"/>
+      <cm:property name="income.enable" value="false"/>
+      <cm:property name="outcome.enable" value="false"/>
       <cm:property name="connection.check" value="false"/>
       <cm:property name="connection.check.interval" value="1m"/>
       <cm:property name="connection.check.trace" value="false"/>
@@ -121,7 +121,7 @@
                 trace="{{trace}}"
                 xmlns="http://camel.apache.org/schema/blueprint">
 
-    <route id="boteco.message.from.irc" autoStartup="{{income.enabled}}">
+    <route id="boteco.message.from.irc" autoStartup="{{income.enable}}">
       <from
           uri="irc:{{irc.nick}}@{{irc.server}}:{{irc.port}}?{{irc.options}}&amp;onNick=false&amp;onQuit=false&amp;onJoin=false&amp;onKick=false&amp;onMode=false&amp;onPart=false&amp;onTopic=false"/>
       <log logName="boteco-channel-irc"
@@ -130,7 +130,7 @@
       <process ref="irc-income-processor"/>
     </route>
 
-    <route id="boteco.message.to.irc" autoStartup="{{outcome.enabled}}">
+    <route id="boteco.message.to.irc" autoStartup="{{outcome.enable}}">
       <from uri="activemq:queue:boteco.message.irc"/>
       <log logName="boteco-channel-irc"
            loggingLevel="INFO"
