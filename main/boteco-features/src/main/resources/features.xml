@@ -197,18 +197,4 @@
     <!-- bundled plugins -->
     <feature>boteco-plugins</feature>
   </feature>
-
-  <feature version="${project.version}" name="boteco-all-dependencies"
-           description="Dependencies for boteco">
-    <feature>camel-gson</feature>
-    <feature>camel-jsonpath</feature>
-    <feature>camel-http4</feature>
-    <feature>camel-irc</feature>
-    <feature>camel-mail</feature>
-    <feature>activemq-camel</feature>
-
-    <bundle>mvn:org.mongodb/mongo-java-driver/${mongo-java-driver.version}</bundle>
-    <bundle>wrap:mvn:org.jsoup/jsoup/${jsoup.version}</bundle>
-    <bundle>mvn:tools.devnull/trugger/${trugger.version}</bundle>
-  </feature>
 </features>

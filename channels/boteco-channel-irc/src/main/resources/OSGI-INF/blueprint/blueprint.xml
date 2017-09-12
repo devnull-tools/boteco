@@ -44,8 +44,7 @@
       <cm:property name="irc.server" value="localhost"/>
       <cm:property name="irc.port" value="6667"/>
       <!-- The prefix that defines a bot command -->
-      <cm:property name="bot.command.prefix"
-                   value="{{irc.nick}}[,:]?\s+"/>
+      <cm:property name="bot.command.prefix" value="{{irc.nick}}[,:]?\s+"/>
       <!-- The options to apply to the irc component -->
       <cm:property name="irc.options" value=""/>
 
