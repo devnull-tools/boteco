@@ -4,6 +4,7 @@
 
 - Updated Fuse version
 - Removed Validator for command parameters
+- Code improvements
 
 ## v0.9.0 (2017-06-12)
 
