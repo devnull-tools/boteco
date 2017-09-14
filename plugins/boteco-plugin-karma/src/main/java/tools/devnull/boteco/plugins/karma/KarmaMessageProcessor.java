@@ -82,7 +82,7 @@ public class KarmaMessageProcessor implements MessageProcessor {
 
   private String buildReplyMessage(String term, int value) {
     String tag = value < 0 ? "n" : "p";
-    return String.format("[a]%s[/a] has now [%s][/%s] points of karma", term, tag, value, tag);
+    return String.format("[a]%s[/a] has now [%s]%d[/%s] points of karma", term, tag, value, tag);
   }
 
   private int operateKarma(String term, Consumer<Karma> operation) {

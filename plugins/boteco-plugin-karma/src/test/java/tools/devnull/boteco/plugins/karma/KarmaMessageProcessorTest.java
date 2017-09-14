@@ -28,8 +28,6 @@ import org.junit.Before;
 import org.junit.Test;
 import tools.devnull.kodo.Spec;
 
-import java.util.Properties;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static tools.devnull.boteco.test.Consumers.process;
@@ -54,7 +52,7 @@ public class KarmaMessageProcessorTest {
 
   @Test
   public void testRaise() {
-    Spec.given(new KarmaMessageProcessor(repository, new Properties()))
+    Spec.given(new KarmaMessageProcessor(repository))
         .expect(the(testKarma.value()), to().be(0))
         .expect(the(otherKarma.value()), to().be(0))
 
@@ -81,7 +79,7 @@ public class KarmaMessageProcessorTest {
 
   @Test
   public void testLower() {
-    Spec.given(new KarmaMessageProcessor(repository, new Properties()))
+    Spec.given(new KarmaMessageProcessor(repository))
         .expect(the(testKarma.value()), to().be(0))
         .expect(the(otherKarma.value()), to().be(0))
 
@@ -108,7 +106,7 @@ public class KarmaMessageProcessorTest {
 
   @Test
   public void testMultiple() {
-    Spec.given(new KarmaMessageProcessor(repository, new Properties()))
+    Spec.given(new KarmaMessageProcessor(repository))
         .expect(the(testKarma.value()), to().be(0))
         .expect(the(otherKarma.value()), to().be(0))
 
