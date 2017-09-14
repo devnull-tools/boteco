@@ -30,7 +30,6 @@ import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Group;
 
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -44,11 +43,9 @@ public class KarmaMessageProcessor implements MessageProcessor {
       Pattern.compile("(?<term>\\S+)(?<operation>\\+\\+|--)(\\s|[,.:;!?]|$)");
 
   private final KarmaRepository repository;
-  private final Properties properties;
 
-  public KarmaMessageProcessor(KarmaRepository repository, Properties properties) {
+  public KarmaMessageProcessor(KarmaRepository repository) {
     this.repository = repository;
-    this.properties = properties;
   }
 
   @Override
@@ -84,14 +81,8 @@ public class KarmaMessageProcessor implements MessageProcessor {
   }
 
   private String buildReplyMessage(String term, int value) {
-    String key = term.toLowerCase();
-    String content = properties.getProperty(key, "[a]%t[/a] has now %n %u of %k");
     String tag = value < 0 ? "n" : "p";
-    content = content.replace("%t", properties.getProperty(key + ".term", term));
-    content = content.replace("%n", String.format("[%s]%d[/%s]", tag, value, tag));
-    content = content.replace("%u", properties.getProperty(key + ".unit", "points"));
-    content = content.replace("%k", properties.getProperty(key + ".karma", "karma"));
-    return content;
+    return String.format("[a]%s[/a] has now [%s][/%s] points of karma", term, tag, value, tag);
   }
 
   private int operateKarma(String term, Consumer<Karma> operation) {
