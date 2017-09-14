@@ -5,6 +5,7 @@
 - Updated Fuse version
 - Removed Validator for command parameters
 - Code improvements
+- Removed custom karma messages
 
 ## v0.9.0 (2017-06-12)
 
