@@ -24,22 +24,45 @@
 
 package tools.devnull.boteco.plugins.ping;
 
-import tools.devnull.boteco.Name;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.message.checker.Command;
+import tools.devnull.boteco.plugin.Command;
+import tools.devnull.boteco.plugin.Notification;
+import tools.devnull.boteco.plugin.Plugin;
 
-/**
- * A simple processor that responds to a "ping" command with a
- * "pong" response.
- */
-@Command("ping")
-@Name(PingPlugin.ID)
-public class PingMessageProcessor implements MessageProcessor {
+import java.util.Collections;
+import java.util.List;
+
+public class PingPlugin implements Plugin {
+
+  public static final String ID = "ping";
 
   @Override
-  public void process(IncomeMessage message) {
-    message.reply("pong");
+  public String id() {
+    return ID;
+  }
+
+  @Override
+  public String description() {
+    return "A simple plugin that responds to a ping request from user.";
+  }
+
+  @Override
+  public List<Command> availableCommands() {
+    return Collections.singletonList(Command.command("ping").does("respond with 'pong'"));
+  }
+
+  @Override
+  public boolean listenToMessages() {
+    return false;
+  }
+
+  @Override
+  public boolean sendsNotifications() {
+    return false;
+  }
+
+  @Override
+  public List<Notification> notifications() {
+    return Collections.emptyList();
   }
 
 }

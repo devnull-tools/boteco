@@ -22,24 +22,37 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.ping;
+package tools.devnull.boteco.plugins.help;
 
-import tools.devnull.boteco.Name;
+import tools.devnull.boteco.AlwaysActive;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Command;
+import tools.devnull.boteco.plugin.Plugin;
 
-/**
- * A simple processor that responds to a "ping" command with a
- * "pong" response.
- */
-@Command("ping")
-@Name(PingPlugin.ID)
-public class PingMessageProcessor implements MessageProcessor {
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Command("help")
+@AlwaysActive
+public class HelpMessageProcessor implements MessageProcessor {
+
+  private final List<Plugin> plugins;
+
+  public HelpMessageProcessor(List<Plugin> plugins) {
+    this.plugins = plugins;
+  }
 
   @Override
   public void process(IncomeMessage message) {
-    message.reply("pong");
+    message.command()
+        .on("plugin", String.class, name -> message.reply("Ui"))
+        .orElseReturn(buildPluginList());
+  }
+
+  private String buildPluginList() {
+    return "List of plugins:\n" +
+        this.plugins.stream().map(Plugin::description).collect(Collectors.joining("\n"));
   }
 
 }

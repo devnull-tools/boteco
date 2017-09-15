@@ -27,46 +27,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <artifactId>boteco-parent</artifactId>
+    <artifactId>boteco-plugins</artifactId>
     <groupId>tools.devnull</groupId>
     <version>0.10.0-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>boteco-plugins</artifactId>
-  <packaging>pom</packaging>
+  <artifactId>boteco-plugin-help</artifactId>
 
-  <modules>
-    <module>boteco-plugin-manager</module>
-    <module>boteco-plugin-ping</module>
-    <module>boteco-plugin-weather</module>
-    <module>boteco-plugin-redhat</module>
-    <module>boteco-plugin-karma</module>
-    <module>boteco-plugin-diceroll</module>
-    <module>boteco-plugin-stocks</module>
-    <module>boteco-plugin-subscription</module>
-    <module>boteco-plugin-user</module>
-    <module>boteco-plugin-request</module>
-    <module>boteco-plugin-xgh</module>
-    <module>boteco-plugin-definitions</module>
-    <module>boteco-plugin-facts</module>
-    <module>boteco-plugin-help</module>
-  </modules>
-
-  <dependencies>
-    <dependency>
-      <groupId>tools.devnull</groupId>
-      <artifactId>boteco</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>tools.devnull</groupId>
-      <artifactId>boteco-test</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
 
 </project>

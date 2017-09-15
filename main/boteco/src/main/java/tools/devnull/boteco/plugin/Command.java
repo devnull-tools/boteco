@@ -22,24 +22,26 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.ping;
+package tools.devnull.boteco.plugin;
 
-import tools.devnull.boteco.Name;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.message.checker.Command;
+public class Command {
 
-/**
- * A simple processor that responds to a "ping" command with a
- * "pong" response.
- */
-@Command("ping")
-@Name(PingPlugin.ID)
-public class PingMessageProcessor implements MessageProcessor {
+  private final String name;
+  private final String description;
 
-  @Override
-  public void process(IncomeMessage message) {
-    message.reply("pong");
+  public Command(String name, String description) {
+    this.name = name;
+    this.description = description;
+  }
+
+  public static CommandBuilder command(String name) {
+    return description -> new Command(name, description);
+  }
+
+  public interface CommandBuilder {
+
+    Command does(String description);
+
   }
 
 }
