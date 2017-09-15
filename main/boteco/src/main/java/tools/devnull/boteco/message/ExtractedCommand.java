@@ -151,7 +151,6 @@ public class ExtractedCommand implements MessageCommand {
   @Override
   public void orElseReturn(String message) {
     orElse((string) -> this.incomeMessage.reply(message));
-    execute();
   }
 
   @Override
