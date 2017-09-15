@@ -60,12 +60,18 @@ public class HelpMessageProcessor implements MessageProcessor {
   }
 
   private String buildPluginNotifications(Plugin plugin) {
+    if (plugin.notifications().isEmpty()) {
+      return  "[a]NONE[/a]";
+    }
     return plugin.notifications().stream()
         .map(notification -> String.format("- [v]%s[/v]: %s", notification.name(), notification.description()))
         .collect(Collectors.joining("\n"));
   }
 
   private String buildPluginCommands(Plugin plugin) {
+    if (plugin.notifications().isEmpty()) {
+      return  "[a]NONE[/a]";
+    }
     return plugin.availableCommands().stream()
         .map(command -> String.format("- [v]%s[/v]: %s", command.name(), command.description()))
         .collect(Collectors.joining("\n"));
