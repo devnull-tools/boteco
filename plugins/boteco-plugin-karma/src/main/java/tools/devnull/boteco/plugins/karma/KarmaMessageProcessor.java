@@ -63,6 +63,8 @@ public class KarmaMessageProcessor implements MessageProcessor {
       }
     }
     if (replyMessage.length() > 0) {
+      // remove the last \n
+      replyMessage.deleteCharAt(replyMessage.length() - 1);
       message.sendBack(replyMessage.toString());
     }
   }
