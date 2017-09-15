@@ -24,22 +24,64 @@
 
 package tools.devnull.boteco.plugin;
 
+/**
+ * A class that represents command information for use by help interfaces.
+ */
 public class Command {
 
   private final String name;
   private final String description;
 
+  /**
+   * Creates a new Command object
+   *
+   * @param name        the name of the command
+   * @param description the description of the command
+   */
   public Command(String name, String description) {
     this.name = name;
     this.description = description;
   }
 
+  /**
+   * Returns the name of this command
+   *
+   * @return the name of this command
+   */
+  public String name() {
+    return name;
+  }
+
+  /**
+   * Returns the description of this command
+   *
+   * @return the description of this command
+   */
+  public String description() {
+    return description;
+  }
+
+  /**
+   * Creates a Command object using a component
+   *
+   * @param name the command name
+   * @return a component for defining the description
+   */
   public static CommandBuilder command(String name) {
     return description -> new Command(name, description);
   }
 
+  /**
+   * Interface for helping create Command objects
+   */
   public interface CommandBuilder {
 
+    /**
+     * Defines what this command does when used
+     *
+     * @param description the description of the command
+     * @return the created command object
+     */
     Command does(String description);
 
   }
