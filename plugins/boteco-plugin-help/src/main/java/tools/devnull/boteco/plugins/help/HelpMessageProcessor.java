@@ -52,7 +52,10 @@ public class HelpMessageProcessor implements MessageProcessor {
 
   private String buildPluginList() {
     return "List of plugins:\n" +
-        this.plugins.stream().map(Plugin::description).collect(Collectors.joining("\n"));
+        this.plugins.stream()
+            .map(plugin -> String.format("- [a]%s[/a]: %s", plugin.id(), plugin.description()))
+            .collect(Collectors.joining("\n")) +
+        "\nTo get help for a specific plugin, send the command [v]help <plugin>[/v]";
   }
 
 }
