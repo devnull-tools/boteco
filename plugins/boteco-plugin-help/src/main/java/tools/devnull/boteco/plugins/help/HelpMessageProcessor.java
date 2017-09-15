@@ -26,6 +26,7 @@ package tools.devnull.boteco.plugins.help;
 
 import tools.devnull.boteco.AlwaysActive;
 import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Command;
 import tools.devnull.boteco.plugin.Plugin;
@@ -45,9 +46,29 @@ public class HelpMessageProcessor implements MessageProcessor {
 
   @Override
   public void process(IncomeMessage message) {
-    message.command()
-        .on("plugin", String.class, name -> message.reply("Ui"))
-        .orElseReturn(buildPluginList());
+    MessageCommand command = message.command();
+    this.plugins.forEach(plugin -> command.on(plugin.id(), () -> message.reply(buildPluginHelp(plugin))));
+    command.orElseReturn(buildPluginList());
+  }
+
+  private String buildPluginHelp(Plugin plugin) {
+    return String.format("[a]%s[/a]: %s%nCommands:%n%s%nNotifications:%n%s",
+        plugin.id(),
+        plugin.description(),
+        buildPluginCommands(plugin),
+        buildPluginNotifications(plugin));
+  }
+
+  private String buildPluginNotifications(Plugin plugin) {
+    return plugin.notifications().stream()
+        .map(notification -> String.format("- [v]%s[/v]: %s", notification.name(), notification.description()))
+        .collect(Collectors.joining("\n"));
+  }
+
+  private String buildPluginCommands(Plugin plugin) {
+    return plugin.availableCommands().stream()
+        .map(command -> String.format("- [v]%s[/v]: %s", command.name(), command.description()))
+        .collect(Collectors.joining("\n"));
   }
 
   private String buildPluginList() {
