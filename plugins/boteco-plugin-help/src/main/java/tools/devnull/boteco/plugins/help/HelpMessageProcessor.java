@@ -69,7 +69,7 @@ public class HelpMessageProcessor implements MessageProcessor {
   }
 
   private String buildPluginCommands(Plugin plugin) {
-    if (plugin.notifications().isEmpty()) {
+    if (plugin.availableCommands().isEmpty()) {
       return  "[a]NONE[/a]";
     }
     return plugin.availableCommands().stream()
