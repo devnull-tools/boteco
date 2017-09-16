@@ -25,6 +25,7 @@
 package tools.devnull.boteco.plugins.help;
 
 import tools.devnull.boteco.AlwaysActive;
+import tools.devnull.boteco.Name;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.boteco.message.MessageProcessor;
@@ -34,6 +35,7 @@ import tools.devnull.boteco.plugin.Plugin;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Name(HelpPlugin.ID)
 @Command("help")
 @AlwaysActive
 public class HelpMessageProcessor implements MessageProcessor {
