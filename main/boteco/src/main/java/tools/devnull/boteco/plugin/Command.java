@@ -24,6 +24,11 @@
 
 package tools.devnull.boteco.plugin;
 
+import tools.devnull.boteco.BotException;
+
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * A class that represents command information for use by help interfaces.
  */
@@ -31,16 +36,19 @@ public class Command {
 
   private final String name;
   private final String description;
+  private final String[] parameters;
 
   /**
    * Creates a new Command object
    *
    * @param name        the name of the command
    * @param description the description of the command
+   * @param parameters  the parameters of the command
    */
-  public Command(String name, String description) {
+  public Command(String name, String description, String... parameters) {
     this.name = name;
     this.description = description;
+    this.parameters = parameters;
   }
 
   /**
@@ -62,19 +70,56 @@ public class Command {
   }
 
   /**
+   * Returns a list of the parameters for this command.
+   *
+   * @return a list of the parameters for this command
+   */
+  public List<String> parameters() {
+    return Arrays.asList(parameters);
+  }
+
+  /**
    * Creates a Command object using a component
    *
    * @param name the command name
    * @return a component for defining the description
    */
   public static CommandBuilder command(String name) {
-    return description -> new Command(name, description);
+    return new CommandBuilder() {
+      @Override
+      public CommandBuilder with(String... parameters) {
+        return new CommandBuilder() {
+          @Override
+          public CommandBuilder with(String... parameters) {
+            throw new BotException("Parameters already defined");
+          }
+
+          @Override
+          public Command does(String description) {
+            return new Command(name, description, parameters);
+          }
+        };
+      }
+
+      @Override
+      public Command does(String description) {
+        return new Command(name, description);
+      }
+    };
   }
 
   /**
    * Interface for helping create Command objects
    */
   public interface CommandBuilder {
+
+    /**
+     * Defines the parameters of the command.
+     *
+     * @param parameters the parameters of the command
+     * @return a builder instance
+     */
+    CommandBuilder with(String... parameters);
 
     /**
      * Defines what this command does when used
