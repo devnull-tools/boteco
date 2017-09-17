@@ -30,6 +30,7 @@ import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Command;
 import tools.devnull.boteco.provider.Provider;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static tools.devnull.boteco.Predicates.type;
@@ -46,11 +47,15 @@ public class ProvidersMessageProcessor implements MessageProcessor {
   @Override
   public void process(IncomeMessage message) {
     String providerType = message.command().as(String.class);
-    message.reply(String.format("Providers of type [a]%s[/a]:%n%s", providerType,
-        registry.locate(Provider.class).filter(type(providerType))
-        .all().stream()
-        .map(provider -> String.format("- [a]%s[/a]: %s", provider.id(), provider.description()))
-        .collect(Collectors.joining("\n"))));
+    List<Provider> providers = registry.locate(Provider.class).filter(type(providerType)).all();
+    if (providers.isEmpty()) {
+      message.reply("No providers found for type [a]%s[/a]", providerType);
+    } else {
+      message.reply(String.format("Providers of type [a]%s[/a]:%n%s", providerType,
+          providers.stream()
+              .map(provider -> String.format("- [a]%s[/a]: %s", provider.id(), provider.description()))
+              .collect(Collectors.joining("\n"))));
+    }
   }
 
 }
