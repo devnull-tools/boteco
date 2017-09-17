@@ -24,30 +24,53 @@
 
 package tools.devnull.boteco.plugins.diceroll;
 
-import tools.devnull.boteco.Name;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessingException;
-import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.message.checker.Command;
+import tools.devnull.boteco.plugin.Command;
+import tools.devnull.boteco.plugin.Notification;
+import tools.devnull.boteco.plugin.Plugin;
 
-@Command("roll")
-@Name(DiceRollPlugin.ID)
-public class DiceRollMessageProcessor implements MessageProcessor {
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-  private final DiceRoll diceRoll;
+import static tools.devnull.boteco.plugin.Command.command;
 
-  public DiceRollMessageProcessor(DiceRoll diceRoll) {
-    this.diceRoll = diceRoll;
+public class DiceRollPlugin implements Plugin {
+
+  public static final String ID = "dice-roll";
+
+  @Override
+  public String id() {
+    return ID;
   }
 
   @Override
-  public void process(IncomeMessage message) {
-    try {
-      int points = diceRoll.roll(message.command().as(String.class));
-      message.reply("you got [v]%s[/v] points!", points);
-    } catch (IllegalArgumentException e) {
-      throw new MessageProcessingException(e.getMessage(), e);
-    }
+  public String description() {
+    return "A plugin that rolls dices and outputs the result.";
+  }
+
+  @Override
+  public List<Command> availableCommands() {
+    return Arrays.asList(
+        command("roll")
+            .with("nds")
+            .does("Rolls the given dices and outputs the result. 'n' is the number of dices and 's' is the " +
+                "number of sides. Use '+' to roll more dices with different sides.")
+    );
+  }
+
+  @Override
+  public boolean listenToMessages() {
+    return false;
+  }
+
+  @Override
+  public boolean sendsNotifications() {
+    return false;
+  }
+
+  @Override
+  public List<Notification> notifications() {
+    return Collections.emptyList();
   }
 
 }
