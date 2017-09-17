@@ -32,16 +32,23 @@ package tools.devnull.boteco.provider;
 public class BasicProvider<T> implements Provider<T> {
 
   private final String id;
+  private final String description;
   private final T value;
 
-  public BasicProvider(String id, T value) {
+  public BasicProvider(String id, String description, T value) {
     this.id = id;
+    this.description = description;
     this.value = value;
   }
 
   @Override
   public String id() {
     return this.id;
+  }
+
+  @Override
+  public String description() {
+    return this.description;
   }
 
   @Override

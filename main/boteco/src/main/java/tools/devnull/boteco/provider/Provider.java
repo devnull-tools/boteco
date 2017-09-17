@@ -33,11 +33,18 @@ package tools.devnull.boteco.provider;
 public interface Provider<T> {
 
   /**
-   * Returns the id of this provider
+   * Returns the id of this provider.
    *
-   * @return the id of this provider
+   * @return the id of this provider.
    */
   String id();
+
+  /**
+   * Returns the description of this provider.
+   *
+   * @return the description of this provider.
+   */
+  String description();
 
   /**
    * Returns the object provided by this provider.

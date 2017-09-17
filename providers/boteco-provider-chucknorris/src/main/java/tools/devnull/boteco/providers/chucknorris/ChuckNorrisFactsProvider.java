@@ -45,6 +45,11 @@ public class ChuckNorrisFactsProvider implements Provider<Fact> {
   }
 
   @Override
+  public String description() {
+    return "Provides facts for Chuck Norris";
+  }
+
+  @Override
   public Fact get() {
     try {
       return rest.get("https://api.chucknorris.io/jokes/random")

@@ -46,11 +46,11 @@ public class ProvidersMessageProcessor implements MessageProcessor {
   @Override
   public void process(IncomeMessage message) {
     String providerType = message.command().as(String.class);
-    message.reply("Providers of type " + providerType + ":\n" +
+    message.reply(String.format("Providers of type [a]%s[/a]:%n%s", providerType,
         registry.locate(Provider.class).filter(type(providerType))
         .all().stream()
-        .map(provider -> "- " + provider.id())
-        .collect(Collectors.joining("\n")));
+        .map(provider -> String.format("- [a]%s[/a]: %s", provider.id(), provider.description()))
+        .collect(Collectors.joining("\n"))));
   }
 
 }
