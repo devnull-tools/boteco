@@ -25,10 +25,8 @@
 package tools.devnull.boteco.plugins.diceroll;
 
 import tools.devnull.boteco.plugin.Command;
-import tools.devnull.boteco.plugin.Notification;
 import tools.devnull.boteco.plugin.Plugin;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,27 +48,12 @@ public class DiceRollPlugin implements Plugin {
 
   @Override
   public List<Command> availableCommands() {
-    return Arrays.asList(
+    return Collections.singletonList(
         command("roll")
             .with("nds")
             .does("Rolls the given dices and outputs the result. 'n' is the number of dices and 's' is the " +
                 "number of sides. Use '+' to roll more dices with different sides.")
     );
-  }
-
-  @Override
-  public boolean listenToMessages() {
-    return false;
-  }
-
-  @Override
-  public boolean sendsNotifications() {
-    return false;
-  }
-
-  @Override
-  public List<Notification> notifications() {
-    return Collections.emptyList();
   }
 
 }

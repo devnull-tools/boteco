@@ -74,6 +74,7 @@
               tools.devnull.boteco.plugin,
               tools.devnull.boteco.storage,
               tools.devnull.boteco.predicates,
+              tools.devnull.boteco.provider,
               tools.devnull.boteco.client.jms,
               tools.devnull.boteco.client.rest,
               tools.devnull.boteco.user,

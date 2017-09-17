@@ -25,11 +25,9 @@
 package tools.devnull.boteco.plugins.definition;
 
 import tools.devnull.boteco.plugin.Command;
-import tools.devnull.boteco.plugin.Notification;
 import tools.devnull.boteco.plugin.Plugin;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static tools.devnull.boteco.plugin.Command.command;
@@ -58,21 +56,6 @@ public class LookupPlugin implements Plugin {
             .with("provider", "term")
             .does("Lookups the term using the given provider")
     );
-  }
-
-  @Override
-  public boolean listenToMessages() {
-    return false;
-  }
-
-  @Override
-  public boolean sendsNotifications() {
-    return false;
-  }
-
-  @Override
-  public List<Notification> notifications() {
-    return Collections.emptyList();
   }
 
 }

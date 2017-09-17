@@ -6,6 +6,9 @@
 - Removed Validator for command parameters
 - Code improvements
 - Removed custom karma messages
+- Introduced the `Plugin` interface
+- New help plugin
+- New `Provider` interface
 
 ## v0.9.0 (2017-06-12)
 

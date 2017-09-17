@@ -29,9 +29,10 @@
 
   <reference id="rest-client" interface="tools.devnull.boteco.client.rest.RestClient"/>
 
-  <service interface="tools.devnull.boteco.plugins.facts.spi.FactsProvider">
+  <service interface="tools.devnull.boteco.provider.Provider">
     <service-properties>
       <entry key="id" value="chucknorris"/>
+      <entry key="type" value="facts"/>
     </service-properties>
     <bean class="tools.devnull.boteco.providers.chucknorris.ChuckNorrisFactsProvider">
       <argument ref="rest-client"/>

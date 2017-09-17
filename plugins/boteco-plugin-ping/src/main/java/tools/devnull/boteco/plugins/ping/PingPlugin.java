@@ -25,7 +25,6 @@
 package tools.devnull.boteco.plugins.ping;
 
 import tools.devnull.boteco.plugin.Command;
-import tools.devnull.boteco.plugin.Notification;
 import tools.devnull.boteco.plugin.Plugin;
 
 import java.util.Collections;
@@ -48,21 +47,6 @@ public class PingPlugin implements Plugin {
   @Override
   public List<Command> availableCommands() {
     return Collections.singletonList(Command.command("ping").does("respond with 'pong'"));
-  }
-
-  @Override
-  public boolean listenToMessages() {
-    return false;
-  }
-
-  @Override
-  public boolean sendsNotifications() {
-    return false;
-  }
-
-  @Override
-  public List<Notification> notifications() {
-    return Collections.emptyList();
   }
 
 }

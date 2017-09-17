@@ -54,29 +54,20 @@ public class HelpMessageProcessor implements MessageProcessor {
   }
 
   private String buildPluginHelp(Plugin plugin) {
-    return String.format("[a]%s[/a]: %s%n[aa]Commands:[/aa]%n%s%n[aa]Notifications:[/aa]%n%s",
-        plugin.id(),
-        plugin.description(),
-        buildPluginCommands(plugin),
-        buildPluginNotifications(plugin));
-  }
-
-  private String buildPluginNotifications(Plugin plugin) {
-    if (plugin.notifications().isEmpty()) {
-      return "NONE";
-    }
-    return plugin.notifications().stream()
-        .map(notification -> String.format("- [v]%s[/v]: %s", notification.name(), notification.description()))
-        .collect(Collectors.joining("\n"));
+    return String.format("[a]%s[/a]: %s", plugin.id(), plugin.description()) +
+        buildPluginCommands(plugin) +
+        buildPluginNotifications(plugin) +
+        buildPluginProviderTypes(plugin);
   }
 
   private String buildPluginCommands(Plugin plugin) {
     if (plugin.availableCommands().isEmpty()) {
-      return "NONE";
+      return "";
     }
-    return plugin.availableCommands().stream()
-        .map(this::buildCommandDescription)
-        .collect(Collectors.joining("\n"));
+    return String.format("[aa]Commands:[/aa]%n%s",
+        plugin.availableCommands().stream()
+            .map(this::buildCommandDescription)
+            .collect(Collectors.joining("\n")));
   }
 
   private String buildCommandDescription(tools.devnull.boteco.plugin.Command command) {
@@ -87,6 +78,26 @@ public class HelpMessageProcessor implements MessageProcessor {
             command.parameters().stream().collect(Collectors.joining(" ")),
             command.description()
         );
+  }
+
+  private String buildPluginNotifications(Plugin plugin) {
+    if (plugin.notifications().isEmpty()) {
+      return "";
+    }
+    return String.format("[aa]Notifications:[/aa]%n%s",
+        plugin.notifications().stream()
+            .map(notification -> String.format("- [v]%s[/v]: %s", notification.name(), notification.description()))
+            .collect(Collectors.joining("\n")));
+  }
+
+  private String buildPluginProviderTypes(Plugin plugin) {
+    if (plugin.providerTypes().isEmpty()) {
+      return "";
+    }
+    return String.format("[aa]Provider Types:[/aa]%n%s",
+        plugin.providerTypes().stream()
+            .map(provider -> String.format("- [v]%s[/v]", provider))
+            .collect(Collectors.joining("\n")));
   }
 
   private String buildPluginList() {

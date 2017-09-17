@@ -25,11 +25,9 @@
 package tools.devnull.boteco.plugins.help;
 
 import tools.devnull.boteco.plugin.Command;
-import tools.devnull.boteco.plugin.Notification;
 import tools.devnull.boteco.plugin.Plugin;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static tools.devnull.boteco.plugin.Command.command;
@@ -59,18 +57,4 @@ public class HelpPlugin implements Plugin {
     );
   }
 
-  @Override
-  public boolean listenToMessages() {
-    return false;
-  }
-
-  @Override
-  public boolean sendsNotifications() {
-    return false;
-  }
-
-  @Override
-  public List<Notification> notifications() {
-    return Collections.emptyList();
-  }
 }

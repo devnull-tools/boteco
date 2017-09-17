@@ -22,33 +22,28 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.facts;
+package tools.devnull.boteco.provider;
 
-import tools.devnull.boteco.Name;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.message.checker.Command;
-import tools.devnull.boteco.plugins.facts.spi.FactsProvider;
+/**
+ * Interface that defines a component that provides objects for use
+ * by plugins.
+ *
+ * @author Marcelo "Ataxexe" Guimarães
+ */
+public interface Provider<T> {
 
-import java.util.List;
-import java.util.stream.Collectors;
+  /**
+   * Returns the id of this provider
+   *
+   * @return the id of this provider
+   */
+  String id();
 
-@Name("facts")
-@Command("facts")
-public class FactsMessageProcessor implements MessageProcessor {
-
-  private final List<FactsProvider> providers;
-
-  public FactsMessageProcessor(List<FactsProvider> providers) {
-    this.providers = providers;
-  }
-
-  @Override
-  public void process(IncomeMessage message) {
-    message.reply(providers.stream()
-        .map(FactsProvider::id)
-        .collect(Collectors.joining("\n"))
-    );
-  }
+  /**
+   * Returns the object provided by this provider.
+   *
+   * @return the object that this provider holds.
+   */
+  T get();
 
 }

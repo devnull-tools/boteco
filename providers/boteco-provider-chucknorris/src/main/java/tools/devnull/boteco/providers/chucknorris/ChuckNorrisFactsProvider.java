@@ -27,11 +27,11 @@ package tools.devnull.boteco.providers.chucknorris;
 import tools.devnull.boteco.BotException;
 import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.plugins.facts.spi.Fact;
-import tools.devnull.boteco.plugins.facts.spi.FactsProvider;
+import tools.devnull.boteco.provider.Provider;
 
 import java.io.IOException;
 
-public class ChuckNorrisFactsProvider implements FactsProvider {
+public class ChuckNorrisFactsProvider implements Provider<Fact> {
 
   private final RestClient rest;
 

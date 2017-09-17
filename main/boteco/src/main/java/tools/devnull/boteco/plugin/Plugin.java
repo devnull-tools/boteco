@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.plugin;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -53,24 +54,19 @@ public interface Plugin {
    *
    * @return a list containing the commands provided by this plugin.
    */
-  List<Command> availableCommands();
+  default List<Command> availableCommands() {
+    return Collections.emptyList();
+  }
 
   /**
-   * Indicates if this plugin listens for messages in order to interact.
-   * <p>
-   * Some plugins can work without a command to advertise or complement
-   * some information.
+   * Indicates the {@link tools.devnull.boteco.provider.Provider providers} used by
+   * this plugin (if any).
    *
-   * @return {@code true} if this plugin can respond to messages without commands
+   * @return a list containing the provider types used by this plugin.
    */
-  boolean listenToMessages();
-
-  /**
-   * Indicates if this plugin sends notifications that users can subscribe to.
-   *
-   * @return {@code true} if this plugin sends notifications
-   */
-  boolean sendsNotifications();
+  default List<String> providerTypes() {
+    return Collections.emptyList();
+  }
 
   /**
    * Returns a list of the notifications that this plugin sends. The user may
@@ -78,6 +74,8 @@ public interface Plugin {
    *
    * @return a list of notifications that this plugin sends.
    */
-  List<Notification> notifications();
+  default List<Notification> notifications() {
+    return Collections.emptyList();
+  }
 
 }

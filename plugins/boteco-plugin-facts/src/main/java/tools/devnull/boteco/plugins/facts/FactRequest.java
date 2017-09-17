@@ -27,9 +27,11 @@ package tools.devnull.boteco.plugins.facts;
 import tools.devnull.boteco.DomainException;
 import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.plugins.facts.spi.Fact;
-import tools.devnull.boteco.plugins.facts.spi.FactsProvider;
+import tools.devnull.boteco.provider.Provider;
 
+import static tools.devnull.boteco.Predicates.eq;
 import static tools.devnull.boteco.Predicates.id;
+import static tools.devnull.boteco.Predicates.serviceProperty;
 
 public class FactRequest {
 
@@ -42,10 +44,10 @@ public class FactRequest {
   }
 
   public Fact fetch() {
-    return registry.locate(FactsProvider.class)
-        .filter(id(factName))
-        .orElseThrow(() -> new DomainException("No facts provider for " + factName))
-        .get();
+    Provider<Fact> provider = registry.locate(Provider.class)
+        .filter(id(factName).and(serviceProperty("type", eq("facts"))))
+        .orElseThrow(() -> new DomainException("No facts provider for " + factName));
+    return provider.get();
   }
 
 }

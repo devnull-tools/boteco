@@ -31,12 +31,4 @@
     <bean class="tools.devnull.boteco.plugins.facts.FactMessageProcessor"/>
   </service>
 
-  <service interface="tools.devnull.boteco.message.MessageProcessor">
-    <bean class="tools.devnull.boteco.plugins.facts.FactsMessageProcessor">
-      <argument>
-        <reference-list interface="tools.devnull.boteco.plugins.facts.spi.FactsProvider"/>
-      </argument>
-    </bean>
-  </service>
-
 </blueprint>
