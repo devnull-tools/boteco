@@ -22,45 +22,22 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.definition;
+package tools.devnull.boteco.plugins.definition.spi;
 
-import tools.devnull.boteco.plugin.Command;
-import tools.devnull.boteco.plugin.Plugin;
+import tools.devnull.trugger.Optional;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+/**
+ * Interface that defines a provider for a definition. Examples may include
+ * the Urban Dictionary, Wikipedia, etc.
+ */
+public interface DefinitionLookup {
 
-import static tools.devnull.boteco.plugin.Command.command;
+  /**
+   * Retrieve information regarding the given term. The information may be related
+   * to the term
+   * @param term the term to search
+   * @return the definition found by this provider
+   */
+  Optional<Definition> lookup(String term);
 
-public class LookupPlugin implements Plugin {
-
-  public static final String ID = "lookup";
-
-  @Override
-  public String id() {
-    return ID;
-  }
-
-  @Override
-  public String description() {
-    return "Lookups definitions";
-  }
-
-  @Override
-  public List<Command> availableCommands() {
-    return Arrays.asList(
-        command("lookup")
-            .with("term")
-            .does("Lookups the term using all available providers"),
-        command("lookup")
-            .with("provider", "term")
-            .does("Lookups the term using the given provider")
-    );
-  }
-
-  @Override
-  public List<String> providerTypes() {
-    return Collections.singletonList("definitions");
-  }
 }

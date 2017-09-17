@@ -22,45 +22,31 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.definition;
+package tools.devnull.boteco.provider;
 
-import tools.devnull.boteco.plugin.Command;
-import tools.devnull.boteco.plugin.Plugin;
+/**
+ * A basic provider that holds a value and always return it.
+ *
+ * @author Marcelo "Ataxexe" Guimarães
+ */
+public class BasicProvider<T> implements Provider<T> {
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+  private final String id;
+  private final T value;
 
-import static tools.devnull.boteco.plugin.Command.command;
-
-public class LookupPlugin implements Plugin {
-
-  public static final String ID = "lookup";
+  public BasicProvider(String id, T value) {
+    this.id = id;
+    this.value = value;
+  }
 
   @Override
   public String id() {
-    return ID;
+    return this.id;
   }
 
   @Override
-  public String description() {
-    return "Lookups definitions";
+  public T get() {
+    return this.value;
   }
 
-  @Override
-  public List<Command> availableCommands() {
-    return Arrays.asList(
-        command("lookup")
-            .with("term")
-            .does("Lookups the term using all available providers"),
-        command("lookup")
-            .with("provider", "term")
-            .does("Lookups the term using the given provider")
-    );
-  }
-
-  @Override
-  public List<String> providerTypes() {
-    return Collections.singletonList("definitions");
-  }
 }

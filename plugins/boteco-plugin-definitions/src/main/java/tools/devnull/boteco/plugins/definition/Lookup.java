@@ -27,14 +27,17 @@ package tools.devnull.boteco.plugins.definition;
 import tools.devnull.boteco.DomainException;
 import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.plugins.definition.spi.Definition;
-import tools.devnull.boteco.plugins.definition.spi.DefinitionProvider;
+import tools.devnull.boteco.plugins.definition.spi.DefinitionLookup;
+import tools.devnull.boteco.provider.Provider;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static tools.devnull.boteco.Predicates.eq;
 import static tools.devnull.boteco.Predicates.id;
+import static tools.devnull.boteco.Predicates.serviceProperty;
 
 public class Lookup {
 
@@ -61,16 +64,18 @@ public class Lookup {
   public List<Definition> lookup() {
     List<Definition> result;
     if (provider == null) {
-      result = registry.locate(DefinitionProvider.class).all()
+      result = registry.locate(Provider.class)
+          .filter(serviceProperty("type", eq("definitions")))
+          .all()
           .stream()
-          .map(p -> p.lookup(term).value())
+          .map(p -> ((DefinitionLookup) p.get()).lookup(term).value())
           .filter(Objects::nonNull)
           .collect(Collectors.toList());
     } else {
-      DefinitionProvider definitionProvider = registry.locate(DefinitionProvider.class)
-          .filter(id(provider))
+      Provider<DefinitionLookup> definitionProvider = registry.locate(Provider.class)
+          .filter(id(provider).and(serviceProperty("type", eq("definitions"))))
           .orElseThrow(() -> new DomainException("Provider " + provider + " not found"));
-      Definition lookup = definitionProvider.lookup(term).value();
+      Definition lookup = definitionProvider.get().lookup(term).value();
       if (lookup != null) {
         result = Collections.singletonList(lookup);
       } else {

@@ -127,6 +127,16 @@ public class Predicates {
   }
 
   /**
+   * A predicate to evaluate the property key named "type"
+   *
+   * @param value the value to check against the "type" property
+   * @return the created predicate
+   */
+  public static Predicate<ServiceReference> type(String value) {
+    return serviceProperty("type", eq(value));
+  }
+
+  /**
    * A predicate that evaluates an object using {@link Object#equals(Object)}
    *
    * @param value the value to check

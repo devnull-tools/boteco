@@ -22,22 +22,35 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.definition.spi;
+package tools.devnull.boteco.plugins.providers;
 
-import tools.devnull.trugger.Optional;
+import tools.devnull.boteco.ServiceRegistry;
+import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.message.checker.Command;
+import tools.devnull.boteco.provider.Provider;
 
-/**
- * Interface that defines a provider for a definition. Examples may include
- * the Urban Dictionary, Wikipedia, etc.
- */
-public interface DefinitionProvider {
+import java.util.stream.Collectors;
 
-  /**
-   * Retrieve information regarding the given term. The information may be related
-   * to the term
-   * @param term the term to search
-   * @return the definition found by this provider
-   */
-  Optional<Definition> lookup(String term);
+import static tools.devnull.boteco.Predicates.type;
+
+@Command("providers")
+public class ProvidersMessageProcessor implements MessageProcessor {
+
+  private final ServiceRegistry registry;
+
+  public ProvidersMessageProcessor(ServiceRegistry registry) {
+    this.registry = registry;
+  }
+
+  @Override
+  public void process(IncomeMessage message) {
+    String providerType = message.command().as(String.class);
+    message.reply("Providers of type " + providerType + ":\n" +
+        registry.locate(Provider.class).filter(type(providerType))
+        .all().stream()
+        .map(provider -> "- " + provider.id())
+        .collect(Collectors.joining("\n")));
+  }
 
 }

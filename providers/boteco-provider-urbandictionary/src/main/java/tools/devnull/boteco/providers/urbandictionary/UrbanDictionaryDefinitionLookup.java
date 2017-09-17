@@ -29,7 +29,7 @@ import org.apache.http.client.utils.URIBuilder;
 import tools.devnull.boteco.BotException;
 import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.plugins.definition.spi.Definition;
-import tools.devnull.boteco.plugins.definition.spi.DefinitionProvider;
+import tools.devnull.boteco.plugins.definition.spi.DefinitionLookup;
 import tools.devnull.trugger.Optional;
 
 import java.io.IOException;
@@ -40,11 +40,11 @@ import java.util.List;
 /**
  * A class that provides definitions for terms using the Urban Dictionary
  */
-public class UrbanDictionaryDefinitionProvider implements DefinitionProvider {
+public class UrbanDictionaryDefinitionLookup implements DefinitionLookup {
 
   private final RestClient client;
 
-  public UrbanDictionaryDefinitionProvider(RestClient client) {
+  public UrbanDictionaryDefinitionLookup(RestClient client) {
     this.client = client;
   }
 
