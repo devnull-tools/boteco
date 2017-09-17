@@ -26,6 +26,11 @@ package tools.devnull.boteco.plugins.facts.spi;
 
 import tools.devnull.boteco.Sendable;
 
+/**
+ * Interface that defines a fact of something or somebody.
+ *
+ * @author Marcelo "Ataxexe" Guimarães
+ */
 public interface Fact extends Sendable {
 
 }
