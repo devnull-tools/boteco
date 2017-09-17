@@ -31,4 +31,8 @@
     <bean class="tools.devnull.boteco.plugins.definition.LookupDefinitionMessageProcessor"/>
   </service>
 
+  <service interface="tools.devnull.boteco.plugin.Plugin">
+    <bean class="tools.devnull.boteco.plugins.definition.LookupPlugin"/>
+  </service>
+
 </blueprint>

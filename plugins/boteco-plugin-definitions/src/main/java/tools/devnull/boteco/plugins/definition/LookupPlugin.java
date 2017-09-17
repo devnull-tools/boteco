@@ -24,27 +24,55 @@
 
 package tools.devnull.boteco.plugins.definition;
 
-import tools.devnull.boteco.Name;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.message.checker.Command;
-import tools.devnull.boteco.plugins.definition.spi.Definition;
+import tools.devnull.boteco.plugin.Command;
+import tools.devnull.boteco.plugin.Notification;
+import tools.devnull.boteco.plugin.Plugin;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-@Name(LookupPlugin.ID)
-@Command("lookup")
-public class LookupDefinitionMessageProcessor implements MessageProcessor {
+import static tools.devnull.boteco.plugin.Command.command;
+
+public class LookupPlugin implements Plugin {
+
+  public static final String ID = "lookup";
 
   @Override
-  public void process(IncomeMessage message) {
-    Lookup command = message.command().as(Lookup.class);
-    List<Definition> definitions = command.lookup();
-    if (definitions.isEmpty()) {
-      message.reply("Cannot find a definition for term " + command.term());
-    } else {
-      definitions.forEach(message::reply);
-    }
+  public String id() {
+    return ID;
+  }
+
+  @Override
+  public String description() {
+    return "Lookups definitions";
+  }
+
+  @Override
+  public List<Command> availableCommands() {
+    return Arrays.asList(
+        command("lookup")
+            .with("term")
+            .does("Lookups the term using all available providers"),
+        command("lookup")
+            .with("provider", "term")
+            .does("Lookups the term using the given provider")
+    );
+  }
+
+  @Override
+  public boolean listenToMessages() {
+    return false;
+  }
+
+  @Override
+  public boolean sendsNotifications() {
+    return false;
+  }
+
+  @Override
+  public List<Notification> notifications() {
+    return Collections.emptyList();
   }
 
 }
