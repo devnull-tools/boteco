@@ -54,7 +54,7 @@ public class HelpMessageProcessor implements MessageProcessor {
   }
 
   private String buildPluginHelp(Plugin plugin) {
-    return String.format("[a]%s[/a]: %s%nCommands:%n%s%nNotifications:%n%s",
+    return String.format("[a]%s[/a]: %s%n[aa]Commands:[/aa]%n%s%n[aa]Notifications:[/aa]%n%s",
         plugin.id(),
         plugin.description(),
         buildPluginCommands(plugin),
@@ -63,7 +63,7 @@ public class HelpMessageProcessor implements MessageProcessor {
 
   private String buildPluginNotifications(Plugin plugin) {
     if (plugin.notifications().isEmpty()) {
-      return  "[a]NONE[/a]";
+      return "NONE";
     }
     return plugin.notifications().stream()
         .map(notification -> String.format("- [v]%s[/v]: %s", notification.name(), notification.description()))
@@ -72,11 +72,21 @@ public class HelpMessageProcessor implements MessageProcessor {
 
   private String buildPluginCommands(Plugin plugin) {
     if (plugin.availableCommands().isEmpty()) {
-      return  "[a]NONE[/a]";
+      return "NONE";
     }
     return plugin.availableCommands().stream()
-        .map(command -> String.format("- [v]%s[/v]: %s", command.name(), command.description()))
+        .map(this::buildCommandDescription)
         .collect(Collectors.joining("\n"));
+  }
+
+  private String buildCommandDescription(tools.devnull.boteco.plugin.Command command) {
+    return command.parameters().isEmpty() ?
+        String.format("- [v]%s[/v]: %s", command.name(), command.description()) :
+        String.format("- [v]%s[/v] [aa]%s[/aa]: %s",
+            command.name(),
+            command.parameters().stream().collect(Collectors.joining(" ")),
+            command.description()
+        );
   }
 
   private String buildPluginList() {
