@@ -46,7 +46,7 @@ public class ChuckNorrisFactsProvider implements Provider<Fact> {
 
   @Override
   public String description() {
-    return "Provides facts for Chuck Norris";
+    return "Provides facts about Chuck Norris";
   }
 
   @Override
