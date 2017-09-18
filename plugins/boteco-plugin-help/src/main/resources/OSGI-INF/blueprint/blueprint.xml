@@ -27,11 +27,11 @@
            xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
                                http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
-  <reference-list id="plugins" interface="tools.devnull.boteco.plugin.Plugin"/>
+  <bean id="registry" class="tools.devnull.boteco.OsgiServiceRegistry"/>
 
   <service interface="tools.devnull.boteco.message.MessageProcessor">
     <bean class="tools.devnull.boteco.plugins.help.HelpMessageProcessor">
-      <argument ref="plugins"/>
+      <argument ref="registry"/>
     </bean>
   </service>
 
