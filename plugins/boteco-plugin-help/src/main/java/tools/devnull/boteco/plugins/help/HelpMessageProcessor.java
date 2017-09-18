@@ -95,7 +95,7 @@ public class HelpMessageProcessor implements MessageProcessor {
     if (plugin.providerTypes().isEmpty()) {
       return "";
     }
-    return String.format("%n[a]Provider Types:[/a]%n%s",
+    return String.format("%n[aa]Provider Types:[/aa]%n%s",
         plugin.providerTypes().stream()
             .map(provider -> String.format("- [v]%s[/v]", provider))
             .collect(Collectors.joining("\n")));
