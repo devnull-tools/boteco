@@ -65,7 +65,7 @@ public class HelpMessageProcessor implements MessageProcessor {
     if (plugin.availableCommands().isEmpty()) {
       return "";
     }
-    return String.format("[aa]Commands:[/aa]%n%s",
+    return String.format("%n[aa]Commands:[/aa]%n%s",
         plugin.availableCommands().stream()
             .map(this::buildCommandDescription)
             .collect(Collectors.joining("\n")));
@@ -85,7 +85,7 @@ public class HelpMessageProcessor implements MessageProcessor {
     if (plugin.notifications().isEmpty()) {
       return "";
     }
-    return String.format("[aa]Notifications:[/aa]%n%s",
+    return String.format("%n[aa]Notifications:[/aa]%n%s",
         plugin.notifications().stream()
             .map(notification -> String.format("- [v]%s[/v]: %s", notification.name(), notification.description()))
             .collect(Collectors.joining("\n")));
@@ -95,7 +95,7 @@ public class HelpMessageProcessor implements MessageProcessor {
     if (plugin.providerTypes().isEmpty()) {
       return "";
     }
-    return String.format("[aa]Provider Types:[/aa]%n%s",
+    return String.format("%n[a]Provider Types:[/a]%n%s",
         plugin.providerTypes().stream()
             .map(provider -> String.format("- [v]%s[/v]", provider))
             .collect(Collectors.joining("\n")));
