@@ -30,6 +30,8 @@ import tools.devnull.boteco.plugin.Plugin;
 import java.util.Collections;
 import java.util.List;
 
+import static tools.devnull.boteco.plugin.Command.command;
+
 public class PingPlugin implements Plugin {
 
   public static final String ID = "ping";
@@ -46,7 +48,7 @@ public class PingPlugin implements Plugin {
 
   @Override
   public List<Command> availableCommands() {
-    return Collections.singletonList(Command.command("ping").does("respond with 'pong'"));
+    return Collections.singletonList(command("ping").does("respond with 'pong'"));
   }
 
 }
