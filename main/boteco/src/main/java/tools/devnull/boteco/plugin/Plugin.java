@@ -50,6 +50,16 @@ public interface Plugin {
   String description();
 
   /**
+   * Returns all aspects of messages that this plugin listens to
+   * in order to provide its capabilities.
+   *
+   * @return what this plugin listens in messages
+   */
+  default String listensTo() {
+    return "";
+  }
+
+  /**
    * Returns a list of the commands this plugin offers to interact.
    *
    * @return a list containing the commands provided by this plugin.

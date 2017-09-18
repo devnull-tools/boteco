@@ -58,7 +58,8 @@ public class HelpMessageProcessor implements MessageProcessor {
     return String.format("[a]%s[/a]: %s", plugin.id(), plugin.description()) +
         buildPluginCommands(plugin) +
         buildPluginNotifications(plugin) +
-        buildPluginProviderTypes(plugin);
+        buildPluginProviderTypes(plugin) +
+        buildPluginListenTo(plugin);
   }
 
   private String buildPluginCommands(Plugin plugin) {
@@ -99,6 +100,14 @@ public class HelpMessageProcessor implements MessageProcessor {
         plugin.providerTypes().stream()
             .map(provider -> String.format("- [v]%s[/v]", provider))
             .collect(Collectors.joining("\n")));
+  }
+
+  private String buildPluginListenTo(Plugin plugin) {
+    if (plugin.listensTo().isEmpty()) {
+      return "";
+    } else {
+      return "%n[aa]Listens to:[/aa] " + plugin.listensTo();
+    }
   }
 
   private String buildPluginList() {
