@@ -46,7 +46,7 @@ public class RankingMessageProcessor implements MessageProcessor {
   public void process(IncomeMessage message) {
     List<Karma> result = repository.search(message.command().as(String.class));
     if (result.isEmpty()) {
-      message.reply("[e]No karmas found[/e]");
+      message.reply("[e]No karma found[/e]");
     } else {
       message.reply(result.stream()
           .map(Karma::message)
