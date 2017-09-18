@@ -26,13 +26,13 @@ package tools.devnull.boteco.plugins.help;
 
 import tools.devnull.boteco.AlwaysActive;
 import tools.devnull.boteco.Name;
+import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Command;
 import tools.devnull.boteco.plugin.Plugin;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Name(HelpPlugin.ID)
@@ -40,16 +40,17 @@ import java.util.stream.Collectors;
 @AlwaysActive
 public class HelpMessageProcessor implements MessageProcessor {
 
-  private final List<Plugin> plugins;
+  private final ServiceRegistry registry;
 
-  public HelpMessageProcessor(List<Plugin> plugins) {
-    this.plugins = plugins;
+  public HelpMessageProcessor(ServiceRegistry registry) {
+    this.registry = registry;
   }
 
   @Override
   public void process(IncomeMessage message) {
     MessageCommand command = message.command();
-    this.plugins.forEach(plugin -> command.on(plugin.id(), () -> message.reply(buildPluginHelp(plugin))));
+    this.registry.locate(Plugin.class)
+        .all().forEach(plugin -> command.on(plugin.id(), () -> message.reply(buildPluginHelp(plugin))));
     command.orElseReturn(buildPluginList());
   }
 
@@ -102,7 +103,7 @@ public class HelpMessageProcessor implements MessageProcessor {
 
   private String buildPluginList() {
     return "List of plugins:\n" +
-        this.plugins.stream()
+        this.registry.locate(Plugin.class).all().stream()
             .map(plugin -> String.format("- [a]%s[/a]: %s", plugin.id(), plugin.description()))
             .collect(Collectors.joining("\n")) +
         "\nTo get help for a specific plugin, send the command [v]help <plugin>[/v]";
