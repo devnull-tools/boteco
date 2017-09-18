@@ -30,7 +30,7 @@ import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Command;
 import tools.devnull.boteco.plugins.facts.spi.Fact;
 
-@Name("facts")
+@Name(FactsPlugin.ID)
 @Command("fact")
 public class FactMessageProcessor implements MessageProcessor {
 

@@ -22,45 +22,35 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.definition;
+package tools.devnull.boteco.plugins.providers;
 
 import tools.devnull.boteco.plugin.Command;
 import tools.devnull.boteco.plugin.Plugin;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static tools.devnull.boteco.plugin.Command.command;
 
-public class LookupPlugin implements Plugin {
-
-  public static final String ID = "lookup";
+public class ProvidersPlugin implements Plugin {
 
   @Override
   public String id() {
-    return ID;
+    return "providers";
   }
 
   @Override
   public String description() {
-    return "Lookups definitions";
+    return "A plugin that knows about provider implementations across the platform";
   }
 
   @Override
   public List<Command> availableCommands() {
-    return Arrays.asList(
-        command("lookup")
-            .with("term")
-            .does("Lookups the term using all available providers"),
-        command("lookup")
-            .with("provider", "term")
-            .does("Lookups the term using the given provider")
+    return Collections.singletonList(
+        command("providers")
+            .with("type")
+            .does("Lists the providers of the given type")
     );
   }
 
-  @Override
-  public List<String> providerTypes() {
-    return Collections.singletonList("definitions");
-  }
 }

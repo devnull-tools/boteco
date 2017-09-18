@@ -32,7 +32,7 @@
   </service>
 
   <service interface="tools.devnull.boteco.plugin.Plugin">
-    <bean class="tools.devnull.boteco.plugins.definition.LookupPlugin"/>
+    <bean class="tools.devnull.boteco.plugins.definition.DefinitionsPlugin"/>
   </service>
 
 </blueprint>

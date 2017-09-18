@@ -22,29 +22,40 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.definition;
+package tools.devnull.boteco.plugins.facts;
 
-import tools.devnull.boteco.Name;
-import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.message.checker.Command;
-import tools.devnull.boteco.plugins.definition.spi.Definition;
+import tools.devnull.boteco.plugin.Command;
+import tools.devnull.boteco.plugin.Plugin;
 
+import java.util.Collections;
 import java.util.List;
 
-@Name(DefinitionsPlugin.ID)
-@Command("lookup")
-public class LookupDefinitionMessageProcessor implements MessageProcessor {
+public class FactsPlugin implements Plugin {
+
+  public static final String ID = "facts";
 
   @Override
-  public void process(IncomeMessage message) {
-    Lookup command = message.command().as(Lookup.class);
-    List<Definition> definitions = command.lookup();
-    if (definitions.isEmpty()) {
-      message.reply("Cannot find a definition for term " + command.term());
-    } else {
-      definitions.forEach(message::reply);
-    }
+  public String id() {
+    return ID;
+  }
+
+  @Override
+  public String description() {
+    return "A plugin that shows facts about a subject.";
+  }
+
+  @Override
+  public List<Command> availableCommands() {
+    return Collections.singletonList(
+        Command.command("fact")
+            .with("provider")
+            .does("Shows a fact about a subject using the given provider")
+    );
+  }
+
+  @Override
+  public List<String> providerTypes() {
+    return Collections.singletonList("facts");
   }
 
 }
