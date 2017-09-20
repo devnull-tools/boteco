@@ -27,7 +27,7 @@
            xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
                                http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
-  <reference id="repository" interface="tools.devnull.boteco.plugins.user.UserRepository"/>
+  <reference id="repository" interface="tools.devnull.boteco.plugins.user.spi.UserRepository"/>
   <reference id="request-manager" interface="tools.devnull.boteco.request.RequestManager"/>
 
   <bean id="user-manager" class="tools.devnull.boteco.plugins.user.BotecoUserManager">

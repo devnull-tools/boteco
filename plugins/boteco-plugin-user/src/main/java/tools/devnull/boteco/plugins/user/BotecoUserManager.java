@@ -27,6 +27,7 @@ package tools.devnull.boteco.plugins.user;
 import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.plugins.user.spi.UserRepository;
 import tools.devnull.boteco.request.RequestManager;
 import tools.devnull.boteco.user.PrimaryDestinationRequest;
 import tools.devnull.boteco.user.User;

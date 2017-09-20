@@ -22,7 +22,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.user;
+package tools.devnull.boteco.plugins.user.spi;
 
 import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.user.User;

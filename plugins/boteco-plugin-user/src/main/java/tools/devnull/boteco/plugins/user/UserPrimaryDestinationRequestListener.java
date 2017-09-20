@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.plugins.user;
 
+import tools.devnull.boteco.plugins.user.spi.UserRepository;
 import tools.devnull.boteco.request.Request;
 import tools.devnull.boteco.request.RequestListener;
 import tools.devnull.boteco.user.User;

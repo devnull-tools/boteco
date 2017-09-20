@@ -38,7 +38,7 @@
   <packaging>bundle</packaging>
 
   <properties>
-    <osgi.export.packages>tools.devnull.boteco.plugins.user.manager</osgi.export.packages>
+    <osgi.export.packages>tools.devnull.boteco.plugins.user.spi</osgi.export.packages>
   </properties>
 
 </project>
