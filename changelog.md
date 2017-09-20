@@ -9,6 +9,7 @@
 - Introduced the `Plugin` interface
 - New help plugin
 - New `Provider` interface
+- Removed stocks module
 
 ## v0.9.0 (2017-06-12)
 

@@ -125,13 +125,6 @@
     <bundle>mvn:${project.groupId}/boteco-plugin-diceroll/${project.version}</bundle>
   </feature>
 
-  <feature version="${project.version}" name="boteco-stocks"
-           description="Stocks plugin for boteco">
-    <feature>boteco</feature>
-
-    <bundle>mvn:${project.groupId}/boteco-plugin-stocks/${project.version}</bundle>
-  </feature>
-
   <feature version="${project.version}" name="boteco-xgh"
            description="eXtreme Go Horse plugin for boteco">
     <feature>boteco</feature>
@@ -177,7 +170,6 @@
     <feature>boteco-redhat</feature>
     <feature>boteco-karma</feature>
     <feature>boteco-diceroll</feature>
-    <feature>boteco-stocks</feature>
     <feature>boteco-xgh</feature>
     <feature>boteco-definitions</feature>
     <feature>boteco-facts</feature>
