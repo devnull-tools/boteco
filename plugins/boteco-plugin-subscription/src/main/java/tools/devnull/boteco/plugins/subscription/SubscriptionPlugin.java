@@ -41,7 +41,7 @@ public class SubscriptionPlugin implements Plugin {
 
   @Override
   public String description() {
-    return "Manages subscriptions.";
+    return "Manages subscriptions";
   }
 
   @Override
