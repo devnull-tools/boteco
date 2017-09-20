@@ -45,4 +45,8 @@
     </bean>
   </service>
 
+  <service interface="tools.devnull.boteco.plugin.Plugin">
+    <bean class="tools.devnull.boteco.plugins.request.RequestPlugin"/>
+  </service>
+
 </blueprint>
