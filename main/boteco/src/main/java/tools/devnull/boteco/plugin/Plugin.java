@@ -55,8 +55,8 @@ public interface Plugin {
    *
    * @return what this plugin listens in messages
    */
-  default String listensTo() {
-    return "";
+  default List<Listener> listensTo() {
+    return Collections.emptyList();
   }
 
   /**

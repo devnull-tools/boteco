@@ -106,7 +106,10 @@ public class HelpMessageProcessor implements MessageProcessor {
     if (plugin.listensTo().isEmpty()) {
       return "";
     } else {
-      return "\n[aa]Listens to:[/aa] " + plugin.listensTo();
+      return "\n[aa]Listens to:[/aa] " +
+          plugin.listensTo().stream()
+              .map(listener -> String.format("- Pattern: %s%nResponse: %s", listener.pattern(), listener.response()))
+              .collect(Collectors.joining("\n"));
     }
   }
 
