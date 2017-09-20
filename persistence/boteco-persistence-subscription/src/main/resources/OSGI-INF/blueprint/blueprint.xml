@@ -29,7 +29,7 @@
 
   <reference id="database" interface="com.mongodb.client.MongoDatabase"/>
 
-  <service interface="tools.devnull.boteco.plugins.subscription.SubscriptionRepository">
+  <service interface="tools.devnull.boteco.plugins.subscription.spi.SubscriptionRepository">
     <bean class="tools.devnull.boteco.persistence.subscription.MongoSubscriptionRepository">
       <argument ref="database"/>
     </bean>

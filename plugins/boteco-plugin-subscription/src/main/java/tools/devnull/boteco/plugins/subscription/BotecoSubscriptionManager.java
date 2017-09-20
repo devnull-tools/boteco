@@ -30,6 +30,7 @@ import tools.devnull.boteco.event.SubscriptionManager;
 import tools.devnull.boteco.event.SubscriptionRemovalEventSelector;
 import tools.devnull.boteco.event.SubscriptionRemovalTargetSelector;
 import tools.devnull.boteco.event.SubscriptionTargetSelector;
+import tools.devnull.boteco.plugins.subscription.spi.SubscriptionRepository;
 import tools.devnull.boteco.request.RequestManager;
 
 import java.util.List;

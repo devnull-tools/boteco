@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.plugins.subscription;
 
+import tools.devnull.boteco.plugins.subscription.spi.SubscriptionRepository;
 import tools.devnull.boteco.request.Request;
 import tools.devnull.boteco.request.RequestListener;
 
