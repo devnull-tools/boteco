@@ -44,7 +44,6 @@
     <module>boteco-plugin-redhat</module>
     <module>boteco-plugin-karma</module>
     <module>boteco-plugin-diceroll</module>
-    <module>boteco-plugin-stocks</module>
     <module>boteco-plugin-subscription</module>
     <module>boteco-plugin-user</module>
     <module>boteco-plugin-request</module>
