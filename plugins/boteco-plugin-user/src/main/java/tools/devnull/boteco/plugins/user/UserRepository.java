@@ -27,14 +27,43 @@ package tools.devnull.boteco.plugins.user;
 import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.user.User;
 
+/**
+ * Interface that represents a repository of User objects.
+ *
+ * @author Marcelo "Ataxexe" Guimarães
+ */
 public interface UserRepository {
 
-  User find(MessageLocation destination);
+  /**
+   * Finds the user associated with the given message location
+   *
+   * @param location the location
+   * @return the user associated with the given location
+   */
+  User find(MessageLocation location);
 
+  /**
+   * Finds the user associated with the given id
+   *
+   * @param userId the id of the user
+   * @return the user associated with the given id
+   */
   User find(String userId);
 
-  User create(String userId, MessageLocation primaryDestination);
+  /**
+   * Creates a new user and associates it with the given location
+   *
+   * @param userId   the user id
+   * @param location the message location
+   * @return the created user
+   */
+  User create(String userId, MessageLocation location);
 
+  /**
+   * Updates the given user in the repository
+   *
+   * @param user the user to update
+   */
   void update(User user);
 
 }
