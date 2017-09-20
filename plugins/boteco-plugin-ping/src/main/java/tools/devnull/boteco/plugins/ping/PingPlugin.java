@@ -43,7 +43,7 @@ public class PingPlugin implements Plugin {
 
   @Override
   public String description() {
-    return "A simple plugin that responds to a ping request from user.";
+    return "Responds to a ping request";
   }
 
   @Override

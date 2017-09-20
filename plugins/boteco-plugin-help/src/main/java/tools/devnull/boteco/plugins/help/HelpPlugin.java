@@ -43,7 +43,7 @@ public class HelpPlugin implements Plugin {
 
   @Override
   public String description() {
-    return "A plugin for printing help messages of plugins";
+    return "Prints help messages";
   }
 
   @Override

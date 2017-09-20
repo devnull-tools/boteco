@@ -40,7 +40,7 @@ public class RequestPlugin implements Plugin {
 
   @Override
   public String description() {
-    return "A plugin that can confirm requests.";
+    return "Confirms requests";
   }
 
   @Override

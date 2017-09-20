@@ -41,7 +41,7 @@ public class FactsPlugin implements Plugin {
 
   @Override
   public String description() {
-    return "A plugin that shows facts about a subject.";
+    return "Shows facts about a subject";
   }
 
   @Override

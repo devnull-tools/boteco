@@ -43,7 +43,7 @@ public class KarmaPlugin implements Plugin {
 
   @Override
   public String description() {
-    return "A plugin that keeps track of karma points.";
+    return "Keeps track of karma points";
   }
 
   @Override

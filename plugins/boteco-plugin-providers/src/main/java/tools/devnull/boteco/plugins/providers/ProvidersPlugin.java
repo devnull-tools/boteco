@@ -41,7 +41,7 @@ public class ProvidersPlugin implements Plugin {
 
   @Override
   public String description() {
-    return "A plugin that knows about provider implementations across the platform";
+    return "Shows information about providers across the platform";
   }
 
   @Override

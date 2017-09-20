@@ -43,7 +43,7 @@ public class RedHatPlugin implements Plugin {
 
   @Override
   public String description() {
-    return "A plugin that provides utilities for Red Hatters";
+    return "Utilities for Red Hatters";
   }
 
   @Override

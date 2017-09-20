@@ -43,7 +43,7 @@ public class DiceRollPlugin implements Plugin {
 
   @Override
   public String description() {
-    return "A plugin that rolls dices and outputs the result.";
+    return "Rolls dices and outputs the result";
   }
 
   @Override
