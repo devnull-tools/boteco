@@ -24,12 +24,14 @@
 
 package tools.devnull.boteco.plugins.redhat;
 
+import tools.devnull.boteco.plugin.Listener;
 import tools.devnull.boteco.plugin.Notification;
 import tools.devnull.boteco.plugin.Plugin;
 
 import java.util.Collections;
 import java.util.List;
 
+import static tools.devnull.boteco.plugin.Listener.listenTo;
 import static tools.devnull.boteco.plugin.Notification.notifies;
 
 public class RedHatPlugin implements Plugin {
@@ -45,8 +47,11 @@ public class RedHatPlugin implements Plugin {
   }
 
   @Override
-  public String listensTo() {
-    return "Occurrences of links from access.redhat.com articles and solutions";
+  public List<Listener> listensTo() {
+    return Collections.singletonList(
+        listenTo("Occurrences of links from access.redhat.com articles and solutions")
+            .respondWith("Detailed information about the article/solution")
+    );
   }
 
   @Override
