@@ -40,7 +40,7 @@
       <entry key="type" value="weather"/>
     </service-properties>
     <bean class="tools.devnull.boteco.provider.BasicProvider">
-      <argument value="weather"/>
+      <argument value="yahoo"/>
       <argument value="Provides weather forecasts from Yahoo!"/>
       <argument ref="yahoo-weather"/>
     </bean>
