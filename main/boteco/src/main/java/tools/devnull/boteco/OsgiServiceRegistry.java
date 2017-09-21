@@ -26,6 +26,16 @@ package tools.devnull.boteco;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
+import tools.devnull.boteco.provider.ProvidedBy;
+import tools.devnull.boteco.provider.Provider;
+import tools.devnull.trugger.Optional;
+
+import java.util.List;
+
+import static tools.devnull.boteco.Predicates.eq;
+import static tools.devnull.boteco.Predicates.id;
+import static tools.devnull.boteco.Predicates.serviceProperty;
+import static tools.devnull.boteco.Predicates.type;
 
 /**
  * An implementation of a service registry that uses the OSGi Registry
@@ -43,6 +53,41 @@ public class OsgiServiceRegistry implements ServiceRegistry {
   public <T> ServiceDefinition<T> register(T implementation) {
     BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
     return new OsgiServiceDefinition<>(bundleContext, implementation);
+  }
+
+  @Override
+  public <T> Optional<Provider<T>> providerOf(Class<T> objectClass) {
+    String providerType = resolveTypeAttribute(objectClass);
+    Optional provider = locate(Provider.class)
+        .filter(type(providerType).and(serviceProperty("default", eq(true))))
+        .one();
+    return provider;
+  }
+
+  @Override
+  public <T> Optional<Provider<T>> providerOf(Class<T> objectClass, String providerId) {
+    String providerType = resolveTypeAttribute(objectClass);
+    Optional provider = locate(Provider.class)
+        .filter(type(providerType).and(id(providerId)))
+        .one();
+    return provider;
+  }
+
+  @Override
+  public <T> List<Provider<T>> providersOf(Class<T> objectClass) {
+    String providerType = resolveTypeAttribute(objectClass);
+    List result = locate(Provider.class)
+        .filter(type(providerType))
+        .all();
+    return result;
+  }
+
+  private <T> String resolveTypeAttribute(Class<T> objectClass) {
+    String type = objectClass.getSimpleName();
+    if (objectClass.isAnnotationPresent(ProvidedBy.class)) {
+      type = objectClass.getAnnotation(ProvidedBy.class).value();
+    }
+    return type;
   }
 
 }

@@ -22,24 +22,24 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.definition.spi;
+package tools.devnull.boteco.plugins.weather.spi;
 
 import tools.devnull.boteco.provider.ProvidedBy;
 import tools.devnull.trugger.Optional;
 
 /**
- * Interface that defines a provider for a definition. Examples may include
- * the Urban Dictionary, Wikipedia, etc.
+ * An interface that defines a weather searcher. Implementations
+ * should query for internal/external services to fetch a weather.
  */
-@ProvidedBy("definitions")
-public interface DefinitionLookup {
+@ProvidedBy("weather")
+public interface WeatherSearcher {
 
   /**
-   * Retrieve information regarding the given term. The information may be related
-   * to the term
-   * @param term the term to search
-   * @return the definition found by this provider
+   * Searches the weather for the giving query.
+   *
+   * @param query the query to search
+   * @return the weather for the giving query
    */
-  Optional<Definition> lookup(String term);
+  Optional<Weather> search(String query);
 
 }

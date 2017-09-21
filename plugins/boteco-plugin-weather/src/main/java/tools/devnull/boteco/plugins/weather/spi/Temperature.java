@@ -22,20 +22,40 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.weather;
+package tools.devnull.boteco.plugins.weather.spi;
 
 /**
- * An interface that defines a weather searcher. Implementations
- * should query for internal/external services to fetch a weather.
+ * A class to hold a temperature value
  */
-public interface WeatherSearcher {
+public class Temperature {
 
-  /**
-   * Searches the weather for the giving query.
-   *
-   * @param query the query to search
-   * @return the weather for the giving query
-   */
-  Weather search(String query);
+  private final double value;
+
+  public Temperature(double kelvin) {
+    if (kelvin < 0) {
+      throw new IllegalArgumentException("Temperature should not be less than 0 Kelvin");
+    }
+    this.value = kelvin;
+  }
+
+  public double kelvin() {
+    return value;
+  }
+
+  public double celsius() {
+    return value - 273.15;
+  }
+
+  public double fahrenheits() {
+    return (value * 1.8) - 459.67;
+  }
+
+  public static Temperature fromCelsius(double value) {
+    return new Temperature(value + 273.15);
+  }
+
+  public static Temperature fromFahrenheits(double value) {
+    return new Temperature((value + 459.67) * 5 / 9);
+  }
 
 }

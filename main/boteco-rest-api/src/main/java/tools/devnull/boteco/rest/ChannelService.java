@@ -25,8 +25,10 @@
 package tools.devnull.boteco.rest;
 
 import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.DomainException;
 import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.message.MessageSender;
+import tools.devnull.trugger.Optional;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -57,9 +59,10 @@ public class ChannelService {
   public Response sendMessage(@PathParam("channel") String channelId,
                               @PathParam("target") String target,
                               Message message) {
-    Channel channel = serviceRegistry.locate(Channel.class).filter(id(channelId)).one();
-
     try {
+      Optional<Channel> channel = serviceRegistry.locate(Channel.class)
+          .filter(id(channelId)).one();
+
       messageSender.send(message)
           .with(message.getMetadata())
           .to(target)
@@ -67,9 +70,9 @@ public class ChannelService {
 
       // if the channel is present, then the message will be delivered as soon as the channel can process it
       // otherwise, the message will be delivered when the channel bundle starts
-      return channel != null ? Response.ok().build() : Response.accepted().build();
-    } catch (IllegalArgumentException e) {
-      return Response.status(Response.Status.BAD_REQUEST).entity("Invalid priority").build();
+      return channel.exists() ? Response.ok().build() : Response.accepted().build();
+    } catch (DomainException e) {
+      return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
     }
   }
 
@@ -88,12 +91,12 @@ public class ChannelService {
   @Produces("application/json")
   @Path("/{channel}")
   public Response getAvailableChannel(@PathParam("channel") String channelId) {
-    Channel channel = serviceRegistry.locate(Channel.class).filter(id(channelId)).one();
-    if (channel != null) {
-      return Response.ok(new AvailableChannel(channel)).build();
-    } else {
-      return Response.status(Response.Status.NOT_FOUND).build();
-    }
+    return serviceRegistry.locate(Channel.class)
+        .filter(id(channelId))
+        .one()
+        .map(channel -> Response.ok(new AvailableChannel(channel)))
+        .orElseReturn(() -> Response.status(Response.Status.NOT_FOUND))
+        .build();
   }
 
 }

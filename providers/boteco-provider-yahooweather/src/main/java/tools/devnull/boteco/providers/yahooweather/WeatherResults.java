@@ -22,11 +22,11 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.weather;
+package tools.devnull.boteco.providers.yahooweather;
 
 import com.google.gson.annotations.SerializedName;
-import tools.devnull.boteco.plugins.weather.Temperature;
-import tools.devnull.boteco.plugins.weather.Weather;
+import tools.devnull.boteco.plugins.weather.spi.Temperature;
+import tools.devnull.boteco.plugins.weather.spi.Weather;
 
 public class WeatherResults implements Weather {
 

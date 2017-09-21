@@ -36,6 +36,7 @@
   <service interface="tools.devnull.boteco.provider.Provider">
     <service-properties>
       <entry key="id" value="urbandictionary"/>
+      <entry key="default" value="true"/>
       <entry key="type" value="definitions"/>
     </service-properties>
     <bean class="tools.devnull.boteco.provider.BasicProvider">

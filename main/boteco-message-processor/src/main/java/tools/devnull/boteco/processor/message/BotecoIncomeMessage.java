@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.processor.message;
 
+import tools.devnull.boteco.BotException;
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.message.IncomeMessage;
@@ -112,7 +113,9 @@ public class BotecoIncomeMessage implements IncomeMessage {
   }
 
   private MessageSender getMessageSender() {
-    return registry.locate(MessageSender.class).one();
+    return registry.locate(MessageSender.class)
+        .one()
+        .orElseThrow(() -> new BotException("No message senders available"));
   }
 
 }

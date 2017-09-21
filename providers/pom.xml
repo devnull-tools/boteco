@@ -40,6 +40,7 @@
   <modules>
     <module>boteco-provider-urbandictionary</module>
     <module>boteco-provider-chucknorris</module>
+    <module>boteco-provider-yahooweather</module>
   </modules>
 
   <dependencies>

@@ -22,45 +22,48 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.weather;
+package tools.devnull.boteco.plugins.definition;
 
-import org.apache.http.client.utils.URIBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import tools.devnull.boteco.client.rest.RestClient;
+import tools.devnull.boteco.DomainException;
+import tools.devnull.boteco.ServiceRegistry;
+import tools.devnull.boteco.plugins.definition.spi.Definition;
+import tools.devnull.boteco.plugins.definition.spi.DefinitionLookup;
+import tools.devnull.trugger.Optional;
 
-import java.net.URI;
+public class LookupCommand {
 
-public class YahooWeather implements WeatherSearcher {
+  private final ServiceRegistry registry;
+  private final String provider;
+  private final String term;
 
-  private static final Logger logger = LoggerFactory.getLogger(YahooWeather.class);
-
-  private final RestClient client;
-
-  public YahooWeather(RestClient client) {
-    this.client = client;
+  public LookupCommand(ServiceRegistry registry, String provider, String term) {
+    this.registry = registry;
+    this.provider = provider;
+    this.term = term;
   }
 
-  @Override
-  public WeatherResults search(String query) {
-    try {
-      URI uri = new URIBuilder()
-          .setScheme("https")
-          .setHost("query.yahooapis.com")
-          .setPath("/v1/public/yql")
-          .addParameter("format", "json")
-          .addParameter("q", "select item from weather.forecast where woeid in " +
-              "(select woeid from geo.places(1) where text=\"" +
-              query + "\") and u=\"c\"")
-          .build();
-      return client.get(uri)
-          .to(WeatherResults.class)
-          .filter(WeatherResults::hasResult)
-          .value();
-    } catch (Exception e) {
-      logger.error("Error while querying weather", e);
+  public LookupCommand(ServiceRegistry registry, String term) {
+    this.registry = registry;
+    this.provider = null;
+    this.term = term;
+  }
+
+  public String term() {
+    return term;
+  }
+
+  public Optional<Definition> lookup() {
+    if (provider == null) {
+      return registry.providerOf(DefinitionLookup.class)
+          .orElseThrow(() -> new DomainException("No providers for definitions"))
+          .get()
+          .lookup(term);
+    } else {
+      return registry.providerOf(DefinitionLookup.class, provider)
+          .orElseThrow(() -> new DomainException("Provider " + provider + " not found"))
+          .get()
+          .lookup(term);
     }
-    return null;
   }
 
 }

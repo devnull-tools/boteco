@@ -22,40 +22,32 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.weather;
+package tools.devnull.boteco.plugins.weather.spi;
 
 /**
- * A class to hold a temperature value
+ * Interface that defines a Weather for some place.
  */
-public class Temperature {
+public interface Weather {
 
-  private final double value;
+  /**
+   * Returns the text that describes this weather.
+   *
+   * @return the text that describes this weather.
+   */
+  String text();
 
-  public Temperature(double kelvin) {
-    if (kelvin < 0) {
-      throw new IllegalArgumentException("Temperature should not be less than 0 Kelvin");
-    }
-    this.value = kelvin;
-  }
+  /**
+   * Returns the short text that describes the weather condition.
+   *
+   * @return the short text that describes the weather condition.
+   */
+  String condition();
 
-  public double kelvin() {
-    return value;
-  }
-
-  public double celsius() {
-    return value - 273.15;
-  }
-
-  public double fahrenheits() {
-    return (value * 1.8) - 459.67;
-  }
-
-  public static Temperature fromCelsius(double value) {
-    return new Temperature(value + 273.15);
-  }
-
-  public static Temperature fromFahrenheits(double value) {
-    return new Temperature((value + 459.67) * 5 / 9);
-  }
+  /**
+   * Returns the temperature for this weather.
+   *
+   * @return the temperature for this weather.
+   */
+  Temperature temperature();
 
 }

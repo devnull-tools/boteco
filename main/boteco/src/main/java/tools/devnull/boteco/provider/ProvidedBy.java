@@ -22,32 +22,34 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.weather;
+package tools.devnull.boteco.provider;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Interface that defines a Weather for some place.
+ * Indicates the "type" service property of the service that provides the annotated
+ * type.
+ * <p>
+ * Services that defines the annotated type as the service property "type" can be
+ * retrieved by the methods {@link tools.devnull.boteco.ServiceRegistry#providerOf(Class)},
+ * {@link tools.devnull.boteco.ServiceRegistry#providerOf(Class, String)} and
+ * {@link tools.devnull.boteco.ServiceRegistry#providersOf(Class)}.
+ *
+ * @author Marcelo "Ataxexe" Guimarães
  */
-public interface Weather {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface ProvidedBy {
 
   /**
-   * Returns the text that describes this weather.
+   * Defines the value of the service property "type" that should be present on
+   * providers of the annotated type.
    *
-   * @return the text that describes this weather.
+   * @return the value of the service property "type"
    */
-  String text();
-
-  /**
-   * Returns the short text that describes the weather condition.
-   *
-   * @return the short text that describes the weather condition.
-   */
-  String condition();
-
-  /**
-   * Returns the temperature for this weather.
-   *
-   * @return the temperature for this weather.
-   */
-  Temperature temperature();
+  String value();
 
 }

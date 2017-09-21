@@ -40,7 +40,7 @@
   <packaging>bundle</packaging>
 
   <properties>
-    <osgi.export.packages>tools.devnull.boteco.plugins.weather</osgi.export.packages>
+    <osgi.export.packages>tools.devnull.boteco.plugins.weather.spi</osgi.export.packages>
   </properties>
 
 </project>

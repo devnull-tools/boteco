@@ -22,24 +22,40 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.definition.spi;
+package tools.devnull.boteco.plugins.weather;
 
-import tools.devnull.boteco.provider.ProvidedBy;
+import tools.devnull.boteco.ServiceRegistry;
+import tools.devnull.boteco.message.MessageProcessingException;
+import tools.devnull.boteco.plugins.weather.spi.Weather;
+import tools.devnull.boteco.plugins.weather.spi.WeatherSearcher;
 import tools.devnull.trugger.Optional;
 
-/**
- * Interface that defines a provider for a definition. Examples may include
- * the Urban Dictionary, Wikipedia, etc.
- */
-@ProvidedBy("definitions")
-public interface DefinitionLookup {
+public class WeatherCommand {
 
-  /**
-   * Retrieve information regarding the given term. The information may be related
-   * to the term
-   * @param term the term to search
-   * @return the definition found by this provider
-   */
-  Optional<Definition> lookup(String term);
+  private final ServiceRegistry registry;
+  private final String provider;
+  private final String query;
+
+  public WeatherCommand(ServiceRegistry registry, String provider, String query) {
+    this.registry = registry;
+    this.provider = provider;
+    this.query = query;
+  }
+
+  public Optional<Weather> search() {
+    return searcher().search(query);
+  }
+
+  private WeatherSearcher searcher() {
+    if (provider != null) {
+      return registry.providerOf(WeatherSearcher.class, provider)
+          .orElseThrow(() -> new MessageProcessingException(String.format("Provider %s not found", provider)))
+          .get();
+    } else {
+      return registry.providerOf(WeatherSearcher.class)
+          .orElseThrow(() -> new MessageProcessingException("No provider for weather forecast"))
+          .get();
+    }
+  }
 
 }
