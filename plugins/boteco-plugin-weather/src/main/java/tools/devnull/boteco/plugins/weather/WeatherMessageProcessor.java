@@ -32,7 +32,7 @@ import tools.devnull.boteco.message.checker.Command;
 import tools.devnull.boteco.plugins.weather.spi.Weather;
 
 @Command("weather")
-@Name("weather")
+@Name(WeatherPlugin.ID)
 public class WeatherMessageProcessor implements MessageProcessor {
 
   @Override
