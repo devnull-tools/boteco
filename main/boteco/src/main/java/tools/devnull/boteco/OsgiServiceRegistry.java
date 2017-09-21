@@ -59,7 +59,7 @@ public class OsgiServiceRegistry implements ServiceRegistry {
   public <T> Optional<Provider<T>> providerOf(Class<T> objectClass) {
     String providerType = resolveTypeAttribute(objectClass);
     Optional provider = locate(Provider.class)
-        .filter(type(providerType).and(serviceProperty("default", eq(true))))
+        .filter(type(providerType).and(serviceProperty("default", eq("true"))))
         .one();
     return provider;
   }
