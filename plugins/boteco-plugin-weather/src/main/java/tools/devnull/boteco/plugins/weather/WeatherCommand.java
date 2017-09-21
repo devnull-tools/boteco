@@ -42,6 +42,12 @@ public class WeatherCommand {
     this.query = query;
   }
 
+  public WeatherCommand(ServiceRegistry registry, String query) {
+    this.registry = registry;
+    this.provider = null;
+    this.query = query;
+  }
+
   public Optional<Weather> search() {
     return searcher().search(query);
   }
