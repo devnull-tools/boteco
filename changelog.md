@@ -10,6 +10,7 @@
 - New help plugin
 - New `Provider` interface
 - Removed stocks module
+- More use of Optionals through the API
 
 ## v0.9.0 (2017-06-12)
 
