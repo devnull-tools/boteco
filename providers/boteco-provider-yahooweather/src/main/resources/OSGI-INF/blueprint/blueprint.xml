@@ -33,7 +33,7 @@
     <argument ref="rest-client"/>
   </bean>
 
-  <service interface="tools.devnull.boteco.provider">
+  <service interface="tools.devnull.boteco.provider.Provider">
     <service-properties>
       <entry key="id" value="yahoo"/>
       <entry key="default" value="true"/>
