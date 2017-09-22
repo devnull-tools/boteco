@@ -49,7 +49,7 @@ public class OsgiParameterResolver implements Function<Parameter, Object> {
     if (parameter.isAnnotationPresent(OsgiFilter.class)) {
       query = parameter.getAnnotation(OsgiFilter.class).value();
     }
-    return this.serviceRegistry.locate(parameter.getType()).filter(query).one();
+    return this.serviceRegistry.locate(parameter.getType()).filter(query).one().value();
   }
 
 }

@@ -29,7 +29,7 @@
   <parent>
     <artifactId>boteco-parent</artifactId>
     <groupId>tools.devnull</groupId>
-    <version>0.10.0-SNAPSHOT</version>
+    <version>0.10.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -44,14 +44,15 @@
     <module>boteco-plugin-redhat</module>
     <module>boteco-plugin-karma</module>
     <module>boteco-plugin-diceroll</module>
-    <module>boteco-plugin-stocks</module>
     <module>boteco-plugin-subscription</module>
     <module>boteco-plugin-user</module>
     <module>boteco-plugin-request</module>
     <module>boteco-plugin-xgh</module>
-    <module>boteco-plugin-validator</module>
     <module>boteco-plugin-definitions</module>
     <module>boteco-plugin-facts</module>
+    <module>boteco-plugin-help</module>
+    <module>boteco-plugin-providers</module>
+    <module>boteco-plugin-irc</module>
   </modules>
 
   <dependencies>

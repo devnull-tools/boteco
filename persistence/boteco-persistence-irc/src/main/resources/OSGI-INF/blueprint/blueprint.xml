@@ -24,23 +24,18 @@
 
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
-           xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
-           xmlns:cxf="http://cxf.apache.org/blueprint/core"
            xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
-                               http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
-                               http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
-                               http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
+                               http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
   <reference id="database" interface="com.mongodb.client.MongoDatabase"/>
 
-  <service interface="tools.devnull.boteco.channel.irc.IrcChannelsRepository">
+  <service interface="tools.devnull.boteco.plugins.irc.spi.IrcChannelsRepository">
     <bean class="tools.devnull.boteco.persistence.irc.MongoIrcChannelsRepository">
       <argument ref="database"/>
     </bean>
   </service>
 
-  <service interface="tools.devnull.boteco.channel.irc.IrcIgnoreList">
+  <service interface="tools.devnull.boteco.plugins.irc.spi.IrcIgnoreList">
     <bean class="tools.devnull.boteco.persistence.irc.MongoIrcIgnoreList">
       <argument ref="database"/>
     </bean>

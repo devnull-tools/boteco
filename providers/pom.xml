@@ -29,7 +29,7 @@
   <parent>
     <artifactId>boteco-parent</artifactId>
     <groupId>tools.devnull</groupId>
-    <version>0.10.0-SNAPSHOT</version>
+    <version>0.10.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -40,6 +40,7 @@
   <modules>
     <module>boteco-provider-urbandictionary</module>
     <module>boteco-provider-chucknorris</module>
+    <module>boteco-provider-yahooweather</module>
   </modules>
 
   <dependencies>

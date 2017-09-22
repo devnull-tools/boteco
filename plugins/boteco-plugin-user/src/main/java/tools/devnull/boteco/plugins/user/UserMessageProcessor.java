@@ -29,6 +29,7 @@ import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessingException;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Command;
+import tools.devnull.boteco.plugins.user.spi.UserRepository;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.user.UserManager;
 

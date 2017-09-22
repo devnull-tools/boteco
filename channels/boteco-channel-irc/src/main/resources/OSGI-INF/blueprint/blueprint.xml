@@ -33,8 +33,8 @@
                            placeholder-prefix="{{"
                            placeholder-suffix="}}">
     <cm:default-properties>
-      <cm:property name="income.enabled" value="false"/>
-      <cm:property name="outcome.enabled" value="false"/>
+      <cm:property name="income.enable" value="false"/>
+      <cm:property name="outcome.enable" value="false"/>
       <cm:property name="connection.check" value="false"/>
       <cm:property name="connection.check.interval" value="1m"/>
       <cm:property name="connection.check.trace" value="false"/>
@@ -44,8 +44,7 @@
       <cm:property name="irc.server" value="localhost"/>
       <cm:property name="irc.port" value="6667"/>
       <!-- The prefix that defines a bot command -->
-      <cm:property name="bot.command.prefix"
-                   value="{{irc.nick}}[,:]?\s+"/>
+      <cm:property name="bot.command.prefix" value="{{irc.nick}}[,:]?\s+"/>
       <!-- The options to apply to the irc component -->
       <cm:property name="irc.options" value=""/>
 
@@ -53,17 +52,6 @@
       <cm:property name="shutdown.time" value="10"/>
     </cm:default-properties>
   </cm:property-placeholder>
-
-  <reference id="ignore-list" interface="tools.devnull.boteco.channel.irc.IrcIgnoreList"/>
-
-  <service interface="tools.devnull.boteco.Rule">
-    <service-properties>
-      <entry key="channel" value="irc"/>
-    </service-properties>
-    <bean class="tools.devnull.boteco.channel.irc.IgnoreSenderRule">
-      <argument ref="ignore-list"/>
-    </bean>
-  </service>
 
   <bean id="command-extractor" class="tools.devnull.boteco.message.PrefixCommandExtractor">
     <argument value="{{bot.command.prefix}}"/>
@@ -77,12 +65,6 @@
     <service-properties>
       <entry key="id" value="irc"/>
     </service-properties>
-  </service>
-
-  <service interface="tools.devnull.boteco.message.MessageProcessor">
-    <bean class="tools.devnull.boteco.channel.irc.IrcMessageProcessor">
-      <argument ref="ignore-list"/>
-    </bean>
   </service>
 
   <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>
@@ -106,7 +88,7 @@
 
   <bean id="irc" class="tools.devnull.boteco.channel.irc.BotecoIrcComponent">
     <argument>
-      <reference interface="tools.devnull.boteco.channel.irc.IrcChannelsRepository"/>
+      <reference interface="tools.devnull.boteco.plugins.irc.spi.IrcChannelsRepository"/>
     </argument>
     <argument>
       <reference interface="tools.devnull.boteco.event.EventBus"/>
@@ -122,7 +104,7 @@
                 trace="{{trace}}"
                 xmlns="http://camel.apache.org/schema/blueprint">
 
-    <route id="boteco.message.from.irc" autoStartup="{{income.enabled}}">
+    <route id="boteco.message.from.irc" autoStartup="{{income.enable}}">
       <from
           uri="irc:{{irc.nick}}@{{irc.server}}:{{irc.port}}?{{irc.options}}&amp;onNick=false&amp;onQuit=false&amp;onJoin=false&amp;onKick=false&amp;onMode=false&amp;onPart=false&amp;onTopic=false"/>
       <log logName="boteco-channel-irc"
@@ -131,7 +113,7 @@
       <process ref="irc-income-processor"/>
     </route>
 
-    <route id="boteco.message.to.irc" autoStartup="{{outcome.enabled}}">
+    <route id="boteco.message.to.irc" autoStartup="{{outcome.enable}}">
       <from uri="activemq:queue:boteco.message.irc"/>
       <log logName="boteco-channel-irc"
            loggingLevel="INFO"

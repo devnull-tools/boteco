@@ -31,7 +31,7 @@ import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Command;
 
 @Command("roll")
-@Name("dice-roll")
+@Name(DiceRollPlugin.ID)
 public class DiceRollMessageProcessor implements MessageProcessor {
 
   private final DiceRoll diceRoll;

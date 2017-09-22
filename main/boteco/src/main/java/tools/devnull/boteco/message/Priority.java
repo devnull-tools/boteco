@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.message;
 
+import tools.devnull.boteco.DomainException;
+
 /**
  * Enumeration of the possible priorities of a message.
  */
@@ -33,7 +35,11 @@ public enum Priority {
 
   public static Priority parse(String value) {
     if (value != null && !value.isEmpty()) {
-      return Enum.valueOf(Priority.class, value.toUpperCase());
+      try{
+        return Enum.valueOf(Priority.class, value.toUpperCase());
+      } catch (IllegalArgumentException | NullPointerException e) {
+        throw new DomainException("Invalid priority");
+      }
     }
     return NORMAL;
   }

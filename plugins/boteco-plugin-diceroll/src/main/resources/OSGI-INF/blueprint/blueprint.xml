@@ -24,22 +24,21 @@
 
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
-           xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
-           xmlns:cxf="http://cxf.apache.org/blueprint/core"
            xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
-                               http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
-                               http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
-                               http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
+                               http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
   <reference id="mongo-database" interface="com.mongodb.client.MongoDatabase"/>
 
-  <service id="diceroll-plugin" interface="tools.devnull.boteco.message.MessageProcessor">
+  <service interface="tools.devnull.boteco.message.MessageProcessor">
     <bean class="tools.devnull.boteco.plugins.diceroll.DiceRollMessageProcessor">
       <argument>
         <bean class="tools.devnull.boteco.plugins.diceroll.SimpleDiceRoll"/>
       </argument>
     </bean>
+  </service>
+
+  <service interface="tools.devnull.boteco.plugin.Plugin">
+    <bean class="tools.devnull.boteco.plugins.diceroll.DiceRollPlugin"/>
   </service>
 
 </blueprint>

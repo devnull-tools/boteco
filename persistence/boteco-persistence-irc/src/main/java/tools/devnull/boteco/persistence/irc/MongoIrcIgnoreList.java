@@ -28,7 +28,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import tools.devnull.boteco.channel.irc.IrcIgnoreList;
+import tools.devnull.boteco.plugins.irc.spi.IrcIgnoreList;
 
 import java.util.ArrayList;
 import java.util.List;

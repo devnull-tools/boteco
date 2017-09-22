@@ -34,7 +34,7 @@ import tools.devnull.boteco.message.checker.Command;
  * "pong" response.
  */
 @Command("ping")
-@Name("ping")
+@Name(PingPlugin.ID)
 public class PingMessageProcessor implements MessageProcessor {
 
   @Override

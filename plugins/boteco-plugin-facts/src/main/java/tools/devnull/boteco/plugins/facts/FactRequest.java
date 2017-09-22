@@ -27,9 +27,6 @@ package tools.devnull.boteco.plugins.facts;
 import tools.devnull.boteco.DomainException;
 import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.plugins.facts.spi.Fact;
-import tools.devnull.boteco.plugins.facts.spi.FactsProvider;
-
-import static tools.devnull.boteco.Predicates.id;
 
 public class FactRequest {
 
@@ -42,8 +39,7 @@ public class FactRequest {
   }
 
   public Fact fetch() {
-    return registry.locate(FactsProvider.class)
-        .filter(id(factName))
+    return registry.providerOf(Fact.class, factName)
         .orElseThrow(() -> new DomainException("No facts provider for " + factName))
         .get();
   }

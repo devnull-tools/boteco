@@ -68,7 +68,7 @@
                 trace="{{trace}}"
                 xmlns="http://camel.apache.org/schema/blueprint">
 
-    <route id="boteco.message.to.pushover" autoStartup="{{outcome.enabled}}">
+    <route id="boteco.message.to.pushover" autoStartup="{{outcome.enable}}">
       <from uri="activemq:queue:boteco.message.pushover"/>
       <log logName="boteco-channel-pushover"
            loggingLevel="INFO"

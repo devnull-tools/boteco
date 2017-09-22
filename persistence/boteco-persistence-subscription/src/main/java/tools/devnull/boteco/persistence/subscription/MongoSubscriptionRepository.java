@@ -32,7 +32,7 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import tools.devnull.boteco.UserMessageLocation;
 import tools.devnull.boteco.event.Subscription;
-import tools.devnull.boteco.plugins.subscription.SubscriptionRepository;
+import tools.devnull.boteco.plugins.subscription.spi.SubscriptionRepository;
 
 import java.util.ArrayList;
 import java.util.List;

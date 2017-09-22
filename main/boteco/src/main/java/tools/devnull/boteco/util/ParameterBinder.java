@@ -134,7 +134,7 @@ public class ParameterBinder<E> implements Function<String, E> {
             .when(parameter -> this.functions.containsKey(parameter.getType()));
 
         Object[] args = Arrays.stream(constructor.getParameters())
-            .map(context::resolve)
+            .map(parameter -> context.resolve(parameter).value())
             .collect(Collectors.toList())
             .toArray();
         return Reflection.invoke(constructor).withArgs(args);

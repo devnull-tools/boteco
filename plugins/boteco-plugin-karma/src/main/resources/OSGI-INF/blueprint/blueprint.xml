@@ -24,22 +24,14 @@
 
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
-           xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
-           xmlns:cxf="http://cxf.apache.org/blueprint/core"
            xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
-                               http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
-                               http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
-                               http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
+                               http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
   <reference id="repository" interface="tools.devnull.boteco.plugins.karma.KarmaRepository"/>
 
   <service id="karma-plugin" interface="tools.devnull.boteco.message.MessageProcessor">
     <bean class="tools.devnull.boteco.plugins.karma.KarmaMessageProcessor">
       <argument ref="repository"/>
-      <argument>
-        <cm:cm-properties persistent-id="tools.devnull.boteco.plugins.karma" update="true"/>
-      </argument>
     </bean>
   </service>
 
@@ -47,6 +39,10 @@
     <bean class="tools.devnull.boteco.plugins.karma.RankingMessageProcessor">
       <argument ref="repository"/>
     </bean>
+  </service>
+
+  <service interface="tools.devnull.boteco.plugin.Plugin">
+    <bean class="tools.devnull.boteco.plugins.karma.KarmaPlugin"/>
   </service>
 
 </blueprint>

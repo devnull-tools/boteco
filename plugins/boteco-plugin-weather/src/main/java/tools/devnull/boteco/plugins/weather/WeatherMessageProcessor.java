@@ -26,28 +26,20 @@ package tools.devnull.boteco.plugins.weather;
 
 import tools.devnull.boteco.Name;
 import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessingException;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Command;
+import tools.devnull.boteco.plugins.weather.spi.Weather;
 
 @Command("weather")
-@Name("weather")
+@Name(WeatherPlugin.ID)
 public class WeatherMessageProcessor implements MessageProcessor {
-
-  private final WeatherSearcher searcher;
-
-  public WeatherMessageProcessor(WeatherSearcher searcher) {
-    this.searcher = searcher;
-  }
 
   @Override
   public void process(IncomeMessage message) {
-    String query = message.command().as(String.class);
-    Weather weather = searcher.search(query);
-    if (weather != null) {
-      message.reply(buildResponse(weather));
-    } else {
-      message.reply("Your query didn't return any results.");
-    }
+    message.command().as(WeatherCommand.class).search()
+        .and(weather -> message.reply(buildResponse(weather)))
+        .orElseThrow(() -> new MessageProcessingException("No weather forecast found"));
   }
 
   private String buildResponse(Weather weather) {

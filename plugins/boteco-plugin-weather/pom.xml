@@ -32,7 +32,7 @@
   <parent>
     <groupId>tools.devnull</groupId>
     <artifactId>boteco-plugins</artifactId>
-    <version>0.10.0-SNAPSHOT</version>
+    <version>0.10.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -40,7 +40,7 @@
   <packaging>bundle</packaging>
 
   <properties>
-    <osgi.export.packages>tools.devnull.boteco.plugins.weather</osgi.export.packages>
+    <osgi.export.packages>tools.devnull.boteco.plugins.weather.spi</osgi.export.packages>
   </properties>
 
 </project>
