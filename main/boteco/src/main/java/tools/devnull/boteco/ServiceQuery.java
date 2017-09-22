@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -25,10 +25,10 @@
 package tools.devnull.boteco;
 
 import org.osgi.framework.ServiceReference;
+import tools.devnull.trugger.Optional;
 
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 /**
  * Interface for querying services in a {@link ServiceRegistry}
@@ -59,36 +59,7 @@ public interface ServiceQuery<T> {
    *
    * @return the first service found
    */
-  T one();
-
-  /**
-   * If no object is found, then return the given value.
-   * <p>
-   * This only applies when selecting {@link #one()} service.
-   *
-   * @param returnValue the value to return
-   * @return the found service or the default return
-   */
-  T orElseReturn(T returnValue);
-
-  /**
-   * If no object is found, then return the value obtained by
-   * the given supplier.
-   * <p>
-   * This only applies when selecting {@link #one()} service.
-   *
-   * @param supplier the supplier to provide the value
-   * @return the found service or the default return
-   */
-  T orElse(Supplier<T> supplier);
-
-  /**
-   * If no object is found, then throw the supplied exception.
-   *
-   * @param exceptionSupplier the supplier that will provide the exception to throw
-   * @return the found service
-   */
-  T orElseThrow(Supplier<? extends RuntimeException> exceptionSupplier);
+  Optional<T> one();
 
   /**
    * Return all services found by this query

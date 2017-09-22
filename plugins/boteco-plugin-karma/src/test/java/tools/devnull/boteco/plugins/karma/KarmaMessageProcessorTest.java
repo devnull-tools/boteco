@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -26,35 +26,41 @@ package tools.devnull.boteco.plugins.karma;
 
 import org.junit.Before;
 import org.junit.Test;
+import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.kodo.Spec;
 
-import java.util.Properties;
+import java.util.function.Consumer;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static tools.devnull.boteco.test.Consumers.process;
+import static tools.devnull.boteco.test.IncomeMessageMock.message;
+import static tools.devnull.boteco.test.Predicates.receive;
+import static tools.devnull.kodo.Expectation.it;
 import static tools.devnull.kodo.Expectation.the;
 import static tools.devnull.kodo.Expectation.to;
 
 public class KarmaMessageProcessorTest {
 
   private KarmaRepository repository;
-  private Karma testKarma;
-  private Karma otherKarma;
+  private MessageProcessor processor;
 
   @Before
   public void initialize() {
-    testKarma = new Karma("test");
-    otherKarma = new Karma("other");
-
     repository = mock(KarmaRepository.class);
-    when(repository.find("test")).thenReturn(testKarma);
-    when(repository.find("other")).thenReturn(otherKarma);
+    processor = new KarmaMessageProcessor(repository);
   }
 
   @Test
   public void testRaise() {
-    Spec.given(new KarmaMessageProcessor(repository, new Properties()))
+    Karma testKarma = new Karma("test");
+    Karma otherKarma = new Karma("other");
+
+    when(repository.find("test")).thenReturn(testKarma);
+    when(repository.find("other")).thenReturn(otherKarma);
+
+    Spec.given(processor)
         .expect(the(testKarma.value()), to().be(0))
         .expect(the(otherKarma.value()), to().be(0))
 
@@ -81,7 +87,13 @@ public class KarmaMessageProcessorTest {
 
   @Test
   public void testLower() {
-    Spec.given(new KarmaMessageProcessor(repository, new Properties()))
+    Karma testKarma = new Karma("test");
+    Karma otherKarma = new Karma("other");
+
+    when(repository.find("test")).thenReturn(testKarma);
+    when(repository.find("other")).thenReturn(otherKarma);
+
+    Spec.given(processor)
         .expect(the(testKarma.value()), to().be(0))
         .expect(the(otherKarma.value()), to().be(0))
 
@@ -108,7 +120,13 @@ public class KarmaMessageProcessorTest {
 
   @Test
   public void testMultiple() {
-    Spec.given(new KarmaMessageProcessor(repository, new Properties()))
+    Karma testKarma = new Karma("test");
+    Karma otherKarma = new Karma("other");
+
+    when(repository.find("test")).thenReturn(testKarma);
+    when(repository.find("other")).thenReturn(otherKarma);
+
+    Spec.given(new KarmaMessageProcessor(repository))
         .expect(the(testKarma.value()), to().be(0))
         .expect(the(otherKarma.value()), to().be(0))
 
@@ -135,6 +153,32 @@ public class KarmaMessageProcessorTest {
         .when(process("test++ other--"))
         .expect(the(testKarma.value()), to().be(0))
         .expect(the(otherKarma.value()), to().be(0));
+  }
+
+  @Test
+  public void testReplyMessages() {
+    Karma something = new Karma("something");
+    Karma someone = new Karma("someone");
+
+    when(repository.find("something")).thenReturn(something);
+    when(repository.find("someone")).thenReturn(someone);
+
+    Spec.given(message("something++"))
+        .when(processor::process)
+        .expect(it(), to(receive(sendBack("[a]something[/a] has now [p]1[/p] points of karma"))))
+
+    .given(message("someone--"))
+        .when(processor::process)
+        .expect(it(), to(receive(sendBack("[a]someone[/a] has now [n]-1[/n] points of karma"))))
+
+        .given(message("someone-- something++"))
+        .when(processor::process)
+        .expect(it(), to(receive(sendBack("[a]someone[/a] has now [n]-2[/n] points of karma\n" +
+            "[a]something[/a] has now [p]2[/p] points of karma"))));
+  }
+
+  private Consumer<IncomeMessage> sendBack(String content) {
+    return message -> message.sendBack(content);
   }
 
 }

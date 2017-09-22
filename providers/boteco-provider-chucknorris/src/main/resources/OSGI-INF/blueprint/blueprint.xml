@@ -1,7 +1,7 @@
 <!--
   ~ The MIT License
   ~
-  ~ Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+  ~ Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
   ~
   ~ Permission  is hereby granted, free of charge, to any person obtaining
   ~ a  copy  of  this  software  and  associated  documentation files (the
@@ -29,9 +29,10 @@
 
   <reference id="rest-client" interface="tools.devnull.boteco.client.rest.RestClient"/>
 
-  <service interface="tools.devnull.boteco.plugins.facts.spi.FactsProvider">
+  <service interface="tools.devnull.boteco.provider.Provider">
     <service-properties>
       <entry key="id" value="chucknorris"/>
+      <entry key="type" value="facts"/>
     </service-properties>
     <bean class="tools.devnull.boteco.providers.chucknorris.ChuckNorrisFactsProvider">
       <argument ref="rest-client"/>

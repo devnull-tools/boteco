@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -24,7 +24,11 @@
 
 package tools.devnull.boteco;
 
+import tools.devnull.boteco.provider.Provider;
+import tools.devnull.trugger.Optional;
+
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Interface that defines a registry for finding or registering services
@@ -48,5 +52,35 @@ public interface ServiceRegistry extends Serializable {
    * @return a component to define the service
    */
   <T> ServiceDefinition<T> register(T implementation);
+
+  /**
+   * Returns the default {@link Provider} of the given class.
+   * <p>
+   * The default provider has the "default" service property
+   * equals to "true".
+   *
+   * @param objectClass the class of the object provided
+   * @param <T>         the object's type
+   * @return the provider
+   */
+  <T> Optional<Provider<T>> providerOf(Class<T> objectClass);
+
+  /**
+   * Returns the {@link Provider} of the given class with the given id
+   *
+   * @param objectClass the class of the object provided
+   * @param id          the id of the provider
+   * @param <T>         the object's type
+   * @return the provider
+   */
+  <T> Optional<Provider<T>> providerOf(Class<T> objectClass, String id);
+
+  /**
+   * Returns all {@link Provider providers} of the given class
+   *
+   * @param <T> the object's type
+   * @return the provider
+   */
+  <T> List<Provider<T>> providersOf(Class<T> objectClass);
 
 }

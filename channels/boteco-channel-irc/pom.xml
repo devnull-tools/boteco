@@ -2,7 +2,7 @@
 <!--
   ~ The MIT License
   ~
-  ~ Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+  ~ Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
   ~
   ~ Permission  is hereby granted, free of charge, to any person obtaining
   ~ a  copy  of  this  software  and  associated  documentation files (the
@@ -32,21 +32,23 @@
   <parent>
     <groupId>tools.devnull</groupId>
     <artifactId>boteco-channels</artifactId>
-    <version>0.9.0</version>
+    <version>0.10.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>boteco-channel-irc</artifactId>
   <packaging>bundle</packaging>
 
-  <properties>
-    <osgi.export.packages>tools.devnull.boteco.channel.irc</osgi.export.packages>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-irc</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>tools.devnull</groupId>
+      <artifactId>boteco-plugin-irc</artifactId>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 

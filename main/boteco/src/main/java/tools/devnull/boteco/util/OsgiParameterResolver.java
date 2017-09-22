@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -49,7 +49,7 @@ public class OsgiParameterResolver implements Function<Parameter, Object> {
     if (parameter.isAnnotationPresent(OsgiFilter.class)) {
       query = parameter.getAnnotation(OsgiFilter.class).value();
     }
-    return this.serviceRegistry.locate(parameter.getType()).filter(query).one();
+    return this.serviceRegistry.locate(parameter.getType()).filter(query).one().value();
   }
 
 }

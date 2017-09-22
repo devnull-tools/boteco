@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -46,7 +46,7 @@ public class RankingMessageProcessor implements MessageProcessor {
   public void process(IncomeMessage message) {
     List<Karma> result = repository.search(message.command().as(String.class));
     if (result.isEmpty()) {
-      message.reply("[e]No karmas found[/e]");
+      message.reply("[e]No karma found[/e]");
     } else {
       message.reply(result.stream()
           .map(Karma::message)

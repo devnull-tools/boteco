@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -122,7 +122,7 @@ public class ParameterBinder<E> implements Function<String, E> {
       }
       return (E) this.functions.get(type).apply(content);
     }
-    List<Constructor<?>> constructors = Reflection.reflect().constructors().in(type);
+    List<Constructor<?>> constructors = Reflection.reflect().constructors().from(type);
     List<String> values = splitter.apply(content);
     for (Constructor constructor : constructors) {
       int stringParameters = bindableParameters(constructor);
@@ -134,7 +134,7 @@ public class ParameterBinder<E> implements Function<String, E> {
             .when(parameter -> this.functions.containsKey(parameter.getType()));
 
         Object[] args = Arrays.stream(constructor.getParameters())
-            .map(context::resolve)
+            .map(parameter -> context.resolve(parameter).value())
             .collect(Collectors.toList())
             .toArray();
         return Reflection.invoke(constructor).withArgs(args);

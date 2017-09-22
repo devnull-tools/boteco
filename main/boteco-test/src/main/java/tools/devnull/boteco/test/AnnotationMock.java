@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -40,10 +40,10 @@ public class AnnotationMock {
     when(annotation.annotationType()).then(invocation -> annotationType);
     List<Method> methods = Reflection.reflect().methods()
         .filter(method -> method.getDefaultValue() != null)
-        .in(annotationType);
+        .from(annotationType);
     // maps the methods with default value
     methods.stream().forEach(
-        method -> when(Reflection.invoke(method).in(annotation).withoutArgs())
+        method -> when(Reflection.invoke(method).on(annotation).withoutArgs())
             .thenReturn(method.getDefaultValue())
     );
     return annotation;

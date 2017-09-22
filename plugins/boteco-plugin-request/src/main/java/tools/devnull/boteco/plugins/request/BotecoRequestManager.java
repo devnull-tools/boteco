@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -69,14 +69,12 @@ public class BotecoRequestManager implements RequestManager {
   public boolean confirm(String token) {
     Request request = this.repository.pull(token);
     if (request != null) {
-      RequestListener listener = serviceRegistry.locate(RequestListener.class)
+      serviceRegistry.locate(RequestListener.class)
           .filter(serviceProperty("request", eq(request.type())))
-          .one();
-      if (listener != null) {
-        listener.onConfirm(request);
-        return true;
-      }
-      throw new BotException("No listener found for request of type " + request.type());
+          .one()
+          .and(requestListener -> requestListener.onConfirm(request))
+          .orElseThrow(() -> new BotException("No listener found for request of type " + request.type()));
+      return true;
     }
     return false;
   }

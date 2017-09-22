@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -203,8 +203,8 @@ public class DefaultRestConfiguration implements RestConfiguration {
               .map(entry -> new BasicNameValuePair(entry.getKey().toString(), entry.getValue().toString()))
               .collect(Collectors.toList());
         } else {
-          pairs = elements().in(object).stream()
-              .map(el -> new BasicNameValuePair(el.name(), el.value().toString()))
+          pairs = elements().from(object).stream()
+              .map(el -> new BasicNameValuePair(el.name(), el.getValue().toString()))
               .collect(Collectors.toList());
         }
         return setEntity(new UrlEncodedFormEntity(pairs, Charset.defaultCharset()));

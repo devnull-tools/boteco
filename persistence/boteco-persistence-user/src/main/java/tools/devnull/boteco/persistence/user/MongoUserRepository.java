@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -33,7 +33,7 @@ import tools.devnull.boteco.InvalidDestinationException;
 import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.user.UserAlreadyExistException;
-import tools.devnull.boteco.plugins.user.UserRepository;
+import tools.devnull.boteco.plugins.user.spi.UserRepository;
 
 public class MongoUserRepository implements UserRepository {
 

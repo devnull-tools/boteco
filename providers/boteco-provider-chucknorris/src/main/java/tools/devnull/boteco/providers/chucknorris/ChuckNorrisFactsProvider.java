@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -27,11 +27,11 @@ package tools.devnull.boteco.providers.chucknorris;
 import tools.devnull.boteco.BotException;
 import tools.devnull.boteco.client.rest.RestClient;
 import tools.devnull.boteco.plugins.facts.spi.Fact;
-import tools.devnull.boteco.plugins.facts.spi.FactsProvider;
+import tools.devnull.boteco.provider.Provider;
 
 import java.io.IOException;
 
-public class ChuckNorrisFactsProvider implements FactsProvider {
+public class ChuckNorrisFactsProvider implements Provider<Fact> {
 
   private final RestClient rest;
 
@@ -42,6 +42,11 @@ public class ChuckNorrisFactsProvider implements FactsProvider {
   @Override
   public String id() {
     return "chucknorris";
+  }
+
+  @Override
+  public String description() {
+    return "Provides facts about Chuck Norris";
   }
 
   @Override

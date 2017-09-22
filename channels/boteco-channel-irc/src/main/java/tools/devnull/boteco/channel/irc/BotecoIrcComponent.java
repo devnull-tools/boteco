@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -31,6 +31,7 @@ import org.schwering.irc.lib.IRCConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.event.EventBus;
+import tools.devnull.boteco.plugins.irc.spi.IrcChannelsRepository;
 
 /**
  * An extension of the IrcComponent that can use custom listeners

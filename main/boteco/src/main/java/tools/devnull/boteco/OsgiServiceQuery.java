@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -27,11 +27,11 @@ package tools.devnull.boteco;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
+import tools.devnull.trugger.Optional;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -70,7 +70,7 @@ public class OsgiServiceQuery<T> implements ServiceQuery<T> {
   }
 
   @Override
-  public T one() {
+  public Optional<T> one() {
     try {
       Collection<ServiceReference<T>> references = this.bundleContext.getServiceReferences(serviceClass, this.filter);
       Stream<ServiceReference<T>> stream = references.stream();
@@ -79,8 +79,8 @@ public class OsgiServiceQuery<T> implements ServiceQuery<T> {
       }
       return stream
           .findFirst()
-          .map(this.bundleContext::getService)
-          .orElse(null);
+          .map(reference -> Optional.of(this.bundleContext.getService(reference)))
+          .orElse(Optional.empty(serviceClass));
     } catch (InvalidSyntaxException e) {
       throw new BotException(e);
     }
@@ -99,26 +99,6 @@ public class OsgiServiceQuery<T> implements ServiceQuery<T> {
     } catch (InvalidSyntaxException e) {
       throw new BotException(e);
     }
-  }
-
-  @Override
-  public T orElseReturn(T returnValue) {
-    return orElse(() -> returnValue);
-  }
-
-  @Override
-  public T orElse(Supplier<T> supplier) {
-    T service = one();
-    return service != null ? service : supplier.get();
-  }
-
-  @Override
-  public T orElseThrow(Supplier<? extends RuntimeException> exceptionSupplier) {
-    T service = one();
-    if (service == null) {
-      throw exceptionSupplier.get();
-    }
-    return service;
   }
 
 }

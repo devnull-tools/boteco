@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -30,6 +30,7 @@ import tools.devnull.boteco.event.SubscriptionManager;
 import tools.devnull.boteco.event.SubscriptionRemovalEventSelector;
 import tools.devnull.boteco.event.SubscriptionRemovalTargetSelector;
 import tools.devnull.boteco.event.SubscriptionTargetSelector;
+import tools.devnull.boteco.plugins.subscription.spi.SubscriptionRepository;
 import tools.devnull.boteco.request.RequestManager;
 
 import java.util.List;

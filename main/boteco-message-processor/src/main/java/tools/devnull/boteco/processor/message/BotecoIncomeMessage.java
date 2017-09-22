@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.processor.message;
 
+import tools.devnull.boteco.BotException;
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.message.IncomeMessage;
@@ -33,8 +34,6 @@ import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.Sendable;
 import tools.devnull.boteco.message.Sender;
 import tools.devnull.boteco.user.User;
-
-import javax.validation.Validator;
 
 public class BotecoIncomeMessage implements IncomeMessage {
 
@@ -93,8 +92,7 @@ public class BotecoIncomeMessage implements IncomeMessage {
 
   @Override
   public MessageCommand command() {
-    return new ValidatableMessageCommand(registry.locate(Validator.class).one(),
-        channel().commandExtractor().extract(this));
+    return channel().commandExtractor().extract(this);
   }
 
   @Override
@@ -115,7 +113,9 @@ public class BotecoIncomeMessage implements IncomeMessage {
   }
 
   private MessageSender getMessageSender() {
-    return registry.locate(MessageSender.class).one();
+    return registry.locate(MessageSender.class)
+        .one()
+        .orElseThrow(() -> new BotException("No message senders available"));
   }
 
 }

@@ -1,7 +1,7 @@
 <!--
   ~ The MIT License
   ~
-  ~ Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+  ~ Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
   ~
   ~ Permission  is hereby granted, free of charge, to any person obtaining
   ~ a  copy  of  this  software  and  associated  documentation files (the
@@ -68,7 +68,7 @@
                 trace="{{trace}}"
                 xmlns="http://camel.apache.org/schema/blueprint">
 
-    <route id="boteco.message.to.pushover" autoStartup="{{outcome.enabled}}">
+    <route id="boteco.message.to.pushover" autoStartup="{{outcome.enable}}">
       <from uri="activemq:queue:boteco.message.pushover"/>
       <log logName="boteco-channel-pushover"
            loggingLevel="INFO"

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -25,7 +25,14 @@
 package tools.devnull.boteco.plugins.facts.spi;
 
 import tools.devnull.boteco.Sendable;
+import tools.devnull.boteco.provider.ProvidedBy;
 
+/**
+ * Interface that defines a fact of something or somebody.
+ *
+ * @author Marcelo "Ataxexe" Guimarães
+ */
+@ProvidedBy("facts")
 public interface Fact extends Sendable {
 
 }

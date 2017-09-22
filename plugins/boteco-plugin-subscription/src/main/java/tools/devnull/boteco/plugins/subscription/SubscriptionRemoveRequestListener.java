@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+ * Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.plugins.subscription;
 
+import tools.devnull.boteco.plugins.subscription.spi.SubscriptionRepository;
 import tools.devnull.boteco.request.Request;
 import tools.devnull.boteco.request.RequestListener;
 

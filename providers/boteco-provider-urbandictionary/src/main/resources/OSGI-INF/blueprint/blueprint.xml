@@ -1,7 +1,7 @@
 <!--
   ~ The MIT License
   ~
-  ~ Copyright (c) 2017 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+  ~ Copyright (c) 2016 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
   ~
   ~ Permission  is hereby granted, free of charge, to any person obtaining
   ~ a  copy  of  this  software  and  associated  documentation files (the
@@ -24,22 +24,25 @@
 
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
-           xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
-           xmlns:cxf="http://cxf.apache.org/blueprint/core"
            xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
-                               http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
-                               http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
-                               http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
+                               http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
-  <service interface="tools.devnull.boteco.plugins.definition.spi.DefinitionProvider">
+  <bean id="definition-lookup" class="tools.devnull.boteco.providers.urbandictionary.UrbanDictionaryDefinitionLookup">
+    <argument>
+      <reference interface="tools.devnull.boteco.client.rest.RestClient"/>
+    </argument>
+  </bean>
+
+  <service interface="tools.devnull.boteco.provider.Provider">
     <service-properties>
       <entry key="id" value="urbandictionary"/>
+      <entry key="default" value="true"/>
+      <entry key="type" value="definitions"/>
     </service-properties>
-    <bean class="tools.devnull.boteco.providers.urbandictionary.UrbanDictionaryDefinitionProvider">
-      <argument>
-        <reference interface="tools.devnull.boteco.client.rest.RestClient"/>
-      </argument>
+    <bean class="tools.devnull.boteco.provider.BasicProvider">
+      <argument value="urbandictionary"/>
+      <argument value="Provides lookup definitions based on the Urban Dictionary"/>
+      <argument ref="definition-lookup"/>
     </bean>
   </service>
 
