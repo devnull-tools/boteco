@@ -26,6 +26,7 @@ package tools.devnull.boteco.plugins.irc;
 
 import tools.devnull.boteco.Rule;
 import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.plugins.irc.spi.IrcIgnoreList;
 
 /**
  * A rule to ignore IRC Messages from some senders (useful if you need to ignore other bots).
