@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.10.0
+## v0.10.0 (2017-09-22)
 
 - Updated Fuse version
 - Removed Validator for command parameters
@@ -11,6 +11,7 @@
 - New `Provider` interface
 - Removed stocks module
 - More use of Optionals through the API
+- A bunch of refactoring
 
 ## v0.9.0 (2017-06-12)
 
