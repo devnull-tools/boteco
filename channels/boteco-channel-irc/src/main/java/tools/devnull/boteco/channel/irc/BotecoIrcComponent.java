@@ -31,6 +31,7 @@ import org.schwering.irc.lib.IRCConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.event.EventBus;
+import tools.devnull.boteco.plugins.irc.spi.IrcChannelsRepository;
 
 /**
  * An extension of the IrcComponent that can use custom listeners

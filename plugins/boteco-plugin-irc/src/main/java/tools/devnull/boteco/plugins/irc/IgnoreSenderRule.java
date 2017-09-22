@@ -22,46 +22,30 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.channel.irc;
+package tools.devnull.boteco.plugins.irc;
 
-import tools.devnull.boteco.AlwaysActive;
+import tools.devnull.boteco.Rule;
 import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.message.checker.Command;
-
-import java.util.stream.Collectors;
 
 /**
- * A message processor that can adjust how the bot behaves on the IRC.
+ * A rule to ignore IRC Messages from some senders (useful if you need to ignore other bots).
  */
-@Command("irc")
-@AlwaysActive
-public class IrcMessageProcessor implements MessageProcessor {
+public class IgnoreSenderRule implements Rule {
 
-  private final IrcIgnoreList ignoreList;
+  private final IrcIgnoreList ignored;
 
   /**
-   * Creates a new processor using the given ignore list
+   * Creates a new rule using the given ignore list
    *
-   * @param ignoreList the ignore list to use
+   * @param ignored the ignore list to use
    */
-  public IrcMessageProcessor(IrcIgnoreList ignoreList) {
-    this.ignoreList = ignoreList;
+  public IgnoreSenderRule(IrcIgnoreList ignored) {
+    this.ignored = ignored;
   }
 
   @Override
-  public void process(IncomeMessage message) {
-    message.command()
-        .on("ignore", nickname -> {
-          this.ignoreList.add(nickname);
-          message.reply("Added to ignore list");
-        })
-        .on("accept", nickname -> {
-          this.ignoreList.remove(nickname);
-          message.reply("Removed from ignore list");
-        })
-        .on("ignored", () -> message.reply(this.ignoreList.list().stream().collect(Collectors.joining("\n"))))
-        .execute();
+  public boolean accept(IncomeMessage message) {
+    return !ignored.contains(message.sender().id());
   }
 
 }

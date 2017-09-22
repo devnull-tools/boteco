@@ -39,14 +39,16 @@
   <artifactId>boteco-channel-irc</artifactId>
   <packaging>bundle</packaging>
 
-  <properties>
-    <osgi.export.packages>tools.devnull.boteco.channel.irc</osgi.export.packages>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-irc</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>tools.devnull</groupId>
+      <artifactId>boteco-plugin-irc</artifactId>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 

@@ -52,6 +52,7 @@
     <module>boteco-plugin-facts</module>
     <module>boteco-plugin-help</module>
     <module>boteco-plugin-providers</module>
+    <module>boteco-plugin-irc</module>
   </modules>
 
   <dependencies>

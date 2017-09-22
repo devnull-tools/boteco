@@ -67,8 +67,9 @@
     <feature>camel-irc</feature>
     <feature>boteco</feature>
 
-    <bundle>mvn:${project.groupId}/boteco-channel-irc/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-irc/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-persistence-irc/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-channel-irc/${project.version}</bundle>
   </feature>
 
   <feature version="${project.version}" name="boteco-pushover"

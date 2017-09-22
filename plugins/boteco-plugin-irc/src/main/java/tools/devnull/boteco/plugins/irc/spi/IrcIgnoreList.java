@@ -22,51 +22,42 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.persistence.irc;
+package tools.devnull.boteco.plugins.irc.spi;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
-import tools.devnull.boteco.plugins.irc.spi.IrcIgnoreList;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
- * Igore list for IRC implemented as a mongo collection
+ * Interface that defines an ignore list for the Irc channel
  */
-public class MongoIrcIgnoreList implements IrcIgnoreList {
+public interface IrcIgnoreList {
 
-  private final MongoCollection<Document> list;
+  /**
+   * Ignores the given nickname
+   *
+   * @param nickname the nickname to ignore
+   */
+  void add(String nickname);
 
-  public MongoIrcIgnoreList(MongoDatabase database) {
-    this.list = database.getCollection("ircignorelist");
-  }
+  /**
+   * Removes the given nickname from this list
+   *
+   * @param nickname the nickname to remove
+   */
+  void remove(String nickname);
 
-  @Override
-  public void add(String nickname) {
-    if (!contains(nickname)) {
-      this.list.insertOne(new Document("_id", nickname));
-    }
-  }
+  /**
+   * Lists all the ignored nicknames
+   *
+   * @return the ignored nicknames
+   */
+  List<String> list();
 
-  @Override
-  public void remove(String nickname) {
-    this.list.deleteOne(new Document("_id", nickname));
-  }
-
-  @Override
-  public List<String> list() {
-    List<String> result = new ArrayList<>();
-    this.list.find().forEach((Consumer<Document>) document -> result.add(document.get("_id").toString()));
-    return result;
-  }
-
-  @Override
-  public boolean contains(String nickname) {
-    return this.list.find(new BasicDBObject("_id", nickname)).iterator().hasNext();
-  }
+  /**
+   * Checks if the given nickname
+   *
+   * @param nickname
+   * @return
+   */
+  boolean contains(String nickname);
 
 }

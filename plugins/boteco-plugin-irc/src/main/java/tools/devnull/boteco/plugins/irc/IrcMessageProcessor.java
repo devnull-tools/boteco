@@ -22,42 +22,47 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.channel.irc;
+package tools.devnull.boteco.plugins.irc;
 
-import java.util.List;
+import tools.devnull.boteco.AlwaysActive;
+import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessor;
+import tools.devnull.boteco.message.checker.Command;
+import tools.devnull.boteco.plugins.irc.spi.IrcIgnoreList;
+
+import java.util.stream.Collectors;
 
 /**
- * Interface that defines an ignore list for the Irc channel
+ * A message processor that can adjust how the bot behaves on the IRC.
  */
-public interface IrcIgnoreList {
+@Command("irc")
+@AlwaysActive
+public class IrcMessageProcessor implements MessageProcessor {
+
+  private final IrcIgnoreList ignoreList;
 
   /**
-   * Ignores the given nickname
+   * Creates a new processor using the given ignore list
    *
-   * @param nickname the nickname to ignore
+   * @param ignoreList the ignore list to use
    */
-  void add(String nickname);
+  public IrcMessageProcessor(IrcIgnoreList ignoreList) {
+    this.ignoreList = ignoreList;
+  }
 
-  /**
-   * Removes the given nickname from this list
-   *
-   * @param nickname the nickname to remove
-   */
-  void remove(String nickname);
-
-  /**
-   * Lists all the ignored nicknames
-   *
-   * @return the ignored nicknames
-   */
-  List<String> list();
-
-  /**
-   * Checks if the given nickname
-   *
-   * @param nickname
-   * @return
-   */
-  boolean contains(String nickname);
+  @Override
+  public void process(IncomeMessage message) {
+    message.command()
+        .on("ignore", nickname -> {
+          this.ignoreList.add(nickname);
+          message.reply("Added to ignore list");
+        })
+        .on("accept", nickname -> {
+          this.ignoreList.remove(nickname);
+          message.reply("Removed from ignore list");
+        })
+        .on("ignored", () -> message.reply(this.ignoreList.list().stream().collect(Collectors.joining("\n"))))
+        .execute();
+  }
 
 }

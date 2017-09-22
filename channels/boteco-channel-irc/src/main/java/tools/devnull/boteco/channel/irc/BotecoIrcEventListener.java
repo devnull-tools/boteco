@@ -35,6 +35,7 @@ import org.schwering.irc.lib.IRCUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tools.devnull.boteco.event.EventBus;
+import tools.devnull.boteco.plugins.irc.spi.IrcChannelsRepository;
 
 import static tools.devnull.boteco.Sendable.message;
 
@@ -110,12 +111,12 @@ public class BotecoIrcEventListener implements IRCEventListener {
 
   @Override
   public void onError(String msg) {
-
+    logger.error(msg);
   }
 
   @Override
   public void onError(int num, String msg) {
-
+    logger.error(num + ": " + msg);
   }
 
   @Override
@@ -169,7 +170,8 @@ public class BotecoIrcEventListener implements IRCEventListener {
 
   @Override
   public void onPing(String ping) {
-
+    logger.debug(ping);
+    this.connection.doPong(ping);
   }
 
   @Override

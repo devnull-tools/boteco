@@ -29,13 +29,13 @@
 
   <reference id="database" interface="com.mongodb.client.MongoDatabase"/>
 
-  <service interface="tools.devnull.boteco.channel.irc.IrcChannelsRepository">
+  <service interface="tools.devnull.boteco.plugins.irc.spi.IrcChannelsRepository">
     <bean class="tools.devnull.boteco.persistence.irc.MongoIrcChannelsRepository">
       <argument ref="database"/>
     </bean>
   </service>
 
-  <service interface="tools.devnull.boteco.channel.irc.IrcIgnoreList">
+  <service interface="tools.devnull.boteco.plugins.irc.spi.IrcIgnoreList">
     <bean class="tools.devnull.boteco.persistence.irc.MongoIrcIgnoreList">
       <argument ref="database"/>
     </bean>

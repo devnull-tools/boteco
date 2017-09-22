@@ -22,30 +22,36 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.channel.irc;
+package tools.devnull.boteco.plugins.irc.spi;
 
-import tools.devnull.boteco.Rule;
-import tools.devnull.boteco.message.IncomeMessage;
+import java.util.List;
 
 /**
- * A rule to ignore IRC Messages from some senders (useful if you need to ignore other bots).
+ * A repository to store the channels that the bot should join.
+ * <p>
+ * The bot will auto join all the channels in this repository.
  */
-public class IgnoreSenderRule implements Rule {
-
-  private final IrcIgnoreList ignored;
+public interface IrcChannelsRepository {
 
   /**
-   * Creates a new rule using the given ignore list
+   * Adds a channel for the bot to join
    *
-   * @param ignored the ignore list to use
+   * @param channelName the name of the channel
    */
-  public IgnoreSenderRule(IrcIgnoreList ignored) {
-    this.ignored = ignored;
-  }
+  void add(String channelName);
 
-  @Override
-  public boolean accept(IncomeMessage message) {
-    return !ignored.contains(message.sender().id());
-  }
+  /**
+   * Removes the given channel from the repository.
+   *
+   * @param channelName the name of the channel
+   */
+  void remove(String channelName);
+
+  /**
+   * Lists all channels in this repository.
+   *
+   * @return all channels in this repository.
+   */
+  List<String> channels();
 
 }

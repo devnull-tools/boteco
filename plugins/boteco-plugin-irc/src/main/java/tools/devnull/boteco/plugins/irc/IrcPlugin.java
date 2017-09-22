@@ -22,36 +22,43 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.channel.irc;
+package tools.devnull.boteco.plugins.irc;
 
+import tools.devnull.boteco.plugin.Command;
+import tools.devnull.boteco.plugin.Plugin;
+
+import java.util.Arrays;
 import java.util.List;
 
-/**
- * A repository to store the channels that the bot should join.
- * <p>
- * The bot will auto join all the channels in this repository.
- */
-public interface IrcChannelsRepository {
+import static tools.devnull.boteco.plugin.Command.command;
 
-  /**
-   * Adds a channel for the bot to join
-   *
-   * @param channelName the name of the channel
-   */
-  void add(String channelName);
+public class IrcPlugin implements Plugin {
 
-  /**
-   * Removes the given channel from the repository.
-   *
-   * @param channelName the name of the channel
-   */
-  void remove(String channelName);
+  @Override
+  public String id() {
+    return "irc";
+  }
 
-  /**
-   * Lists all channels in this repository.
-   *
-   * @return all channels in this repository.
-   */
-  List<String> channels();
+  @Override
+  public String description() {
+    return "Configures the bot behaviour on irc channels";
+  }
+
+  @Override
+  public List<Command> availableCommands() {
+    return Arrays.asList(
+        command("irc ignore")
+            .with("nickname")
+            .does("Ignores messages sent by this user"),
+
+        command("irc accept")
+            .with("nickname")
+            .does("Accepts messages sent by this user"),
+
+        command("irc ignored")
+            .with("nickname")
+            .does("Checks if this user is being ignored")
+    );
+  }
 
 }

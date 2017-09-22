@@ -27,7 +27,7 @@ package tools.devnull.boteco.persistence.irc;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import tools.devnull.boteco.channel.irc.IrcChannelsRepository;
+import tools.devnull.boteco.plugins.irc.spi.IrcChannelsRepository;
 
 import java.util.ArrayList;
 import java.util.List;
