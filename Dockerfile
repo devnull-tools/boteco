@@ -33,7 +33,7 @@ COPY target/lib/trugger-6.0.0.jar \
   plugins/boteco-plugin-diceroll/target/boteco-plugin-diceroll-${VERSION}.jar \
   plugins/boteco-plugin-facts/target/boteco-plugin-facts-${VERSION}.jar \
   plugins/boteco-plugin-help/target/boteco-plugin-help-${VERSION}.jar \
-  plugins/boteco-plugin-help/target/boteco-plugin-irc-${VERSION}.jar \
+  plugins/boteco-plugin-irc/target/boteco-plugin-irc-${VERSION}.jar \
   plugins/boteco-plugin-karma/target/boteco-plugin-karma-${VERSION}.jar \
   plugins/boteco-plugin-manager/target/boteco-plugin-manager-${VERSION}.jar \
   plugins/boteco-plugin-ping/target/boteco-plugin-ping-${VERSION}.jar \
