@@ -1,6 +1,6 @@
 FROM devnull.tools/fuse:6.3
 
-ENV VERSION="0.10.0-SNAPSHOT"
+ENV VERSION="0.10.0"
 ENV DEBUG=""
 
 COPY .docker/cfg/* $FUSE_HOME/etc/
