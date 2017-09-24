@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.10.1 (2017-09-23)
+
+- Using parent pom
+
 ## v0.10.0 (2017-09-22)
 
 - Updated Fuse version
