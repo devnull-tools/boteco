@@ -34,7 +34,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * This is the default expression parser for boteco. It uses the pattern {@link [tag]content[/tag]}
+ * This is the default expression parser for boteco. It uses the pattern {@code [tag]content[/tag]}
  * to denote a format.
  * <p>
  * The following tags are supported:
