@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.10.2 (2017-09-27)
+
+- Fixed help message for irc plugin
+
 ## v0.10.1 (2017-09-23)
 
 - Using parent pom
