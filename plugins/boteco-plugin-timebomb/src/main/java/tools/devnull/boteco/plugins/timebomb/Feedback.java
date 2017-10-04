@@ -28,25 +28,36 @@ import tools.devnull.boteco.Sendable;
 
 public class Feedback implements Sendable {
 
-  private final int rightPosition;
-  private final int wrongPosition;
+  private final String code;
+  private final String guess;
+  private String feedback;
+  private final int attempts;
 
-  public Feedback(int rightPosition, int wrongPosition) {
-    this.rightPosition = rightPosition;
-    this.wrongPosition = wrongPosition;
+  public Feedback(String code, String guess, int attempts) {
+    this.code = code;
+    this.guess = guess;
+    this.attempts = attempts;
+    initialize();
   }
 
-  public int atRightPosition() {
-    return this.rightPosition;
-  }
-
-  public int atWrongPosition() {
-    return this.wrongPosition;
+  private void initialize() {
+    StringBuilder feedback = new StringBuilder(code.length());
+    for (int i = 0; i < code.length(); i++) {
+      feedback.append(guess.charAt(i));
+      if (code.charAt(i) == guess.charAt(i)) {
+        feedback.append("✔ ");
+      } else if(code.contains(String.valueOf(guess.charAt(i)))) {
+        feedback.append("⚠️ ");
+      } else {
+        feedback.append("❌ ");
+      }
+    }
+    this.feedback = feedback.toString().trim();
   }
 
   @Override
   public String message() {
-    return String.format("you got: [p]%d[/p] | [n]%d[/n] (right position | wrong position)", rightPosition, wrongPosition);
+    return String.format("%s [%d attempts left]", feedback, attempts);
   }
 
 }

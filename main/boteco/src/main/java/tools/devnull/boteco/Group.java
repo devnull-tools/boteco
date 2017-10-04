@@ -24,17 +24,11 @@
 
 package tools.devnull.boteco;
 
-import java.util.List;
-
 /**
  * Interface that defines a group of people chatting.
  */
 public interface Group {
 
-  List<String> users();
-
-  boolean kick(String user, String reason);
-
-  boolean ban(String user, String reason);
+  void kick(String user, String reason);
 
 }

@@ -28,7 +28,7 @@ import java.util.function.Consumer;
 
 public class TimeBomb {
 
-  private final Code code;
+  private final String code;
   private int ticks;
   private int attempts;
   private boolean defused;
@@ -38,12 +38,12 @@ public class TimeBomb {
   };
   private Consumer<Feedback> missListener = feedback -> {
   };
-  private Consumer<Code> defuseListener = code -> {
+  private Consumer<String> defuseListener = code -> {
   };
-  private Consumer<Code> blowListener = code -> {
+  private Consumer<String> blowListener = code -> {
   };
 
-  public TimeBomb(Code code,
+  public TimeBomb(String code,
                   int ticks,
                   int attempts) {
     this.code = code;
@@ -54,28 +54,28 @@ public class TimeBomb {
   }
 
   public TimeBomb onTick(Consumer<Integer> listener) {
-    this.tickListener = listener;
+    this.tickListener = tickListener.andThen(listener);
     return this;
   }
 
   public TimeBomb onMiss(Consumer<Feedback> listener) {
-    this.missListener = listener;
+    this.missListener = missListener.andThen(listener);
     return this;
   }
 
-  public TimeBomb onDefuse(Consumer<Code> listener) {
-    this.defuseListener = listener;
+  public TimeBomb onDefuse(Consumer<String> listener) {
+    this.defuseListener = defuseListener.andThen(listener);
     return this;
   }
 
-  public TimeBomb onBlow(Consumer<Code> listener) {
-    this.blowListener = listener;
+  public TimeBomb onBlow(Consumer<String> listener) {
+    this.blowListener = blowListener.andThen(listener);
     return this;
   }
 
   public boolean defuse(String value) {
     attempts--;
-    if (code.isCorrect(value)) {
+    if (code.equals(value)) {
       defused = true;
       active = false;
       defuseListener.accept(code);
@@ -84,13 +84,13 @@ public class TimeBomb {
         active = false;
         blowListener.accept(code);
       } else {
-        missListener.accept(code.getFeedback(value));
+        missListener.accept(new Feedback(code, value, attempts));
       }
     }
     return defused;
   }
 
-  public Code code() {
+  public String code() {
     return this.code;
   }
 

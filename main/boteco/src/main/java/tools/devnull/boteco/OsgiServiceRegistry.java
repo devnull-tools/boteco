@@ -56,6 +56,14 @@ public class OsgiServiceRegistry implements ServiceRegistry {
   }
 
   @Override
+  public <T> void registerProvider(Class<? super T> typeClass, Provider<T> provider) {
+    register(provider)
+        .withProperty("type", resolveTypeAttribute(typeClass))
+        .withId(provider.id())
+        .as(Provider.class);
+  }
+
+  @Override
   public <T> Optional<Provider<T>> providerOf(Class<T> objectClass) {
     String providerType = resolveTypeAttribute(objectClass);
     Optional provider = locate(Provider.class)

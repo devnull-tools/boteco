@@ -30,8 +30,10 @@ import org.apache.camel.component.irc.IrcConfiguration;
 import org.schwering.irc.lib.IRCConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.event.EventBus;
 import tools.devnull.boteco.plugins.irc.spi.IrcChannelsRepository;
+import tools.devnull.boteco.provider.BasicProvider;
 
 /**
  * An extension of the IrcComponent that can use custom listeners
@@ -44,11 +46,16 @@ public class BotecoIrcComponent extends IrcComponent {
   private final EventBus bus;
   private BotecoIrcEventListener listener;
   private final CamelContext camelContext;
+  private final ServiceRegistry registry;
 
-  public BotecoIrcComponent(IrcChannelsRepository repository, EventBus bus, CamelContext camelContext) {
+  public BotecoIrcComponent(IrcChannelsRepository repository,
+                            EventBus bus,
+                            CamelContext camelContext,
+                            ServiceRegistry registry) {
     this.repository = repository;
     this.bus = bus;
     this.camelContext = camelContext;
+    this.registry = registry;
   }
 
   @Override
@@ -56,6 +63,8 @@ public class BotecoIrcComponent extends IrcComponent {
     IRCConnection connection = super.createConnection(configuration);
     listener = new BotecoIrcEventListener(connection, configuration, repository, bus);
     connection.addIRCEventListener(listener);
+    registry.registerProvider(IRCConnection.class,
+        new BasicProvider<>("irc-connection", "Provides irc connections", connection));
     return connection;
   }
 

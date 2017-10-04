@@ -53,12 +53,15 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
+  <bean id="service-registry" class="tools.devnull.boteco.OsgiServiceRegistry"/>
+
   <bean id="command-extractor" class="tools.devnull.boteco.message.PrefixCommandExtractor">
     <argument value="{{bot.command.prefix}}"/>
   </bean>
 
   <bean id="channel" class="tools.devnull.boteco.channel.irc.IrcChannel">
     <argument ref="command-extractor"/>
+    <argument ref="service-registry"/>
   </bean>
 
   <service interface="tools.devnull.boteco.Channel" ref="channel">
@@ -84,6 +87,7 @@
     <argument>
       <bean class="tools.devnull.boteco.channel.irc.IrcContentFormatter"/>
     </argument>
+    <argument ref="service-registry"/>
   </bean>
 
   <bean id="irc" class="tools.devnull.boteco.channel.irc.BotecoIrcComponent">

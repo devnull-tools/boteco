@@ -28,17 +28,23 @@ import tools.devnull.boteco.MessageLocation;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class BombBag {
 
   private final Map<String, TimeBomb> bombs;
+  private final ScheduledExecutorService executorService;
 
   public BombBag() {
     this.bombs = new ConcurrentHashMap<>();
+    this.executorService = Executors.newScheduledThreadPool(5);
   }
 
   public void plant(TimeBomb timebomb, MessageLocation location) {
     bombs.put(getKey(location), timebomb);
+    executorService.scheduleAtFixedRate(timebomb::tick, 0, 1, TimeUnit.SECONDS);
   }
 
   public TimeBomb bombFor(MessageLocation location) {

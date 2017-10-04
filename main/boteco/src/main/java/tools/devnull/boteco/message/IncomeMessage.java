@@ -25,8 +25,10 @@
 package tools.devnull.boteco.message;
 
 import tools.devnull.boteco.Destination;
+import tools.devnull.boteco.Group;
 import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.Sendable;
+import tools.devnull.trugger.Optional;
 
 /**
  * Interface that defines a message that arrives from a channel.
@@ -46,6 +48,14 @@ public interface IncomeMessage extends Message {
    * @return the command if this message is a {@link #hasCommand() command}
    */
   MessageCommand command();
+
+  default <T> T command(Class<T> commandClass) {
+    return this.command().as(commandClass);
+  }
+
+  default Optional<Group> group() {
+    return isGroup() ? channel().group(target()) : Optional.empty();
+  }
 
   /**
    * Replies this message by sending the given content through the same
