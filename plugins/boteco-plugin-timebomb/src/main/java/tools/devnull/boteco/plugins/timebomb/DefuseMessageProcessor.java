@@ -26,12 +26,9 @@ package tools.devnull.boteco.plugins.timebomb;
 
 import tools.devnull.boteco.Name;
 import tools.devnull.boteco.message.IncomeMessage;
-import tools.devnull.boteco.message.MessageProcessingException;
 import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.message.checker.Command;
 
 @Name(TimebombPlugin.ID)
-@Command("defuse")
 public class DefuseMessageProcessor implements MessageProcessor {
 
   private final BombBag bag;
@@ -41,14 +38,17 @@ public class DefuseMessageProcessor implements MessageProcessor {
   }
 
   @Override
-  public void process(IncomeMessage message) {
-    String code = message.command().as(String.class);
+  public boolean canProcess(IncomeMessage message) {
     Timebomb timebomb = this.bag.bombFor(message.location());
-    if (timebomb.target().equals(message.sender().id())) {
-      timebomb.defuse(code);
-    } else {
-      throw new MessageProcessingException("You're not the target of this bomb");
-    }
+    return timebomb != null &&
+        message.content().matches("\\d{4}}") &&
+        timebomb.target().equals(message.sender().id());
+  }
+
+  @Override
+  public void process(IncomeMessage message) {
+    this.bag.bombFor(message.location())
+        .defuse(message.command().as(String.class));
   }
 
 }
