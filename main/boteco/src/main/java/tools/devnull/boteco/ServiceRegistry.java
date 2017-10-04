@@ -56,10 +56,11 @@ public interface ServiceRegistry extends Serializable {
   /**
    * Registers the given provider.
    *
-   * @param typeClass the type of the object being provided
-   * @param provider  the provider
+   * @param typeClass       the type of the object being provided
+   * @param provider        the provider
+   * @param defaultProvider tells if this provider is the default one
    */
-  <T> void registerProvider(Class<? super T> typeClass, Provider<T> provider);
+  <T> void registerProvider(Class<? super T> typeClass, Provider<T> provider, boolean defaultProvider);
 
   /**
    * Returns the default {@link Provider} of the given class.

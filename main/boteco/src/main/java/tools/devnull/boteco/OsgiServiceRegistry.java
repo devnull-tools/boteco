@@ -56,9 +56,10 @@ public class OsgiServiceRegistry implements ServiceRegistry {
   }
 
   @Override
-  public <T> void registerProvider(Class<? super T> typeClass, Provider<T> provider) {
+  public <T> void registerProvider(Class<? super T> typeClass, Provider<T> provider, boolean defaultProvider) {
     register(provider)
         .withProperty("type", resolveTypeAttribute(typeClass))
+        .withProperty("default", String.valueOf(defaultProvider))
         .withId(provider.id())
         .as(Provider.class);
   }
@@ -66,10 +67,9 @@ public class OsgiServiceRegistry implements ServiceRegistry {
   @Override
   public <T> Optional<Provider<T>> providerOf(Class<T> objectClass) {
     String providerType = resolveTypeAttribute(objectClass);
-    Optional provider = locate(Provider.class)
+    return (Optional) locate(Provider.class)
         .filter(type(providerType).and(serviceProperty("default", eq("true"))))
         .one();
-    return provider;
   }
 
   @Override
