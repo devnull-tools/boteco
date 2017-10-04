@@ -40,9 +40,7 @@ public class DefuseMessageProcessor implements MessageProcessor {
   @Override
   public boolean canProcess(IncomeMessage message) {
     TimeBomb timebomb = this.bag.bombFor(message.location());
-    return timebomb != null &&
-        message.content().matches("\\d{4}") &&
-        timebomb.target().equals(message.sender().id());
+    return timebomb != null && message.content().matches("\\d+");
   }
 
   @Override

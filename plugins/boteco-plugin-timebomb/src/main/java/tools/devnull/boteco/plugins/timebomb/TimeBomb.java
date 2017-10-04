@@ -90,6 +90,10 @@ public class TimeBomb {
     return defused;
   }
 
+  public Code code() {
+    return this.code;
+  }
+
   public void tick() {
     if (active) {
       tickListener.accept(ticks);
