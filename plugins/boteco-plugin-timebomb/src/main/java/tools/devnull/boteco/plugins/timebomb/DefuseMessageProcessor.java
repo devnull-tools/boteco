@@ -47,8 +47,7 @@ public class DefuseMessageProcessor implements MessageProcessor {
 
   @Override
   public void process(IncomeMessage message) {
-    this.bag.bombFor(message.location())
-        .defuse(message.command().as(String.class));
+    this.bag.bombFor(message.location()).defuse(message.content());
   }
 
 }
