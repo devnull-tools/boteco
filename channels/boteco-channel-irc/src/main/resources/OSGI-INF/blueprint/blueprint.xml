@@ -87,7 +87,6 @@
     <argument>
       <bean class="tools.devnull.boteco.channel.irc.IrcContentFormatter"/>
     </argument>
-    <argument ref="service-registry"/>
   </bean>
 
   <bean id="irc" class="tools.devnull.boteco.channel.irc.BotecoIrcComponent">
@@ -98,6 +97,7 @@
       <reference interface="tools.devnull.boteco.event.EventBus"/>
     </argument>
     <argument ref="boteco-channel-irc"/>
+    <argument ref="service-registry"/>
   </bean>
 
   <bean id="shutdown" class="org.apache.camel.impl.DefaultShutdownStrategy">
