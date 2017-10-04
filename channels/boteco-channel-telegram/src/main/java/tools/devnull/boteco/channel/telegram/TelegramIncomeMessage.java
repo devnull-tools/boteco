@@ -25,9 +25,11 @@
 package tools.devnull.boteco.channel.telegram;
 
 import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.Group;
 import tools.devnull.boteco.message.Message;
 import tools.devnull.boteco.message.Sender;
 import tools.devnull.boteco.user.User;
+import tools.devnull.trugger.Optional;
 
 class TelegramIncomeMessage implements Message {
 
@@ -84,6 +86,11 @@ class TelegramIncomeMessage implements Message {
   @Override
   public String replyId() {
     return String.valueOf(message.getMessageId());
+  }
+
+  @Override
+  public Optional<Group> group() {
+    return Optional.empty();
   }
 
 }

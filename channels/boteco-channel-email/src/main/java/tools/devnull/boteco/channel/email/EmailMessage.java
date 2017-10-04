@@ -25,9 +25,11 @@
 package tools.devnull.boteco.channel.email;
 
 import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.Group;
 import tools.devnull.boteco.message.Message;
 import tools.devnull.boteco.message.Sender;
 import tools.devnull.boteco.user.User;
+import tools.devnull.trugger.Optional;
 
 /**
  * An abstraction for an email message
@@ -100,6 +102,11 @@ public class EmailMessage implements Message {
   @Override
   public String replyId() {
     return null;
+  }
+
+  @Override
+  public Optional<Group> group() {
+    return Optional.empty();
   }
 
 }

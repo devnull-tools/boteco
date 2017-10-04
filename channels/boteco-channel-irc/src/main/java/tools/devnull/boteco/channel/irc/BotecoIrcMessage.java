@@ -27,9 +27,11 @@ package tools.devnull.boteco.channel.irc;
 import org.apache.camel.component.irc.IrcMessage;
 import org.schwering.irc.lib.IRCUser;
 import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.Group;
 import tools.devnull.boteco.message.Message;
 import tools.devnull.boteco.message.Sender;
 import tools.devnull.boteco.user.User;
+import tools.devnull.trugger.Optional;
 
 /**
  * An abstraction of an IRC message.
@@ -99,6 +101,11 @@ public class BotecoIrcMessage implements Message {
   @Override
   public String replyId() {
     return sender.id();
+  }
+
+  @Override
+  public Optional<Group> group() {
+    return Optional.empty();
   }
 
   private static class IrcSender implements Sender {

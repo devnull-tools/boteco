@@ -25,7 +25,9 @@
 package tools.devnull.boteco.message;
 
 import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.Group;
 import tools.devnull.boteco.user.User;
+import tools.devnull.trugger.Optional;
 
 import java.io.Serializable;
 
@@ -82,6 +84,13 @@ public interface Message extends Serializable {
    * @return <code>true</code> if this message was sent to a group
    */
   boolean isGroup();
+
+  /**
+   * Returns the group that this message was sent.
+   *
+   * @return the group that this message was sent.
+   */
+  Optional<Group> group();
 
   /**
    * Return the id of this message for replying purposes. This may

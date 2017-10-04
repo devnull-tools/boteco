@@ -46,7 +46,7 @@ public class ParameterBinderTest {
   @Test
   public void testDateBind() {
     Spec.given(new ParameterBinder<>(Date.class))
-        .expect(binding("2017-02-04"), to().equal(new Date(2017 - 1900, 1, 4)))
+        .expect(binding("2017-02-04"), to().eq(new Date(2017 - 1900, 1, 4)))
         .expect(doing(binding("")), to().raise(IllegalArgumentException.class))
         .expect(doing(binding("string")), to().raise(IllegalArgumentException.class));
   }
@@ -54,7 +54,7 @@ public class ParameterBinderTest {
   @Test
   public void testLocalDateBind() {
     Spec.given(new ParameterBinder<>(LocalDate.class))
-        .expect(binding("2017-02-04"), to().equal(LocalDate.of(2017, 2, 4)))
+        .expect(binding("2017-02-04"), to().eq(LocalDate.of(2017, 2, 4)))
         .expect(doing(binding("")), to().raise(IllegalArgumentException.class))
         .expect(doing(binding("string")), to().raise(IllegalArgumentException.class));
   }

@@ -26,6 +26,7 @@ package tools.devnull.boteco.processor.message;
 
 import tools.devnull.boteco.BotException;
 import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.Group;
 import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.Message;
@@ -34,6 +35,7 @@ import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.Sendable;
 import tools.devnull.boteco.message.Sender;
 import tools.devnull.boteco.user.User;
+import tools.devnull.trugger.Optional;
 
 public class BotecoIncomeMessage implements IncomeMessage {
 
@@ -110,6 +112,11 @@ public class BotecoIncomeMessage implements IncomeMessage {
         .send(object)
         .to(target())
         .through(channel().id());
+  }
+
+  @Override
+  public Optional<Group> group() {
+    return message.group();
   }
 
   private MessageSender getMessageSender() {
