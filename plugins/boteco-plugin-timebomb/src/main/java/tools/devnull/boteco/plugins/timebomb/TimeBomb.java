@@ -24,80 +24,81 @@
 
 package tools.devnull.boteco.plugins.timebomb;
 
-import tools.devnull.boteco.MessageLocation;
-import tools.devnull.boteco.message.MessageSender;
+import java.util.function.Consumer;
 
-import static tools.devnull.boteco.Sendable.message;
+public class TimeBomb {
 
-public class Timebomb implements Runnable {
-
-  private final MessageSender messageSender;
-  private final MessageLocation location;
-  private final String target;
   private final Code code;
-  private int time;
+  private int ticks;
   private int attempts;
   private boolean defused;
-  private boolean run;
+  private boolean active;
 
-  public Timebomb(MessageSender messageSender,
-                  MessageLocation location,
-                  String target, Code code,
-                  int time,
+  private Consumer<Integer> tickListener = tick -> {
+  };
+  private Consumer<Feedback> missListener = feedback -> {
+  };
+  private Consumer<Code> defuseListener = code -> {
+  };
+  private Consumer<Code> blowListener = code -> {
+  };
+
+  public TimeBomb(Code code,
+                  int ticks,
                   int attempts) {
-    this.messageSender = messageSender;
-    this.location = location;
-    this.target = target;
     this.code = code;
-    this.time = time;
+    this.ticks = ticks;
     this.attempts = attempts;
     this.defused = false;
-    this.run = true;
+    this.active = true;
   }
 
-  public MessageLocation location() {
-    return this.location;
+  public TimeBomb onTick(Consumer<Integer> listener) {
+    this.tickListener = listener;
+    return this;
   }
 
-  public String target() {
-    return this.target;
+  public TimeBomb onMiss(Consumer<Feedback> listener) {
+    this.missListener = listener;
+    return this;
+  }
+
+  public TimeBomb onDefuse(Consumer<Code> listener) {
+    this.defuseListener = listener;
+    return this;
+  }
+
+  public TimeBomb onBlow(Consumer<Code> listener) {
+    this.blowListener = listener;
+    return this;
   }
 
   public boolean defuse(String value) {
     attempts--;
     if (code.isCorrect(value)) {
       defused = true;
-      run = false;
+      active = false;
+      defuseListener.accept(code);
     } else {
       if (attempts == 0) {
-        run = false;
+        active = false;
+        blowListener.accept(code);
       } else {
-        messageSender.send(code.getFeedback(value)).to(location);
+        missListener.accept(code.getFeedback(value));
       }
     }
     return defused;
   }
 
-  @Override
-  public void run() {
-    while (run) {
-      if (time <= 5) {
-        messageSender.send(message(String.format("Come on! Just %d seconds!", time))).to(location);
+  public void tick() {
+    if (active) {
+      tickListener.accept(ticks);
+      ticks--;
+      if (ticks == 0) {
+        active = false;
       }
-      time--;
-      try {
-        Thread.sleep(1000);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-      if (time == 0) {
-        run = false;
-      }
-    }
-    if (defused) {
-      messageSender.send(message("Great! You've defused the bomb!")).to(location);
     } else {
-      messageSender.send(message(String.format("Bummer!!! The code was %s", code.value()))).to(location);
+      throw new IllegalStateException("The bomb is not active anymore");
     }
   }
 

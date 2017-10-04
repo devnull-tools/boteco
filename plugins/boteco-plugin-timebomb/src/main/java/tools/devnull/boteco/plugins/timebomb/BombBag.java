@@ -31,18 +31,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class BombBag {
 
-  private final Map<String, Timebomb> bombs;
+  private final Map<String, TimeBomb> bombs;
 
   public BombBag() {
     this.bombs = new ConcurrentHashMap<>();
   }
 
-  public void plant(Timebomb timebomb) {
-    bombs.put(getKey(timebomb.location()), timebomb);
-    new Thread(timebomb).start();
+  public void plant(TimeBomb timebomb, MessageLocation location) {
+    bombs.put(getKey(location), timebomb);
   }
 
-  public Timebomb bombFor(MessageLocation location) {
+  public TimeBomb bombFor(MessageLocation location) {
     return bombs.get(getKey(location));
   }
 

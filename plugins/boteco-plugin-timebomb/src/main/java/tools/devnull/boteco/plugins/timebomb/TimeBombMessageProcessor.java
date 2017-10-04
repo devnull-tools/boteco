@@ -27,38 +27,46 @@ package tools.devnull.boteco.plugins.timebomb;
 import tools.devnull.boteco.Name;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
-import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.message.checker.Command;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-@Name(TimebombPlugin.ID)
+@Name(TimeBombPlugin.ID)
 @Command("timebomb")
-public class TimebombMessageProcessor implements MessageProcessor {
+public class TimeBombMessageProcessor implements MessageProcessor {
 
-  private final MessageSender messageSender;
   private final BombBag bag;
+  private final ScheduledExecutorService executorService;
 
-  public TimebombMessageProcessor(MessageSender messageSender, BombBag bag) {
-    this.messageSender = messageSender;
+  public TimeBombMessageProcessor(BombBag bag) {
     this.bag = bag;
+    this.executorService = Executors.newScheduledThreadPool(5);
   }
 
   @Override
   public void process(IncomeMessage message) {
     String target = message.command().as(String.class);
-    Timebomb timebomb = new Timebomb(messageSender,
-        message.location(),
-        target,
-        new Code(generate()),
+    TimeBomb timebomb = new TimeBomb(new Code(generate()),
         60,
         10
     );
-    bag.plant(timebomb);
+    bag.plant(timebomb, message.location());
+    timebomb.onTick(ticks -> {
+      if (ticks <= 5) {
+        message.sendBack(String.format("Come on! %d seconds left!", ticks));
+      }
+    });
+    timebomb.onMiss(message::sendBack);
+    timebomb.onDefuse(code -> message.sendBack("Congrats! The bomb was defused!"));
+    timebomb.onBlow(code -> message.group().and(group -> group.kick(target, "Bummer, the code was " + code.value())));
+    executorService.scheduleAtFixedRate(timebomb::tick, 0, 1, TimeUnit.SECONDS);
     message.reply("The bomb has been planted!");
   }
 

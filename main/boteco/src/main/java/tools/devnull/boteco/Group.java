@@ -31,10 +31,10 @@ import java.util.List;
  */
 public interface Group {
 
-  List<String> participants();
+  List<String> users();
 
-  boolean kick();
+  boolean kick(String user, String reason);
 
-  boolean ban();
+  boolean ban(String user, String reason);
 
 }

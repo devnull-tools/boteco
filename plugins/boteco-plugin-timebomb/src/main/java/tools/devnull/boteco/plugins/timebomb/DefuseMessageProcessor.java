@@ -28,7 +28,7 @@ import tools.devnull.boteco.Name;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 
-@Name(TimebombPlugin.ID)
+@Name(TimeBombPlugin.ID)
 public class DefuseMessageProcessor implements MessageProcessor {
 
   private final BombBag bag;
@@ -39,7 +39,7 @@ public class DefuseMessageProcessor implements MessageProcessor {
 
   @Override
   public boolean canProcess(IncomeMessage message) {
-    Timebomb timebomb = this.bag.bombFor(message.location());
+    TimeBomb timebomb = this.bag.bombFor(message.location());
     return timebomb != null &&
         message.content().matches("\\d{4}") &&
         timebomb.target().equals(message.sender().id());

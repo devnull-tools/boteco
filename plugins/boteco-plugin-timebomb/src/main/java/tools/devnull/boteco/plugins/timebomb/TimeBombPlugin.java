@@ -26,7 +26,7 @@ package tools.devnull.boteco.plugins.timebomb;
 
 import tools.devnull.boteco.plugin.Plugin;
 
-public class TimebombPlugin implements Plugin {
+public class TimeBombPlugin implements Plugin {
 
   public static final String ID = "timebomb";
 

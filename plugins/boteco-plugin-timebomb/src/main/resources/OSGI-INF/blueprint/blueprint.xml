@@ -31,7 +31,7 @@
   <reference id="message-sender" interface="tools.devnull.boteco.message.MessageSender"/>
 
   <service interface="tools.devnull.boteco.message.MessageProcessor">
-    <bean class="tools.devnull.boteco.plugins.timebomb.TimebombMessageProcessor">
+    <bean class="tools.devnull.boteco.plugins.timebomb.TimeBombMessageProcessor">
       <argument ref="message-sender"/>
       <argument ref="bomb-bag"/>
     </bean>
