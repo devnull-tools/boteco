@@ -65,8 +65,8 @@ public class TimeBombBuilder {
           .and(group -> group.kick(target, "Bummer! The code was " + code)));
     }
     timebomb.onTick(ticks -> {
-      if (ticks <= 5) {
-        message.sendBack(String.format("Come on! %d seconds left!", ticks));
+      if (ticks == 5) {
+        message.sendBack("Come on!!!! It's gonna blow!!!");
       }
     });
     timebomb.onMiss(message::sendBack);

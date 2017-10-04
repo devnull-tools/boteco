@@ -44,6 +44,8 @@ public class BombBag {
 
   public void plant(TimeBomb timebomb, MessageLocation location) {
     bombs.put(getKey(location), timebomb);
+    timebomb.onBlow(s -> bombs.remove(getKey(location)));
+    timebomb.onDefuse(s -> bombs.remove(getKey(location)));
     executorService.scheduleAtFixedRate(timebomb::tick, 0, 1, TimeUnit.SECONDS);
   }
 

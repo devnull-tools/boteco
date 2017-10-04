@@ -90,15 +90,14 @@ public class TimeBomb {
     return defused;
   }
 
-  public String code() {
-    return this.code;
-  }
-
   public void tick() {
     if (active) {
       tickListener.accept(ticks);
       ticks--;
       if (ticks == 0) {
+        if (!defused) {
+          blowListener.accept(code);
+        }
         active = false;
       }
     } else {
