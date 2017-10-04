@@ -44,6 +44,7 @@ COPY target/lib/trugger-6.1.0.jar \
   plugins/boteco-plugin-user/target/boteco-plugin-user-${VERSION}.jar \
   plugins/boteco-plugin-weather/target/boteco-plugin-weather-${VERSION}.jar \
   plugins/boteco-plugin-xgh/target/boteco-plugin-xgh-${VERSION}.jar \
+  plugins/boteco-plugin-xgh/target/boteco-plugin-timebomb-${VERSION}.jar \
   providers/boteco-provider-chucknorris/target/boteco-provider-chucknorris-${VERSION}.jar \
   providers/boteco-provider-urbandictionary/target/boteco-provider-urbandictionary-${VERSION}.jar \
   providers/boteco-provider-yahooweather/target/boteco-provider-yahooweather-${VERSION}.jar $FUSE_HOME/deploy/
