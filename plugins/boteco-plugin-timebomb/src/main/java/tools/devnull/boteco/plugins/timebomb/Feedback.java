@@ -42,7 +42,7 @@ public class Feedback implements Sendable {
 
   private void initialize() {
     StringBuilder feedback = new StringBuilder();
-    feedback.append(code).append(" > ");
+    feedback.append(guess).append(" > ");
     for (int i = 0; i < code.length(); i++) {
       if (code.charAt(i) == guess.charAt(i)) {
         feedback.append("✔");
