@@ -73,6 +73,14 @@ public class TimeBomb {
     return this;
   }
 
+  public String code() {
+    return code;
+  }
+
+  public int attempts() {
+    return attempts;
+  }
+
   public boolean defuse(String value) {
     attempts--;
     if (code.equals(value)) {

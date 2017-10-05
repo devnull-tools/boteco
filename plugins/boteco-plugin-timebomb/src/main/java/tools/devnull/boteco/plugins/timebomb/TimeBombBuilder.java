@@ -39,27 +39,29 @@ public class TimeBombBuilder {
   private final String target;
   private final int time;
   private final int length;
+  private final int attempts;
 
-  public TimeBombBuilder(IncomeMessage message, String target, int time, int length) {
-    if ((length <= 0 || length > 10) || time < 0) {
+  public TimeBombBuilder(IncomeMessage message, String target, int time, int length, int attempts) {
+    if ((length <= 0 || length > 10) || time < 0 || attempts < 1) {
       throw new DomainException("Couldn't set up a bomb with the provided parameters");
     }
     this.message = message;
     this.target = target;
     this.time = time;
     this.length = length;
+    this.attempts = attempts;
   }
 
   public TimeBombBuilder(IncomeMessage message, String target) {
-    this(message, target, 60, 5);
+    this(message, target, 30, 4, 6);
   }
 
-  public TimeBombBuilder(IncomeMessage message, int time, int length) {
-    this(message, null, time, length);
+  public TimeBombBuilder(IncomeMessage message, int time, int length, int attempts) {
+    this(message, null, time, length, attempts);
   }
 
   public TimeBomb build() {
-    TimeBomb timebomb = new TimeBomb(generate(length), time, 10);
+    TimeBomb timebomb = new TimeBomb(generate(length), time, attempts);
     if (target != null) {
       timebomb.onBlow(code -> message.group()
           .and(group -> group.kick(target, "Bummer! The code was " + code)));

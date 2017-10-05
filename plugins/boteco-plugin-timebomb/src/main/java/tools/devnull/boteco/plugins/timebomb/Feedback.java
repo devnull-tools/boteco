@@ -41,15 +41,15 @@ public class Feedback implements Sendable {
   }
 
   private void initialize() {
-    StringBuilder feedback = new StringBuilder(code.length());
+    StringBuilder feedback = new StringBuilder();
+    feedback.append(code).append(" > ");
     for (int i = 0; i < code.length(); i++) {
-      feedback.append(guess.charAt(i));
       if (code.charAt(i) == guess.charAt(i)) {
-        feedback.append("✔ ");
+        feedback.append("✔");
       } else if(code.contains(String.valueOf(guess.charAt(i)))) {
-        feedback.append("⚠️ ");
+        feedback.append("⚠️");
       } else {
-        feedback.append("❌ ");
+        feedback.append("❌");
       }
     }
     this.feedback = feedback.toString().trim();

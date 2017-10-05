@@ -43,7 +43,9 @@ public class TimeBombMessageProcessor implements MessageProcessor {
   public void process(IncomeMessage message) {
     TimeBomb timebomb = message.command(TimeBombBuilder.class).build();
     bag.plant(timebomb, message.location());
-    message.reply("The bomb has been planted!");
+    message.sendBack(
+        String.format("The bomb has been planted! The code has %d digits and you have %d attempts. Good luck!",
+            timebomb.code().length(), timebomb.attempts()));
   }
 
 }
