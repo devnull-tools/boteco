@@ -56,8 +56,8 @@ public class TimeBombBuilder {
     this(message, target, 30, 4, 6);
   }
 
-  public TimeBombBuilder(IncomeMessage message, int time, int length, int attempts) {
-    this(message, null, time, length, attempts);
+  public TimeBombBuilder(IncomeMessage message) {
+    this(message, null);
   }
 
   public TimeBomb build() {
