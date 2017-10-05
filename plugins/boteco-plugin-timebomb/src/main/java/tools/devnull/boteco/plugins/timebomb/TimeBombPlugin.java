@@ -24,7 +24,11 @@
 
 package tools.devnull.boteco.plugins.timebomb;
 
+import tools.devnull.boteco.plugin.Command;
 import tools.devnull.boteco.plugin.Plugin;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class TimeBombPlugin implements Plugin {
 
@@ -38,6 +42,18 @@ public class TimeBombPlugin implements Plugin {
   @Override
   public String description() {
     return "Plants a time-bomb that kicks users from groups";
+  }
+
+  @Override
+  public List<Command> availableCommands() {
+    return Arrays.asList(
+        Command.command("timebomb")
+            .does("Plants a bomb on the group"),
+        Command.command("timebomb")
+            .with("user")
+            .does("Plants a bomb on the group targeting the given user. If the bomb explodes, the bot will" +
+                "try to kick the user from the group.")
+    );
   }
 
 }

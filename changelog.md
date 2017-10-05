@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.11.0
+
+- New Time Bomb plugin
+- Provider API improvements
+
 ## v0.10.2 (2017-09-27)
 
 - Fixed help message for irc plugin

@@ -28,8 +28,10 @@ import tools.devnull.boteco.Name;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageProcessor;
 import tools.devnull.boteco.message.checker.Command;
+import tools.devnull.boteco.message.checker.Group;
 
 @Name(TimeBombPlugin.ID)
+@Group
 @Command("timebomb")
 public class TimeBombMessageProcessor implements MessageProcessor {
 
@@ -45,7 +47,8 @@ public class TimeBombMessageProcessor implements MessageProcessor {
     bag.plant(timebomb, message.location());
     message.sendBack(
         String.format("The bomb has been planted! The code has %d digits and you have %d attempts. Good luck!",
-            timebomb.code().length(), timebomb.attempts()));
+            timebomb.code().length(), timebomb.attempts())
+    );
   }
 
 }
