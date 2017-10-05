@@ -83,16 +83,18 @@ public class IrcChannel implements Channel {
   static class IrcGroup implements Group {
 
     private final IRCConnection connection;
-    private final String name;
+    private final String channelName;
 
-    IrcGroup(IRCConnection connection, String name) {
+    IrcGroup(IRCConnection connection, String channelName) {
       this.connection = connection;
-      this.name = name;
+      this.channelName = channelName;
     }
 
     @Override
     public void kick(String user, String reason) {
-      this.connection.doKick(name, user, reason);
+      if (!connection.getUsername().equals(user)) {
+        connection.doKick(channelName, user, reason);
+      }
     }
 
   }

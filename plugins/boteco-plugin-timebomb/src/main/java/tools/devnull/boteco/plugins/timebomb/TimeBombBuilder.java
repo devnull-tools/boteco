@@ -53,7 +53,7 @@ public class TimeBombBuilder {
   }
 
   public TimeBombBuilder(IncomeMessage message, String target) {
-    this(message, target, 30, 4, 6);
+    this(message, target, 60, 4, 6);
   }
 
   public TimeBombBuilder(IncomeMessage message) {
@@ -73,7 +73,7 @@ public class TimeBombBuilder {
     });
     timebomb.onMiss(message::sendBack);
     timebomb.onDefuse(code -> message.sendBack("Congrats! The bomb was defused!"));
-    timebomb.onBlow(code -> message.sendBack("Bummer! The code was " + code));
+    timebomb.onBlow(code -> message.sendBack("💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥\nThe code was " + code));
     return timebomb;
   }
 

@@ -30,6 +30,8 @@ import tools.devnull.boteco.plugin.Plugin;
 import java.util.Arrays;
 import java.util.List;
 
+import static tools.devnull.boteco.plugin.Command.command;
+
 public class TimeBombPlugin implements Plugin {
 
   public static final String ID = "timebomb";
@@ -47,12 +49,12 @@ public class TimeBombPlugin implements Plugin {
   @Override
   public List<Command> availableCommands() {
     return Arrays.asList(
-        Command.command("timebomb")
+        command("timebomb")
             .does("Plants a bomb on the group"),
-        Command.command("timebomb")
+        command("timebomb")
             .with("user")
             .does("Plants a bomb on the group targeting the given user. If the bomb explodes, the bot will" +
-                "try to kick the user from the group.")
+                " try to kick the user from the group.")
     );
   }
 

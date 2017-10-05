@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.plugins.timebomb;
 
+import tools.devnull.boteco.DomainException;
 import tools.devnull.boteco.MessageLocation;
 
 import java.util.Map;
@@ -43,9 +44,13 @@ public class BombBag {
   }
 
   public void plant(TimeBomb timebomb, MessageLocation location) {
-    bombs.put(getKey(location), timebomb);
-    timebomb.onBlow(s -> bombs.remove(getKey(location)));
-    timebomb.onDefuse(s -> bombs.remove(getKey(location)));
+    String key = getKey(location);
+    if (bombs.containsKey(key)) {
+      throw new DomainException("There is already a bomb planted here");
+    }
+    bombs.put(key, timebomb);
+    timebomb.onBlow(s -> bombs.remove(key));
+    timebomb.onDefuse(s -> bombs.remove(key));
     executorService.scheduleAtFixedRate(timebomb::tick, 0, 1, TimeUnit.SECONDS);
   }
 
