@@ -39,8 +39,6 @@
       <cm:property name="bot.username" value="boteco_bot"/>
       <!-- The bot's token -->
       <cm:property name="bot.token" value=""/>
-      <cm:property name="bot.command.expression"
-                   value="^/(?&lt;command&gt;[^@ ]*)(@{{bot.username}})?\s*(?&lt;arguments&gt;.+)?"/>
       <!-- The polling interval -->
       <cm:property name="poll.interval" value="500"/>
       <!--
@@ -58,7 +56,7 @@
   </cm:property-placeholder>
 
   <bean id="command-extractor" class="tools.devnull.boteco.message.ExpressionCommandExtractor">
-    <argument value="{{bot.command.expression}}"/>
+    <argument value="^/(?&lt;command&gt;[^@ ]*)(@{{bot.username}})?\s*(?&lt;arguments&gt;.+)?"/>
   </bean>
 
   <bean id="offset-manager" class="tools.devnull.boteco.channel.telegram.TelegramOffsetManager">
