@@ -30,10 +30,14 @@ import tools.devnull.boteco.message.Message;
 import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.trugger.Optional;
 
+import java.io.Serializable;
+
 /**
  * A command extractor for Telegram bots.
  */
-public class TelegramCommandExtractor implements CommandExtractor {
+public class TelegramCommandExtractor implements CommandExtractor, Serializable {
+
+  private static final long serialVersionUID = -1777063166866821628L;
 
   private final CommandExtractor extractor;
 
