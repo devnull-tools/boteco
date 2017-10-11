@@ -36,11 +36,11 @@
       <cm:property name="income.enable" value="false"/>
       <cm:property name="outcome.enable" value="false"/>
 
+      <cm:property name="bot.username" value="boteco_bot"/>
       <!-- The bot's token -->
       <cm:property name="bot.token" value=""/>
-      <!-- The chat ids the bot should listen to -->
       <cm:property name="bot.command.expression"
-                   value="^/(?&lt;command&gt;[^@ ]*)(@\w+bot)?\s*(?&lt;arguments&gt;.+)?"/>
+                   value="^/(?&lt;command&gt;[^@ ]*)(@{{bot.username}})?\s*(?&lt;arguments&gt;.+)?"/>
       <!-- The polling interval -->
       <cm:property name="poll.interval" value="500"/>
       <!--
