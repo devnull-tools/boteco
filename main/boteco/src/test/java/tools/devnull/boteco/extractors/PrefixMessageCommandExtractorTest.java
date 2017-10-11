@@ -31,6 +31,7 @@ import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.boteco.message.PrefixCommandExtractor;
 import tools.devnull.kodo.Spec;
+import tools.devnull.trugger.Optional;
 
 import java.util.function.Predicate;
 
@@ -42,7 +43,6 @@ import static tools.devnull.kodo.Expectation.to;
 public class PrefixMessageCommandExtractorTest {
 
   private CommandExtractor extractor;
-  private MessageCommand command;
 
   private IncomeMessage message(String content) {
     IncomeMessage message = mock(IncomeMessage.class);
@@ -53,7 +53,6 @@ public class PrefixMessageCommandExtractorTest {
   @Before
   public void initialize() {
     extractor = new PrefixCommandExtractor("command\\s");
-    command = extractor.extract(message("command foo arg0 arg1"));
   }
 
   @Test
@@ -66,23 +65,36 @@ public class PrefixMessageCommandExtractorTest {
 
   @Test
   public void testExtraction() {
-    Spec.given(extractor.extract(message("command foo")))
+    Spec.given(commandOf("command foo"))
+        .expect(Optional::exists)
+
+        .given(Optional::value)
         .expect(MessageCommand::name, to().be("foo"));
 
-    Spec.given(extractor.extract(message("command bar")))
+    Spec.given(commandOf("command bar"))
+        .expect(Optional::exists)
+
+        .given(Optional::value)
         .expect(MessageCommand::name, to().be("bar"));
 
-    Spec.given(command)
+    Spec.given(commandOf("command foo arg0 arg1"))
+        .expect(Optional::exists)
+
+        .given(Optional::value)
         .expect(MessageCommand::name, to().be("foo"))
-        .expect(command -> command.as(String.class), to().be("arg0 arg1"));
+        .expect(MessageCommand::asString, to().be("arg0 arg1"));
   }
 
   private Predicate<CommandExtractor> accept(String string) {
-    return commandExtractor -> commandExtractor.isCommand(message(string));
+    return commandExtractor -> commandExtractor.extract(message(string)).exists();
   }
 
   private Predicate<CommandExtractor> reject(String string) {
     return accept(string).negate();
+  }
+
+  private Optional<MessageCommand> commandOf(String content) {
+    return extractor.extract(message(content));
   }
 
 }

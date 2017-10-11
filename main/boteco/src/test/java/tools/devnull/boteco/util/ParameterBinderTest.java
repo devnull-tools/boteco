@@ -40,7 +40,7 @@ public class ParameterBinderTest {
   public void testStringBind() {
     Spec.given(new ParameterBinder<>(String.class))
         .expect(binding("some string"), to().be("some string"))
-        .expect(doing(binding("")), to().raise(IllegalArgumentException.class));
+        .expect(binding(""), to().be(""));
   }
 
   @Test

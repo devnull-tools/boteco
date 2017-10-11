@@ -55,8 +55,8 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <bean id="command-extractor" class="tools.devnull.boteco.message.ExpressionCommandExtractor">
-    <argument value="^/(?&lt;command&gt;[^@ ]*)(@{{bot.username}})?\s*(?&lt;arguments&gt;.+)?"/>
+  <bean id="command-extractor" class="tools.devnull.boteco.channel.telegram.TelegramCommandExtractor">
+    <argument value="{{bot.username}}"/>
   </bean>
 
   <bean id="offset-manager" class="tools.devnull.boteco.channel.telegram.TelegramOffsetManager">

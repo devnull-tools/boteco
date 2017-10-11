@@ -24,9 +24,7 @@
 
 package tools.devnull.boteco.message;
 
-import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.Group;
-import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.Sendable;
 import tools.devnull.trugger.Optional;
 
@@ -113,16 +111,6 @@ public interface IncomeMessage extends Message {
    */
   default void sendBack(String format, Object... args) {
     sendBack(String.format(format, args));
-  }
-
-  /**
-   * Returns a message location based on this message. If you send a message to this
-   * location, the sender will receive it.
-   *
-   * @return the message location for sending messages to the sender
-   */
-  default MessageLocation location() {
-    return Destination.channel(channel()).to(target());
   }
 
 }

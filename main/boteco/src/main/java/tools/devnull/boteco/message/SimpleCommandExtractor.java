@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.message;
 
+import tools.devnull.trugger.Optional;
+
 import java.io.Serializable;
 
 /**
@@ -33,21 +35,18 @@ public class SimpleCommandExtractor implements CommandExtractor, Serializable {
 
   private static final long serialVersionUID = -3269566201774993002L;
 
-  @Override
-  public boolean isCommand(IncomeMessage message) {
-    return true;
-  }
-
-  public MessageCommand extract(IncomeMessage message) {
-    StringBuilder command = new StringBuilder(message.content());
-    int firstSpace = command.indexOf(" ");
+  public Optional<MessageCommand> extract(Message message) {
+    MessageCommand command;
+    StringBuilder content = new StringBuilder(message.content());
+    int firstSpace = content.indexOf(" ");
     if (firstSpace < 0) { // no arguments
-      return new ExtractedCommand(message, command.toString(), "");
+      command = new ExtractedCommand(message, content.toString(), "");
     } else {
-      return new ExtractedCommand(message, command.substring(0, firstSpace),
-          command.substring(firstSpace, command.length()).trim()
+      command = new ExtractedCommand(message, content.substring(0, firstSpace),
+          content.substring(firstSpace, content.length()).trim()
       );
     }
+    return Optional.of(command);
   }
 
 }

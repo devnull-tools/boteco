@@ -22,45 +22,29 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.message;
+package tools.devnull.boteco.channel.telegram;
 
+import tools.devnull.boteco.message.CommandExtractor;
+import tools.devnull.boteco.message.ExpressionCommandExtractor;
+import tools.devnull.boteco.message.Message;
+import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.trugger.Optional;
 
-import java.io.Serializable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
- * A command extractor that uses prefix to check if the message is a command.
+ * A command extractor for Telegram bots.
  */
-public class PrefixCommandExtractor implements CommandExtractor, Serializable {
+public class TelegramCommandExtractor implements CommandExtractor {
 
-  private static final long serialVersionUID = 3153909150938096646L;
-  private final Pattern prefix;
+  private final CommandExtractor extractor;
 
-  public PrefixCommandExtractor(String prefix) {
-    this.prefix = Pattern.compile("^" + prefix, Pattern.CASE_INSENSITIVE);
+  public TelegramCommandExtractor(String botUsername) {
+    this.extractor = new ExpressionCommandExtractor("^/(?<command>[^@ ]*)(@" + botUsername +
+        ")?(?<arguments>\\s+.+)?$");
   }
 
+  @Override
   public Optional<MessageCommand> extract(Message message) {
-    boolean privateMessage = message.isPrivate();
-    String content = message.content();
-    Matcher matcher = prefix.matcher(content);
-    if (matcher.find()) {
-      content = content.substring(matcher.end());
-    } else if(!privateMessage) {
-      return Optional.empty();
-    }
-    ExtractedCommand command;
-    int firstSpace = content.indexOf(" ");
-    if (firstSpace < 0) { // no arguments
-      command = new ExtractedCommand(message, content, "");
-    } else {
-      command = new ExtractedCommand(message, content.substring(0, firstSpace),
-          content.substring(firstSpace, content.length()).trim()
-      );
-    }
-    return Optional.of(command);
+    return extractor.extract(message);
   }
 
 }

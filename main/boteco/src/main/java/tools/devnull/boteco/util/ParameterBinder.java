@@ -117,9 +117,6 @@ public class ParameterBinder<E> implements Function<String, E> {
   @Override
   public E apply(String content) {
     if (this.functions.containsKey(type)) {
-      if (content.isEmpty()) {
-        throw new IllegalArgumentException("Empty parameter");
-      }
       return (E) this.functions.get(type).apply(content);
     }
     List<Constructor<?>> constructors = Reflection.reflect().constructors().from(type);
