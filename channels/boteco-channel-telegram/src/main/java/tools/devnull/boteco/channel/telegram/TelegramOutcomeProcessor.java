@@ -80,12 +80,11 @@ public class TelegramOutcomeProcessor implements Processor {
       outcomeMessage.ifUrl(url -> content.append("\n\n").append(url));
       outcomeMessage.ifReply(id -> body.put("reply_to_message_id", id));
 
-      body.put("disable_web_page_preview", "true");
-
       outcomeMessage.eachMetadata(header -> body.put(header.getKey(), String.valueOf(header.getValue())));
 
       body.put("chat_id", outcomeMessage.target());
       body.put("parse_mode", "HTML");
+      body.put("disable_web_page_preview", "true");
 
       checkAndSend(body, content.toString());
     }
