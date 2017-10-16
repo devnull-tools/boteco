@@ -39,7 +39,6 @@
 
   <reference id="client" interface="tools.devnull.boteco.client.jms.JmsClient"/>
   <bean id="service-registry" class="tools.devnull.boteco.OsgiServiceRegistry"/>
-  <reference id="user-manager" interface="tools.devnull.boteco.user.UserManager"/>
 
   <service id="message-sender"
            interface="tools.devnull.boteco.message.MessageSender">
@@ -52,7 +51,6 @@
   <service id="message-dispatcher"
            interface="tools.devnull.boteco.message.MessageDispatcher">
     <bean class="tools.devnull.boteco.processor.message.BotecoMessageDispatcher">
-      <argument ref="user-manager"/>
       <argument ref="client"/>
       <argument ref="service-registry"/>
       <argument value="boteco.process"/>

@@ -24,6 +24,7 @@
 
 package tools.devnull.boteco.processor.message;
 
+import tools.devnull.boteco.BotException;
 import tools.devnull.boteco.Rule;
 import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.client.jms.JmsClient;
@@ -51,7 +52,6 @@ import static tools.devnull.boteco.Predicates.serviceProperty;
  */
 public class BotecoMessageDispatcher implements MessageDispatcher {
 
-  private final UserManager userManager;
   private final JmsClient client;
   private final ServiceRegistry serviceRegistry;
   private final String queueName;
@@ -59,13 +59,11 @@ public class BotecoMessageDispatcher implements MessageDispatcher {
   /**
    * Creates a new message dispatcher based on the given parameters
    *
-   * @param userManager     the component for searching users
    * @param client          the jms client for sending the messages to queues
    * @param serviceRegistry the service registry to lookup rules
    * @param queueName       the queue name to use
    */
-  public BotecoMessageDispatcher(UserManager userManager, JmsClient client, ServiceRegistry serviceRegistry, String queueName) {
-    this.userManager = userManager;
+  public BotecoMessageDispatcher(JmsClient client, ServiceRegistry serviceRegistry, String queueName) {
     this.client = client;
     this.serviceRegistry = serviceRegistry;
     this.queueName = queueName;
@@ -73,7 +71,9 @@ public class BotecoMessageDispatcher implements MessageDispatcher {
 
   @Override
   public void dispatch(Message message) {
-    User user = userManager.find(message.location());
+    User user = serviceRegistry.locate(UserManager.class).one()
+        .orElseThrow(BotException::new)
+        .find(message.location());
     IncomeMessage incomeMessage = new BotecoIncomeMessage(serviceRegistry, message, user);
     List<Rule> rules = serviceRegistry.locate(Rule.class)
         .filter(serviceProperty("channel", eq("all").or(eq(incomeMessage.channel().id()))))
