@@ -36,6 +36,8 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
+  <reference id="rest-client" interface="tools.devnull.boteco.client.rest.RestClient"/>
+
   <service id="kbase-plugin" interface="tools.devnull.boteco.message.MessageProcessor">
     <bean class="tools.devnull.boteco.plugins.redhat.KBaseMessageProcessor">
       <argument ref="rest-client"/>
