@@ -29,7 +29,6 @@ import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.OsgiServiceRegistry;
 import tools.devnull.boteco.ServiceRegistry;
-import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.util.OsgiParameterResolver;
 import tools.devnull.boteco.util.ParameterBinder;
 
@@ -109,11 +108,6 @@ public class ExtractedCommand implements MessageCommand {
                 // try to lookup implementations by default using the osgi registry
                 .use(osgiResolver)
                 .byDefault();
-
-            if (this.message.user() != null) {
-              context.use(parameter -> this.message.user())
-                  .when(type(User.class));
-            }
           }).apply(string);
     } catch (Exception e) {
       throw new MessageProcessingException("Invalid command parameters.");

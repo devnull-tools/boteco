@@ -66,10 +66,8 @@ public class UserMessageProcessor implements MessageProcessor {
           message.reply("The destination was removed from your user.");
         })
         .on("default", channel -> {
-          User user = message.user();
-          if (user == null) {
-            throw new MessageProcessingException("You're not registered.");
-          }
+          User user = message.user()
+              .orElseThrow(() -> new MessageProcessingException("You're not registered."));
           if (channel.isEmpty()) {
             channel = message.channel().id();
           }
