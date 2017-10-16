@@ -4,6 +4,8 @@
 
 - New Time Bomb plugin
 - Provider API improvements
+- Removed status.redhat rss parser
+- Improvements on Message interfaces
 
 ## v0.10.2 (2017-09-27)
 
