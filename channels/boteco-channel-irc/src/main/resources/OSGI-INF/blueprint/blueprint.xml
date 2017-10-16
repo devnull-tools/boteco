@@ -72,12 +72,9 @@
 
   <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>
 
-  <reference id="user-manager" interface="tools.devnull.boteco.user.UserManager"/>
-
   <bean id="irc-income-processor" class="tools.devnull.boteco.channel.irc.IrcIncomeProcessor">
     <argument ref="channel"/>
     <argument ref="message-dispatcher"/>
-    <argument ref="user-manager"/>
   </bean>
 
   <bean id="irc-outcome-processor" class="tools.devnull.boteco.channel.irc.IrcOutcomeProcessor">

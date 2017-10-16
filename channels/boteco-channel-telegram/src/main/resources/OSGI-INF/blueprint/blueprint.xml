@@ -67,13 +67,10 @@
 
   <bean id="service-registry" class="tools.devnull.boteco.OsgiServiceRegistry"/>
 
-  <reference id="user-manager" interface="tools.devnull.boteco.user.UserManager"/>
-
   <bean id="telegram-income-processor" class="tools.devnull.boteco.channel.telegram.TelegramIncomeProcessor">
     <argument ref="channel"/>
     <argument ref="offset-manager"/>
     <argument ref="message-dispatcher"/>
-    <argument ref="user-manager"/>
   </bean>
 
   <bean id="telegram-outcome-processor" class="tools.devnull.boteco.channel.telegram.TelegramOutcomeProcessor">

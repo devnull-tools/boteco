@@ -27,9 +27,6 @@ package tools.devnull.boteco.channel.irc;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.Destination;
-import tools.devnull.boteco.user.User;
-import tools.devnull.boteco.user.UserManager;
 import tools.devnull.boteco.message.MessageDispatcher;
 
 /**
@@ -39,29 +36,24 @@ public class IrcIncomeProcessor implements Processor {
 
   private final Channel channel;
   private final MessageDispatcher dispatcher;
-  private final UserManager userManager;
 
   /**
    * Creates a new processor based on the giving parameters
    *
    * @param channel     the channel implementation
    * @param dispatcher  the component to dispatch the messages to be processed
-   * @param userManager the user manager to retrieve the registered users
    */
   public IrcIncomeProcessor(Channel channel,
-                            MessageDispatcher dispatcher,
-                            UserManager userManager) {
+                            MessageDispatcher dispatcher) {
     this.channel = channel;
     this.dispatcher = dispatcher;
-    this.userManager = userManager;
   }
 
   @Override
   public void process(Exchange exchange) throws Exception {
     org.apache.camel.component.irc.IrcMessage income = exchange.getIn(org.apache.camel.component.irc.IrcMessage.class);
     if (income.getMessage() != null && !income.getMessage().isEmpty()) {
-      User user = this.userManager.find(Destination.channel(IrcChannel.ID).to(income.getUser().getNick()));
-      dispatcher.dispatch(new BotecoIrcMessage(channel, income, user));
+      dispatcher.dispatch(new BotecoIrcMessage(channel, income));
     }
   }
 

@@ -34,15 +34,20 @@ import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.boteco.message.MessageSender;
 import tools.devnull.boteco.message.Sender;
 import tools.devnull.boteco.user.User;
+import tools.devnull.trugger.Optional;
 
 public class BotecoIncomeMessage implements IncomeMessage {
 
+  private static final long serialVersionUID = -1769794861851999363L;
+
   private final ServiceRegistry registry;
   private final Message message;
+  private final User user;
 
-  public BotecoIncomeMessage(ServiceRegistry registry, Message message) {
+  public BotecoIncomeMessage(ServiceRegistry registry, Message message, User user) {
     this.registry = registry;
     this.message = message;
+    this.user = user;
   }
 
   @Override
@@ -61,8 +66,8 @@ public class BotecoIncomeMessage implements IncomeMessage {
   }
 
   @Override
-  public User user() {
-    return message.user();
+  public Optional<User> user() {
+    return Optional.of(user);
   }
 
   @Override

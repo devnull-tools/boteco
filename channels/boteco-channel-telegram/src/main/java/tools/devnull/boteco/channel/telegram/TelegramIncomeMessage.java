@@ -27,7 +27,6 @@ package tools.devnull.boteco.channel.telegram;
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.message.Message;
 import tools.devnull.boteco.message.Sender;
-import tools.devnull.boteco.user.User;
 
 class TelegramIncomeMessage implements Message {
 
@@ -35,24 +34,16 @@ class TelegramIncomeMessage implements Message {
 
   private final TelegramPolling.Message message;
   private final Channel channel;
-  private final User user;
 
   TelegramIncomeMessage(Channel channel,
-                        TelegramPolling.Message message,
-                        User user) {
+                        TelegramPolling.Message message) {
     this.channel = channel;
     this.message = message;
-    this.user = user;
   }
 
   @Override
   public Channel channel() {
     return channel;
-  }
-
-  @Override
-  public User user() {
-    return this.user;
   }
 
   @Override

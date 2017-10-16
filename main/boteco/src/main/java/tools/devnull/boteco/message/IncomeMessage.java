@@ -26,12 +26,20 @@ package tools.devnull.boteco.message;
 
 import tools.devnull.boteco.Group;
 import tools.devnull.boteco.Sendable;
+import tools.devnull.boteco.user.User;
 import tools.devnull.trugger.Optional;
 
 /**
  * Interface that defines a message that arrives from a channel.
  */
 public interface IncomeMessage extends Message {
+
+  /**
+   * Returns the recognized user associated with this message, if exists.
+   *
+   * @return the user that sent this message
+   */
+  Optional<User> user();
 
   /**
    * Checks if this message has a command in its content.
