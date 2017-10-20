@@ -40,40 +40,40 @@ public class TelegramCommandExtractorTest {
   @Test
   public void testSimpleCommand() {
     Spec.given(commandOf("/command arguments"))
-        .expect(Optional::exists)
+        .expect(Optional::isPresent)
 
         .given(Optional::value)
         .expect(MessageCommand::name, to().be("command"))
         .expect(MessageCommand::asString, to().be("arguments"))
 
         .given(commandOf("/command"))
-        .expect(Optional::exists)
+        .expect(Optional::isPresent)
 
         .given(Optional::value)
         .expect(MessageCommand::name, to().be("command"))
 
         .given(commandOf("not a command"))
-        .expect(Optional::exists, to().be(false));
+        .expect(Optional::isPresent, to().be(false));
   }
 
   @Test
   public void testDirectCommand() {
     Spec.given(commandOf("/command@boteco_bot"))
-        .expect(Optional::exists)
+        .expect(Optional::isPresent)
 
         .given(Optional::value)
         .expect(MessageCommand::name, to().be("command"))
         .expect(MessageCommand::asString, to().be(""))
 
         .given(commandOf("/command@boteco_bot arguments"))
-        .expect(Optional::exists)
+        .expect(Optional::isPresent)
 
         .given(Optional::value)
         .expect(MessageCommand::name, to().be("command"))
         .expect(MessageCommand::asString, to().be("arguments"))
 
         .given(commandOf("/command@another_bot"))
-        .expect(Optional::exists, to().be(false));
+        .expect(Optional::isPresent, to().be(false));
   }
 
   private Optional<MessageCommand> commandOf(String content) {

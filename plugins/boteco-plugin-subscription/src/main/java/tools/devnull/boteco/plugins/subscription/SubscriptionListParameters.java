@@ -32,7 +32,7 @@ public class SubscriptionListParameters {
   private final String target;
 
   public SubscriptionListParameters(IncomeMessage message) {
-    if (message.user().exists() && !message.isGroup()) {
+    if (message.user().isPresent() && !message.isGroup()) {
       this.target = message.user().value().id();
       this.channel = "user";
     } else {

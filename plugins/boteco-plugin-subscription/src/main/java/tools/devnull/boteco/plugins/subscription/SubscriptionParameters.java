@@ -37,7 +37,7 @@ public class SubscriptionParameters {
   private final boolean requestConfirmation;
 
   public SubscriptionParameters(IncomeMessage message, String[] events) {
-    if (message.user().exists() && !message.isGroup()) {
+    if (message.user().isPresent() && !message.isGroup()) {
       this.target = message.user().value().id();
       this.channel = "user";
     } else {

@@ -66,19 +66,19 @@ public class ExpressionMessageCommandExtractorTest {
   @Test
   public void testExtraction() {
     Spec.given(commandOf("command foo"))
-        .expect(Optional::exists)
+        .expect(Optional::isPresent)
 
         .given(Optional::value)
         .expect(MessageCommand::name, to().be("foo"));
 
     Spec.given(commandOf("command bar"))
-        .expect(Optional::exists)
+        .expect(Optional::isPresent)
 
         .given(Optional::value)
         .expect(MessageCommand::name, to().be("bar"));
 
     Spec.given(commandOf("command foo arg0 arg1"))
-        .expect(Optional::exists)
+        .expect(Optional::isPresent)
 
         .given(Optional::value)
         .expect(MessageCommand::name, to().be("foo"))
@@ -86,7 +86,7 @@ public class ExpressionMessageCommandExtractorTest {
   }
 
   private Predicate<CommandExtractor> accept(String string) {
-    return commandExtractor -> commandExtractor.extract(message(string)).exists();
+    return commandExtractor -> commandExtractor.extract(message(string)).isPresent();
   }
 
   private Predicate<CommandExtractor> reject(String string) {

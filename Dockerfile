@@ -6,7 +6,7 @@ ENV DEBUG=""
 COPY .docker/cfg/* $FUSE_HOME/etc/
 COPY .docker/entrypoint.sh /opt/jboss/entrypoint.sh
 
-COPY target/lib/trugger-6.1.0.jar \
+COPY target/lib/trugger-6.2.0.jar \
   target/lib/jsoup-1.10.2.jar \
   target/lib/mongo-java-driver-3.0.4.jar \
   channels/boteco-channel-email/target/boteco-channel-email-${VERSION}.jar \

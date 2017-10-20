@@ -92,7 +92,7 @@ public class BotecoIncomeMessage implements IncomeMessage {
 
   @Override
   public boolean hasCommand() {
-    return channel().commandExtractor().extract(this).exists();
+    return channel().commandExtractor().extract(this).isPresent();
   }
 
   @Override
