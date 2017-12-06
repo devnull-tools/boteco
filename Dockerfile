@@ -1,4 +1,4 @@
-FROM 172.30.1.1:5000/openshift/fuse
+FROM 172.30.1.1:5000/openshift/fuse:6.3
 
 ENV VERSION="0.11.0-SNAPSHOT"
 ENV DEBUG=""
