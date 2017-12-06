@@ -8,7 +8,7 @@ ENV VERSION="0.11.0-SNAPSHOT"
 ENV DEBUG=""
 
 USER root
-COPY scripts/install.sh /install.sh
+COPY .docker/scripts/install.sh /install.sh
 RUN /install.sh && rm /install.sh
 
 COPY .docker/cfg/* $FUSE_HOME/etc/
