@@ -1,4 +1,4 @@
-FROM devnull.tools/fuse:6.3
+FROM registry.local.devnull.tools/fuse:6.3
 
 ENV VERSION="0.11.0-SNAPSHOT"
 ENV DEBUG=""
