@@ -58,6 +58,7 @@ COPY target/lib/trugger-6.2.0.jar \
   providers/boteco-provider-yahooweather/target/boteco-provider-yahooweather-${VERSION}.jar $FUSE_HOME/deploy/
 
 RUN chown -R jboss:jboss /opt/jboss
+RUN chmod 777 -R /opt/jboss
 
 USER jboss
 

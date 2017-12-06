@@ -83,11 +83,6 @@ property db.url $BOTECO_MONGODB_URL
 config tools.devnull.boteco.persistence.request
 property token.expire $BOTECO_REQUEST_TOKEN_EXPIRATION
 
-config tools.devnull.boteco.plugins.redhat
-property status.poll.interval $BOTECO_REDHAT_STATUS_POLL_INTERVAL
-property status.poll.delay $BOTECO_REDHAT_STATUS_POLL_DELAY
-property shutdown.time $BOTECO_REDHAT_SHUTDOWN_TIME
-
 config tools.devnull.boteco.plugins.stocks
 property query.defaults.exchange $BOTECO_STOCKS_DEFAULT_EXCHANGE
 
