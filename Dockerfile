@@ -1,10 +1,18 @@
-FROM 172.30.1.1:5000/openshift/fuse:6.3
+FROM jboss/base-jdk:8
 
+ENV DOWNLOAD_URL=http://artifactory.local.devnull.tools/artifactory/installers/com.redhat/fuse/fuse-6.3.0-224.zip
+ENV FUSE_HOME=/opt/jboss/fuse
+ENV FUSE_USER=admin
+ENV FUSE_PASSWORD=admin
 ENV VERSION="0.11.0-SNAPSHOT"
 ENV DEBUG=""
 
+USER root
+COPY scripts/install.sh /install.sh
+RUN /install.sh && rm /install.sh
+
 COPY .docker/cfg/* $FUSE_HOME/etc/
-COPY .docker/entrypoint.sh /opt/jboss/entrypoint.sh
+COPY .docker/scripts/entrypoint.sh /opt/jboss/entrypoint.sh
 
 COPY target/lib/trugger-6.2.0.jar \
   target/lib/jsoup-1.10.2.jar \
@@ -49,9 +57,7 @@ COPY target/lib/trugger-6.2.0.jar \
   providers/boteco-provider-urbandictionary/target/boteco-provider-urbandictionary-${VERSION}.jar \
   providers/boteco-provider-yahooweather/target/boteco-provider-yahooweather-${VERSION}.jar $FUSE_HOME/deploy/
 
-USER root
-
-RUN chown -R jboss:jboss $FUSE_HOME/deploy $FUSE_HOME/etc /opt/jboss/entrypoint.sh
+RUN chown -R jboss:jboss /opt/jboss
 
 USER jboss
 
