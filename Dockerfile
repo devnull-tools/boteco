@@ -1,4 +1,4 @@
-FROM registry.local.devnull.tools/openshift/fuse:6.3
+FROM 172.30.1.1:5000/openshift/fuse
 
 ENV VERSION="0.11.0-SNAPSHOT"
 ENV DEBUG=""
