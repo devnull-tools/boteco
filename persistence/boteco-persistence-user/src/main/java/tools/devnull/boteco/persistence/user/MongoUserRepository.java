@@ -87,4 +87,9 @@ public class MongoUserRepository implements UserRepository {
     this.users.updateOne(query, new Document("$set", update));
   }
 
+  @Override
+  public void delete(User user) {
+    this.users.deleteOne(new BasicDBObject("_id", user.id()));
+  }
+
 }
