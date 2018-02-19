@@ -1,6 +1,6 @@
 FROM jboss/base-jdk:8
 
-ENV DOWNLOAD_URL=http://artifactory.local.devnull.tools/artifactory/installers/com.redhat/fuse/fuse-6.3.0-224.zip
+ENV DOWNLOAD_URL=http://racha-cuca.devnull.tools/install/redhat/fuse/jboss-fuse-karaf-6.3.0.redhat-224.zip
 ENV FUSE_HOME=/opt/jboss/fuse
 ENV FUSE_USER=admin
 ENV FUSE_PASSWORD=admin
