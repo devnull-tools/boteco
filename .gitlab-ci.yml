@@ -6,6 +6,7 @@ mvn:package:
   stage: compile
   image: maven:3.3.9-jdk-8
   script:
+    - mvn -s .maven/settings.xml dependency:copy-dependencies -DoutputDirectory=target/lib
     - mvn -s .maven/settings.xml package
   artifacts:
     expire_in: 1 day
