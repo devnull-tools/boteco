@@ -24,7 +24,7 @@
 
 package tools.devnull.boteco.message;
 
-import tools.devnull.boteco.BotException;
+import tools.devnull.trugger.Optional;
 
 import java.io.Serializable;
 import java.util.regex.Matcher;
@@ -42,19 +42,14 @@ public class ExpressionCommandExtractor implements CommandExtractor, Serializabl
     this.pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
   }
 
-  @Override
-  public boolean isCommand(IncomeMessage message) {
-    return pattern.matcher(message.content()).find();
-  }
-
-  public MessageCommand extract(IncomeMessage message) {
+  public Optional<MessageCommand> extract(Message message) {
     Matcher matcher = pattern.matcher(message.content());
     if (matcher.find()) {
       String command = matcher.group("command");
       String args = matcher.group("arguments");
-      return new ExtractedCommand(message, command, args != null ? args.trim() : "");
+      return Optional.of(new ExtractedCommand(message, command, args != null ? args.trim() : ""));
     } else {
-      throw new BotException(message.content() + " is not a command");
+      return Optional.empty();
     }
   }
 

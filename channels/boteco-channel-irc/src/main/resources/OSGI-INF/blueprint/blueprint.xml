@@ -53,12 +53,15 @@
     </cm:default-properties>
   </cm:property-placeholder>
 
+  <bean id="service-registry" class="tools.devnull.boteco.OsgiServiceRegistry"/>
+
   <bean id="command-extractor" class="tools.devnull.boteco.message.PrefixCommandExtractor">
     <argument value="{{bot.command.prefix}}"/>
   </bean>
 
   <bean id="channel" class="tools.devnull.boteco.channel.irc.IrcChannel">
     <argument ref="command-extractor"/>
+    <argument ref="service-registry"/>
   </bean>
 
   <service interface="tools.devnull.boteco.Channel" ref="channel">
@@ -69,12 +72,9 @@
 
   <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>
 
-  <reference id="user-manager" interface="tools.devnull.boteco.user.UserManager"/>
-
   <bean id="irc-income-processor" class="tools.devnull.boteco.channel.irc.IrcIncomeProcessor">
     <argument ref="channel"/>
     <argument ref="message-dispatcher"/>
-    <argument ref="user-manager"/>
   </bean>
 
   <bean id="irc-outcome-processor" class="tools.devnull.boteco.channel.irc.IrcOutcomeProcessor">
@@ -94,6 +94,7 @@
       <reference interface="tools.devnull.boteco.event.EventBus"/>
     </argument>
     <argument ref="boteco-channel-irc"/>
+    <argument ref="service-registry"/>
   </bean>
 
   <bean id="shutdown" class="org.apache.camel.impl.DefaultShutdownStrategy">

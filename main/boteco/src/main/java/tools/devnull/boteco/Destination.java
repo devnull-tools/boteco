@@ -54,6 +54,16 @@ public interface Destination {
   /**
    * Creates a message location based on the given channel id and target.
    *
+   * @param channel the channel of the location
+   * @return a component to select the target of the location
+   */
+  static TargetResultSelector<String, MessageLocation> channel(Channel channel) {
+    return channel(channel.id());
+  }
+
+  /**
+   * Creates a message location based on the given channel id and target.
+   *
    * @param channelId the channel id of the location
    * @return a component to select the target of the location
    */

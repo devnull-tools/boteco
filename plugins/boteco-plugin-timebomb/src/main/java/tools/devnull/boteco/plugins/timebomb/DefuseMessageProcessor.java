@@ -22,24 +22,30 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.redhat;
+package tools.devnull.boteco.plugins.timebomb;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
+import tools.devnull.boteco.Name;
+import tools.devnull.boteco.message.IncomeMessage;
+import tools.devnull.boteco.message.MessageProcessor;
 
-/**
- * A class to parse RSS entries from status.redhat.com
- */
-public class RssDescriptionParser {
+@Name(TimeBombPlugin.ID)
+public class DefuseMessageProcessor implements MessageProcessor {
 
-  public Status parse(String content, String title, String link) {
-    Document doc = Jsoup.parse(content);
-    Element element = doc.select("p").first();
-    String description = element.ownText().replaceFirst("^[-]\\s+", "");
-    String date = element.select("small").last().ownText();
-    String status = element.select("strong").last().ownText();
-    return new Status(title, date, description, status, link);
+  private final BombBag bag;
+
+  public DefuseMessageProcessor(BombBag bag) {
+    this.bag = bag;
+  }
+
+  @Override
+  public boolean canProcess(IncomeMessage message) {
+    TimeBomb timebomb = this.bag.bombFor(message.location());
+    return timebomb != null && message.content().matches("\\d+");
+  }
+
+  @Override
+  public void process(IncomeMessage message) {
+    this.bag.bombFor(message.location()).defuse(message.content());
   }
 
 }

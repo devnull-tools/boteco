@@ -27,10 +27,7 @@ package tools.devnull.boteco.channel.email;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.Destination;
 import tools.devnull.boteco.message.MessageDispatcher;
-import tools.devnull.boteco.user.User;
-import tools.devnull.boteco.user.UserManager;
 
 import javax.mail.internet.MimeUtility;
 
@@ -40,7 +37,6 @@ import javax.mail.internet.MimeUtility;
 public class EmailIncomeProcessor implements Processor {
 
   private final MessageDispatcher dispatcher;
-  private final UserManager userManager;
   private final Channel channel;
 
   /**
@@ -48,12 +44,10 @@ public class EmailIncomeProcessor implements Processor {
    *
    * @param dispatcher  the component to dispatch the messages to be processed
    * @param channel     the channel implementation
-   * @param userManager the user manager for fetching registered users
    */
-  public EmailIncomeProcessor(MessageDispatcher dispatcher, Channel channel, UserManager userManager) {
+  public EmailIncomeProcessor(MessageDispatcher dispatcher, Channel channel) {
     this.dispatcher = dispatcher;
     this.channel = channel;
-    this.userManager = userManager;
   }
 
   @Override
@@ -67,8 +61,7 @@ public class EmailIncomeProcessor implements Processor {
 
     if (!content.isEmpty()) {
       EmailSender emailSender = new EmailSender(sender);
-      User user = this.userManager.find(Destination.channel(EmailChannel.ID).to(emailSender.id()));
-      this.dispatcher.dispatch(new EmailMessage(channel, content, emailSender, target, user));
+      this.dispatcher.dispatch(new EmailMessage(channel, content, emailSender, target));
     }
   }
 

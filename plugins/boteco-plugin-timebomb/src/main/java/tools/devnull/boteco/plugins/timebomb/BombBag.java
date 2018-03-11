@@ -22,46 +22,44 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.redhat;
+package tools.devnull.boteco.plugins.timebomb;
 
-import tools.devnull.boteco.message.Priority;
-import tools.devnull.boteco.Sendable;
+import tools.devnull.boteco.DomainException;
+import tools.devnull.boteco.MessageLocation;
 
-/**
- * A class that represents a status from status.redhat.com
- */
-public class Status implements Sendable {
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-  private final String title;
-  private final String description;
-  private final String url;
-  private final Priority priority;
+public class BombBag {
 
-  public Status(String title, String date, String description, String status, String url) {
-    this.title = String.format("[t]%s[/t] [a]%s[/a]", status, title);
-    this.description = String.format("[aa]%s[/aa]: %s", date, description);
-    this.priority = "investigating".equalsIgnoreCase(status) ? Priority.HIGH : Priority.NORMAL;
-    this.url = url;
+  private final Map<String, TimeBomb> bombs;
+  private final ScheduledExecutorService executorService;
+
+  public BombBag() {
+    this.bombs = new ConcurrentHashMap<>();
+    this.executorService = Executors.newScheduledThreadPool(5);
   }
 
-  @Override
-  public String message() {
-    return description;
+  public void plant(TimeBomb timebomb, MessageLocation location) {
+    String key = getKey(location);
+    if (bombs.containsKey(key)) {
+      throw new DomainException("There is already a bomb planted here");
+    }
+    bombs.put(key, timebomb);
+    timebomb.onBlow(s -> bombs.remove(key));
+    timebomb.onDefuse(s -> bombs.remove(key));
+    executorService.scheduleAtFixedRate(timebomb::tick, 0, 1, TimeUnit.SECONDS);
   }
 
-  @Override
-  public String title() {
-    return title;
+  public TimeBomb bombFor(MessageLocation location) {
+    return bombs.get(getKey(location));
   }
 
-  @Override
-  public String url() {
-    return url;
-  }
-
-  @Override
-  public Priority priority() {
-    return priority;
+  private String getKey(MessageLocation location) {
+    return String.format("%s:%s", location.channel(), location.target());
   }
 
 }

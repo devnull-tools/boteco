@@ -56,8 +56,7 @@ public class IrcPlugin implements Plugin {
             .does("Accepts messages sent by this user"),
 
         command("irc ignored")
-            .with("nickname")
-            .does("Checks if this user is being ignored")
+            .does("Shows the ignored users")
     );
   }
 

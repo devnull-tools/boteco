@@ -70,7 +70,7 @@ public class ChannelService {
 
       // if the channel is present, then the message will be delivered as soon as the channel can process it
       // otherwise, the message will be delivered when the channel bundle starts
-      return channel.exists() ? Response.ok().build() : Response.accepted().build();
+      return channel.isPresent() ? Response.ok().build() : Response.accepted().build();
     } catch (DomainException e) {
       return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
     }

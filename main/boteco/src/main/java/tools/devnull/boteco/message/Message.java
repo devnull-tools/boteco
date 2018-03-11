@@ -25,7 +25,8 @@
 package tools.devnull.boteco.message;
 
 import tools.devnull.boteco.Channel;
-import tools.devnull.boteco.user.User;
+import tools.devnull.boteco.Destination;
+import tools.devnull.boteco.MessageLocation;
 
 import java.io.Serializable;
 
@@ -56,13 +57,6 @@ public interface Message extends Serializable {
   Sender sender();
 
   /**
-   * Returns the recognized user associated with this message
-   *
-   * @return the user that sent this message
-   */
-  User user();
-
-  /**
    * Returns the target of this message.
    *
    * @return the target of this message.
@@ -91,5 +85,15 @@ public interface Message extends Serializable {
    * @see OutcomeMessageConfiguration#replyingTo(String)
    */
   String replyId();
+
+  /**
+   * Returns a message location based on this message. If you send a message to this
+   * location, the sender will receive it.
+   *
+   * @return the message location for sending messages to the sender
+   */
+  default MessageLocation location() {
+    return Destination.channel(channel()).to(target());
+  }
 
 }

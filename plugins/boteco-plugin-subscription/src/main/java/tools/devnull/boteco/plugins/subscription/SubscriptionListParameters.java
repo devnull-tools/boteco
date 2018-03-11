@@ -32,8 +32,8 @@ public class SubscriptionListParameters {
   private final String target;
 
   public SubscriptionListParameters(IncomeMessage message) {
-    if (message.user() != null && !message.isGroup()) {
-      this.target = message.user().id();
+    if (message.user().isPresent() && !message.isGroup()) {
+      this.target = message.user().value().id();
       this.channel = "user";
     } else {
       this.target = message.isGroup() ? message.target() : message.sender().id();

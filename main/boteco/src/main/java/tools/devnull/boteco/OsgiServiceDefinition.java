@@ -53,7 +53,7 @@ public class OsgiServiceDefinition<T> implements ServiceDefinition<T> {
   }
 
   @Override
-  public void as(Class<T> serviceClass) {
+  public void as(Class<? super T> serviceClass) {
     bundleContext.registerService(serviceClass, implementation, properties);
   }
 

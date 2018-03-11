@@ -27,7 +27,6 @@ package tools.devnull.boteco.channel.email;
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.message.Message;
 import tools.devnull.boteco.message.Sender;
-import tools.devnull.boteco.user.User;
 
 /**
  * An abstraction for an email message
@@ -36,7 +35,6 @@ public class EmailMessage implements Message {
 
   private static final long serialVersionUID = 8180521354784182482L;
 
-  private final User user;
   private final Channel channel;
   private final String content;
   private final Sender sender;
@@ -48,23 +46,15 @@ public class EmailMessage implements Message {
    * @param content the content of the email
    * @param sender  the sender of the email
    * @param target  the target of the email
-   * @param user    the user associated with this message (may be {@code null})
    */
   public EmailMessage(Channel channel,
                       String content,
                       EmailSender sender,
-                      String target,
-                      User user) {
+                      String target) {
     this.channel = channel;
     this.content = content;
     this.sender = sender;
     this.target = target;
-    this.user = user;
-  }
-
-  @Override
-  public User user() {
-    return this.user;
   }
 
   @Override

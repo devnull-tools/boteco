@@ -54,6 +54,15 @@ public interface ServiceRegistry extends Serializable {
   <T> ServiceDefinition<T> register(T implementation);
 
   /**
+   * Registers the given provider.
+   *
+   * @param typeClass       the type of the object being provided
+   * @param provider        the provider
+   * @param defaultProvider tells if this provider is the default one
+   */
+  <T> void registerProvider(Class<? super T> typeClass, Provider<T> provider, boolean defaultProvider);
+
+  /**
    * Returns the default {@link Provider} of the given class.
    * <p>
    * The default provider has the "default" service property

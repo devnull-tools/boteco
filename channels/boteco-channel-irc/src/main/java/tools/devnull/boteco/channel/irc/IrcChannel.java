@@ -24,8 +24,12 @@
 
 package tools.devnull.boteco.channel.irc;
 
+import org.schwering.irc.lib.IRCConnection;
 import tools.devnull.boteco.Channel;
+import tools.devnull.boteco.Group;
+import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.message.CommandExtractor;
+import tools.devnull.trugger.Optional;
 
 /**
  * Implementation of the IRC Channel
@@ -38,9 +42,11 @@ public class IrcChannel implements Channel {
   public static final String ID = "irc";
 
   private final CommandExtractor commandExtractor;
+  private final ServiceRegistry registry;
 
-  public IrcChannel(CommandExtractor commandExtractor) {
+  public IrcChannel(CommandExtractor commandExtractor, ServiceRegistry registry) {
     this.commandExtractor = commandExtractor;
+    this.registry = registry;
   }
 
   @Override
@@ -66,6 +72,31 @@ public class IrcChannel implements Channel {
   @Override
   public CommandExtractor commandExtractor() {
     return this.commandExtractor;
+  }
+
+  @Override
+  public Optional<Group> group(String groupId) {
+    return registry.providerOf(IRCConnection.class)
+        .map(p -> new IrcGroup(p.get(), groupId));
+  }
+
+  static class IrcGroup implements Group {
+
+    private final IRCConnection connection;
+    private final String channelName;
+
+    IrcGroup(IRCConnection connection, String channelName) {
+      this.connection = connection;
+      this.channelName = channelName;
+    }
+
+    @Override
+    public void kick(String user, String reason) {
+      if (!connection.getUsername().equals(user)) {
+        connection.doKick(channelName, user, reason);
+      }
+    }
+
   }
 
 }

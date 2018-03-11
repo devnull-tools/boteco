@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.11.0
+
+- New Time Bomb plugin
+- Provider API improvements
+- Removed status.redhat rss parser
+- Improvements on Message interfaces
+
+## v0.10.2 (2017-09-27)
+
+- Fixed help message for irc plugin
+
 ## v0.10.1 (2017-09-23)
 
 - Using parent pom

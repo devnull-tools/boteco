@@ -51,7 +51,7 @@ public class HelpMessageProcessor implements MessageProcessor {
     MessageCommand command = message.command();
     this.registry.locate(Plugin.class)
         .all().forEach(plugin -> command.on(plugin.id(), () -> message.reply(buildPluginHelp(plugin))));
-    command.orElseReturn(buildPluginList());
+    command.orElse(s -> message.reply(buildPluginList()));
   }
 
   private String buildPluginHelp(Plugin plugin) {

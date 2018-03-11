@@ -24,14 +24,22 @@
 
 package tools.devnull.boteco.message;
 
-import tools.devnull.boteco.Destination;
-import tools.devnull.boteco.MessageLocation;
+import tools.devnull.boteco.Group;
 import tools.devnull.boteco.Sendable;
+import tools.devnull.boteco.user.User;
+import tools.devnull.trugger.Optional;
 
 /**
  * Interface that defines a message that arrives from a channel.
  */
 public interface IncomeMessage extends Message {
+
+  /**
+   * Returns the recognized user associated with this message, if exists.
+   *
+   * @return the user that sent this message
+   */
+  Optional<User> user();
 
   /**
    * Checks if this message has a command in its content.
@@ -46,6 +54,14 @@ public interface IncomeMessage extends Message {
    * @return the command if this message is a {@link #hasCommand() command}
    */
   MessageCommand command();
+
+  default <T> T command(Class<T> commandClass) {
+    return this.command().as(commandClass);
+  }
+
+  default Optional<Group> group() {
+    return isGroup() ? channel().group(target()) : Optional.empty();
+  }
 
   /**
    * Replies this message by sending the given content through the same
@@ -103,16 +119,6 @@ public interface IncomeMessage extends Message {
    */
   default void sendBack(String format, Object... args) {
     sendBack(String.format(format, args));
-  }
-
-  /**
-   * Returns a message location based on this message. If you send a message to this
-   * location, the sender will receive it.
-   *
-   * @return the message location for sending messages to the sender
-   */
-  default MessageLocation location() {
-    return Destination.channel(channel().id()).to(target());
   }
 
 }

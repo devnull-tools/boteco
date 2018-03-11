@@ -25,6 +25,7 @@
 package tools.devnull.boteco;
 
 import tools.devnull.boteco.message.CommandExtractor;
+import tools.devnull.trugger.Optional;
 
 import java.io.Serializable;
 
@@ -71,5 +72,9 @@ public interface Channel extends Serializable {
    * @return the command extractor for this channel.
    */
   CommandExtractor commandExtractor();
+
+  default Optional<Group> group(String groupId) {
+    return Optional.empty();
+  }
 
 }

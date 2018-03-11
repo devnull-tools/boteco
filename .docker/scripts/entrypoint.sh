@@ -58,8 +58,8 @@ property shutdown.time $BOTECO_PUSHOVER_SHUTDOWN_TIME
 config tools.devnull.boteco.channel.telegram
 property income.enable $BOTECO_TELEGRAM_IN_ENABLE
 property outcome.enable $BOTECO_TELEGRAM_OUT_ENABLE
+property bot.username $BOTECO_TELEGRAM_USERNAME
 property bot.token $BOTECO_TELEGRAM_TOKEN
-property bot.command.expression $BOTECO_TELEGRAM_COMMAND_EXPRESSION
 property poll.interval $BOTECO_TELEGRAM_POLL_INTERVAL
 property poll.initial-offset $BOTECO_TELEGRAM_POLL_OFFSET
 property trace $BOTECO_TELEGRAM_TRACE
@@ -82,11 +82,6 @@ property db.url $BOTECO_MONGODB_URL
 
 config tools.devnull.boteco.persistence.request
 property token.expire $BOTECO_REQUEST_TOKEN_EXPIRATION
-
-config tools.devnull.boteco.plugins.redhat
-property status.poll.interval $BOTECO_REDHAT_STATUS_POLL_INTERVAL
-property status.poll.delay $BOTECO_REDHAT_STATUS_POLL_DELAY
-property shutdown.time $BOTECO_REDHAT_SHUTDOWN_TIME
 
 config tools.devnull.boteco.plugins.stocks
 property query.defaults.exchange $BOTECO_STOCKS_DEFAULT_EXCHANGE

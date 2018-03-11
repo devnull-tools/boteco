@@ -60,12 +60,10 @@ public class BotecoUserManager implements UserManager {
 
   @Override
   public void link(IncomeMessage message, String userId, String channel, String target) {
-    UserRequest request;
-    if (message.user() != null && message.user().id().equals(userId)) {
-      request = new UserRequest(userId, channel, target, Destination.channel(channel).to(target));
-    } else {
-      request = new UserRequest(userId, channel, target, Destination.channel("user").to(userId));
-    }
+    UserRequest request = message.user()
+        .filter(user -> user.id().equals(userId))
+        .map(user -> new UserRequest(userId, channel, target, Destination.channel(channel).to(target)))
+        .orElseReturn(() -> new UserRequest(userId, channel, target, Destination.channel("user").to(userId)));
     this.requestManager.create(request, "user.link", "link account to user " + userId);
   }
 

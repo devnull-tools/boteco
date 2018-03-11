@@ -9,8 +9,7 @@ Just use the config `tools.devnull.boteco.channel.telegram`. The supported prope
 - `income.enabled`: if the channel should process incoming messages (defaults to `false`)
 - `outcome.enabled`: if the channel should process outcome messages (defaults to `false`)
 - `bot.token`: the bot token (you get this one after a new bot registration)
-- `bot.command.expression`: the regular expression that defines a command (defaults to
-`^/(?<command>[^@ ]*)(@\w+bot)?\s*(?<arguments>.+)?`)
+- `bot.username`: the bot username on telegram (defaults to `boteco_bot`)
 - `poll.interval`: the interval in which the channel should polling for new messages (defaults to `'500'` - milliseconds)
 - `poll.initial-offset`: the initial offset to fetch the messages (defaults to `0`)
 

@@ -26,30 +26,58 @@ package tools.devnull.boteco.channel.telegram;
 
 import org.junit.Test;
 import tools.devnull.boteco.message.CommandExtractor;
-import tools.devnull.boteco.message.ExpressionCommandExtractor;
 import tools.devnull.boteco.message.MessageCommand;
 import tools.devnull.kodo.Spec;
+import tools.devnull.trugger.Optional;
 
 import static tools.devnull.boteco.test.IncomeMessageMock.message;
 import static tools.devnull.kodo.Expectation.to;
 
 public class TelegramCommandExtractorTest {
 
-  private String expression = "^/(?<command>[^@ ]*)(@\\w+bot)?\\s*(?<arguments>.+)?";
-  private CommandExtractor extractor = new ExpressionCommandExtractor(expression);
+  private CommandExtractor extractor = new TelegramCommandExtractor("boteco_bot");
 
   @Test
   public void testSimpleCommand() {
-    Spec.given(extractor.extract(message("/command arguments")))
+    Spec.given(commandOf("/command arguments"))
+        .expect(Optional::isPresent)
+
+        .given(Optional::value)
         .expect(MessageCommand::name, to().be("command"))
-        .expect(command -> command.as(String.class), to().be("arguments"));
+        .expect(MessageCommand::asString, to().be("arguments"))
+
+        .given(commandOf("/command"))
+        .expect(Optional::isPresent)
+
+        .given(Optional::value)
+        .expect(MessageCommand::name, to().be("command"))
+
+        .given(commandOf("not a command"))
+        .expect(Optional::isPresent, to().be(false));
   }
 
   @Test
   public void testDirectCommand() {
-    Spec.given(extractor.extract(message("/command@mybot arguments")))
+    Spec.given(commandOf("/command@boteco_bot"))
+        .expect(Optional::isPresent)
+
+        .given(Optional::value)
         .expect(MessageCommand::name, to().be("command"))
-        .expect(command -> command.as(String.class), to().be("arguments"));
+        .expect(MessageCommand::asString, to().be(""))
+
+        .given(commandOf("/command@boteco_bot arguments"))
+        .expect(Optional::isPresent)
+
+        .given(Optional::value)
+        .expect(MessageCommand::name, to().be("command"))
+        .expect(MessageCommand::asString, to().be("arguments"))
+
+        .given(commandOf("/command@another_bot"))
+        .expect(Optional::isPresent, to().be(false));
+  }
+
+  private Optional<MessageCommand> commandOf(String content) {
+    return extractor.extract(message(content));
   }
 
 }

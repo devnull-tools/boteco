@@ -30,8 +30,10 @@ import org.apache.camel.component.irc.IrcConfiguration;
 import org.schwering.irc.lib.IRCConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.event.EventBus;
 import tools.devnull.boteco.plugins.irc.spi.IrcChannelsRepository;
+import tools.devnull.boteco.provider.Provider;
 
 /**
  * An extension of the IrcComponent that can use custom listeners
@@ -44,11 +46,17 @@ public class BotecoIrcComponent extends IrcComponent {
   private final EventBus bus;
   private BotecoIrcEventListener listener;
   private final CamelContext camelContext;
+  private final IrcConnectionProvider provider;
 
-  public BotecoIrcComponent(IrcChannelsRepository repository, EventBus bus, CamelContext camelContext) {
+  public BotecoIrcComponent(IrcChannelsRepository repository,
+                            EventBus bus,
+                            CamelContext camelContext,
+                            ServiceRegistry registry) {
     this.repository = repository;
     this.bus = bus;
     this.camelContext = camelContext;
+    this.provider = new IrcConnectionProvider();
+    registry.registerProvider(IRCConnection.class, this.provider, true);
   }
 
   @Override
@@ -56,6 +64,7 @@ public class BotecoIrcComponent extends IrcComponent {
     IRCConnection connection = super.createConnection(configuration);
     listener = new BotecoIrcEventListener(connection, configuration, repository, bus);
     connection.addIRCEventListener(listener);
+    this.provider.changeConnection(connection);
     return connection;
   }
 
@@ -74,6 +83,31 @@ public class BotecoIrcComponent extends IrcComponent {
     } catch (Exception e) {
       logger.error(e.getMessage(), e);
     }
+  }
+
+  static class IrcConnectionProvider implements Provider<IRCConnection> {
+
+    private IRCConnection connection;
+
+    public synchronized void changeConnection(IRCConnection newConnection) {
+      this.connection = newConnection;
+    }
+
+    @Override
+    public String id() {
+      return "irc-channel";
+    }
+
+    @Override
+    public String description() {
+      return "Provides the current IRC connection used by the IRC Channel";
+    }
+
+    @Override
+    public IRCConnection get() {
+      return this.connection;
+    }
+
   }
 
 }
