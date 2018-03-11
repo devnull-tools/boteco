@@ -56,6 +56,8 @@ mvn:package:
 docker:build:
   image: docker:latest
   stage: build
+  services:
+    - docker:dind
   script:
     - docker build -t devnull-tools/boteco .
     - docker login -p $DOCKER_TOKEN docker-registry.default.svc:5000
