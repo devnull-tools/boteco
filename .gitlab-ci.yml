@@ -1,10 +1,10 @@
-image: maven:3.3.9-jdk-8
-
 stages:
+  - compile
   - build
 
 mvn:package:
-  stage: build
+  stage: compile
+  image: maven:3.3.9-jdk-8
   script:
     - mvn -s .maven/settings.xml package
   artifacts:
@@ -52,3 +52,12 @@ mvn:package:
       - providers/boteco-provider-chucknorris/target/boteco-provider-chucknorris-*.jar
       - providers/boteco-provider-urbandictionary/target/boteco-provider-urbandictionary-*.jar
       - providers/boteco-provider-yahooweather/target/boteco-provider-yahooweather-*.jar
+
+docker:build:
+  image: docker:latest
+  stage: build
+  script:
+    - docker build -t devnull-tools/boteco .
+    - docker login -p $DOCKER_TOKEN docker-registry.default.svc:5000
+    - docker tag devnull-tools/boteco devnull-tools/boteco docker-registry.default.svc:5000/$OPENSHIFT_NAMESPACE/boteco
+    - docker push devnull-tools/boteco docker-registry.default.svc:5000/$OPENSHIFT_NAMESPACE/boteco
