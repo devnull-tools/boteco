@@ -62,5 +62,5 @@ docker:build:
   script:
     - docker build -t devnull-tools/boteco .
     - docker login -p $DOCKER_TOKEN -u gitlab-runner docker-registry.default.svc:5000
-    - docker tag devnull-tools/boteco devnull-tools/boteco docker-registry.default.svc:5000/$OPENSHIFT_NAMESPACE/boteco
+    - docker tag devnull-tools/boteco docker-registry.default.svc:5000/$OPENSHIFT_NAMESPACE/boteco
     - docker push devnull-tools/boteco docker-registry.default.svc:5000/$OPENSHIFT_NAMESPACE/boteco
