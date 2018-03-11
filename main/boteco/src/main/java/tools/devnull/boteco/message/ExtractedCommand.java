@@ -29,7 +29,6 @@ import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.MessageLocation;
 import tools.devnull.boteco.OsgiServiceRegistry;
 import tools.devnull.boteco.ServiceRegistry;
-import tools.devnull.boteco.user.User;
 import tools.devnull.boteco.util.OsgiParameterResolver;
 import tools.devnull.boteco.util.ParameterBinder;
 
@@ -46,20 +45,22 @@ import static tools.devnull.trugger.reflection.ParameterPredicates.type;
  */
 public class ExtractedCommand implements MessageCommand {
 
-  private final IncomeMessage incomeMessage;
+  private final Message message;
   private final String name;
   private final String rawArguments;
   private final Map<String, Action> actions;
   private Consumer<String> defaultAction;
 
-  public ExtractedCommand(IncomeMessage incomeMessage, String name, String rawArguments) {
-    this.incomeMessage = incomeMessage;
+  public ExtractedCommand(Message message, String name, String rawArguments) {
+    this.message = message;
     this.name = name;
     this.rawArguments = rawArguments;
     this.actions = new HashMap<>();
 
-    this.defaultAction = string -> this.incomeMessage.reply("Invalid action, possible actions: \n" +
-        actions.keySet().stream().collect(Collectors.joining("\n")));
+    this.defaultAction = string -> {
+      throw new MessageProcessingException("Invalid action, possible actions: \n" +
+          actions.keySet().stream().collect(Collectors.joining("\n")));
+    };
   }
 
   @Override
@@ -77,6 +78,11 @@ public class ExtractedCommand implements MessageCommand {
     return as(List.class);
   }
 
+  @Override
+  public String asString() {
+    return as(String.class);
+  }
+
   private <T> T convert(String string, Class<T> type) {
     try {
       return new ParameterBinder<>(type)
@@ -84,16 +90,16 @@ public class ExtractedCommand implements MessageCommand {
             OsgiServiceRegistry registry = new OsgiServiceRegistry();
             OsgiParameterResolver osgiResolver = new OsgiParameterResolver(registry);
 
-            context.use(this.incomeMessage)
+            context.use(this.message)
                 .when(type(IncomeMessage.class))
 
-                .use(this.incomeMessage.channel())
+                .use(this.message.channel())
                 .when(type(Channel.class))
 
-                .use(this.incomeMessage.sender())
+                .use(this.message.sender())
                 .when(type(Sender.class))
 
-                .use(this.incomeMessage.location())
+                .use(this.message.location())
                 .when(type(MessageLocation.class))
 
                 .use(registry)
@@ -102,11 +108,6 @@ public class ExtractedCommand implements MessageCommand {
                 // try to lookup implementations by default using the osgi registry
                 .use(osgiResolver)
                 .byDefault();
-
-            if (this.incomeMessage.user() != null) {
-              context.use(parameter -> this.incomeMessage.user())
-                  .when(type(User.class));
-            }
           }).apply(string);
     } catch (Exception e) {
       throw new MessageProcessingException("Invalid command parameters.");
@@ -146,11 +147,6 @@ public class ExtractedCommand implements MessageCommand {
   public void orElse(Consumer<String> action) {
     this.defaultAction = action;
     execute();
-  }
-
-  @Override
-  public void orElseReturn(String message) {
-    orElse((string) -> this.incomeMessage.reply(message));
   }
 
   @Override

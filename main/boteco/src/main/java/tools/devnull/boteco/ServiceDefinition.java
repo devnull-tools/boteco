@@ -51,6 +51,6 @@ public interface ServiceDefinition<T> {
    *
    * @param serviceClass the service class to register the given service
    */
-  void as(Class<T> serviceClass);
+  void as(Class<? super T> serviceClass);
 
 }

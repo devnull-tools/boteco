@@ -22,39 +22,13 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.boteco.plugins.redhat;
+package tools.devnull.boteco;
 
-import org.apache.camel.Handler;
-import org.apache.camel.language.XPath;
-import tools.devnull.boteco.event.EventBus;
+/**
+ * Interface that defines a group of people chatting.
+ */
+public interface Group {
 
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-
-public class StatusRssProcessor {
-
-  private final EventBus bus;
-  private final int threshold;
-  private final RssDescriptionParser parser;
-
-  public StatusRssProcessor(EventBus bus, int threshold) {
-    this.bus = bus;
-    this.threshold = threshold;
-    this.parser = new RssDescriptionParser();
-  }
-
-  @Handler
-  public void process(@XPath("//title") String title,
-                      @XPath("//description") String description,
-                      @XPath("//pubDate") String pubDate,
-                      @XPath("//link") String link) {
-    ZonedDateTime published = ZonedDateTime.parse(pubDate, DateTimeFormatter.RFC_1123_DATE_TIME);
-    if (ChronoUnit.MINUTES.between(published,
-        ZonedDateTime.now()) <= threshold) {
-      bus.broadcast(parser.parse(description, title, link))
-          .as("status.redhat");
-    }
-  }
+  void kick(String user, String reason);
 
 }

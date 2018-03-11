@@ -29,7 +29,6 @@ import org.schwering.irc.lib.IRCUser;
 import tools.devnull.boteco.Channel;
 import tools.devnull.boteco.message.Message;
 import tools.devnull.boteco.message.Sender;
-import tools.devnull.boteco.user.User;
 
 /**
  * An abstraction of an IRC message.
@@ -39,7 +38,6 @@ public class BotecoIrcMessage implements Message {
   private static final long serialVersionUID = -4838114200533219628L;
 
   private final Channel channel;
-  private final User user;
   private final String message;
   private final Sender sender;
   private final String target;
@@ -49,21 +47,13 @@ public class BotecoIrcMessage implements Message {
    *
    * @param channel the channel implementation
    * @param income  the actual IRC message
-   * @param user    the user associated with this message (may be {@code null})
    */
   public BotecoIrcMessage(Channel channel,
-                          IrcMessage income,
-                          User user) {
+                          IrcMessage income) {
     this.message = income.getMessage();
     this.sender = new IrcSender(income.getUser());
     this.target = income.getTarget();
     this.channel = channel;
-    this.user = user;
-  }
-
-  @Override
-  public User user() {
-    return this.user;
   }
 
   @Override

@@ -32,26 +32,17 @@
                            placeholder-prefix="{{"
                            placeholder-suffix="}}">
     <cm:default-properties>
-      <cm:property name="status.poll.interval" value="10"/>
-      <cm:property name="status.poll.delay" value="-1"/>
-
       <cm:property name="shutdown.time" value="10"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
   <reference id="rest-client" interface="tools.devnull.boteco.client.rest.RestClient"/>
-  <reference id="event-bus" interface="tools.devnull.boteco.event.EventBus"/>
 
   <service id="kbase-plugin" interface="tools.devnull.boteco.message.MessageProcessor">
     <bean class="tools.devnull.boteco.plugins.redhat.KBaseMessageProcessor">
       <argument ref="rest-client"/>
     </bean>
   </service>
-
-  <bean id="rss-processor" class="tools.devnull.boteco.plugins.redhat.StatusRssProcessor">
-    <argument ref="event-bus"/>
-    <argument value="{{status.poll.interval}}"/>
-  </bean>
 
   <bean id="shutdown" class="org.apache.camel.impl.DefaultShutdownStrategy">
     <property name="timeout" value="{{shutdown.time}}"/>
@@ -60,19 +51,5 @@
   <service interface="tools.devnull.boteco.plugin.Plugin">
     <bean class="tools.devnull.boteco.plugins.redhat.RedHatPlugin"/>
   </service>
-
-  <camelContext id="boteco-redhat"
-                xmlns="http://camel.apache.org/schema/blueprint">
-
-    <route id="boteco.status.poll">
-      <from uri="timer:status?period={{status.poll.interval}}m"/>
-      <to uri="http4:status.redhat.com/history.rss"/>
-      <split>
-        <xpath>//item</xpath>
-        <to uri="bean:rss-processor"/>
-      </split>
-    </route>
-
-  </camelContext>
 
 </blueprint>

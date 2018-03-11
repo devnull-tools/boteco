@@ -24,12 +24,15 @@
 
 package tools.devnull.boteco.processor.message;
 
+import tools.devnull.boteco.BotException;
 import tools.devnull.boteco.Rule;
 import tools.devnull.boteco.ServiceRegistry;
 import tools.devnull.boteco.client.jms.JmsClient;
 import tools.devnull.boteco.message.IncomeMessage;
 import tools.devnull.boteco.message.Message;
 import tools.devnull.boteco.message.MessageDispatcher;
+import tools.devnull.boteco.user.User;
+import tools.devnull.boteco.user.UserManager;
 
 import java.util.List;
 
@@ -68,11 +71,14 @@ public class BotecoMessageDispatcher implements MessageDispatcher {
 
   @Override
   public void dispatch(Message message) {
-    IncomeMessage incomeMessage = new BotecoIncomeMessage(serviceRegistry, message);
+    User user = serviceRegistry.locate(UserManager.class).one()
+        .orElseThrow(BotException::new)
+        .find(message.location());
+    IncomeMessage incomeMessage = new BotecoIncomeMessage(serviceRegistry, message, user);
     List<Rule> rules = serviceRegistry.locate(Rule.class)
         .filter(serviceProperty("channel", eq("all").or(eq(incomeMessage.channel().id()))))
         .all();
-    if (rules.isEmpty() || rules.stream().allMatch(rule -> rule.accept(incomeMessage))) {
+    if (rules.stream().allMatch(rule -> rule.accept(incomeMessage))) {
       client.send(incomeMessage).to(queue(queueName + "." + incomeMessage.channel().id()));
     }
   }

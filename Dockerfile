@@ -1,12 +1,20 @@
-FROM devnull.tools/fuse:6.3
+FROM jboss/base-jdk:8
 
-ENV VERSION="0.10.2"
+ENV DOWNLOAD_URL=http://racha-cuca.devnull.tools/install/redhat/fuse/jboss-fuse-karaf-6.3.0.redhat-224.zip
+ENV FUSE_HOME=/opt/jboss/fuse
+ENV FUSE_USER=admin
+ENV FUSE_PASSWORD=admin
+ENV VERSION="0.11.0-SNAPSHOT"
 ENV DEBUG=""
 
-COPY .docker/cfg/* $FUSE_HOME/etc/
-COPY .docker/entrypoint.sh /opt/jboss/entrypoint.sh
+USER root
+COPY .docker/scripts/install.sh /install.sh
+RUN /install.sh && rm /install.sh
 
-COPY target/lib/trugger-6.0.0.jar \
+COPY .docker/cfg/* $FUSE_HOME/etc/
+COPY .docker/scripts/entrypoint.sh /opt/jboss/entrypoint.sh
+
+COPY target/lib/trugger-6.2.0.jar \
   target/lib/jsoup-1.10.2.jar \
   target/lib/mongo-java-driver-3.0.4.jar \
   channels/boteco-channel-email/target/boteco-channel-email-${VERSION}.jar \
@@ -44,13 +52,13 @@ COPY target/lib/trugger-6.0.0.jar \
   plugins/boteco-plugin-user/target/boteco-plugin-user-${VERSION}.jar \
   plugins/boteco-plugin-weather/target/boteco-plugin-weather-${VERSION}.jar \
   plugins/boteco-plugin-xgh/target/boteco-plugin-xgh-${VERSION}.jar \
+  plugins/boteco-plugin-timebomb/target/boteco-plugin-timebomb-${VERSION}.jar \
   providers/boteco-provider-chucknorris/target/boteco-provider-chucknorris-${VERSION}.jar \
   providers/boteco-provider-urbandictionary/target/boteco-provider-urbandictionary-${VERSION}.jar \
   providers/boteco-provider-yahooweather/target/boteco-provider-yahooweather-${VERSION}.jar $FUSE_HOME/deploy/
 
-USER root
-
-RUN chown -R jboss:jboss $FUSE_HOME/deploy $FUSE_HOME/etc /opt/jboss/entrypoint.sh
+RUN chown -R jboss:jboss /opt/jboss
+RUN chmod 777 -R /opt/jboss
 
 USER jboss
 

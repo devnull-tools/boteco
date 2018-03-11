@@ -50,6 +50,13 @@ public interface MessageCommand {
   <E> E as(Class<E> target);
 
   /**
+   * Gets the parameters as a String. This is similar to call {@code as(String.class)}.
+   *
+   * @return the parameters as a String object.
+   */
+  String asString();
+
+  /**
    * Returns the input as a list of arguments.
    *
    * @return a list of the arguments
@@ -107,13 +114,6 @@ public interface MessageCommand {
    * @param action the action to execute
    */
   void orElse(Consumer<String> action);
-
-  /**
-   * Replies to the message with the given content if none of the actions matches the message.
-   *
-   * @param message the message to reply to the sender
-   */
-  void orElseReturn(String message);
 
   /**
    * Treats the first parameter of this command as an action and the remaining as parameters of

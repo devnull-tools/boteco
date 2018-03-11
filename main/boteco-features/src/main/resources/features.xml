@@ -101,6 +101,7 @@
     <bundle>mvn:${project.groupId}/boteco-plugin-xgh/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-definitions/${project.version}</bundle>
     <bundle>mvn:${project.groupId}/boteco-plugin-weather/${project.version}</bundle>
+    <bundle>mvn:${project.groupId}/boteco-plugin-timebomb/${project.version}</bundle>
 
     <bundle>mvn:${project.groupId}/boteco-persistence-karma/${project.version}</bundle>
 

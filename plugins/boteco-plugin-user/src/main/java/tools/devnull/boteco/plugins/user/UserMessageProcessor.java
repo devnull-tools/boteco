@@ -55,6 +55,12 @@ public class UserMessageProcessor implements MessageProcessor {
           userManager.create(userId, message.location());
           message.reply("User created");
         })
+        .on("delete", () -> {
+          User user = message.user()
+              .orElseThrow(() -> new MessageProcessingException("You're not registered."));
+          this.repository.delete(user);
+          message.reply("Your user is now deleted!");
+        })
         .on("link", LinkRequest.class, request -> {
           userManager.link(message, request.userId(), request.channel(), request.target());
           message.reply("Link requested and will be effective after confirmation.");
@@ -66,10 +72,8 @@ public class UserMessageProcessor implements MessageProcessor {
           message.reply("The destination was removed from your user.");
         })
         .on("default", channel -> {
-          User user = message.user();
-          if (user == null) {
-            throw new MessageProcessingException("You're not registered.");
-          }
+          User user = message.user()
+              .orElseThrow(() -> new MessageProcessingException("You're not registered."));
           if (channel.isEmpty()) {
             channel = message.channel().id();
           }

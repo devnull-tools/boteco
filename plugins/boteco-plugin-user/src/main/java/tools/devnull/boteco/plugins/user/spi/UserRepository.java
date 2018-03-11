@@ -66,4 +66,11 @@ public interface UserRepository {
    */
   void update(User user);
 
+  /**
+   * Removes the given user from the repository
+   *
+   * @param user the user to delete
+   */
+  void delete(User user);
+
 }

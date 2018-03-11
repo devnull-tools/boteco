@@ -84,6 +84,7 @@ public class TelegramOutcomeProcessor implements Processor {
 
       body.put("chat_id", outcomeMessage.target());
       body.put("parse_mode", "HTML");
+      body.put("disable_web_page_preview", "true");
 
       checkAndSend(body, content.toString());
     }

@@ -24,6 +24,8 @@
 
 package tools.devnull.boteco.message;
 
+import tools.devnull.trugger.Optional;
+
 import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,25 +42,25 @@ public class PrefixCommandExtractor implements CommandExtractor, Serializable {
     this.prefix = Pattern.compile("^" + prefix, Pattern.CASE_INSENSITIVE);
   }
 
-  @Override
-  public boolean isCommand(IncomeMessage message) {
-    return message.isPrivate() || prefix.matcher(message.content()).find();
-  }
-
-  public MessageCommand extract(IncomeMessage message) {
+  public Optional<MessageCommand> extract(Message message) {
+    boolean privateMessage = message.isPrivate();
     String content = message.content();
     Matcher matcher = prefix.matcher(content);
     if (matcher.find()) {
       content = content.substring(matcher.end());
+    } else if(!privateMessage) {
+      return Optional.empty();
     }
+    ExtractedCommand command;
     int firstSpace = content.indexOf(" ");
     if (firstSpace < 0) { // no arguments
-      return new ExtractedCommand(message, content, "");
+      command = new ExtractedCommand(message, content, "");
     } else {
-      return new ExtractedCommand(message, content.substring(0, firstSpace),
+      command = new ExtractedCommand(message, content.substring(0, firstSpace),
           content.substring(firstSpace, content.length()).trim()
       );
     }
+    return Optional.of(command);
   }
 
 }

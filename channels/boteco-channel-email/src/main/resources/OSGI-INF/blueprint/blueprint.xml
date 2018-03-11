@@ -64,12 +64,9 @@
   <reference id="message-dispatcher" interface="tools.devnull.boteco.message.MessageDispatcher"/>
   <reference id="event-bus" interface="tools.devnull.boteco.event.EventBus"/>
 
-  <reference id="user-manager" interface="tools.devnull.boteco.user.UserManager"/>
-
   <bean id="income-processor" class="tools.devnull.boteco.channel.email.EmailIncomeProcessor">
     <argument ref="message-dispatcher"/>
     <argument ref="channel"/>
-    <argument ref="user-manager"/>
   </bean>
 
   <bean id="event-processor" class="tools.devnull.boteco.channel.email.EmailEventProcessor">
