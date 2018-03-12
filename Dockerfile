@@ -1,4 +1,4 @@
-FROM jboss-fuse:6.3.0.redhat-224
+FROM jboss-fuse
 
 ENV VERSION="0.11.0-SNAPSHOT"
 ENV DEBUG=""
