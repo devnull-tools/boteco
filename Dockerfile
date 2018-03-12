@@ -1,9 +1,5 @@
-FROM jboss/base-jdk:8
+FROM openshift/jboss-fuse:6.3.0.redhat-224
 
-ENV DOWNLOAD_URL=http://racha-cuca.devnull.tools/install/redhat/fuse/jboss-fuse-karaf-6.3.0.redhat-224.zip
-ENV FUSE_HOME=/opt/jboss/fuse
-ENV FUSE_USER=admin
-ENV FUSE_PASSWORD=admin
 ENV VERSION="0.11.0-SNAPSHOT"
 ENV DEBUG=""
 
