@@ -94,12 +94,6 @@ public class ExtractedCommand implements MessageCommand {
             context.use(this.message)
                 .when(type(Message.class))
 
-                .use(p -> ((IncomeMessage) this.message).user())
-                .when(type(User.class))
-
-                .use(this)
-                .when(type(IncomeMessage.class))
-
                 .use(this.message.channel())
                 .when(type(Channel.class))
 
@@ -115,6 +109,14 @@ public class ExtractedCommand implements MessageCommand {
                 // try to lookup implementations by default using the osgi registry
                 .use(osgiResolver)
                 .byDefault();
+
+            if (this.message instanceof IncomeMessage) {
+              context.use(this)
+                  .when(type(IncomeMessage.class))
+
+                  .use(((IncomeMessage) this.message).user().value())
+                  .when(type(User.class));
+            }
           }).apply(string);
     } catch (Exception e) {
       throw new MessageProcessingException("Invalid command parameters.");
