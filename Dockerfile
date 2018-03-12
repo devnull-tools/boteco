@@ -1,4 +1,4 @@
-FROM jboss-fuse
+FROM docker-registry.default.svc:5000/boteco/jboss-fuse
 
 ENV VERSION="0.11.0-SNAPSHOT"
 ENV DEBUG=""
