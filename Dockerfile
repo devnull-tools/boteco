@@ -1,4 +1,4 @@
-FROM openshift/jboss-fuse:6.3.0.redhat-224
+FROM docker-registry.default.svc:5000/openshift/jboss-fuse:6.3.0.redhat-224
 
 ENV VERSION="0.11.0-SNAPSHOT"
 ENV DEBUG=""
